@@ -11,6 +11,7 @@ equality: ≐
 domain: positive
 law: "([A] <[B]>) ≐ ([C] <[D]>)  iff  ([A] [D]) ≐ ([C] [B])"
 units: a/b = c/d ⟺ ad = cb
+witness: tools/models/cross_multiplication.py
 holds:
   classical: holds
   J1: holds
@@ -24,7 +25,7 @@ readings:
   CC: untested
   logic: ABSENT
 status: NATIVE-BY-DECREE
-verified: hand
+verified: engine
 known_since: Euclid VII (proportion); the fact is ancient
 entered: 2026-10-03
 guide: need-led
@@ -84,4 +85,4 @@ none
 
 ## Notes
 
-Verification is `hand`: a meta statement with no witness script. The obligation is a script that instantiates both directions on random numerals and runs the engine on each — the shape of every future "iff" node's witness.
+The witness `tools/models/cross_multiplication.py` instantiates both directions on all 1296 numeral quadruples up to 6, checks that the two equalities agree, and runs the engine on each direction's derivation rows — the shape of every future "iff" node's witness.

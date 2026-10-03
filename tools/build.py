@@ -26,7 +26,7 @@ BASE_IDS = {"void.page", "void.space", "N.round", "Z.angle", "mult.square", "mul
 PRICED_TYPES = {"primitive", "axiom", "decree", "import"}
 RUNG_TITLES = {
     "void": "The page", "N": "ℕ — piles", "Z": "ℤ — the angle boundary", "mult": "× — the square boundary",
-    "Q": "ℚ — division and fractional counts", "alg": "Algebraic numbers", "C": "ℂ and J", "J1": "𝕁₁", "H": "ℍ (JH)", "O": "𝕆 (JO)", "S": "𝕊 (JS)",
+    "Q": "ℚ — division and fractional counts", "alg": "Radicals and the base", "C": "ℂ and J", "J1": "𝕁₁", "H": "ℍ (JH)", "O": "𝕆 (JO)", "S": "𝕊 (JS)",
     "analysis": "Analysis", "place": "Places (JP)", "logic": "Logic", "struct": "Structure", "F1": "F₁", "field": "The Field",
 }
 
@@ -579,7 +579,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 <div class="wrap">
 <header>
   <h1>The Boundary Chart</h1>
-  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code> and <code>Q</code>.</p>
+  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code> and <code>alg</code>.</p>
   <div class="stats">
     <div class="stat"><b>{len(nodes)}</b><span>laws</span></div>
     <div class="stat"><b>{counts.get("theorem",0)}</b><span>theorems</span></div>

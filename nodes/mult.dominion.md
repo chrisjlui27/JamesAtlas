@@ -8,7 +8,7 @@ rung: mult
 order: 420
 setting: classical
 equality: "≐"
-domain: positive
+domain: complex
 law: "□ A ≐ □"
 units: "−∞ + a = −∞"
 gloss_check: "BH"

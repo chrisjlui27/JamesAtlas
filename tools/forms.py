@@ -199,13 +199,19 @@ TINY = 1e-12
 
 
 def evaluate(form: Form, env: dict | None = None) -> Value:
+    """Value of a form in ℂ ∪ {□}. A juxtaposition whose summands cancel to within rounding (relative to the
+    largest summand) is snapped to exactly 0, so that cancellations produce the black hole rather than noise."""
     env = env or {}
     total = 0j
+    scale = 0.0
     for ch in form:
         v = _eval_child(ch, env)
         if v is BH:
             return BH
         total += v
+        scale = max(scale, abs(v))
+    if scale and abs(total) <= 1e-9 * scale:
+        total = 0j
     return total
 
 
@@ -224,7 +230,7 @@ def _eval_child(ch, env) -> Value:
     if ch[0] == SQUARE:
         if inner is BH:
             raise Undefined("[□] has no value")
-        if abs(inner) < TINY:
+        if inner == 0 or abs(inner) < 1e-300:
             return BH
         # snap values that are real up to rounding onto the axis, so that the principal log of a
         # negative real is +iπ consistently and the branch cut is not decided by floating-point noise
@@ -256,14 +262,14 @@ def random_env(names, domain: str, rng: random.Random) -> dict:
     env = {}
     for n in sorted(names):
         if domain == "natural":
-            env[n] = complex(rng.randint(1, 4))
+            env[n] = complex(rng.randint(1, 8))
         elif domain == "positive":
-            env[n] = complex(rng.uniform(0.5, 3.0))
+            env[n] = complex(math.exp(rng.uniform(math.log(0.05), math.log(20.0))))
         elif domain == "real":
-            x = rng.uniform(0.4, 3.0) * rng.choice((-1, 1))
+            x = math.exp(rng.uniform(math.log(0.05), math.log(20.0))) * rng.choice((-1, 1))
             env[n] = complex(x)
         elif domain == "complex":
-            env[n] = complex(rng.uniform(0.4, 2.0) * rng.choice((-1, 1)), rng.uniform(0.3, 2.0) * rng.choice((-1, 1)))
+            env[n] = complex(math.exp(rng.uniform(-2, 2)) * rng.choice((-1, 1)), math.exp(rng.uniform(-2, 2)) * rng.choice((-1, 1)))
         else:
             raise ValueError(f"unknown domain {domain}")
     return env
@@ -300,3 +306,4 @@ if __name__ == "__main__":  # tiny self-test
         except (Undefined, Excluded) as ex:
             v = type(ex).__name__
         print(f"{s!r:18} -> {to_string(f):22} size={size(f)} value={fmt(v) if not isinstance(v,str) else v}")
+

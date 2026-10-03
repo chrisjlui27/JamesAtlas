@@ -5,11 +5,11 @@ type: import
 level: meta
 kind: law
 rung: mult
-order: 470
+order: 462
 setting: classical
 equality: "≐"
 domain: positive
-law: "forms are valued in ℂ ∪ {□} by (A) = e^A, [A] = ln A (principal), <A> = −A, juxtaposition = +; the admissible axioms hold on positive real content"
+law: "forms are valued in ℂ ∪ {□} by (A) = e^A, [A] = ln A (principal), <A> = −A, juxtaposition = +; under the two decrees it is a model of the admissible calculus on all content"
 units: "exp and log on ℂ, with □ = ln 0 absorbing"
 holds:
   classical: holds
@@ -24,7 +24,7 @@ readings:
   CC: untested
   logic: ABSENT
 status: IMPORTED
-verified: engine
+verified: hand
 known_since: "Euler, for exp and log; 1993 (James, Chapter 5) for the reading of the three boundaries"
 entered: 2026-10-03
 guide: need-led

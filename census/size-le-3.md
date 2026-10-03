@@ -10,8 +10,8 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 1 | `()` | `o` | numeral | 1 | [[N.unit]] |
 | 1 | `<>` | `<>` | reduces | 0 | [[Z.void-inverse]] |
 | 1 | `[]` | `□` | hole | □ | [[mult.black-hole]] |
-| 2 | `(())` | `(o)` | new | 2.71828 |  |
-| 2 | `() ()` | `o o` | numeral | 2 | [[N.numeral]] |
+| 2 | `(())` | `(o)` | new | 2.71828 | [[alg.base]] |
+| 2 | `() ()` | `o o` | numeral | 2 | [[alg.sqrt4]] |
 | 2 | `() <>` | `o <>` | reduces | 1 |  |
 | 2 | `() []` | `o □` | reduces | □ |  |
 | 2 | `(<>)` | `(<>)` | reduces | 1 |  |
@@ -26,10 +26,10 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 2 | `[[]]` | `[□]` | undefined | — | [[mult.hole-exclusion]] |
 | 2 | `[] []` | `□ □` | reduces | □ |  |
 | 3 | `((()))` | `((o))` | new | 15.1543 |  |
-| 3 | `(() ())` | `(o o)` | new | 7.38906 |  |
+| 3 | `(() ())` | `(o o)` | new | 7.38906 | [[alg.exp-of-pile]] |
 | 3 | `(() <>)` | `(o <>)` | reduces | 2.71828 |  |
 | 3 | `(() [])` | `(o □)` | reduces | 0 |  |
-| 3 | `(()) ()` | `(o) o` | new | 3.71828 |  |
+| 3 | `(()) ()` | `(o) o` | new | 3.71828 | [[alg.base]] |
 | 3 | `(()) <>` | `(o) <>` | reduces | 2.71828 |  |
 | 3 | `(()) []` | `(o) □` | reduces | □ |  |
 | 3 | `((<>))` | `((<>))` | reduces | 2.71828 |  |
@@ -48,7 +48,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 3 | `() [<>]` | `o [<>]` | reduces | □ |  |
 | 3 | `() [[]]` | `o [□]` | undefined | — | [[mult.hole-exclusion]] |
 | 3 | `() [] []` | `o □ □` | reduces | □ |  |
-| 3 | `(<()>)` | `(<o>)` | new | 0.367879 |  |
+| 3 | `(<()>)` | `(<o>)` | new | 0.367879 | [[alg.base]] |
 | 3 | `(<<>>)` | `(<<>>)` | reduces | 1 |  |
 | 3 | `(<> <>)` | `(<> <>)` | reduces | 1 |  |
 | 3 | `(<> [])` | `(<> □)` | reduces | 0 |  |
@@ -61,7 +61,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 3 | `([] [])` | `(□ □)` | reduces | 0 |  |
 | 3 | `([]) <>` | `(□) <>` | reduces | 0 |  |
 | 3 | `([]) []` | `(□) □` | reduces | □ |  |
-| 3 | `<(())>` | `<(o)>` | new | -2.71828 |  |
+| 3 | `<(())>` | `<(o)>` | new | -2.71828 | [[alg.base]] |
 | 3 | `<() ()>` | `<o o>` | new | -2 | [[Z.negative-numeral]] |
 | 3 | `<() <>>` | `<o <>>` | reduces | -1 |  |
 | 3 | `<() []>` | `<o □>` | excluded | — | [[mult.hole-exclusion]] |
@@ -88,7 +88,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 3 | `<[[]]>` | `<[□]>` | undefined | — | [[mult.hole-exclusion]] |
 | 3 | `<[] []>` | `<□ □>` | excluded | — | [[mult.hole-exclusion]] |
 | 3 | `<[]> []` | `<□> □` | excluded | — | [[mult.hole-exclusion]] |
-| 3 | `[(())]` | `[(o)]` | reduces | 1 |  |
+| 3 | `[(())]` | `[(o)]` | reduces | 1 | [[alg.log-of-base]] |
 | 3 | `[() ()]` | `[o o]` | new | 0.693147 |  |
 | 3 | `[() <>]` | `[o <>]` | reduces | 0 |  |
 | 3 | `[() []]` | `[o □]` | undefined | — | [[mult.hole-exclusion]] |

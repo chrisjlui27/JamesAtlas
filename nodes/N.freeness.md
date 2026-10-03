@@ -24,7 +24,8 @@ readings:
   CC: untested
   logic: ABSENT
 status: NATIVE
-verified: hand
+verified: engine
+witness: tools/models/freeness_check.py
 known_since: "Peano 1889 (the axioms); the fragment argument is immediate"
 entered: 2026-10-03
 guide: need-led
@@ -81,5 +82,7 @@ Peano's third and fourth axioms (S injective; 0 not a successor) — for the fra
 - ~~"nothing added later ever collapses two piles" follows from soundness in ℂ~~ — the first draft (2026-10-03) made this claim here with an `engine` badge; the referee pass the same day showed the unrestricted laws *do* collapse the calculus unless the undefined forms are excluded, and that nothing in the engine checks a meta claim. Moved to [[mult.consistency]], with its decree and import made explicit.
 
 ## Notes
+
+The witness `tools/models/freeness_check.py` enumerates piles up to twelve units and confirms their canonical forms are pairwise distinct — all that a fragment with no rewrite rules can be asked to show.
 
 The JP cell is the first place the chart shows the place calculus doing something *to* ℕ rather than *with* it: the void pile `p^N ≐ void` is a decree that breaks this theorem on purpose. That is a feature of the chart, not a bug of either calculus.

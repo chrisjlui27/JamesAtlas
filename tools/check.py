@@ -315,6 +315,10 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
                 rep.fail(nid, f"derivation step {i+1} is not an equality: {msg}")
             else:
                 rep.ok()
+            if node.get("type") != "decree":
+                seam = check_seam(prev, f, node, rep, i + 1, rng, trials)
+                if seam:
+                    rep.ok()
             prev = f
         if prev is not None:
             lasts.append(prev)
@@ -333,15 +337,170 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
                 rep.ok()
 
 
+# ----------------------------------------------------------------------------- seam decree (mult.seam-decree)
+# Enforcement is semantic, as the decree itself is: find every unit step in a row's difference and refuse it if its
+# content leaves the principal strip on wide sampling while the position is not absorbing (mult.seam-signature says
+# why no syntactic test can do this job).
+
+def absorbing(path) -> bool:
+    """A redex position is absorbing if, after stripping angle boundaries from the end of the path,
+    the nearest enclosing boundary is an instance."""
+    p = list(path)
+    while p and p[-1] == F.ANGLE:
+        p.pop()
+    return bool(p) and p[-1] == F.ROUND
+
+
+def _unit_shaped(e):
+    return e[0] == F.SQUARE and len(e[1]) == 1 and e[1][0][0] == F.ROUND
+
+
+def find_unit_steps(f1, f2, path=()):
+    """Walk the whole difference between two forms and collect every unit step [(X)] <-> X it contains,
+    as (path, X). Same-kind differing children are paired (trying all pairings when ambiguous, keeping the
+    one that explains the most) and recursed into; leftovers are matched as unit steps where possible.
+    Returns (steps, unexplained) where unexplained counts leftover children no rule of ours accounts for."""
+    from collections import Counter
+    import itertools
+    k1, k2 = Counter(f1), Counter(f2)
+    common = k1 & k2
+    r1 = list((k1 - common).elements())
+    r2 = list((k2 - common).elements())
+    if not r1 and not r2:
+        return [], 0
+    # 1. unit steps at this level: [(X)] on one side whose X-children all lie on the other side
+    steps = []
+    def take_units(src, dst):
+        nonlocal steps
+        dst_c = Counter(dst)
+        rest = []
+        for e in src:
+            if _unit_shaped(e):
+                cx = Counter(e[1][0][1])
+                if cx and all(dst_c[k] >= v for k, v in cx.items()):
+                    dst_c -= cx
+                    steps.append((path, e[1][0][1]))
+                    continue
+            rest.append(e)
+        return rest, list(dst_c.elements())
+    r1, r2 = take_units(r1, r2)
+    r2, r1 = take_units(r2, r1)
+    # 2. pair remaining same-kind boundaries and recurse
+    best_unexplained = None
+    best_steps = []
+    by_kind1, by_kind2 = {}, {}
+    for e in r1:
+        by_kind1.setdefault(e[0], []).append(e)
+    for e in r2:
+        by_kind2.setdefault(e[0], []).append(e)
+    kinds = [k for k in (F.ROUND, F.SQUARE, F.ANGLE) if k in by_kind1 and k in by_kind2]
+    # enumerate pairings kind by kind (small sets only)
+    options_per_kind = []
+    for k in kinds:
+        a, b = by_kind1[k], by_kind2[k]
+        n = min(len(a), len(b))
+        if n == 0 or len(a) > 4 or len(b) > 4:
+            options_per_kind.append([[]])
+            continue
+        opts = []
+        for perm_a in itertools.permutations(range(len(a)), n):
+            for perm_b in itertools.permutations(range(len(b)), n):
+                opts.append(list(zip(perm_a, perm_b)))
+        options_per_kind.append(opts)
+    unexplained_base = len(r1) + len(r2)
+    for combo in itertools.product(*options_per_kind) if kinds else [()]:
+        sub_steps, sub_unexplained, used = [], 0, 0
+        for k, pairs in zip(kinds, combo):
+            for ia, ib in pairs:
+                st, un = find_unit_steps(by_kind1[k][ia][1], by_kind2[k][ib][1], path + (k,))
+                sub_steps += st
+                sub_unexplained += un
+                used += 2
+        total = unexplained_base - used + sub_unexplained
+        if best_unexplained is None or total < best_unexplained or (total == best_unexplained and len(sub_steps) > len(best_steps)):
+            best_unexplained, best_steps = total, sub_steps
+    if best_unexplained is None:
+        best_unexplained = unexplained_base
+    return steps + best_steps, best_unexplained
+
+
+def seam_env(names, domain, rng):
+    """Sampling for the seam check: wide, log-uniform over the whole domain, with boundary probes."""
+    import math
+    env = {}
+    for n in sorted(names):
+        r = rng.random()
+        if domain == "natural":
+            env[n] = complex(rng.randint(1, 12))
+        elif domain == "positive":
+            env[n] = complex(math.exp(rng.uniform(math.log(0.01), math.log(100.0))))
+        elif domain == "real":
+            env[n] = complex(math.exp(rng.uniform(math.log(0.01), math.log(100.0))) * rng.choice((-1, 1)))
+        elif domain == "complex":
+            env[n] = complex(math.exp(rng.uniform(-3, 3)) * rng.choice((-1, 1)), math.exp(rng.uniform(-3, 3)) * rng.choice((-1, 1)))
+        else:
+            raise ValueError(domain)
+    return env
+
+
+PROBES = {"natural": [1, 2, 3, 7, 12], "positive": [0.01, 0.5, 0.999, 1.0, 1.001, 2.0, 10.0, 100.0],
+          "real": [-100.0, -2.0, -1.0, -0.5, 0.5, 1.0, 2.0, 100.0], "complex": [1j, -1j, -1 + 0j, 2 + 3j]}
+
+
+def off_strip(x, node: N.Node, rng, trials: int):
+    """Does the content x leave the principal strip (-π, π] on any sampled instantiation of its variables?
+    Values whose evaluation overflows are reported as unknown (counted as off-strip, conservatively)."""
+    import math
+    names = sorted(F.variables(x))
+    domain = node.get("domain", "positive")
+    envs = [seam_env(names, domain, rng) for _ in range(trials if names else 1)]
+    if names:
+        for p in PROBES.get(domain, []):
+            envs.append({n: complex(p) for n in names})
+    for env in envs:
+        try:
+            v = F.evaluate(x, env)
+        except (F.Undefined, F.Excluded):
+            continue
+        except OverflowError:
+            return True, env
+        if v is F.BH:
+            continue
+        if v.imag > math.pi + 1e-12 or v.imag <= -math.pi + 1e-9:
+            return True, env
+    return False, None
+
+
+def check_seam(prev, cur, node: N.Node, rep: Report, rownum: int, rng=None, trials: int = 60):
+    """Enforce mult.seam-decree on a derivation step: every unit step [(X)] <-> X anywhere in the row's
+    difference is admissible only if X is on the principal strip (on every sampled instance, over the whole
+    domain) or the redex is in an absorbing position. Returns None when the row contains no unit step."""
+    import random
+    rng = rng or random.Random(7)
+    steps, _ = find_unit_steps(prev, cur)
+    if not steps:
+        return None
+    for path, x in steps:
+        if absorbing(path):
+            continue
+        bad, env = off_strip(x, node, rng, trials)
+        if bad:
+            where = f" at {{{', '.join(f'{k}={F.fmt(v)}' for k, v in env.items())}}}" if env else ""
+            rep.fail(node.id, f"derivation step {rownum}: unit step on content {F.to_string(x, True)!r} off the principal strip{where}, outside an absorbing position — refused by mult.seam-decree")
+            return False
+    return True
+
+
 def check_witness(node: N.Node, rep: Report):
     w = node.get("witness")
     if not w:
         return
-    path = os.path.join(ROOT, w)
+    parts = str(w).split()
+    path = os.path.join(ROOT, parts[0])
     if not os.path.exists(path):
-        rep.fail(node.id, f"witness script missing: {w}")
+        rep.fail(node.id, f"witness script missing: {parts[0]}")
         return
-    proc = subprocess.run([sys.executable, path], capture_output=True, text=True, timeout=600)
+    proc = subprocess.run([sys.executable, path] + parts[1:], capture_output=True, text=True, timeout=600)
     if proc.returncode != 0:
         rep.fail(node.id, f"witness {w} exited {proc.returncode}: {proc.stdout[-300:]} {proc.stderr[-300:]}")
     else:

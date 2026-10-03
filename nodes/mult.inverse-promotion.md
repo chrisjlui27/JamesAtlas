@@ -8,7 +8,7 @@ rung: mult
 order: 450
 setting: classical
 equality: "≐"
-domain: real
+domain: complex
 law: "<(A [B])> ≐ (A [<B>])"
 units: "−(e^a · b) = e^a · (−b)"
 gloss_check: "-(exp(A)*B)"

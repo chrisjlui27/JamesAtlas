@@ -2,15 +2,15 @@
 id: mult.seam-decree
 title: The seam discipline
 type: decree
-level: object
+level: meta
 kind: discipline
 rung: mult
 order: 465
 setting: classical
 equality: "≐"
 domain: positive
-law: "DISCIPLINE — the unit step [(X)] → X on a phased X is admissible only in an absorbing position: directly inside an instance boundary, through angle boundaries at most"
-units: "log e^z = z only on the principal strip; a 2πi error is harmless exactly where an exp will swallow it"
+law: "DISCIPLINE — a unit step, in either orientation ([(X)] → X or X → [(X)]), is admissible only when X lies on the principal strip in the ℂ reading (−π < Im X ≤ π), or when the redex is in an absorbing position: directly inside an instance boundary, through angle boundaries at most"
+units: "log e^z = z only for −π < Im z ≤ π; a 2πi error is harmless exactly where an exp will swallow it"
 holds:
   classical: holds
   J1: replaced
@@ -25,16 +25,16 @@ readings:
   logic: ABSENT
 status: NATIVE-BY-DECREE
 verified: hand
-known_since: "1993 (James, Ch. 5: the J-discipline — convert [<A>] to [A] J on sight; J-cancellation only inside an instance, last); JH-3 (2026-08) for the semantic seam guard; this syntactic form and the rung-mult collapse route: referee pass 2026-10-03"
+known_since: "1993 (James, Ch. 5: the J-discipline — convert [<A>] to [A] J on sight; J-cancellation only inside an instance, last); JH-3 (2026-08) for the semantic seam guard; the rung-mult collapse route and the failure of the syntactic signature: referee and witness passes 2026-10-03"
 entered: 2026-10-03
 guide: need-led
 band: beyond
-uses: [mult.involution, mult.square, Z.angle, N.round, void.space, mult.unit-law, mult.product-of-negatives]
-see_also: [mult.hole-exclusion, mult.consistency, Q.reciprocal-of-negative]
+uses: [mult.involution, mult.square, Z.angle, N.round, void.space, mult.c-reading]
+see_also: [mult.hole-exclusion, mult.consistency, mult.seam-signature, Q.reciprocal-of-negative]
 aliases: [J-discipline, seam guard, JH-3, Involution-down guard, phase discipline]
 concepts: [consistency, logarithm, negation]
 understood: partial
-understood_note: "the shape is clear; whether 'phased' is the right syntactic signature is the question for rung C"
+understood_note: "the shape is clear; that it cannot be said in forms is the part that bites"
 reentry: false
 ---
 
@@ -42,37 +42,29 @@ reentry: false
 
 | form | units | standard |
 |---|---|---|
-| `[(X)] → X` refused when X is *phased* and the redex is not in an absorbing position | — | log e^z = z fails off the principal strip; the failure is a multiple of 2πi, which only an enclosing exp cancels |
+| `[(X)] → X` and `X → [(X)]` admitted iff X is on the principal strip, or the redex is in an absorbing position | — | log e^z = z fails off the strip by a multiple of 2πi, in either direction, which only an enclosing exp cancels |
 
-**Phased** form: one that contains a square boundary with an angle boundary somewhere inside it — the syntactic signature of the logarithm of a negative, `[<…>]`, whose ℂ value carries iπ. **Absorbing position**: the redex is a member of the multiset directly inside an instance boundary, or inside angle boundaries that are. The counit `([X]) ≐ X` is never restricted; the unit on *unphased* content is never restricted.
+A **seam step** is a unit step whose content leaves the strip for some value in the node's domain; only seam steps need the decree, and a law whose derivation uses one is NATIVE-BY-DECREE. **Absorbing position**: the redex is a member of the multiset directly inside an instance boundary, or inside angle boundaries that are. The counit `([X]) ≐ X` is never restricted. The equation `[(X)] ≐ X` is false off the strip in *both* directions, so both orientations are guarded — the first statement of this decree guarded only `[(X)] → X` and was bypassed by running the collapse below backwards (alg referee pass). The guard is stated in the ℂ reading ([[mult.c-reading]]): this decree *imports* a condition the forms cannot yet express — see [[mult.seam-signature]] for why the obvious syntactic surrogate fails.
 
 ## Plain
 
-The box undoes the circle only where the answer could not have been a different turn of the circle. The page may still undo it after a half-turn has crept in, but only right inside another circle, which forgets whole turns.
+The box may undo the circle only where no hidden turn has crept in, or right inside another circle, which forgets whole turns — and the page cannot itself see the hidden turn; it has to be told.
 
 ## Derivation
 
-none — adjoined, as a decree about the unit direction of [[mult.involution]], stated in terms of [[mult.square]], [[Z.angle]], [[N.round]] and position in space [[void.space]]. It is legislated because without it the calculus collapses using only laws already on the chart:
-
-| form | rule | note |
-|---|---|---|
-| `o` | given | — |
-| `([o] [o])` | [[mult.unit-law]] | 1 = 1 × 1, right to left |
-| `([<o>] [<o>])` | [[mult.product-of-negatives]] | = (−1)(−1), right to left |
-
-Abstract both sides: `void ≐ [o] ≐ [([<o>] [<o>])]`, and one **unguarded** unit step, `[([<o>][<o>])] → [<o>] [<o>]`, gives `[<o>] [<o>] ≐ void` — James's J-cancellation `J J ≐ void`, whose content is 2πi. From it: `J ≐ <J>` by Inversion; with H = `([J] <[oo]>)` (half of J), cardinality gives `H H ≐ J`, and the ℚ sign rule for a mirrored numerator turns `H ≐ ([H H] <[oo]>) ≐ ([<H H>] <[oo]>)` into `<H>`; so `J ≐ H H ≐ H <H> ≐ void`, `<o> ≐ ([<o>]) ≐ (void) ≐ o`, and `oo ≐ o <o> ≐ void`. Every step but the marked one is exact in ℂ and is a law of rungs ≤ Q. The marked step is refused by this decree: its content is phased and its position (depth 0) is not absorbing.
+none — adjoined, as a decree about the unit direction of [[mult.involution]], stated in terms of [[mult.square]], [[Z.angle]], [[N.round]], position in space [[void.space]], and the ℂ reading [[mult.c-reading]]. The collapse it is legislated against is recorded under Notes.
 
 ## Confirms
 
-James's own repair of the "crack" in his calculus (Chapter 5): J-cancellation permitted only inside an instance boundary, and only after other reductions. The chart states it one rung earlier and without naming J, because the collapse can be written as soon as `[<o>]` can — at rung `mult`, before J is a named form. Soundness under the decree is the theorem [[mult.consistency]]: unphased forms have real values, so the unit is exact on them; a phased unit step in an absorbing position is off by a multiple of 2πi, which the enclosing instance kills. JH's seam guard — `[(A)] → A` only when `L(exp V(A)) = V(A)` — is the semantic version of the same rule; this is the syntactic, over-cautious one (it also refuses some sound steps, e.g. on `[<oo> ooo]`, whose value is real).
+James's own repair of the "crack" in his calculus (Chapter 5): J-cancellation permitted only inside an instance boundary, and only after other reductions. The chart states it one rung earlier, and semantically, because the collapse can be written as soon as `[<o>]` or `[[[oo]]]` can — at rung `mult`, before J is a named form — and because no syntactic signature of "off the strip" is available in the calculus (the witness `[[[oo]]]` refutes the natural one). Soundness under the decree is the theorem [[mult.consistency]]. JH's seam guard — `[(A)] → A` only when `L(exp V(A)) = V(A)` — is the same rule; J1's answer is different in kind: it does not refuse the step, it *prices* it with a receipt, and the depth-1 criterion ([[mult.involution]], Notes) says when the price is absorbed.
 
 ## Settings and readings
 
 | setting | holds | why |
 |---|---|---|
-| classical | holds | this is the classical setting's second decree; James's J-discipline is its special case once J is named |
-| J1 | replaced | by the weakened unit `[(A)] ≐ A mod Λ` with receipts: J1 does not refuse the step, it *prices* it — the depth-1 criterion ([[mult.involution]], Notes) says when the price is absorbed |
-| JH, JO | replaced | by the semantic seam guard JH-3 |
+| classical | holds | this is the classical setting's second decree; James's J-discipline is the same repair stated through J — his on-sight conversion `[<A>] ≐ [A] J` is itself a seam step, not a special case: at A = `[[oo]]` the left side is −1.0037 and the right −1.0037 + 2πi, so the conversion holds only for Im Ln A ∈ (−π, 0] |
+| J1 | replaced | by the weakened unit `[(A)] ≐ A mod Λ` with receipts — the native alternative to a semantic guard |
+| JH, JO | replaced | by the semantic seam guard JH-3 — the one-orientation form of this guard; whether JH admits the reverse unit step unguarded is to be checked against the JH ledger |
 | JP | holds | the axiom audit at a finite place passed with the discipline in force |
 
 | reading | cell | why |
@@ -84,8 +76,14 @@ James's own repair of the "crack" in his calculus (Chapter 5): J-cancellation pe
 
 ## Refuted readings
 
+- ~~the guard need only cover the orientation `[(X)] → X`~~ — the first statement of this decree (2026-10-03); refuted the same day by the alg referee pass: the collapse runs backwards through `X → [(X)]` (Notes).
 - ~~the pilot's rungs need no guard on Involution-down; the J-discipline is rung C's business~~ — refuted 2026-10-03 (second referee pass): `J J = [<o>][<o>]` is writable at rung `mult`, and the collapse above uses only rungs ≤ Q.
+- ~~"phased" — a square with an angle somewhere inside it — is a sufficient syntactic signature for off-strip content, so the decree can be stated in forms alone~~ — refuted the same day by the consistency witness (`tools/models/consistency_check.py`): `[[[oo]]]` = ln(ln ln 2) has imaginary part π with no angle anywhere, and `[[[oo]]] [[[oo]]]` is off the strip. Sign is lost under iterated squares, not only under mirrors; which iterated squares lose it depends on values (`[[ooo]]` is positive, `[[oo]]` negative). The decree is therefore semantic, and its nativity is the gap [[mult.seam-signature]].
 
 ## Notes
 
-"Phased" is a conservative syntactic approximation to "off the principal strip". Whether it is the *right* signature — whether some sound and needed step is refused by it, or some unsound step slips through — is the first question of rung C, where the phase element is named and the discipline can be restated in James's own terms. The engine does not yet refuse unguarded phased steps; it refuses them only when their 2πi shows in a row's value, which (second referee pass, item 5) it does not always at the branch cut. A checker rule for the decree is owed.
+**The collapse the decree blocks**, using only laws of rungs ≤ Q. Start from `o`; by the unit law right to left, `o ≐ ([o] [o])`; by the product of negatives right to left, `≐ ([<o>] [<o>])`. Abstract both sides: `void ≐ [o] ≐ [([<o>] [<o>])]`, and one **unguarded** unit step, `[([<o>][<o>])] → [<o>] [<o>]`, gives `[<o>] [<o>] ≐ void` — James's J-cancellation `J J ≐ void`, whose content is 2πi. From it: `J ≐ <J>` by Inversion; with H = `([J] <[oo]>)` (half of J), cardinality gives `H H ≐ J`, and the ℚ sign rule for a mirrored numerator turns `H ≐ ([H H] <[oo]>) ≐ ([<H H>] <[oo]>)` into `<H>`; so `J ≐ H H ≐ H <H> ≐ void`, `<o> ≐ ([<o>]) ≐ (void) ≐ o`, and `oo ≐ o <o> ≐ void`. Every step but the marked one is exact in ℂ. The marked step is refused by this decree: its content has imaginary part 2π and its position (depth 0) is not absorbing. (An earlier Refuted entry spoke of "the collapse above"; it is this one.) Run backwards — `[<o>] [<o>] → [([<o>] [<o>])] → [([o] [o])] → [o] → void` — the same collapse uses the unit in the *other* orientation, which is why both are guarded. The same route runs, mutatis mutandis, from N = `[[oo]]`, a negative number reached with no mirror: `([N][N]) ≐ ([<N>][<N>])` (both 0.1343), the unguarded step `[([N][N])] → [N][N]` (content −2.007 + 2πi), and J′ = `[N] <[<N>]>` (value iπ) in J's role — which is why the guard must look at values and not at mirrors ([[mult.seam-signature]]). The "ℚ sign rule for a mirrored numerator" above is [[Q.negative-fraction]].
+
+**Price.** The guard imports the ℂ reading, which overcharges: only Im X — the branch index — is needed, not the whole value (and *not* Im X mod 2π, which destroys exactly the information the strip test uses); a cheaper `branch-reading` import would price the sign laws more exactly. Laws whose unit steps are admitted *by content* at non-absorbing positions ([[alg.log-law]] at depth 0; [[alg.root-of-product]] and [[alg.power-of-power]] under a square) do not cite this decree and so do not carry the guard in their computed price; a `guarded_by` field that feeds the price ledger is an open design item (SPEC §14).
+
+The engine enforces this decree directly (`tools/check.py`, `check_seam`): for every step that is a unit step, it evaluates the content on the node's sampled domain and refuses the step if the content leaves the strip in any sample while the position is not absorbing. Schemas are checked on their sampled instances; a law whose derivation needs an unguarded unit step for some instances must either restructure the step into an absorbing position or restrict its domain and say so.

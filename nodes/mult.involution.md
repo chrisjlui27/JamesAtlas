@@ -71,7 +71,7 @@ exp and ln as mutual inverses — but with the asymmetry that analysis also find
 
 | reading | cell | why |
 |---|---|---|
-| C | PARTIAL | Involution-up is exact; Involution-down holds only on the principal strip, and as an unrestricted schema over all forms it is unsound in ℂ (log e^{2πi} ≠ 2πi). On the pilot's rungs all content is real-positive and the schema is sound; the repair where it fails is James's J-discipline at rung C and JH's seam guard |
+| C | PARTIAL | Involution-up is exact; Involution-down holds only on the principal strip, and as an unrestricted schema over all forms it is unsound in ℂ (log e^{2πi} ≠ 2πi). the chart's statement of James's J-discipline is the seam decree ([[mult.seam-decree]]), in force from rung `mult`; JH's seam guard is the same rule |
 | finset | PARTIAL | the counit of `Sym ⊣ Ch` is strict, the unit is Λ-graded — Lui's identification of the hinge |
 | logic | ANALOGY | LoF's Reflexion `((a)) = a` (Consequence 1; the empty case `(()) = void` is Axiom 2, Crossing) is an involution on *one* boundary; this is an adjunction between two |
 | lambda, CC | untested | — |

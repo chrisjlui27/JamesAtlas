@@ -11,6 +11,7 @@ equality: ≐
 domain: positive
 law: "([A] <[void]>) is not a form"
 units: a ÷ 0 is undefined
+witness: tools/models/division_by_zero.py
 holds:
   classical: holds
   J1: holds
@@ -24,7 +25,7 @@ readings:
   CC: untested
   logic: ABSENT
 status: NATIVE-BY-DECREE
-verified: hand
+verified: engine
 known_since: 1993 (James)
 entered: 2026-10-03
 guide: need-led
@@ -79,4 +80,4 @@ none
 
 ## Notes
 
-Status NATIVE-BY-DECREE because the law is a consequence of a decree; verification `hand` because a meta statement has no witness script — the engine's `Excluded` exception on evaluation is the mechanized version, but it is not stated as a rule the checker reports on.
+Status NATIVE-BY-DECREE because the law is a consequence of a decree. The witness `tools/models/division_by_zero.py` instantiates the shape and confirms the engine refuses it on every sample — the mechanized form of the decree, and all an `engine` badge means for a meta statement.

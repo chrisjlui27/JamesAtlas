@@ -2,7 +2,7 @@
 id: mult.hole-exclusion
 title: The two undefined forms
 type: decree
-level: object
+level: meta
 kind: exclusion
 rung: mult
 order: 440

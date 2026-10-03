@@ -9,7 +9,7 @@ order: 480
 setting: classical
 equality: "≐"
 domain: positive
-law: "with the undefined forms excluded and the seam discipline in force, the laws of rungs void–Q do not prove o ≐ void; in particular distinct piles stay distinct"
+law: "with the undefined forms excluded and the seam discipline in force, the laws of rungs void–alg do not prove o ≐ void; in particular distinct piles stay distinct"
 units: "the admissible calculus has a model; Peano 3 and 4 survive the arrival of the axioms and of the abstracts of negatives"
 holds:
   classical: holds
@@ -24,13 +24,14 @@ readings:
   CC: untested
   logic: ABSENT
 status: NATIVE-BY-DECREE
-verified: hand
+verified: engine
+witness: tools/models/consistency_check.py
 known_since: "1993 (James, Chapter 5, soundness in ℂ under the J-discipline); the two collapse routes and this scoping: referee passes 2026-10-03"
 entered: 2026-10-03
 guide: need-led
 band: beyond
 uses: [mult.c-reading, mult.hole-exclusion, mult.seam-decree, mult.involution, mult.distribution, Z.inversion, N.freeness]
-see_also: [mult.dominion-independence, N.induction, Q.reciprocal-of-negative]
+see_also: [mult.dominion-independence, mult.seam-signature, N.induction, Q.reciprocal-of-negative]
 aliases: [consistency, soundness, no collapse, Peano 3 and 4 in the full calculus]
 concepts: [consistency, natural-number]
 understood: partial
@@ -42,32 +43,35 @@ reentry: false
 
 | form | units | standard |
 |---|---|---|
-| `oo ≐ ooo` is **not** derivable from the laws of rungs void–Q, read as admissible derivations | — | the calculus is consistent relative to ℂ |
+| `oo ≐ ooo` is **not** derivable from the laws of rungs void–alg, read as admissible derivations | — | the calculus is consistent relative to ℂ |
 
 ## Plain
 
-Even after all three axioms arrive, and even once the page can write the logarithm of a negative, it still never confuses two with three — but only because it refuses the two undefined forms and keeps the half-turn rule. Drop either and everything becomes nothing.
+Even after all three axioms arrive, the page still never confuses two with three — but only because it refuses the two undefined forms and keeps the half-turn rule, which it cannot state without help. Drop either and everything becomes nothing.
 
 ## Derivation
 
 | statement | rule | note |
 |---|---|---|
-| Unphased forms — no angle boundary inside any square — have values in ℝ ∪ {□} in the ℂ reading: piles and `(X)` are positive, `[X]` of a non-negative real is real or □, angles and juxtaposition keep reals real | [[mult.c-reading]] | by induction on the form; □ absorbs by [[mult.hole-exclusion]]'s evaluation rules |
-| On real content every axiom is exact: Involution-up and Inversion unconditionally, Distribution unconditionally, Involution-down because the principal log is a two-sided inverse on the real line | [[mult.involution]] [[mult.distribution]] [[Z.inversion]] | — |
-| On phased content Involution-down is exact up to a multiple of 2πi, and the seam decree admits it only in an absorbing position — directly under an instance through angles at most — where the instance's exp cancels any multiple of 2πi; so every admissible step preserves the value of the whole form | [[mult.seam-decree]] | the depth-1 argument of the J1 notes, used here as a soundness argument |
+| In the ℂ reading every rule except the unit is exact for *all* values: the counit `([X]) ≐ X` (exp ∘ log = id on ℂ×), Distribution, Inversion, and the black-hole rules | [[mult.c-reading]] [[mult.involution]] [[mult.distribution]] [[Z.inversion]] | identities of complex arithmetic; sampled by the witness |
+| The unit `[(X)] ≐ X` is exact when X is on the principal strip, and off the strip it errs by a multiple of 2πi | [[mult.involution]] | the definition of the principal logarithm |
+| The seam decree admits the unit only on the strip or in an absorbing position, where the enclosing instance's exp cancels any multiple of 2πi; so every admissible step preserves the value of the whole form | [[mult.seam-decree]] | the decree is semantic — it is stated in the reading — which is the gap `mult.seam-signature` |
 | Admissibility — no row contains `<□>` or `[□]`, up to ≐ — keeps the reading total on every row | [[mult.hole-exclusion]] | without it, Route A below collapses the calculus |
-| A sound, total reading separates `oo` (value 2) from `ooo` (value 3), so no admissible derivation equates them; this extends [[N.freeness]] from the fragment to all of rungs void–Q | — | — |
-| The price: the import of the reading and two decrees. The theorem is NATIVE-BY-DECREE, not NATIVE | — | — |
+| A sound, total reading separates `oo` (value 2) from `ooo` (value 3), so no admissible derivation equates them; this extends [[N.freeness]] from the fragment to all of rungs void–alg | — | — |
+| The price: the import of the reading and two decrees, one of which is itself stated in the import. NATIVE-BY-DECREE, not NATIVE | — | — |
 
 ## Confirms
 
-James's soundness result, scoped exactly: the calculus is consistent *as a calculus of admissible derivations under the J-discipline*, and both devices are hinges, not afterthoughts. It is **not** a proof that the decrees are the weakest possible — the seam decree is over-cautious by design — and it is **not** yet re-established for the enriched settings, each of which changes the reading and the axioms (JH-22 is the JH version: consistency relative to ℍ).
+Two cautions the argument needs. The guard covers the unit in **both** orientations (`[(X)] ≐ X` is false off the strip either way). And the admissible calculus is not substitution-closed: a derived schema such as [[alg.log-law]] is admissible only on the domain where its own derivation is — instantiated at A = B = `<o>` it *is* the collapse step — so a law may be cited only inside its declared domain; the engine re-evaluates every row, which is how it catches a bad instantiation.
+
+
+James's soundness result, scoped exactly: the calculus is consistent *as a calculus of admissible derivations under the J-discipline*, and both devices are hinges, not afterthoughts. Once the unit is guarded, soundness is immediate — every other rule is an identity of complex arithmetic — so the whole weight of consistency rests on a guard the calculus cannot state in its own terms. It is **not** yet re-established for the enriched settings, each of which changes the reading and the axioms (JH-22 is the JH version: consistency relative to ℍ).
 
 ## Settings and readings
 
 | setting | holds | why |
 |---|---|---|
-| classical | holds | for rungs void–Q; to be re-checked at rung C, where the phase element is named and the discipline restated |
+| classical | holds | for rungs void–alg; to be re-checked at rung C, where the phase element is named and the discipline restated |
 | J1, JH, JO, JP | untested | each extension changes the reading and the axioms; consistency is re-proved per setting |
 
 | reading | cell | why |
@@ -83,4 +87,4 @@ James's soundness result, scoped exactly: the calculus is consistent *as a calcu
 
 ## Notes
 
-The engine enforces the undefined-form decree by exception and samples Involution-down only on each node's declared domain; it does **not** yet enforce the seam decree as a rule, and at the branch cut its floating-point log can land on either side (second referee pass, item 5). Two checker obligations follow: refuse any unit step on phased content outside an absorbing position; snap near-real values onto the axis before taking a log. The second is done; the first is owed. A meta-theorem is never `engine`-verified without a witness, and this one has none.
+The engine enforces the undefined-form decree by exception and the seam decree as a rule (`check_seam`: every unit step's content is evaluated on the node's sampled domain and refused off the strip outside an absorbing position); near-real values are snapped onto the axis before a log so the branch cut is not decided by rounding. The witness `tools/models/consistency_check.py` is a property test of the lemmas — the exactness of the other rules on complex content, absorption in absorbing positions, non-vacuity of the decree, separation of piles — not a proof; the `engine` tier here means that much and no more. Its first run refuted the syntactic signature (`[[[oo]]]`), which is how [[mult.seam-signature]] came to exist.
