@@ -9,7 +9,7 @@ Classes:
   new        a value no smaller form has
   hole       the black hole □ itself (size 1)
   excluded   contains <□> (James's exclusion)
-  undefined  contains [□] (no value in ℂ; Bricken: complex infinity)
+  undefined  contains [□] (James's other undefined form; excluded by the same decree)
 
 Writes census/size-le-N.md and prints the unassigned `new`/`undefined` forms, which must be
 listed in census/open-forms.md (check.py enforces this).
@@ -120,7 +120,7 @@ def assign(form, cls, table):
     for pat, nid in PATTERNS:
         if pat.match(s):
             return nid
-    if cls == "excluded":
+    if cls in ("excluded", "undefined"):
         return "mult.hole-exclusion"
     return ""
 

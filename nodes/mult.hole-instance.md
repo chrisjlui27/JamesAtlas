@@ -30,7 +30,7 @@ known_since: "1993 (James)"
 entered: 2026-10-03
 guide: shape-led
 band: beyond
-uses: [mult.distribution, mult.involution, void.page, mult.black-hole]
+uses: [mult.involution, void.page, mult.black-hole]
 see_also: [N.zero, mult.zero-annihilates, mult.dominion]
 aliases: ["(□) = void", exp of minus infinity, zero as a value]
 concepts: [zero, infinity]
@@ -56,25 +56,12 @@ Circle the empty box and you get nothing — the first time zero shows up as som
 | form | rule | note |
 |---|---|---|
 | `(□)` | given | — |
-| `([])` | definition | unfold □, [[mult.black-hole]] |
-| `([void void])` | [[void.page]] | the void is two voids |
-| `([void]) ([void])` | [[mult.distribution]] | `(A [B C]) ≐ (A[B]) (A[C])` with A, B, C all void |
-| `([]) ([])` | [[void.page]] | — |
-
-So `([]) ≐ ([]) ([])`. Now apply Involution to the *general* instance: for any `B`, `([B]) ≐ ([B void]) ≐ ([B]) ([])` by [[mult.distribution]], and `([B]) ≐ B` by [[mult.involution]], giving `B ≐ B ([])` for every `B`. With `B` the void: `void ≐ ([])`.
-
-| form | rule | note |
-|---|---|---|
-| `([B])` | given | any B |
-| `([B void])` | [[void.page]] | — |
-| `([B]) ([void])` | [[mult.distribution]] | — |
-| `B ([])` | [[mult.involution]] | `([B]) ≐ B` |
-
-Taking `B` = void in `B ≐ B ([])` gives `void ≐ ([])`.
+| `([])` | definition | unfold □, [[mult.black-hole]]; this is `([void])`, [[void.page]] |
+| `void` | [[mult.involution]] | `([A]) ≐ A` with A = void — Involution-up at the void |
 
 ## Confirms
 
-e^{−∞} = 0 — the limit analysis takes, here an equation. Note the price: this needs **only** Involution and Distribution, no Inversion, so zero-as-a-value exists in the ℕ-with-× fragment. Its sibling `(A □) ≐ void` ("a · 0 = 0", [[mult.zero-annihilates]]) does *not*: that needs Inversion, and the chart proves it ([[mult.dominion-independence]]).
+e^{−∞} = 0 — the limit analysis takes, here one instance of Involution. Its price is the smallest possible: the counit at the void, nothing else. Its sibling `(A □) ≐ void` ("a · 0 = 0", [[mult.zero-annihilates]]) is not so cheap: that needs Inversion, and the chart shows why ([[mult.dominion-independence]]).
 
 ## Settings and readings
 
@@ -93,8 +80,8 @@ e^{−∞} = 0 — the limit analysis takes, here an equation. Note the price: t
 
 ## Refuted readings
 
-none
+- ~~needs Distribution as well as Involution~~ — the first draft (2026-10-03) derived this through a Distribution detour; the referee pass the same day pointed out it is Involution-up at `A` = void in one step. Price corrected.
 
 ## Notes
 
-The engine evaluates `□` as a sentinel absorbing juxtaposition, with `(□) = 0`; this node is the justification for that evaluation rule.
+The engine evaluates `□` as a sentinel absorbing juxtaposition, with `(□) = 0`; this node is the justification for that evaluation rule. In the finite models of [[mult.dominion-independence]] the law reads e(l(0)) = 0 and holds in every one, as it must: it is Involution at 0.

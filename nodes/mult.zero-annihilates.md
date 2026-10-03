@@ -66,7 +66,7 @@ Times zero is zero — and the page needs the mirror to prove it.
 
 ## Confirms
 
-The ring theorem a · 0 = 0, and its standard proof: a·0 = a·(0+0) = a·0 + a·0, then *subtract* a·0. The subtraction is the step the calculus cannot do without the angle boundary — Distribution alone only gives `(A []) ≐ (A []) (A [])`, an idempotent, which is not void in every model ([[mult.dominion-independence]]). So "times zero is zero" costs Inversion. That is a fact about *rings* (a semiring need not have an absorbing zero), and the chart's price ledger shows it.
+The ring theorem a · 0 = 0, and its standard proof: a·0 = a·(0+0) = a·0 + a·0, then *subtract* a·0. The subtraction is the step the calculus cannot do without the angle boundary — Distribution alone only gives `(A []) ≐ (A []) (A [])`, an idempotent, which is not void in every model ([[mult.dominion-independence]]). So "times zero is zero" costs Inversion. That is why absorption is an *axiom* of semirings — it does not follow from the other semiring laws — and a *theorem* of rings; the chart's price ledger shows the same fact as a cost.
 
 ## Settings and readings
 

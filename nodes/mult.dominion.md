@@ -88,4 +88,4 @@ Nothing you add to the bottomless pit fills it.
 
 ## Notes
 
-Whether James's own thesis proof routes through Inversion is to be checked against the 1993 text; Bricken's Iconic Arithmetic presentations sometimes take Dominion as an axiom, which the independence result explains.
+Whether James's own thesis proof routes through Inversion is to be checked against the 1993 text; Bricken's Iconic Arithmetic presentations sometimes take Dominion as an axiom, which the independence result explains. The engine's shadow check of the law itself evaluates `□ A` as □ by its own rule — i.e. by this law — so the evidence for the law is the derivation, not the check; the check guards the derivation's steps.

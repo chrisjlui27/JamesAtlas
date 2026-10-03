@@ -25,7 +25,7 @@ readings:
   logic: ABSENT
 status: ABSENT
 verified: hand
-known_since: "Peano 1889 (the schema); Lawvere 1963 (the universal property); the gap named here 2026-10-03"
+known_since: "Peano 1889 (the schema); Lawvere 1964 (the universal property, in the ETCS paper); the gap named here 2026-10-03"
 entered: 2026-10-03
 guide: need-led
 band: beyond

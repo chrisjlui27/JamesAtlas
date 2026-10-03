@@ -32,7 +32,7 @@ guide: shape-led
 band: "3–5"
 uses: [N.round, mult.square, void.space]
 see_also: [mult.multiplication, mult.cardinality, mult.hole-instance]
-aliases: [Distribution, James axiom 2, arrangement, A4]
+aliases: [Distribution, James axiom 2, "arrangement (Bricken's name)", A4]
 concepts: [multiplication, distributive-law]
 understood: yes
 understood_note: ""

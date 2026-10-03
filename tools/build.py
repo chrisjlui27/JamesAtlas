@@ -251,7 +251,8 @@ def law_block(node, nodes):
     elif " is a form" in law:
         drawing = f'{draw_form(law.split(" is a form")[0].strip())}<span class="eq small">is a form</span>'
     elif "is not a form" in law:
-        drawing = f'<span class="excl">{draw_form(law.split(" is not")[0].strip())}</span><span class="eq small">is not a form</span>'
+        parts = [p.strip() for p in law.split(";") if p.strip()]
+        drawing = "".join(f'<span class="excl">{draw_form(p.split(" is not")[0].strip())}</span><span class="eq small">is not a form</span>' for p in parts)
     else:
         drawing = f'<span class="lawtext">{inline(law, nodes)}</span>'
     sugar = law

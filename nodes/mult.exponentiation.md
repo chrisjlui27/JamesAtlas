@@ -74,7 +74,7 @@ a^b = exp(b · ln a), the definition analysis gives for real exponents — here 
 | reading | cell | why |
 |---|---|---|
 | C | EXACT | — |
-| finset | EXACT | B^A as the set of functions |
+| finset | EXACT | a^b as the set of functions from a b-element set to an a-element set |
 | logic | untested | — |
 | lambda, CC | untested | — |
 

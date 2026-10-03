@@ -71,7 +71,7 @@ The *existence* of negatives as inscriptions — "something less five" written a
 | reading | cell | why |
 |---|---|---|
 | C | EXACT | −a |
-| finset | ABSENT | finite sets have no negatives. This is exactly the road: `< >` is *group completion* (Barratt–Priddy–Quillen), the step from FinSet to the sphere spectrum — the trunk's reading of the angle boundary, to be laid at the `struct` rung |
+| finset | ABSENT | finite sets have no negatives. This is exactly the road: `< >` is *group completion* — the naive completion of ℕ to ℤ, which is π₀ of the homotopy-coherent completion of finite sets that Barratt–Priddy–Quillen identify with the sphere spectrum. A reading to be laid at the `struct` rung, with that distinction kept |
 | logic | ABSENT | no additive inverse in LoF or Existential Graphs |
 | lambda, CC | untested | — |
 

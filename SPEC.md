@@ -137,8 +137,8 @@ Field rules:
    | <A><B> A B <A B> | [[Z.inversion]] | create the pair (A B)<A B> |
    | <A B> | [[Z.inversion]] | cancel A<A> and B<B> |
    ```
-   Allowed rules: `given`, `[[id]]` (one or more), `medium` (rearrangement in space — must also cite `[[void.space]]` once in the table), `substitution` (replacing a variable by a form), `congruence` (applying the same operation to both sides), `definition` (unfolding a definition — cite it). Axioms and primitives write `none — adjoined`. Gaps write `none — gap`. Meta theorems give the proof in prose and name the witness (a model, an invariant, a computation in `tools/`).
-   The checker evaluates every consecutive pair of forms on random values and fails the node if any step is not an equality in the declared sense.
+   Allowed rules: `given`, `[[id]]` (one or more), `medium` (rearrangement in space — must also cite `[[void.space]]` once in the table), `substitution` (replacing a variable by a form), `congruence` (applying the same operation to both sides), `definition` (unfolding a definition — cite it), `name` (a row that merely names the previous form in standard notation, e.g. `A × B`; not a form, not checked), `lemma` (an equation proved by an earlier table of the same node, used right to left). Axioms, primitives, decrees and imports write `none — adjoined` and cite in prose the nodes their statement is built from — those citations are their `uses`. Gaps write `none — gap`. Meta-level nodes use a `| statement | rule | note |` table instead: prose steps, each citing the laws it leans on, plus a `witness:` script in the front matter where a computation carries the proof.
+   The engine evaluates every consecutive pair of forms on random values and fails the node if any step is not an equality in the declared sense; for an object-level theorem it also requires the tables to start at one side of the law and end at the other. **The engine does not check that the rule cited for a step actually licenses it** — a numerically true step with the wrong rule passes. That is the referee's job (§10), and the reason `engine` is not the top tier.
 4. **Confirms** — the standard-notation fact (with its usual name) that this law *is*, and what it is **not** (where a naive reading overreaches). This is the "in-house confirmation" line for the walk.
 5. **Settings and readings** — the two tables from the front matter, with one-line justifications for any cell that is not `holds`/`EXACT`.
 6. **Refuted readings** — ~~struck through~~ readings or derivations once believed and since refuted, each with the date and the refuting witness (LEGISLATION 15). `none` is a legal entry.
@@ -219,7 +219,7 @@ Mapping from the old ledgers (recorded in `aliases`/`notes`, never silently): EX
 
 ### 5.2 Verification tier
 
-`none` → `hand` (a written derivation) → `engine` (the derivation's every step shadow-checked by `tools/check.py`, or a meta claim checked by a script in `tools/`) → `numeric` (high-precision numerical identity beyond the shadow check — e.g. the receipt prover) → `lean` (a Lean declaration; node id = declaration name — later scoped expansion, LEGISLATION 20).
+`none` → `hand` (a written derivation, or a meta argument with no script) → `engine` (every derivation step shadow-checked in the ℂ reading by `tools/check.py` and the tables shown to connect the law's two sides; or a meta claim checked by a named `witness:` script in `tools/models/`) → `numeric` (high-precision numerical identity beyond the shadow check — e.g. the receipt prover) → `lean` (a Lean declaration; node id = declaration name — later scoped expansion, LEGISLATION 20). A meta-level node without a witness script is at most `hand`, whatever its author believes.
 
 **"Exact" is withheld until `engine`** (LEGISLATION 21): a node whose `verified` is `none` or `hand` renders with a hollow badge whatever its status says.
 
@@ -243,11 +243,11 @@ Rendered as "what it costs to write X": *i* costs nothing extra (fractional card
 ### 6.1 Two kinds (LEGISLATION 13)
 
 - `kind: concept` — a mathematical concept with no form (induction, order, a heap, a metric at ∞, weight).
-- `kind: form` — a form the calculus can write that nobody has read (`[[ ]]` until Bricken; `[[<>]]`; most of the size-3 census).
+- `kind: form` — a form the calculus can write that nobody has read yet (the size-3 constants `(o)`, `((o))`, `[o o]` before their rungs are laid). Forms containing `[□]` or `<□>` are not gaps: James leaves both undefined and the chart excludes them by decree, because admitting either collapses the calculus (`mult.hole-exclusion`).
 
 ### 6.2 The census
 
-`tools/census.py` enumerates every form up to a size bound (v1: ≤ 3 boundaries, no variables), canonicalizes, evaluates in the `C` reading (with `□` as the black hole, `<□>` as excluded, `[□]` as undefined), and classifies each form as `numeral` · `reduces` (its value is already achieved by a smaller form) · `new` (a value no smaller form has) · `hole` · `excluded` · `undefined`. Every `new` or `undefined` form must be assigned to a node or listed in `census/open-forms.md`. Raising the bound is a standing task; the census is re-run by the checker.
+`tools/census.py` enumerates every form up to a size bound (v1: ≤ 3 boundaries, no variables), canonicalizes, evaluates in the `C` reading (with `□` as the black hole), and classifies each form as `numeral` · `reduces` (its value is already achieved by a smaller form) · `new` (a value no smaller form has) · `hole` · `excluded` (contains `<□>`) · `undefined` (contains `[□]`). Every `new` form must be assigned to a node or listed in `census/open-forms.md`; `excluded` and `undefined` forms are assigned to the exclusion decree. Raising the bound is a standing task; the census is re-run by the checker.
 
 ### 6.3 Gap plans (LEGISLATION 14)
 
@@ -308,8 +308,8 @@ The **𝕁₁ road** is the trunk: ℕ → ℤ → ℚ → algebraic → ℂ →
 
 ## 10. Verification and process
 
-- **Engine is the core** (LEGISLATION 20): every object-level law and derivation step is shadow-checked in `tools/check.py`; meta-level claims are checked by a named script in `tools/`; where the receipt prover or `jadic.js` applies, their results are cited as `numeric`.
-- **Propose → refute → repair** per rung (LEGISLATION 21): a rung's nodes are drafted, an independent referee pass (a fresh agent that has not seen the drafting) attacks derivations and status claims, repairs are made, and only then are nodes marked `engine`. Nodes are written to be picked up cold.
+- **Engine is the core** (LEGISLATION 20): every object-level law and derivation step is shadow-checked in `tools/check.py`; meta-level claims are checked by a named script in `tools/models/`; where the receipt prover or `jadic.js` applies, their results are cited as `numeric`. The engine enforces the undefined-form decree by exception: a row that mirrors or abstracts a form whose value is □ fails. It samples variables only in the node's declared `domain`, so a law that is unsound outside that domain (Involution-down off the principal strip) is not caught by it — the node must say so in its reading cells.
+- **Propose → refute → repair** per rung (LEGISLATION 21): a rung's nodes are drafted, an independent referee pass (a fresh agent that has not seen the drafting) attacks derivations and status claims — above all whether each cited rule *licenses* its step, which the engine cannot see — repairs are made, and only then are nodes marked `engine`. Nodes are written to be picked up cold. The pilot's referee pass (2026-10-03) found two mis-licensed steps and one collapse of the unrestricted theory; all three are recorded in the nodes' Refuted readings.
 - **Lean later** (LEGISLATION 20): a scoped expansion in which node ids become Lean declaration names for the classical trunk; `#print axioms` then computes price automatically and doc-gen produces the hyperlinked chart. Not in v1; the id scheme is chosen so this is a renaming-free step.
 
 ---
@@ -364,3 +364,5 @@ Zero dependencies beyond Python 3. `python3 tools/check.py` must exit 0 before a
 - Medium facts (void transparency, unordered juxtaposition) are `primitive` nodes with `kind: medium`, so commutativity is visibly *free* rather than an axiom.
 - Meta-level nodes count as laws and may be theorems (a finite model is a proof).
 - `domain` for the shadow check defaults to `positive` in rungs through `alg` and `complex` from `C` on; nodes may narrow or widen it.
+- The two undefined forms, `<□>` and `[□]`, are one decree node (`mult.hole-exclusion`), read up to ≐; the ℂ reading is an `import` node so that consistency has a computable price.
+- Rule names follow James 1993 / Book One (Involution, Distribution, Inversion); Bricken's names (inversion, arrangement, reflection; involution for `<<A>> ≐ A`) are carried as aliases, to be verified against the sources.

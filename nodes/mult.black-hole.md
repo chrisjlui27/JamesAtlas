@@ -60,7 +60,7 @@ Ask "what would I have to circle to get nothing?" — there is no answer, and th
 
 ## Confirms
 
-That −∞ is a legitimate point of the *additive* layer: the calculus's log space is ℂ ∪ {−∞}, the way the extended reals absorb the log of zero. It is **not** "infinity" in the sense of 1/0 — that would be `<□>`, the one excluded form ([[mult.hole-exclusion]]).
+That −∞ is a legitimate point of the *additive* layer: the calculus's log space is ℂ ∪ {−∞}, the way the extended reals absorb the log of zero. It is **not** "infinity" in the sense of 1/0 — that would be `(<□>)`, built on the excluded form `<□>` ([[mult.hole-exclusion]]).
 
 ## Settings and readings
 
@@ -84,4 +84,4 @@ That −∞ is a legitimate point of the *additive* layer: the calculus's log sp
 
 ## Notes
 
-`[[]]` — the square of the black hole — James left undefined; Bricken (Iconic Arithmetic) reads it as complex infinity. The census lists it as an open form.
+`[[]]` — the square of the black hole — is James's other undefined form ([[mult.hole-exclusion]]); Bricken (Iconic Arithmetic) reads it as complex infinity. The census lists every form containing it as undefined.

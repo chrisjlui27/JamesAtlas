@@ -49,7 +49,7 @@ For any form `A`, `[A]` is a form: the *abstract* of `A`. Read in ℂ it is the 
 
 ## Plain
 
-The square box is the undo of the circle: it asks "what would I have to circle to get this?"
+The square box asks "what would I have to circle to get this?" — that it really undoes the circle is the next law, not this one.
 
 ## Derivation
 
@@ -81,4 +81,4 @@ none
 
 ## Notes
 
-James's `[[ ]]` (the square of the black hole) was left undefined; Bricken (Iconic Arithmetic) equates it to complex infinity. The chart lists `[[ ]]` as an **open form** in the census rather than adopting either.
+James's `[[ ]]` (the square of the black hole) was left undefined; Bricken (Iconic Arithmetic) equates it to complex infinity. The chart treats `[[ ]]` as excluded ([[mult.hole-exclusion]]) rather than adopting either reading.

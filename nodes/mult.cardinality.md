@@ -64,14 +64,14 @@ Repetition itself becomes a form: n copies of `A` standing together may be writt
 
 ## Confirms
 
-n·a as a form, and with it the possibility of *fractional* and *negative* counts — `([A]<[oo]>)` will be a/2 at rung Q, and fractional counts of J give the roots of unity at rung C. In J1, cardinality `(n[A])` is read as the graded exponential `!ₙ` (contraction priced by a count). It is **not** a new axiom: James's "cardinality" is a theorem schema of Distribution and Involution.
+n·a as a form, and with it the possibility of *fractional* and *negative* counts — `([A]<[oo]>)` will be a/2 at rung Q, and fractional counts of J give the roots of unity at rung C. In J1, cardinality `([A][n])` is read as the graded exponential `!ₙ` (contraction priced by a count). It is **not** a new axiom: James's "cardinality" is a theorem schema of Distribution and Involution.
 
 ## Settings and readings
 
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | holds | survival ledger: cardinality unchanged; read as `!ₙ` |
+| J1 | holds | survival ledger: cardinality unchanged; `([A][n])` read as the graded exponential `!ₙ` (the notes write it `(n[A])`) |
 | JH, JO | holds | per slice |
 | JP | holds | fractional counts `d | p−1` select which `ω/d` are forms at p |
 

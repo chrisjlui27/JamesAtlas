@@ -32,7 +32,7 @@ guide: shape-led
 band: "1–2"
 uses: [Z.angle, void.space, void.page]
 see_also: [Z.cancellation, Z.collection, mult.dominion]
-aliases: [Inversion, James axiom 3, annihilation, A3]
+aliases: [Inversion, James axiom 3, annihilation, A3, "reflection (Bricken's name)"]
 concepts: [negation, zero, inverse]
 understood: yes
 understood_note: ""

@@ -30,7 +30,7 @@ known_since: "1993 (James); the fact is the construction of ℤ"
 entered: 2026-10-03
 guide: need-led
 band: "1–2"
-uses: [Z.collection, Z.cancellation, Z.inversion, void.space, N.numeral]
+uses: [Z.collection, Z.cancellation, Z.void-inverse, Z.inversion, void.space, N.numeral]
 see_also: [Z.subtraction, N.order]
 aliases: [integer normal form, computing a difference]
 concepts: [integer, subtraction]
@@ -61,7 +61,7 @@ Circles and mirrored circles cancel in pairs; what is left over is the answer.
 | `ooo o <o> o <o>` | medium | pair each mirrored unit with a unit, [[void.space]] |
 | `ooo` | [[Z.inversion]] | cancel both pairs `o <o>` |
 
-The general case: split every mirror down to single units by [[Z.collection]], remove double mirrors by [[Z.cancellation]], then cancel `o <o>` pairs by [[Z.inversion]] until one kind remains.
+The general case: split every mirror down to single units by [[Z.collection]] (this phase grows the form), remove double mirrors by [[Z.cancellation]] and empty mirrors by [[Z.void-inverse]], then cancel `o <o>` pairs by [[Z.inversion]] until one kind remains (this phase shrinks it).
 
 ## Confirms
 
@@ -87,4 +87,4 @@ none
 
 ## Notes
 
-Tagged *need-led*: nothing in the shape of the forms demands a normal form; arithmetic does. Termination is obvious (each cancellation shrinks the form) — the first place the chart leans on an argument about the rewriting system rather than a derivation in it.
+Tagged *need-led*: nothing in the shape of the forms demands a normal form; arithmetic does. Termination: splitting terminates because mirrors nest finitely, and after it every cancellation shrinks the form — the first place the chart leans on an argument about the rewriting system rather than a derivation in it.

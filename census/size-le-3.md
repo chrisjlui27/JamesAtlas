@@ -23,7 +23,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 2 | `<[]>` | `<□>` | excluded | — | [[mult.hole-exclusion]] |
 | 2 | `[()]` | `[o]` | reduces | 0 |  |
 | 2 | `[<>]` | `[<>]` | reduces | □ |  |
-| 2 | `[[]]` | `[□]` | undefined | — |  |
+| 2 | `[[]]` | `[□]` | undefined | — | [[mult.hole-exclusion]] |
 | 2 | `[] []` | `□ □` | reduces | □ |  |
 | 3 | `((()))` | `((o))` | new | 15.1543 |  |
 | 3 | `(() ())` | `(o o)` | new | 7.38906 |  |
@@ -46,7 +46,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 3 | `() <[]>` | `o <□>` | excluded | — | [[mult.hole-exclusion]] |
 | 3 | `() [()]` | `o [o]` | reduces | 1 |  |
 | 3 | `() [<>]` | `o [<>]` | reduces | □ |  |
-| 3 | `() [[]]` | `o [□]` | undefined | — |  |
+| 3 | `() [[]]` | `o [□]` | undefined | — | [[mult.hole-exclusion]] |
 | 3 | `() [] []` | `o □ □` | reduces | □ |  |
 | 3 | `(<()>)` | `(<o>)` | new | 0.367879 |  |
 | 3 | `(<<>>)` | `(<<>>)` | reduces | 1 |  |
@@ -57,7 +57,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 3 | `(<[]>)` | `(<□>)` | excluded | — | [[mult.hole-exclusion]] |
 | 3 | `([()])` | `([o])` | reduces | 1 |  |
 | 3 | `([<>])` | `([<>])` | reduces | 0 |  |
-| 3 | `([[]])` | `([□])` | undefined | — |  |
+| 3 | `([[]])` | `([□])` | undefined | — | [[mult.hole-exclusion]] |
 | 3 | `([] [])` | `(□ □)` | reduces | 0 |  |
 | 3 | `([]) <>` | `(□) <>` | reduces | 0 |  |
 | 3 | `([]) []` | `(□) □` | reduces | □ |  |
@@ -81,29 +81,29 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 3 | `<> <[]>` | `<> <□>` | excluded | — | [[mult.hole-exclusion]] |
 | 3 | `<> [()]` | `<> [o]` | reduces | 0 |  |
 | 3 | `<> [<>]` | `<> [<>]` | reduces | □ |  |
-| 3 | `<> [[]]` | `<> [□]` | undefined | — |  |
+| 3 | `<> [[]]` | `<> [□]` | undefined | — | [[mult.hole-exclusion]] |
 | 3 | `<> [] []` | `<> □ □` | reduces | □ |  |
 | 3 | `<[()]>` | `<[o]>` | reduces | 0 |  |
 | 3 | `<[<>]>` | `<[<>]>` | excluded | — | [[mult.hole-exclusion]] |
-| 3 | `<[[]]>` | `<[□]>` | undefined | — |  |
+| 3 | `<[[]]>` | `<[□]>` | undefined | — | [[mult.hole-exclusion]] |
 | 3 | `<[] []>` | `<□ □>` | excluded | — | [[mult.hole-exclusion]] |
 | 3 | `<[]> []` | `<□> □` | excluded | — | [[mult.hole-exclusion]] |
 | 3 | `[(())]` | `[(o)]` | reduces | 1 |  |
 | 3 | `[() ()]` | `[o o]` | new | 0.693147 |  |
 | 3 | `[() <>]` | `[o <>]` | reduces | 0 |  |
-| 3 | `[() []]` | `[o □]` | undefined | — |  |
+| 3 | `[() []]` | `[o □]` | undefined | — | [[mult.hole-exclusion]] |
 | 3 | `[()] []` | `[o] □` | reduces | □ |  |
 | 3 | `[(<>)]` | `[(<>)]` | reduces | 0 |  |
 | 3 | `[([])]` | `[(□)]` | reduces | □ |  |
 | 3 | `[<()>]` | `J` | new | 0+3.14159i |  |
 | 3 | `[<<>>]` | `[<<>>]` | reduces | □ |  |
 | 3 | `[<> <>]` | `[<> <>]` | reduces | □ |  |
-| 3 | `[<> []]` | `[<> □]` | undefined | — |  |
+| 3 | `[<> []]` | `[<> □]` | undefined | — | [[mult.hole-exclusion]] |
 | 3 | `[<>] []` | `[<>] □` | reduces | □ |  |
 | 3 | `[<[]>]` | `[<□>]` | excluded | — | [[mult.hole-exclusion]] |
 | 3 | `[[()]]` | `[[o]]` | reduces | □ |  |
-| 3 | `[[<>]]` | `[[<>]]` | undefined | — |  |
-| 3 | `[[[]]]` | `[[□]]` | undefined | — |  |
-| 3 | `[[] []]` | `[□ □]` | undefined | — |  |
-| 3 | `[[]] []` | `[□] □` | undefined | — |  |
+| 3 | `[[<>]]` | `[[<>]]` | undefined | — | [[mult.hole-exclusion]] |
+| 3 | `[[[]]]` | `[[□]]` | undefined | — | [[mult.hole-exclusion]] |
+| 3 | `[[] []]` | `[□ □]` | undefined | — | [[mult.hole-exclusion]] |
+| 3 | `[[]] []` | `[□] □` | undefined | — | [[mult.hole-exclusion]] |
 | 3 | `[] [] []` | `□ □ □` | reduces | □ |  |

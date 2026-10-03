@@ -19,7 +19,7 @@ holds:
   JO: guarded
   JP: holds
 readings:
-  C: EXACT
+  C: PARTIAL
   finset: PARTIAL
   lambda: untested
   CC: untested
@@ -32,7 +32,7 @@ guide: shape-led
 band: "3–5"
 uses: [N.round, mult.square]
 see_also: [mult.distribution, mult.unit-law, N.round, mult.square]
-aliases: [Involution, James axiom 1, A1, A2, counit, unit]
+aliases: [Involution, James axiom 1, A1, A2, counit, unit, "inversion (Bricken's name)"]
 concepts: [logarithm, exponential]
 understood: yes
 understood_note: ""
@@ -71,9 +71,9 @@ exp and ln as mutual inverses — but with the asymmetry that analysis also find
 
 | reading | cell | why |
 |---|---|---|
-| C | EXACT | on the principal strip |
+| C | PARTIAL | Involution-up is exact; Involution-down holds only on the principal strip, and as an unrestricted schema over all forms it is unsound in ℂ (log e^{2πi} ≠ 2πi). On the pilot's rungs all content is real-positive and the schema is sound; the repair where it fails is James's J-discipline at rung C and JH's seam guard |
 | finset | PARTIAL | the counit of `Sym ⊣ Ch` is strict, the unit is Λ-graded — Lui's identification of the hinge |
-| logic | ANALOGY | LoF's Crossing `((A)) ≐ A` is an involution on *one* boundary; this is an adjunction between two |
+| logic | ANALOGY | LoF's Reflexion `((a)) = a` (Consequence 1; the empty case `(()) = void` is Axiom 2, Crossing) is an involution on *one* boundary; this is an adjunction between two |
 | lambda, CC | untested | — |
 
 ## Refuted readings

@@ -31,7 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: "6–8"
 uses: [mult.multiplication, mult.inverse-promotion, Z.cancellation]
-see_also: [Z.negative-numeral, mult.product-of-numerals]
+see_also: [Z.negative-numeral, mult.product-of-numerals, mult.consistency]
 aliases: ["(−3)(−2) = 6", sign rule, negative times negative]
 concepts: [negation, multiplication, integer]
 understood: yes
@@ -82,4 +82,4 @@ none
 
 ## Notes
 
-The pilot ends here. Next rung (`Q`): division as `(<[A]>)`, fractional cardinality, and the first appearance of `(<[oo]>)` = ½.
+The pilot's object-level laws end here; two meta-level nodes follow ([[mult.c-reading]], [[mult.consistency]]). Next rung (`Q`): division as `(<[A]>)`, fractional cardinality, and the first appearance of `(<[oo]>)` = ½.

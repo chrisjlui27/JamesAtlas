@@ -32,7 +32,7 @@ guide: shape-led
 band: "6–8"
 uses: [Z.inversion, void.page, void.space]
 see_also: [Z.collection, mult.product-of-negatives]
-aliases: [double negation, inverse cancellation, "<<A>> = A"]
+aliases: [double negation, inverse cancellation, "<<A>> = A", "involution (Bricken's name)"]
 concepts: [negation]
 understood: yes
 understood_note: ""
@@ -76,7 +76,7 @@ The opposite of the opposite is the thing itself.
 |---|---|---|
 | C | EXACT | — |
 | finset | ABSENT | — |
-| logic | ANALOGY | LoF's Crossing, `((A)) ≐ A`, has the same shape on a different boundary; the chart keeps them apart |
+| logic | ANALOGY | LoF's Reflexion, `((a)) = a`, has the same shape on a different boundary; the chart keeps them apart |
 | lambda, CC | untested | — |
 
 ## Refuted readings

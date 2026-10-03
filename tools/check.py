@@ -36,6 +36,7 @@ REQUIRED = ["id", "title", "type", "level", "kind", "rung", "order", "setting", 
             "holds", "readings", "status", "verified", "known_since", "entered", "guide", "band", "uses", "see_also",
             "aliases", "concepts", "understood", "reentry"]
 NAMING_RULES = {"name"}
+ALLOWED_RULES = {"given", "medium", "substitution", "congruence", "definition", "name", "lemma"}
 
 
 class Report:
@@ -235,6 +236,7 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
     nid = node.id
     text = node.sections.get("Derivation", "")
     tables = N.parse_tables(text)
+    firsts, lasts = [], []
     for t in tables:
         if not t:
             continue
@@ -253,8 +255,13 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
                 rep.fail(nid, f"derivation row {i+1} does not parse: {cell!r}")
                 prev = None
                 continue
+            rules_named = [r for r in re.split(r"[,;]\s*|\s+", N.LINK.sub("", rule).strip()) if r]
+            for r in rules_named:
+                if r.lower() not in ALLOWED_RULES and r not in ("—", "-", ""):
+                    rep.fail(nid, f"derivation row {i+1} uses unknown rule {r!r}")
             if rule.strip().lower() == "given" or prev is None:
                 prev = f
+                firsts.append(f)
                 continue
             ok, msg = check_equal_forms(prev, f, node, rng, trials)
             if not ok:
@@ -262,6 +269,21 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
             else:
                 rep.ok()
             prev = f
+        if prev is not None:
+            lasts.append(prev)
+    # endpoints: for an object-level theorem the tables must start at one side of the law and end at the other
+    law = str(node.get("law", ""))
+    if node.get("type") == "theorem" and node.get("level") == "object" and "≐" in law and firsts and lasts:
+        lhs, rhs = (parse_or_none(x.strip()) for x in law.split("≐", 1))
+        if lhs is not None and rhs is not None:
+            def hits(cands, target):
+                return any(check_equal_forms(c, target, node, rng, max(5, trials // 4))[0] for c in cands)
+            forward = hits(firsts, lhs) and hits(lasts, rhs)
+            backward = hits(firsts, rhs) and hits(lasts, lhs)
+            if not (forward or backward):
+                rep.fail(nid, "derivation tables do not start at one side of the law and end at the other")
+            else:
+                rep.ok()
 
 
 def check_witness(node: N.Node, rep: Report):

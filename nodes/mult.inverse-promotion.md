@@ -50,7 +50,7 @@ A mirror outside a product may be *promoted* onto one factor inside it. This is 
 
 ## Plain
 
-A minus sign in front of a product can be moved onto either factor.
+A minus sign in front of a product can be moved inside, onto the factor that is a pile — and for a product of two abstracts, onto either one.
 
 ## Derivation
 
@@ -69,8 +69,9 @@ So `(A [<B>])` is an inverse of `(A [B])`; inverses are unique:
 | form | rule | note |
 |---|---|---|
 | `<(A [B])>` | given | — |
-| `<(A [B])> (A [B]) (A [<B>])` | [[Z.inversion]] | create — the pair just shown to be void, regrouped by [[void.space]] |
-| `(A [<B>])` | [[Z.inversion]] | cancel `(A [B]) <(A [B])>` |
+| `<(A [B])> void` | [[void.page]] | — |
+| `<(A [B])> (A [B]) (A [<B>])` | lemma | the first table, right to left: the pair is void |
+| `(A [<B>])` | [[Z.inversion]] | cancel `(A [B]) <(A [B])>`, regrouped by [[void.space]] |
 
 ## Confirms
 
@@ -80,7 +81,7 @@ So `(A [<B>])` is an inverse of `(A [B])`; inverses are unique:
 
 | setting | holds | why |
 |---|---|---|
-| all | holds | the Inversion cluster, verbatim in every extension (JH Ch. 15) |
+| all | holds | the Inversion cluster, verbatim in every extension (JH Ch. 15; survival ledger for J1). Note the chart's own derivation routes through [[mult.zero-annihilates]], whose J1 cell is untested — the ledger asserts survival directly; an independent J1 derivation is owed |
 
 | reading | cell | why |
 |---|---|---|
