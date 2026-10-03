@@ -55,3 +55,7 @@ The binding design decisions for the Boundary Chart, numbered as in the design q
 **25. Seeding.** A fresh uniform walk for the trunk to ℂ, then backfill of the branches from the existing ledgers with their ids kept as aliases; the graded K–12 band visible on every node.
 
 **26. Pilot.** Spec plus a pilot of the first rungs so the schema meets real forms before the trunk is walked. The pilot delivered 2026-10-03 covers `void`, `N`, `Z`, and the opening of `mult`.
+
+---
+
+**Amendment A1 (2026-10-03, proposed by the session, pending Lui's confirmation).** The classical setting carries two decrees from rung `mult` on: the undefined forms (`<□>` and `[□]` excluded, up to ≐) and the seam discipline (the unit `[(X)] ≐ X` on phased content only in an absorbing position). Both were forced by referee passes that collapsed the unrestricted theory with laws already on the chart. If Lui prefers James's own formulation (name J first, then state the J-discipline at rung C), the decree node moves to rung C and the three ℚ sign laws move with it.

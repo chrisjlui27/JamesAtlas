@@ -178,7 +178,7 @@ A **setting** is a named set of nodes in force. A calculus extension is itself a
 
 | setting | = classical ∪ … | source |
 |---|---|---|
-| `classical` | three boundaries, Involution, Distribution, Inversion, James's J-discipline | James 1993; Book One Part I–II |
+| `classical` | three boundaries, Involution, Distribution, Inversion, and two decrees: the undefined forms (`<□>`, `[□]`) and the seam discipline (James's J-discipline, stated syntactically) | James 1993; Book One Part I–II; `mult.hole-exclusion`, `mult.seam-decree` |
 | `J1` | + weakened unit `[(A)] ≐ A mod Λ`, period axiom `(ω) ≐ ()`, A5′ absorption, L0 linearity, receipts | james-algebra notes v3.1 |
 | `JH` | + ordered bracket `[ ; ]`, seed `J_j`, O9, OC, seam guard on Involution-down | JH Exposition Guide |
 | `JO` | + tree nesting, priced receipts, alternator | Book One Part IV |
@@ -363,6 +363,7 @@ Zero dependencies beyond Python 3. `python3 tools/check.py` must exit 0 before a
 - Rung `mult` (the square boundary) sits after `Z`, not inside `N`, per the additive-first curriculum. The dependency DAG is unaffected either way.
 - Medium facts (void transparency, unordered juxtaposition) are `primitive` nodes with `kind: medium`, so commutativity is visibly *free* rather than an axiom.
 - Meta-level nodes count as laws and may be theorems (a finite model is a proof).
-- `domain` for the shadow check defaults to `positive` in rungs through `alg` and `complex` from `C` on; nodes may narrow or widen it.
+- `domain` for the shadow check defaults to `positive` in rungs through `alg` and `complex` from `C` on; nodes may narrow or widen it. The engine snaps values that are real up to rounding onto the real axis before taking a log, so the branch cut is not decided by floating-point noise.
+- **Decided under referee pressure, 2026-10-03, pending Lui's confirmation:** the seam discipline is a decree of the classical setting from rung `mult` on (`mult.seam-decree`), because `J J = [<o>][<o>]` can be written there and one unguarded unit step proves `J J ≐ void`, from which the ℚ sign laws collapse the calculus. Laws whose derivations use a phased unit step are NATIVE-BY-DECREE. The alternative (defer the three sign laws to rung C, or to J1 with `≃`) was rejected as the less honest inventory.
 - The two undefined forms, `<□>` and `[□]`, are one decree node (`mult.hole-exclusion`), read up to ≐; the ℂ reading is an `import` node so that consistency has a computable price.
 - Rule names follow James 1993 / Book One (Involution, Distribution, Inversion); Bricken's names (inversion, arrangement, reflection; involution for `<<A>> ≐ A`) are carried as aliases, to be verified against the sources.

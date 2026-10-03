@@ -13,7 +13,7 @@ law: "([A]) ≐ A"
 units: "e^{ln a} = a = ln e^a"
 gloss_check: "A"
 holds:
-  classical: holds
+  classical: guarded
   J1: holds-mod-Λ
   JH: guarded
   JO: guarded
@@ -31,7 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: "3–5"
 uses: [N.round, mult.square]
-see_also: [mult.distribution, mult.unit-law, N.round, mult.square]
+see_also: [mult.distribution, mult.unit-law, N.round, mult.square, mult.seam-decree]
 aliases: [Involution, James axiom 1, A1, A2, counit, unit, "inversion (Bricken's name)"]
 concepts: [logarithm, exponential]
 understood: yes
@@ -64,7 +64,7 @@ exp and ln as mutual inverses — but with the asymmetry that analysis also find
 
 | setting | holds | why |
 |---|---|---|
-| classical | holds | axiom |
+| classical | guarded | axiom; the unit direction on *phased* content is admitted only in an absorbing position by [[mult.seam-decree]] — the chart's statement of James's J-discipline |
 | J1 | holds-mod-Λ | strict counit `([A]) ≐ A`; weakened unit `[(A)] ≐ A mod Λ` — the defining move of 𝕁₁ |
 | JH, JO | guarded | Involution-down `[(A)] → A` permitted only when `L(exp V(A)) = V(A)` (the seam guard, JH-3); Involution-up unconditional |
 | JP | holds | the axiom audit passes at every tested place; at a place the two closures sit on opposite sides of involution (Part II, Ch. 9) |
@@ -83,3 +83,5 @@ exp and ln as mutual inverses — but with the asymmetry that analysis also find
 ## Notes
 
 The chart's own equality field is this axiom's shadow: `≐` classical, `≡/≃` in J1 where the unit is weakened.
+
+**The depth-1 criterion (J1).** A Λ-sensitive step — the unit `[(X)] ≐ X` in either direction, or `[o] ≐ void` — that sits at depth 1 under an instance boundary, passing only through angle boundaries on the way (which carry −λ ∈ Λ), is absorbed by that instance (A5′: `(λ A) ≐ (A)` for λ ∈ Λ), so a law whose Λ-steps are all of that kind holds *exactly* in J1 even though each step holds only mod Λ. The slogan "both sides under an instance" is neither necessary nor sufficient: [[Q.fractional-cardinality]] has a bare `A` on one side and is exact (its last step is the strict counit), while `([ [(X)] Y ]) ≐ ([X Y])` has both sides under an instance and fails (the Λ-step sits at depth 2, under a square). The Q-rung J1 cells cite this note.

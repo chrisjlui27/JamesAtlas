@@ -26,7 +26,7 @@ BASE_IDS = {"void.page", "void.space", "N.round", "Z.angle", "mult.square", "mul
 PRICED_TYPES = {"primitive", "axiom", "decree", "import"}
 RUNG_TITLES = {
     "void": "The page", "N": "ℕ — piles", "Z": "ℤ — the angle boundary", "mult": "× — the square boundary",
-    "Q": "ℚ", "alg": "Algebraic numbers", "C": "ℂ and J", "J1": "𝕁₁", "H": "ℍ (JH)", "O": "𝕆 (JO)", "S": "𝕊 (JS)",
+    "Q": "ℚ — division and fractional counts", "alg": "Algebraic numbers", "C": "ℂ and J", "J1": "𝕁₁", "H": "ℍ (JH)", "O": "𝕆 (JO)", "S": "𝕊 (JS)",
     "analysis": "Analysis", "place": "Places (JP)", "logic": "Logic", "struct": "Structure", "F1": "F₁", "field": "The Field",
 }
 
@@ -238,8 +238,9 @@ def chips(d: dict, kind: str) -> str:
 def law_block(node, nodes):
     law = str(node.get("law", ""))
     units = str(node.get("units", ""))
-    if node.get("type") == "gap":
-        return f'<div class="law gap"><div class="lawtext">{inline(law, nodes)}</div><div class="units">{html.escape(units)}</div></div>'
+    if node.get("type") == "gap" or law.startswith("DISCIPLINE") or node.get("kind") in ("discipline", "declaration", "guard"):
+        cls = "law gap" if node.get("type") == "gap" else "law decree"
+        return f'<div class="{cls}"><div class="lawtext">{inline(law, nodes)}</div><div class="units">{html.escape(units)}</div></div>'
     if "≐" in law:
         l, r = [x.strip() for x in law.split("≐", 1)]
         drawing = f'{draw_form(l)}<span class="eq">≐</span>{draw_form(r)}'
@@ -526,6 +527,7 @@ article.node.hidden-by-search {{ display:none; }}
 .lawrow .sugar {{ color:var(--fg2); }}
 .lawrow .units {{ color:var(--fg2); font-family:var(--serif); font-style:italic; }}
 .law.gap {{ border:1px dashed var(--t-gap); background:transparent; }}
+.law.decree {{ border:1px solid var(--t-decree); }}
 .law .lawtext {{ font-size:0.95rem; }}
 svg.form {{ overflow:visible; vertical-align:middle; flex:none; }}
 svg.form .b-r {{ fill:none; stroke:var(--round); stroke-width:1.6; }}
@@ -577,7 +579,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 <div class="wrap">
 <header>
   <h1>The Boundary Chart</h1>
-  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Pilot build: rungs <code>void</code>, <code>N</code>, <code>Z</code> and the opening of <code>mult</code>.</p>
+  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code> and <code>Q</code>.</p>
   <div class="stats">
     <div class="stat"><b>{len(nodes)}</b><span>laws</span></div>
     <div class="stat"><b>{counts.get("theorem",0)}</b><span>theorems</span></div>

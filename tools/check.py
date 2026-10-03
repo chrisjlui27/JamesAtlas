@@ -138,6 +138,51 @@ def check_links(node: N.Node, nodes, rep: Report):
         rep.fail(nid, "a node cannot cite itself")
 
 
+SETTINGS = ["classical", "J1", "JH", "JO", "JP"]
+READINGS = ["C", "finset", "lambda", "CC", "logic"]
+
+
+def check_tables_agree(node: N.Node, rep: Report):
+    """The body's 'Settings and readings' tables must agree with the front-matter holds/readings maps."""
+    nid = node.id
+    text = node.sections.get("Settings and readings", "")
+    tables = N.parse_tables(text)
+    if not tables:
+        return
+    meta_h = node.get("holds") or {}
+    meta_r = node.get("readings") or {}
+    for t in tables:
+        if not t:
+            continue
+        head = [c.lower() for c in t[0]]
+        if not head or head[0] not in ("setting", "reading"):
+            continue
+        is_setting = head[0] == "setting"
+        universe = SETTINGS if is_setting else READINGS
+        meta = meta_h if is_setting else meta_r
+        seen = set()
+        for row in t[1:]:
+            if len(row) < 2:
+                continue
+            names = [x.strip() for x in row[0].replace("and", ",").split(",") if x.strip()]
+            cell = row[1].strip().split()[0] if row[1].strip() else ""
+            cell = cell.strip("*`")
+            if names == ["all"]:
+                names = list(universe)
+            elif names == ["others"]:
+                names = [u for u in universe if u not in seen]
+            for nme in names:
+                if nme not in universe:
+                    rep.fail(nid, f"settings/readings table names unknown column {nme!r}")
+                    continue
+                seen.add(nme)
+                if nme in meta and str(meta[nme]) != cell:
+                    rep.fail(nid, f"front matter says {nme}: {meta[nme]} but the body table says {cell}")
+        for nme in universe:
+            if nme not in seen and nme in meta:
+                rep.fail(nid, f"{'settings' if is_setting else 'readings'} table has no row for {nme}")
+
+
 def check_dag(node: N.Node, nodes, rep: Report):
     nid = node.id
     order = node.get("order")
@@ -181,6 +226,8 @@ def check_law(node: N.Node, rep: Report, rng, trials):
     law = str(node.get("law", ""))
     gloss = node.get("gloss_check")
     form = None
+    if law.startswith(("GAP", "DISCIPLINE")) or node.get("kind") in ("discipline", "declaration", "guard"):
+        return  # a rule about derivations, not an equation between forms
     if "≐" in law:
         lhs, rhs = [x.strip() for x in law.split("≐", 1)]
         f1, f2 = parse_or_none(lhs), parse_or_none(rhs)
@@ -349,6 +396,7 @@ def main(argv=None):
     for node in sorted(nodes.values(), key=lambda n: n.get("order", 0) if isinstance(n.get("order"), int) else 0):
         check_schema(node, nodes, rep)
         check_links(node, nodes, rep)
+        check_tables_agree(node, rep)
         check_dag(node, nodes, rep)
         check_law(node, rep, rng, args.trials)
         check_derivations(node, rep, rng, args.trials)
