@@ -268,6 +268,8 @@ def random_env(names, domain: str, rng: random.Random) -> dict:
         elif domain == "real":
             x = math.exp(rng.uniform(math.log(0.05), math.log(20.0))) * rng.choice((-1, 1))
             env[n] = complex(x)
+        elif domain == "negative":
+            env[n] = complex(-math.exp(rng.uniform(math.log(0.05), math.log(20.0))))
         elif domain == "complex":
             env[n] = complex(math.exp(rng.uniform(-2, 2)) * rng.choice((-1, 1)), math.exp(rng.uniform(-2, 2)) * rng.choice((-1, 1)))
         else:
@@ -281,7 +283,7 @@ def gloss_value(expr: str, env: dict) -> Value:
     ns = {k: complex(v) for k, v in env.items()}
     ns.update({
         "e": math.e, "pi": math.pi, "i": 1j, "exp": cmath.exp, "log": cmath.log,
-        "sqrt": cmath.sqrt, "BH": BH, "inf": math.inf,
+        "sqrt": cmath.sqrt, "cos": cmath.cos, "sin": cmath.sin, "BH": BH, "inf": math.inf,
     })
     return eval(expr, {"__builtins__": {}}, ns)  # noqa: S307 — trusted repo content
 

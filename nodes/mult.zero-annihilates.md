@@ -8,7 +8,7 @@ rung: mult
 order: 410
 setting: classical
 equality: "≐"
-domain: positive
+domain: complex
 law: "(A □) ≐ void"
 units: "e^{a} · 0 = 0  (a · 0 = 0)"
 gloss_check: "0"
@@ -89,5 +89,7 @@ The ring theorem a · 0 = 0, and its standard proof: a·0 = a·(0+0) = a·0 + a�
 none
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and a law may be cited only inside its declared domain ([[mult.consistency]], Confirms); the law is exact on ℂ ∪ {□}. The home band and reading are unchanged.
 
 Tagged *need-led*: the shape of the forms gives the idempotent for free; arithmetic insists on void, and insisting costs an axiom.

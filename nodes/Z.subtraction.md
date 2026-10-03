@@ -8,7 +8,7 @@ rung: Z
 order: 240
 setting: classical
 equality: "≐"
-domain: real
+domain: complex
 law: "A − B := A <B>"
 units: "a − b = a + (−b)"
 gloss_check: "A - B"
@@ -82,4 +82,4 @@ none
 
 ## Notes
 
-—
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and under the chart's citation discipline ([[mult.consistency]], Confirms) a law may be cited only inside its declared domain; every row of its derivation is exact on ℂ×, as the engine confirms. The law's home band and reading are unchanged.

@@ -377,6 +377,9 @@ def find_unit_steps(f1, f2, path=()):
         for e in src:
             if _unit_shaped(e):
                 cx = Counter(e[1][0][1])
+                # cx empty is the unit on nothing, [()] <-> void. It is deliberately NOT collected: SPEC §5.4 exempts
+                # void/hole content from the decree (`[o] ≐ void` is a theorem of the hole rules), and a vacuous match
+                # here would preempt the pairing of a genuine redex standing next to it (e.g. [[(o)]] -> [o]).
                 if cx and all(dst_c[k] >= v for k, v in cx.items()):
                     dst_c -= cx
                     steps.append((path, e[1][0][1]))
@@ -436,6 +439,8 @@ def seam_env(names, domain, rng):
             env[n] = complex(math.exp(rng.uniform(math.log(0.01), math.log(100.0))))
         elif domain == "real":
             env[n] = complex(math.exp(rng.uniform(math.log(0.01), math.log(100.0))) * rng.choice((-1, 1)))
+        elif domain == "negative":
+            env[n] = complex(-math.exp(rng.uniform(math.log(0.01), math.log(100.0))))
         elif domain == "complex":
             env[n] = complex(math.exp(rng.uniform(-3, 3)) * rng.choice((-1, 1)), math.exp(rng.uniform(-3, 3)) * rng.choice((-1, 1)))
         else:
@@ -444,6 +449,7 @@ def seam_env(names, domain, rng):
 
 
 PROBES = {"natural": [1, 2, 3, 7, 12], "positive": [0.01, 0.5, 0.999, 1.0, 1.001, 2.0, 10.0, 100.0],
+          "negative": [-100.0, -2.0, -1.001, -1.0, -0.999, -0.5, -0.01],
           "real": [-100.0, -2.0, -1.0, -0.5, 0.5, 1.0, 2.0, 100.0], "complex": [1j, -1j, -1 + 0j, 2 + 3j]}
 
 
@@ -489,6 +495,70 @@ def check_seam(prev, cur, node: N.Node, rep: Report, rownum: int, rng=None, tria
             rep.fail(node.id, f"derivation step {rownum}: unit step on content {F.to_string(x, True)!r} off the principal strip{where}, outside an absorbing position — refused by mult.seam-decree")
             return False
     return True
+
+
+def seam_reliance(node: N.Node, rng=None, trials: int = 60):
+    """Which clauses of mult.seam-decree a derivation relies on (LEGISLATION Amendment A2):
+    'content'  — a unit step at a non-absorbing position (admitted only because its content stays on the strip,
+                 which the ℂ reading certifies);
+    'position' — a unit step in an absorbing position whose content leaves the strip for some sampled value of the
+                 node's domain (a *seam step*: the local equation is false and only the enclosing instance saves it).
+    A unit step that is absorbing AND on the strip relies on neither clause and is free. Returns a set."""
+    import random
+    rng = rng or random.Random(11)
+    rel = set()
+    for t in N.parse_tables(node.sections.get("Derivation", "")):
+        if not t or t[0][0].lower() != "form":
+            continue
+        prev = None
+        for r in t[1:]:
+            cell = r[0].strip().strip("`").strip() if r else ""
+            rule = r[1] if len(r) > 1 else ""
+            if rule.strip().lower() in NAMING_RULES:
+                continue
+            f = parse_or_none(cell)
+            if f is None:
+                prev = None
+                continue
+            if prev is not None and rule.strip().lower() != "given":
+                steps, _ = find_unit_steps(prev, f)
+                for path, x in steps:
+                    try:
+                        v = F.evaluate(x, {n: 1.7 for n in F.variables(x)})
+                    except (F.Undefined, F.Excluded, OverflowError):
+                        v = None
+                    if v is F.BH or not x:
+                        continue  # void or hole content: [(void)] ≐ void and [(□)] ≐ □ are theorems of the hole rules
+                        # (mult.unit-law, mult.hole-instance + mult.black-hole), so the step relies on neither clause — SPEC §5.4
+                    if not absorbing(path):
+                        rel.add("content")
+                    else:
+                        bad, _env = off_strip(x, node, rng, trials)
+                        if bad:
+                            rel.add("position")
+            prev = f
+    return rel
+
+
+def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 60):
+    """`guarded_by` is mechanical (Amendment A2): a node declares guarded_by: [mult.seam-decree] iff its derivation
+    relies on a clause of the decree (seam_reliance non-empty) — and only then."""
+    nid = node.id
+    rel = seam_reliance(node, rng, trials)
+    declared = list(node.get("guarded_by", []) or [])
+    for g in declared:
+        if g not in nodes:
+            rep.fail(nid, f"guarded_by refers to unknown node {g}")
+        elif isinstance(node.get("order"), int) and isinstance(nodes[g].get("order"), int) and nodes[g].get("order") >= node.get("order"):
+            rep.fail(nid, f"guarded_by {g} does not precede this node")
+    if node.get("type") == "decree":
+        return
+    if rel and "mult.seam-decree" not in declared:
+        rep.fail(nid, f"relies on the seam decree by {' and '.join(sorted(rel))}: must declare guarded_by: [mult.seam-decree]")
+    elif not rel and "mult.seam-decree" in declared:
+        rep.fail(nid, "declares guarded_by mult.seam-decree but no unit step relies on it (all unit steps absorbing and on the strip)")
+    else:
+        rep.ok()
 
 
 def check_witness(node: N.Node, rep: Report):
@@ -557,6 +627,7 @@ def main(argv=None):
         check_links(node, nodes, rep)
         check_tables_agree(node, rep)
         check_dag(node, nodes, rep)
+        check_guarded_by(node, nodes, rep, rng, max(60, args.trials))
         check_law(node, rep, rng, args.trials)
         check_derivations(node, rep, rng, args.trials)
         check_witness(node, rep)

@@ -31,6 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: 6–8
 uses: [mult.exponentiation, mult.multiplication, mult.involution]
+guarded_by: [mult.seam-decree]
 see_also: [alg.product-of-powers, alg.rational-exponent]
 aliases: [(a^b)^c = a^{bc}, power rule for exponents]
 concepts: [exponentiation, multiplication]

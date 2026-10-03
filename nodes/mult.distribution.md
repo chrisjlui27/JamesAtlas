@@ -8,7 +8,7 @@ rung: mult
 order: 320
 setting: classical
 equality: "≐"
-domain: positive
+domain: complex
 law: "(A [B C]) ≐ (A [B]) (A [C])"
 units: "e^{a}·(b + c) = e^{a}·b + e^{a}·c"
 gloss_check: "exp(A)*(B + C)"
@@ -80,5 +80,7 @@ The ring law a(b + c) = ab + ac "wearing exponential clothing": with multiplicat
 none
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and under the chart's citation discipline ([[mult.consistency]], Confirms) a law may be cited only inside its declared domain; the law is exact on ℂ×, as the engine confirms. The law's home band and reading are unchanged.
 
 With the void as `C` this axiom degenerates to `(A [B]) ≐ (A [B]) (A [])`, which is the engine of the black-hole theorems [[mult.hole-instance]] and [[mult.zero-annihilates]].

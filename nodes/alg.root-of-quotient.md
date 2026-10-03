@@ -31,6 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: "9–12"
 uses: [alg.root, Q.division, mult.involution, mult.inverse-promotion, mult.distribution]
+guarded_by: [mult.seam-decree]
 see_also: [alg.root-of-product, Q.flip]
 aliases: ["√(a/b) = √a/√b"]
 concepts: [root, division]

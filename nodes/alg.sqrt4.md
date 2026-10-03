@@ -31,6 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: "6–8"
 uses: [alg.root, mult.product-of-numerals, mult.involution, mult.cardinality, Z.inversion]
+guarded_by: [mult.seam-decree]
 see_also: [alg.sqrt2, alg.root-squared]
 aliases: ["√4 = 2"]
 concepts: [root, natural-number]

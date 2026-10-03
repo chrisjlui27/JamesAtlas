@@ -24,7 +24,7 @@ readings:
   lambda: untested
   CC: untested
   logic: ABSENT
-status: NATIVE-BY-DECREE
+status: NATIVE
 verified: engine
 known_since: 1993 (James); the sign rule is ancient
 entered: 2026-10-03

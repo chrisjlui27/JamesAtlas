@@ -24,13 +24,14 @@ readings:
   lambda: untested
   CC: untested
   logic: ABSENT
-status: NATIVE-BY-DECREE
+status: NATIVE
 verified: engine
 known_since: 1993 (James); the fact is ancient; the seam-crossing noted here 2026-10-03
 entered: 2026-10-03
 guide: need-led
 band: 6–8
 uses: [Q.reciprocal, mult.multiplication, mult.product-of-negatives, Q.reciprocal-law, mult.involution, Z.inversion, N.unit, mult.unit-law, void.space, mult.seam-decree]
+guarded_by: [mult.seam-decree]
 see_also: [Q.negative-denominator, Q.negative-fraction, mult.involution]
 aliases: [1/(−a) = −(1/a), sign of a reciprocal]
 concepts: [inverse, negation]
@@ -84,7 +85,7 @@ Inverses are unique:
 
 ## Confirms
 
-(−a)⁻¹ = −a⁻¹, by uniqueness of inverses, as in any field. What the chart adds is the *price*: three of the steps are the unit on content off the principal strip, admitted only by the seam decree — so the law is NATIVE-BY-DECREE, the first sign law to cost a decree. In J1 the same three steps post receipts of ±2πi, and the law holds exactly by the depth-1 criterion; these are the first ℚ laws whose receipts do not vanish. The engine passes every row because it evaluates whole rows: the periods cancel inside the instance.
+(−a)⁻¹ = −a⁻¹, by uniqueness of inverses, as in any field. What the chart adds is the *price*: three of the steps are the unit on content off the principal strip, admitted only because they sit inside an instance — seam steps, so the law declares `guarded_by` (by position) and is the first sign law to carry the decree in its price (its status stays NATIVE: the decree adjudicates the steps, it does not make the law true — Amendment A2). In J1 the same three steps post receipts of ±2πi, and the law holds exactly by the depth-1 criterion; these are the first ℚ laws whose receipts do not vanish. The engine passes every row because it evaluates whole rows: the periods cancel inside the instance.
 
 ## Settings and readings
 

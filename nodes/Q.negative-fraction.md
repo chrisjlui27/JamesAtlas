@@ -8,7 +8,7 @@ rung: Q
 order: 620
 setting: classical
 equality: ≐
-domain: positive
+domain: complex
 law: "([<A>] <[B]>) ≐ <([A] <[B]>)>"
 units: (−a)/b = −(a/b)
 gloss_check: -A/B
@@ -83,4 +83,4 @@ The sign rule for fractions as one instance of inverse promotion — no unit ste
 
 ## Notes
 
-—
+Domain `complex` (widened 2026-10-03, C referee pass): [[Q.negatives-cancel]] instantiates this law at B := `<B>`, and a law may be cited only inside its declared domain ([[mult.consistency]], Confirms); every row of its derivation is exact on ℂ×, as the engine confirms. The home band and reading are unchanged.

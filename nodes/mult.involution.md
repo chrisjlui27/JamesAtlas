@@ -8,7 +8,7 @@ rung: mult
 order: 310
 setting: classical
 equality: "≐"
-domain: positive
+domain: complex
 law: "([A]) ≐ A"
 units: "e^{ln a} = a = ln e^a"
 gloss_check: "A"
@@ -54,7 +54,7 @@ Circle a box, or box a circle, and you are back where you started.
 
 ## Derivation
 
-none — adjoined. The first of James's three axioms, stated in terms of the two boundaries [[N.round]] and [[mult.square]]. The chart checks both directions numerically; the second only on the domain where the principal logarithm is a two-sided inverse.
+none — adjoined. The first of James's three axioms, stated in terms of the two boundaries [[N.round]] and [[mult.square]]. The `law:` field carries the counit, which the engine checks on ℂ×; the unit direction is checked step by step wherever a derivation takes it, under the seam decree.
 
 ## Confirms
 
@@ -81,6 +81,8 @@ exp and ln as mutual inverses — but with the asymmetry that analysis also find
 - ~~the tower `[[[A]]] ≃ [[A]]` stabilizes~~ — refuted 2026-08-22 (collapse theorem: with `()`-congruence it forces total transparency); stabilization relocated to the mixed closure `[(−)]` at depth 1.
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and under the chart's citation discipline ([[mult.consistency]], Confirms) a law may be cited only inside its declared domain; the law is exact on ℂ×, as the engine confirms. The law's home band and reading are unchanged.
 
 The chart's own equality field is this axiom's shadow: `≐` classical, `≡/≃` in J1 where the unit is weakened.
 

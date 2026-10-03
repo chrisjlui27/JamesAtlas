@@ -86,22 +86,33 @@ def classify(form, values_smaller):
 
 
 def node_assignments(nodes):
-    """Map canonical form string -> node id, from each node's `forms:` list and law sides."""
-    table = {}
-    for nid, node in nodes.items():
-        cands = list(node.get("forms", []) or [])
+    """Map canonical form string -> node id. Ownership, in order of precedence: a node's explicit `forms:` list or a
+    definition's/primitive's law sides (the node that *reads* the form), earliest `order` first; then the numeral
+    patterns; and only then the left-hand side of a theorem — never a theorem's right-hand side, so that `(J J) ≐ o`
+    does not claim `o`."""
+    strong, weak = {}, {}
+    def _key(n):
+        o = n.get("order", 0)
+        return (o if isinstance(o, int) else 0, n.id)
+    for node in sorted(nodes.values(), key=_key):
+        nid = node.id
         law = str(node.get("law", ""))
-        for part in re.split(r"≐|:=", law):
-            cands.append(part.strip())
-        for c in cands:
-            try:
-                f = F.parse(c)
-            except Exception:
-                continue
-            if F.variables(f):
-                continue
-            table.setdefault(F.to_string(f), nid)
-    return table
+        explicit = list(node.get("forms", []) or [])
+        if node.get("type") in ("primitive", "definition", "axiom", "decree"):
+            explicit += [part.strip() for part in re.split(r"≐|:=", law)]
+            theorem_lhs = []
+        else:
+            theorem_lhs = [law.split("≐", 1)[0].strip()] if "≐" in law else []
+        for cands, table in ((explicit, strong), (theorem_lhs, weak)):
+            for c in cands:
+                try:
+                    f = F.parse(c)
+                except Exception:
+                    continue
+                if F.variables(f):
+                    continue
+                table.setdefault(F.to_string(f), nid)
+    return strong, weak
 
 
 PATTERNS = [
@@ -112,14 +123,17 @@ PATTERNS = [
 
 
 def assign(form, cls, table):
+    strong, weak = table
     s = F.to_string(form)
     if form == ():
         return "void.page"
-    if s in table:
-        return table[s]
+    if s in strong:
+        return strong[s]
     for pat, nid in PATTERNS:
         if pat.match(s):
             return nid
+    if s in weak:
+        return weak[s]
     if cls in ("excluded", "undefined"):
         return "mult.hole-exclusion"
     return ""

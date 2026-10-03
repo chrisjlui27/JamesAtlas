@@ -8,7 +8,7 @@ rung: mult
 order: 390
 setting: classical
 equality: "≐"
-domain: positive
+domain: complex
 law: "□ := []"
 units: "□ = ln 0 = −∞"
 gloss_check: "BH"
@@ -83,5 +83,7 @@ That −∞ is a legitimate point of the *additive* layer: the calculus's log sp
 - ~~□ is +∞~~ — Lui confirmed 2026-09-13 that □ is log 0 = −∞ when the engine labelled its valuation +∞; the sign depends on which axis (value or valuation) is meant.
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and a law may be cited only inside its declared domain ([[mult.consistency]], Confirms); the law is exact on ℂ ∪ {□}. The home band and reading are unchanged.
 
 `[[]]` — the square of the black hole — is James's other undefined form ([[mult.hole-exclusion]]); Bricken (Iconic Arithmetic) reads it as complex infinity. The census lists every form containing it as undefined.

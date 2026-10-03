@@ -8,7 +8,7 @@ rung: mult
 order: 400
 setting: classical
 equality: "≐"
-domain: positive
+domain: complex
 law: "(□) ≐ void"
 units: "e^{−∞} = 0"
 gloss_check: "0"
@@ -83,5 +83,7 @@ e^{−∞} = 0 — the limit analysis takes, here one instance of Involution. It
 - ~~needs Distribution as well as Involution~~ — the first draft (2026-10-03) derived this through a Distribution detour; the referee pass the same day pointed out it is Involution-up at `A` = void in one step. Price corrected.
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and a law may be cited only inside its declared domain ([[mult.consistency]], Confirms); the law is exact on ℂ ∪ {□}. The home band and reading are unchanged.
 
 The engine evaluates `□` as a sentinel absorbing juxtaposition, with `(□) = 0`; this node is the justification for that evaluation rule. In the finite models of [[mult.dominion-independence]] the law reads e(l(0)) = 0 and holds in every one, as it must: it is Involution at 0.

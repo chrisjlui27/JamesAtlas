@@ -8,7 +8,7 @@ rung: void
 order: 10
 setting: classical
 equality: "≐"
-domain: real
+domain: complex
 law: "A void ≐ A"
 units: "a + 0 = a"
 gloss_check: "A"
@@ -79,5 +79,7 @@ The additive identity 0, and the fact that it is *unique*: there is only one way
 none
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and under the chart's citation discipline ([[mult.consistency]], Confirms) a law may be cited only inside its declared domain; the law is exact on ℂ×, as the engine confirms. The law's home band and reading are unchanged.
 
 The void is the only form with no boundary and no name; every later node is a way of saying something about it. The re-entry edge of the chart lands here.

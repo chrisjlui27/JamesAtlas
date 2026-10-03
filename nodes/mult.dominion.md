@@ -57,9 +57,8 @@ Nothing you add to the bottomless pit fills it.
 |---|---|---|
 | `□ A` | given | — |
 | `[] A` | definition | unfold □, [[mult.black-hole]] |
-| `[([] A)]` | [[mult.involution]] | `[(X)] ≐ X`, right to left |
-| `[([(A)] [])]` | [[mult.involution]] | inside, `A ≐ [(A)]`; regroup by [[void.space]] |
-| `[void]` | [[mult.zero-annihilates]] | `(B []) ≐ void` with B = `[(A)]` |
+| `[([] A)]` | [[mult.involution]] | `X ≐ [(X)]`, right to left, on the content `□ A` — the hole, whose instance is void, so the step is exact |
+| `[void]` | [[mult.zero-annihilates]] | `(A □) ≐ void`, regrouped by [[void.space]] |
 | `[]` | definition | which is □ |
 
 ## Confirms

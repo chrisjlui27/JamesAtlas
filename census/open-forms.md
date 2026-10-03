@@ -6,4 +6,5 @@ Forms the census (`size-le-3.md`) classifies as `new` that no node reads yet. (F
 |---|---|---|---|
 | `((o))` | e^e | `analysis` | iterated exponential |
 | `[o o]` | ln 2 | `analysis` — the first logarithm of a pile that is not a pile | Lui's exp–log thread: logs of sums inside radical towers; known since Chow 1999 (EL numbers) in the literature |
-| `J` = `[<o>]` | iπ | `C` — the phase element, James's unique stable three-boundary form | the hinge of the whole program; not in the pilot |
+
+`J` = `[<o>]` was listed here until 2026-10-03; it is now read at `C.phase`.

@@ -31,6 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: 9–12
 uses: [mult.multiplication, mult.involution]
+guarded_by: [mult.seam-decree]
 see_also: [alg.exp-law, Z.collection]
 aliases: [ln(ab) = ln a + ln b, the slide rule]
 concepts: [logarithm, multiplication, addition]

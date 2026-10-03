@@ -8,7 +8,7 @@ rung: Z
 order: 250
 setting: classical
 equality: "≐"
-domain: real
+domain: complex
 law: "<<A>> ≐ A"
 units: "−(−a) = a"
 gloss_check: "A"
@@ -84,5 +84,7 @@ The opposite of the opposite is the thing itself.
 none
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and under the chart's citation discipline ([[mult.consistency]], Confirms) a law may be cited only inside its declared domain; every row of its derivation is exact on ℂ×, as the engine confirms. The law's home band and reading are unchanged.
 
 Band 6–8 because the curriculum teaches "negative of a negative" with integer multiplication; the law itself needs only grade-1 forms.

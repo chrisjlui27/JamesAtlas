@@ -8,7 +8,7 @@ rung: void
 order: 20
 setting: classical
 equality: "≐"
-domain: real
+domain: complex
 law: "A B ≐ B A"
 units: "a + b = b + a"
 gloss_check: "A + B"
@@ -80,5 +80,7 @@ The additive layer of arithmetic is a *commutative monoid* with the void as unit
 none
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and under the chart's citation discipline ([[mult.consistency]], Confirms) a law may be cited only inside its declared domain; the law is exact on ℂ×, as the engine confirms. The law's home band and reading are unchanged.
 
 Because this is a primitive of the medium rather than an axiom, the chart's price ledger counts commutativity as *free*. Every later law that depends on rearranging forms cites this node once under the rule name `medium`.

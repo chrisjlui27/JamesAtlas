@@ -31,6 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: 6–8
 uses: [alg.root, mult.multiplication, alg.log-law, mult.distribution, alg.exp-law]
+guarded_by: [mult.seam-decree]
 see_also: [alg.product-of-powers]
 aliases: [√(ab) = √a √b, root of a product]
 concepts: [root, multiplication]

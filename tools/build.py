@@ -15,7 +15,8 @@ from datetime import date
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import forms as F  # noqa: E402
+import forms as F
+import check as CHK  # noqa: E402
 import nodes as N  # noqa: E402
 import census as C  # noqa: E402
 
@@ -150,11 +151,12 @@ def md(text: str, nodes, draw_first_col=False) -> str:
             return
         head, body = rows[0], rows[1:]
         h = "".join(f"<th>{inline(c, nodes)}</th>" for c in head)
+        draw_here = draw_first_col and bool(head) and head[0].strip().lower() == "form"  # statement tables are prose
         b = []
         for r in body:
             cells = []
             for i, c in enumerate(r):
-                if draw_first_col and i == 0:
+                if draw_here and i == 0:
                     raw = c.strip().strip("`").strip()
                     cells.append(f'<td class="fcell">{draw_form(raw, "form sm")}<code>{html.escape(raw)}</code></td>')
                 else:
@@ -207,6 +209,9 @@ def compute(nodes):
         if nid in price:
             return price[nid]
         acc = set()
+        for g in nodes[nid].get("guarded_by", []) or []:
+            if g in nodes:
+                acc.add(g)
         for u in nodes[nid].get("uses", []) or []:
             if u in nodes and u not in seen:
                 if nodes[u].get("type") in PRICED_TYPES:
@@ -238,7 +243,7 @@ def chips(d: dict, kind: str) -> str:
 def law_block(node, nodes):
     law = str(node.get("law", ""))
     units = str(node.get("units", ""))
-    if node.get("type") == "gap" or law.startswith("DISCIPLINE") or node.get("kind") in ("discipline", "declaration", "guard"):
+    if node.get("type") == "gap" or law.startswith("DISCIPLINE") or node.get("kind") in ("discipline", "declaration", "guard") or node.get("level") == "meta":
         cls = "law gap" if node.get("type") == "gap" else "law decree"
         return f'<div class="{cls}"><div class="lawtext">{inline(law, nodes)}</div><div class="units">{html.escape(units)}</div></div>'
     if "≐" in law:
@@ -287,6 +292,10 @@ def render_node(node, nodes, used_by, depth, price):
     uses_links = " ".join(f'<a class="nl" href="#{u}">{u}</a>' for u in (m.get("uses") or []))
     used_links = " ".join(f'<a class="nl" href="#{u}">{u}</a>' for u in used_by[nid])
     see_links = " ".join(f'<a class="nl dashed" href="#{u}">{u}</a>' for u in (m.get("see_also") or []))
+    rel = sorted(CHK.seam_reliance(node)) if m.get("guarded_by") else []
+    guard_links = " ".join(f'<a class="nl" href="#{u}">{u}</a>' for u in (m.get("guarded_by") or []))
+    if rel:
+        guard_links += f' <span class="clause">by {" and ".join(rel)}</span>'
     price_html = ""
     if t in ("theorem", "definition", "gap"):
         pb = ", ".join(f'<a class="nl" href="#{p}">{p}</a>' for p in base) or "—"
@@ -322,6 +331,7 @@ def render_node(node, nodes, used_by, depth, price):
   <footer>
     <div class="kv"><span class="k">uses</span><span class="v">{uses_links or "—"}</span></div>
     <div class="kv"><span class="k">used by</span><span class="v">{used_links or "—"}</span></div>
+    {f'<div class="kv"><span class="k">guarded by</span><span class="v">{guard_links}</span></div>' if guard_links else ""}
     {f'<div class="kv"><span class="k">see also</span><span class="v">{see_links}</span></div>' if see_links else ""}
     {price_html}
     <div class="kv"><span class="k">depth</span><span class="v">{depth[nid]}</span><span class="k">known since</span><span class="v">{html.escape(str(m.get("known_since","")))}</span><span class="k">entered</span><span class="v">{html.escape(str(m.get("entered","")))}</span><span class="k">equality</span><span class="v">{html.escape(str(m.get("equality","")))}</span></div>
@@ -530,6 +540,7 @@ article.node.hidden-by-search {{ display:none; }}
 .law.decree {{ border:1px solid var(--t-decree); }}
 .law .lawtext {{ font-size:0.95rem; }}
 svg.form {{ overflow:visible; vertical-align:middle; flex:none; }}
+.law .drawing svg.form {{ max-width:100%; height:auto; }}
 svg.form .b-r {{ fill:none; stroke:var(--round); stroke-width:1.6; }}
 svg.form .b-s {{ fill:none; stroke:var(--square); stroke-width:1.6; }}
 svg.form .b-a {{ fill:none; stroke:var(--angle); stroke-width:1.6; stroke-linejoin:round; }}
@@ -546,6 +557,7 @@ svg.form.sm {{ transform:scale(0.85); transform-origin:left center; }}
 .chip.c-h-holdsmod, .chip.c-h-guarded, .chip.c-h-replaced, .chip.c-r-partial, .chip.c-r-analogy, .chip.c-r-converse {{ box-shadow:inset 0 -2px 0 var(--warn); }}
 .chip.c-h-fails, .chip.c-r-absent {{ box-shadow:inset 0 -2px 0 var(--bad); }}
 .chip.c-h-untested, .chip.c-r-untested {{ opacity:0.65; }}
+.clause {{ font-size:0.78rem; color:var(--fg2); font-style:italic; margin-left:4px; }}
 details {{ margin:8px 0; }}
 summary {{ cursor:pointer; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--fg2); font-weight:600; }}
 summary:focus-visible {{ outline:2px solid var(--accent); }}
@@ -579,7 +591,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 <div class="wrap">
 <header>
   <h1>The Boundary Chart</h1>
-  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code> and <code>alg</code>.</p>
+  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — through the named forms and the J-discipline of James 1993, Chapters 3–5 (the Pythagorean identity, ω² + ω + 1, the conjugate and the angle-addition formulas are owed).</p>
   <div class="stats">
     <div class="stat"><b>{len(nodes)}</b><span>laws</span></div>
     <div class="stat"><b>{counts.get("theorem",0)}</b><span>theorems</span></div>

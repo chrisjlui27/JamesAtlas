@@ -31,6 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: "9–12"
 uses: [mult.exponentiation, mult.involution]
+guarded_by: [mult.seam-decree]
 see_also: [alg.log-law, alg.power-of-power]
 aliases: ["ln a^b = b ln a", power rule for logs]
 concepts: [logarithm, exponentiation]

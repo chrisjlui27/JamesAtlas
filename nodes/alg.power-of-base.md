@@ -31,6 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: "9–12"
 uses: [mult.exponentiation, alg.base, mult.involution, mult.unit-law, void.page]
+guarded_by: [mult.seam-decree]
 see_also: [alg.log-of-base, alg.exp-law]
 aliases: ["e^b", "exp as a power"]
 concepts: [exponential, exponentiation]

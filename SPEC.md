@@ -110,6 +110,7 @@ uses: [Z.inversion, void.space]   # mechanical: must equal the set of rules cite
 see_also: [M.inverse-promotion]   # curated
 aliases: []                   # ids in the existing ledgers (JO-n, JS-n, JP-n, JH-n, Field) and other names
 concepts: [negation, addition]
+guarded_by: []                # mechanical: [mult.seam-decree] iff the derivation relies on a clause of the decree — by content (a unit step at a non-absorbing position) or by position (an absorbing seam step); §5.4. Feeds the price
 understood: no                # personal tracker: no | partial | yes
 understood_note: ""           # optional
 reentry: false                # true only on the one re-entry edge's source node
@@ -178,7 +179,7 @@ A **setting** is a named set of nodes in force. A calculus extension is itself a
 
 | setting | = classical ∪ … | source |
 |---|---|---|
-| `classical` | three boundaries, Involution, Distribution, Inversion, and two decrees: the undefined forms (`<□>`, `[□]`) and the seam discipline (James's J-discipline, stated in the ℂ reading because no syntactic signature exists — `mult.seam-signature`) | James 1993; Book One Part I–II; `mult.hole-exclusion`, `mult.seam-decree` |
+| `classical` | three boundaries, Involution, Distribution, Inversion, and two decrees: the undefined forms (`<□>`, `[□]`) and the seam discipline (of which James's J-discipline is a special case — `C.james-discipline`; stated in the ℂ reading because no syntactic signature exists — `mult.seam-signature`) | James 1993; Book One Part I–II; `mult.hole-exclusion`, `mult.seam-decree` |
 | `J1` | + weakened unit `[(A)] ≐ A mod Λ`, period axiom `(ω) ≐ ()`, A5′ absorption, L0 linearity, receipts | james-algebra notes v3.1 |
 | `JH` | + ordered bracket `[ ; ]`, seed `J_j`, O9, OC, seam guard on Involution-down | JH Exposition Guide |
 | `JO` | + tree nesting, priced receipts, alternator | Book One Part IV |
@@ -208,7 +209,7 @@ James 1993 is the ground truth for `classical`. Bricken's constructs (`[[ ]]` as
 | status | meaning |
 |---|---|
 | `NATIVE` | derived inside the setting from its own axioms; or a primitive/axiom of the base three |
-| `NATIVE-BY-DECREE` | holds because a decree was issued (exclusion, discipline, declared-void pile, guard) |
+| `NATIVE-BY-DECREE` | the *statement* holds because a decree was issued — exclusions (`a/0 is not a form`), the decrees themselves, and the meta theorems about the decree-governed calculus (consistency; James's rules sitting inside the decree). A node whose *derivation* merely passes through a guarded unit step stays `NATIVE` and declares `guarded_by` (§5.4, Amendment A2) |
 | `IMPORTED` | used, not derived; the import is named and dated |
 | `ANALOGY` | a correspondence asserted but not an equation of forms (e.g. 24 ↔ ν) |
 | `CONJECTURE` | stated, unrefuted, undemonstrated |
@@ -229,12 +230,20 @@ Mapping from the old ledgers (recorded in `aliases`/`notes`, never silently): EX
 
 ### 5.4 Price (computed; LEGISLATION 11)
 
-`price(n)` = the set of ancestors of `n` along `uses` whose type is `primitive`, `axiom`, `decree`, or `import`, partitioned into:
+`price(n)` = the set of ancestors of `n` along `uses` whose type is `primitive`, `axiom`, `decree`, or `import`, together with every `guarded_by` along the way (so a guard declared by an ancestor is inherited by price, never by re-declaring the field), partitioned into:
 
 - **base**: the three boundaries, the medium, and James's three axioms;
 - **extra**: everything else — further primitives, axioms, decrees, imports.
 
 Rendered as "what it costs to write X": *i* costs nothing extra (fractional cardinality is a theorem schema); ℍ costs an ordered bracket + O9 + OC; ℤ_p costs the void-pile decree. The concept index shows the cheapest price among a concept's forms.
+
+**`guarded_by` (Amendment A2).** A node declares `guarded_by: [mult.seam-decree]` exactly when its derivation *relies* on a clause of the seam decree, and the checker computes this from the derivation and enforces it both ways:
+
+- **by content** — a unit step `[(X)] ↔ X` at a non-absorbing position: it is admitted only because X stays on the principal strip over the whole domain, which the ℂ reading certifies (e.g. `alg.log-law`, `C.log-of-negative`);
+- **by position** — a unit step in an absorbing position whose content leaves the strip for some value of the domain (a *seam step*: the local equation `[(X)] ≐ X` is false there, and only the enclosing instance saves it — e.g. `Q.reciprocal-of-negative`, `C.period-absorption`);
+- **free** — a unit step that is absorbing *and* on the strip relies on neither clause (the equation is true and the position is safe), as does any derivation with no unit step; and a unit step on **void or hole content** — `[(void)] ≐ void` (which is `[o] ≐ void`) and `[(□)] ≐ □` — is a theorem of the hole rules (`mult.unit-law`; `mult.hole-instance` with `mult.black-hole`), not an instance of the decree, wherever it stands. Without this clause the decree would enter the price of nearly every node through `[o] ≐ void`.
+
+The card shows which clause. Status is unaffected: a guarded theorem is `NATIVE`. (The earlier convention, which made seam-step laws `NATIVE-BY-DECREE` and left absorbing seam steps unpriced, labelled exact identities of ℂ — `e^{a+2πi} = e^a` — "by decree" while leaving the half-true `ln(−a) = ln a + iπ` NATIVE; the C referee pass found four rung-C laws priced as if the decree did not exist, and the rule was changed.)
 
 ---
 
@@ -349,7 +358,7 @@ Zero dependencies beyond Python 3. `python3 tools/check.py` must exit 0 before a
 
 ## 13. Seeding and backfill (LEGISLATION 25)
 
-1. **Fresh uniform walk** of the trunk to ℂ: rungs `void`, `N`, `Z`, `mult`, `Q`, `alg`, `C`, in that order, each rung refereed before the next. Estimated: 30 (pilot, done) + ~45.
+1. **Fresh uniform walk** of the trunk to ℂ: rungs `void`, `N`, `Z`, `mult`, `Q`, `alg`, `C`, in that order, each rung refereed before the next. Estimated: 30 (pilot) + ~45; actual, 2026-10-03: 118 laws through `C`, every rung refereed twice.
 2. **Backfill the branches** from the existing ledgers, keeping the old ids as aliases: `JH-1…22` (Exposition Guide App. C), `JO-1…34`, `JS-1…41`, `JP-1…` (Shell Calculus, settlements, adelic page), the exp–log ledger with its known-since column, the motivic rule card, The Field's results and prohibitions.
 3. **Place the F₁ node** and the three roads as readings on the trunk; fill `finset` cells on every trunk node.
 4. **Census** to size 4; assign or list.
@@ -364,6 +373,6 @@ Zero dependencies beyond Python 3. `python3 tools/check.py` must exit 0 before a
 - Medium facts (void transparency, unordered juxtaposition) are `primitive` nodes with `kind: medium`, so commutativity is visibly *free* rather than an axiom.
 - Meta-level nodes count as laws and may be theorems (a finite model is a proof).
 - `domain` for the shadow check defaults to `positive` in rungs through `alg` and `complex` from `C` on; nodes may narrow or widen it. The engine snaps values that are real up to rounding onto the real axis before taking a log, so the branch cut is not decided by floating-point noise.
-- **Decided under referee pressure, 2026-10-03, pending Lui's confirmation:** the seam discipline is a decree of the classical setting from rung `mult` on (`mult.seam-decree`), because `J J = [<o>][<o>]` can be written there and one unguarded unit step — in either orientation — proves `J J ≐ void`, from which the ℚ sign laws collapse the calculus. A **seam step** is a unit step whose content leaves the principal strip for some value in the node's domain; a law whose derivation uses one is NATIVE-BY-DECREE and cites the decree. The decree is stated in the ℂ reading, because `[[[oo]]]` carries iπ with no mirror anywhere and no shape-based signature is exact (`mult.seam-signature`); the alternative (defer the sign laws to rung C, or to J1 with `≃`) was rejected as the less honest inventory. Open design item: a `guarded_by` field so laws whose unit steps are admitted by content at non-absorbing positions carry the guard in their price.
+- **Decided under referee pressure, 2026-10-03, pending Lui's confirmation:** the seam discipline is a decree of the classical setting from rung `mult` on (`mult.seam-decree`), because `J J = [<o>][<o>]` can be written there and one unguarded unit step — in either orientation — proves `J J ≐ void`, from which the ℚ sign laws collapse the calculus. A **seam step** is a unit step whose content leaves the principal strip for some value in the node's domain; a law whose derivation uses one declares `guarded_by` (by position; Amendment A2 — until the C referee pass such laws were NATIVE-BY-DECREE, and absorbing seam steps went unpriced). The decree is stated in the ℂ reading, because `[[[oo]]]` carries iπ with no mirror anywhere and no shape-based signature is exact (`mult.seam-signature`); the alternative (defer the sign laws to rung C, or to J1 with `≃`) was rejected as the less honest inventory. Laws whose unit steps are admitted by content at non-absorbing positions, or by position on off-strip content, declare `guarded_by: [mult.seam-decree]` — a mechanical field the checker enforces in both directions — and carry the guard in their price (§5.4).
 - The two undefined forms, `<□>` and `[□]`, are one decree node (`mult.hole-exclusion`), read up to ≐; the ℂ reading is an `import` node so that consistency has a computable price.
 - Rule names follow James 1993 / Book One (Involution, Distribution, Inversion); Bricken's names (inversion, arrangement, reflection; involution for `<<A>> ≐ A`) are carried as aliases, to be verified against the sources.

@@ -8,7 +8,7 @@ rung: mult
 order: 460
 setting: classical
 equality: "≐"
-domain: positive
+domain: complex
 law: "([<A>] [<B>]) ≐ ([A] [B])"
 units: "(−a)(−b) = ab"
 gloss_check: "A*B"
@@ -61,7 +61,7 @@ Two minuses make a plus — not by rule, but because each mirror can be pushed o
 
 ## Confirms
 
-The sign rule for integer multiplication, *derived*: the two mirrors are promoted to the outside and annihilate by [[Z.cancellation]]. This is the chart's first answer to a question the curriculum usually settles by fiat, and the completion of ℤ as a ring: with [[mult.product-of-numerals]] and [[mult.inverse-promotion]], products of integers are integers. It is **not** yet shown that `([<A>][<B>])` has the *value* ab for non-positive content in the ℂ reading without branch care — the engine checks it on positive A, B, where the mirrors are the only sign.
+The sign rule for integer multiplication, *derived*: the two mirrors are promoted to the outside and annihilate by [[Z.cancellation]]. This is the chart's first answer to a question the curriculum usually settles by fiat, and the completion of ℤ as a ring: with [[mult.product-of-numerals]] and [[mult.inverse-promotion]], products of integers are integers. In the ℂ reading the law is exact for every nonzero A, B — the engine checks it on complex content — because `([X][Y])` is the product of the *values* whatever branch each log takes; what the law does **not** say is anything about `[<A>]` on its own, which is where branch care begins ([[C.log-of-negative]]).
 
 ## Settings and readings
 
@@ -81,5 +81,7 @@ The sign rule for integer multiplication, *derived*: the two mirrors are promote
 none
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and under the chart's citation discipline ([[mult.consistency]], Confirms) a law may be cited only inside its declared domain; every row of its derivation is exact on ℂ×, as the engine confirms. The law's home band and reading are unchanged.
 
 The pilot's object-level laws end here; two meta-level nodes follow ([[mult.c-reading]], [[mult.consistency]]). Next rung (`Q`): division as `(<[A]>)`, fractional cardinality, and the first appearance of `(<[oo]>)` = ½.

@@ -31,6 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: "9–12"
 uses: [alg.base, mult.involution]
+guarded_by: [mult.seam-decree]
 see_also: [alg.power-of-base, mult.unit-law]
 aliases: ["ln e = 1"]
 concepts: [logarithm, exponential]

@@ -11,7 +11,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 1 | `<>` | `<>` | reduces | 0 | [[Z.void-inverse]] |
 | 1 | `[]` | `□` | hole | □ | [[mult.black-hole]] |
 | 2 | `(())` | `(o)` | new | 2.71828 | [[alg.base]] |
-| 2 | `() ()` | `o o` | numeral | 2 | [[alg.sqrt4]] |
+| 2 | `() ()` | `o o` | numeral | 2 | [[N.numeral]] |
 | 2 | `() <>` | `o <>` | reduces | 1 |  |
 | 2 | `() []` | `o □` | reduces | □ |  |
 | 2 | `(<>)` | `(<>)` | reduces | 1 |  |
@@ -95,7 +95,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 3 | `[()] []` | `[o] □` | reduces | □ |  |
 | 3 | `[(<>)]` | `[(<>)]` | reduces | 0 |  |
 | 3 | `[([])]` | `[(□)]` | reduces | □ |  |
-| 3 | `[<()>]` | `J` | new | 0+3.14159i |  |
+| 3 | `[<()>]` | `J` | new | 0+3.14159i | [[C.phase]] |
 | 3 | `[<<>>]` | `[<<>>]` | reduces | □ |  |
 | 3 | `[<> <>]` | `[<> <>]` | reduces | □ |  |
 | 3 | `[<> []]` | `[<> □]` | undefined | — | [[mult.hole-exclusion]] |

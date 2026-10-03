@@ -8,7 +8,7 @@ rung: mult
 order: 370
 setting: classical
 equality: "≐"
-domain: positive
+domain: complex
 law: "A ^ B := (([[A]] [B]))"
 units: "a^b = e^{e^{ln ln a + ln b}}"
 gloss_check: "A ** B"
@@ -83,5 +83,7 @@ a^b = exp(b · ln a), the definition analysis gives for real exponents — here 
 none
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content — a non-positive base reads as the principal value, `(([[<o>]] [X]))` being the pure phase ([[C.minus-one-power]]) — and a law may be cited only inside its declared domain ([[mult.consistency]], Confirms). The law's home band and reading are unchanged.
 
 The convention `A ^ B` with `A` the base (double square) and `B` the exponent (single square) follows the JH Exposition Guide's dictionary.

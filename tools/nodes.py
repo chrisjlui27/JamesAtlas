@@ -19,7 +19,7 @@ GUIDE = {"shape-led", "need-led"}
 HOLDS = {"holds", "holds-mod-Λ", "guarded", "replaced", "fails", "untested"}
 READING_CELLS = {"EXACT", "PARTIAL", "ANALOGY", "ABSENT", "CONVERSE", "untested"}
 EQUALITIES = {"≐", "≡", "≃", "≈"}
-DOMAINS = {"natural", "positive", "real", "complex"}
+DOMAINS = {"natural", "positive", "negative", "real", "complex"}
 SECTIONS = ["Law", "Plain", "Derivation", "Confirms", "Settings and readings", "Refuted readings", "Notes", "Plan"]
 RUNGS = ["void", "N", "Z", "mult", "Q", "alg", "C", "J1", "H", "O", "S", "analysis", "place", "logic", "struct", "F1", "field"]
 
@@ -67,8 +67,8 @@ def _split_commas(s: str):
             if ch == quote:
                 quote = None
             continue
-        if ch in "\"'":
-            quote = ch
+        if ch in "\"'" and not cur.strip():
+            quote = ch  # a quote opens an item only at its start: James's, Euler's stay plain text
             cur += ch
         elif ch == "[":
             depth += 1

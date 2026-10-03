@@ -9,7 +9,7 @@ order: 480
 setting: classical
 equality: "≐"
 domain: positive
-law: "with the undefined forms excluded and the seam discipline in force, the laws of rungs void–alg do not prove o ≐ void; in particular distinct piles stay distinct"
+law: "with the undefined forms excluded and the seam discipline in force, the laws of rungs void–C do not prove o ≐ void; in particular distinct piles stay distinct"
 units: "the admissible calculus has a model; Peano 3 and 4 survive the arrival of the axioms and of the abstracts of negatives"
 holds:
   classical: holds
@@ -43,7 +43,7 @@ reentry: false
 
 | form | units | standard |
 |---|---|---|
-| `oo ≐ ooo` is **not** derivable from the laws of rungs void–alg, read as admissible derivations | — | the calculus is consistent relative to ℂ |
+| `oo ≐ ooo` is **not** derivable from the laws of rungs void–C, read as admissible derivations | — | the calculus is consistent relative to ℂ |
 
 ## Plain
 
@@ -57,7 +57,7 @@ Even after all three axioms arrive, the page still never confuses two with three
 | The unit `[(X)] ≐ X` is exact when X is on the principal strip, and off the strip it errs by a multiple of 2πi | [[mult.involution]] | the definition of the principal logarithm |
 | The seam decree admits the unit only on the strip or in an absorbing position, where the enclosing instance's exp cancels any multiple of 2πi; so every admissible step preserves the value of the whole form | [[mult.seam-decree]] | the decree is semantic — it is stated in the reading — which is the gap `mult.seam-signature` |
 | Admissibility — no row contains `<□>` or `[□]`, up to ≐ — keeps the reading total on every row | [[mult.hole-exclusion]] | without it, Route A below collapses the calculus |
-| A sound, total reading separates `oo` (value 2) from `ooo` (value 3), so no admissible derivation equates them; this extends [[N.freeness]] from the fragment to all of rungs void–alg | — | — |
+| A sound, total reading separates `oo` (value 2) from `ooo` (value 3), so no admissible derivation equates them; this extends [[N.freeness]] from the fragment to all of rungs void–C | — | — |
 | The price: the import of the reading and two decrees, one of which is itself stated in the import. NATIVE-BY-DECREE, not NATIVE | — | — |
 
 ## Confirms
@@ -71,7 +71,7 @@ James's soundness result, scoped exactly: the calculus is consistent *as a calcu
 
 | setting | holds | why |
 |---|---|---|
-| classical | holds | for rungs void–alg; to be re-checked at rung C, where the phase element is named and the discipline restated |
+| classical | holds | for rungs void–C: rung C adds no rule — only names for forms already writable and theorems derived under the decree, every row engine-checked — so the soundness argument covers it unchanged, and James's own J-discipline is shown to sit inside the decree ([[C.james-discipline]]); to be re-checked at each new rung |
 | J1, JH, JO, JP | untested | each extension changes the reading and the axioms; consistency is re-proved per setting |
 
 | reading | cell | why |

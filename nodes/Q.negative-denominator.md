@@ -24,13 +24,14 @@ readings:
   lambda: untested
   CC: untested
   logic: ABSENT
-status: NATIVE-BY-DECREE
+status: NATIVE
 verified: engine
 known_since: 1993 (James); the sign rule is ancient
 entered: 2026-10-03
 guide: shape-led
 band: 6–8
 uses: [Q.division, mult.involution, Q.reciprocal-of-negative, mult.inverse-promotion, mult.seam-decree]
+guarded_by: [mult.seam-decree]
 see_also: [Q.negative-fraction, Q.negatives-cancel]
 aliases: [a/(−b) = −(a/b)]
 concepts: [fraction, negation]
@@ -61,7 +62,7 @@ A minus on the bottom of a fraction is the same as a minus in front — but, unl
 
 ## Confirms
 
-The second sign rule for fractions. Its asymmetry with [[Q.negative-fraction]] is real: a sign on top moves out by inverse promotion alone (NATIVE); a sign on the bottom must first be turned into a sign on a reciprocal, and that crosses the seam (NATIVE-BY-DECREE). With both, [[Q.negatives-cancel]] follows.
+The second sign rule for fractions. Its asymmetry with [[Q.negative-fraction]] is real: a sign on top moves out by inverse promotion alone (no guard); a sign on the bottom must first be turned into a sign on a reciprocal, and that crosses the seam (`guarded_by` the decree, by position). With both, [[Q.negatives-cancel]] follows.
 
 ## Settings and readings
 
