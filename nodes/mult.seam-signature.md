@@ -63,7 +63,7 @@ That James's "crack" is deeper than the phase element: it is the absence, in an 
 | setting | holds | why |
 |---|---|---|
 | classical, JH, JO, JP | fails | the guard is semantic in each (JH-3 evaluates `L(exp V(A))`) |
-| J1 | replaced | the receipt replaces the guard: no detection is needed because nothing is refused |
+| J1 | replaced | closed in two of three positions and open in the third ([[J1.seam-theorem]]): directly inside an instance the receipt is absorbed and at depth 0 it is posted — nothing is refused, so nothing has to be detected; under a square, where ≃ does not pass, a unit step is sound only when its receipt is void, which only the reading can see, so the eight trunk laws that take one stay `guarded` in 𝕁₁ (`census/j1-ledger.md`) |
 
 | reading | cell | why |
 |---|---|---|
@@ -77,7 +77,7 @@ That James's "crack" is deeper than the phase element: it is the absence, in an 
 
 ## Notes
 
-LEGISLATION 27: this gap is scheduled to close at rung `J1`, where Λ is a native object and the strip test becomes a receipt test; until then the ℂ import stands, marked provisional.
+LEGISLATION 27 scheduled this gap to close at rung `J1`. It closed there in two of its three positions (2026-10-04, [[J1.seam-theorem]]): inside an instance and at depth 0 the strip test became a receipt, and no import is needed. Under a square it did not close — ≃ is not a congruence through `[ ]` — and the ℂ import stands for exactly those steps, no longer provisional but *located*: the by-content guards of `alg.power-of-base`, `alg.power-of-power`, `alg.root-of-product`, `alg.root-of-quotient`, `alg.sqrt4`, `C.i-to-the-i`, `C.root-of-negative`, `C.modulus-of-polar`. The witness that no syntactic signature exists (`[[[oo]]]`) is now also the third door of [[J1.regime-split]].
 
 ## Plan
 

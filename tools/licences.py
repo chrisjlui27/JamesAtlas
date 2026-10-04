@@ -42,7 +42,7 @@ def rules_for(nid: str, nodes, cache: dict) -> list:
     if node is not None:
         law = str(node.get("law", ""))
         if node.get("type") == "schema":
-            tl, tr = (x.strip() for x in law.split("≐", 1))
+            tl, tr, _sym = F.split_law(law)
             try:
                 for env in S.parse_range(node.get("schema_range", "")):
                     out.append(P.Rule(nid, F.parse(S.expand(tl, env)), F.parse(S.expand(tr, env))))
@@ -115,7 +115,7 @@ def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14, phases=N
                 rules += lemma_rules
             if "hypothesis" in tokens and node.get("schema_env") is not None:
                 env = node.get("schema_env")
-                tl, tr = (x.strip() for x in str(node.get("schema_template")).split("≐", 1))
+                tl, tr, _sym = F.split_law(str(node.get("schema_template")))
                 for e2 in S.parse_range(node.get("schema_range", "")):
                     if e2 != env and all(e2[k] <= env[k] for k in env):
                         try:

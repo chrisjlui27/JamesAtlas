@@ -18,6 +18,7 @@ Exit 0 iff no failures.  Run from anywhere: python3 tools/check.py [--seed N] [-
 """
 from __future__ import annotations
 import argparse
+import math
 import os
 import random
 import re
@@ -272,8 +273,8 @@ def check_law(node: N.Node, rep: Report, rng, trials):
     form = None
     if law.startswith(("GAP", "DISCIPLINE")) or node.get("kind") in ("discipline", "declaration", "guard"):
         return  # a rule about derivations, not an equation between forms
-    if "≐" in law:
-        lhs, rhs = [x.strip() for x in law.split("≐", 1)]
+    if F.split_law(law)[1] is not None:
+        lhs, rhs, _sym = F.split_law(law)
         f1, f2 = parse_or_none(lhs), parse_or_none(rhs)
         if f1 is None or f2 is None:
             rep.fail(nid, f"law sides do not parse: {law}")
@@ -371,7 +372,7 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
                         rep.fail(nid, f"derivation row {i+1}: {hmsg}")
                     else:
                         rep.ok()
-            if node.get("type") != "decree":
+            if node.get("type") != "decree" and node.get("setting") != "J1":  # 𝕁₁ has receipts, not the decree
                 seam = check_seam(prev, f, node, rep, i + 1, rng, trials)
                 if seam:
                     rep.ok()
@@ -380,8 +381,8 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
             lasts.append(prev)
     # endpoints: for an object-level theorem the tables must start at one side of the law and end at the other
     law = str(node.get("law", ""))
-    if node.get("type") in ("theorem", "schema") and node.get("level") == "object" and "≐" in law and firsts and lasts:
-        lhs, rhs = (parse_or_none(x.strip()) for x in law.split("≐", 1))
+    if node.get("type") in ("theorem", "schema") and node.get("level") == "object" and F.split_law(law)[1] is not None and firsts and lasts:
+        lhs, rhs = (parse_or_none(x) for x in F.split_law(law)[:2])
         if lhs is not None and rhs is not None:
             def hits(cands, target):  # syntactic: the same canonical form, not merely the same value
                 return any(c == target for c in cands)
@@ -657,9 +658,9 @@ def hypothesis_ok(prev, cur, node: N.Node):
     applied once in either direction. Returns (ok, message)."""
     env = node.get("schema_env")
     template = node.get("schema_template", "")
-    if env is None or "≐" not in template:
+    if env is None or F.split_law(template)[1] is None:
         return False, "hypothesis rows belong to schema nodes"
-    tl, tr = (x.strip() for x in template.split("≐", 1))
+    tl, tr, _sym = F.split_law(template)
     tried = []
     for e2 in S.parse_range(node.get("schema_range", "")):
         if e2 == env or any(e2[k] > env[k] for k in env) or any(k not in e2 for k in env):
@@ -697,6 +698,12 @@ def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 6
         elif isinstance(node.get("order"), int) and isinstance(nodes[g].get("order"), int) and nodes[g].get("order") >= node.get("order"):
             rep.fail(nid, f"guarded_by {g} does not precede this node")
     if node.get("type") == "decree":
+        return
+    if node.get("setting") == "J1":
+        if declared:
+            rep.fail(nid, "a 𝕁₁ node does not declare guarded_by: its unit steps post receipts (SPEC §5.5)")
+        else:
+            rep.ok()
         return
     if rel and "mult.seam-decree" not in declared:
         rep.fail(nid, f"relies on the seam decree by {' and '.join(sorted(rel))}: must declare guarded_by: [mult.seam-decree]")
@@ -752,6 +759,16 @@ def record_j1(node: N.Node, tape, rep: Report):
     J1_GRADES[node.id] = tape
     hand = (node.get("holds") or {}).get("J1", "")
     J1_ROWS.append((node.id, tape, hand))
+    if node.get("setting") == "J1":
+        eq = str(node.get("equality", ""))
+        want = "≡" if tape.grade == "strict" else ("≃" if tape.grade in ("absorbed", "posted") else None)
+        if want is None:
+            rep.fail(node.id, f"a 𝕁₁ law whose derivation needs an import or fails: {J1.describe(tape)[:200]}")
+        elif eq != want:
+            rep.fail(node.id, f"equality is {eq} but the tape says {want}: {J1.describe(tape)[:200]}")
+        else:
+            rep.ok()
+        return
     if node.get("setting") != "classical":
         return
     if hand == "untested":
@@ -837,6 +854,7 @@ def main(argv=None):
     lic_cache = {}
     check_orders(nodes, rep)
     for node in sorted(nodes.values(), key=lambda n: n.get("order", 0) if isinstance(n.get("order"), int) else 0):
+        F.OMEGA = (2j * math.pi) if node.get("setting") == "J1" else None  # LEGISLATION 30b: ω = [()] reads as 2πi in 𝕁₁
         check_schema(node, nodes, rep)
         check_links(node, nodes, rep)
         check_tables_agree(node, rep)
@@ -872,6 +890,7 @@ def main(argv=None):
                 if tape is not None:
                     record_j1(node, tape, rep)
         check_witness(node, rep)
+    F.OMEGA = None
     if not args.no_licences:
         write_j1_ledger()
     if not args.no_census:

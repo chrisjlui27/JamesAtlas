@@ -13,7 +13,7 @@ law: "with the undefined forms excluded and the seam discipline in force, the la
 units: "the admissible calculus has a model; Peano 3 and 4 survive the arrival of the axioms and of the abstracts of negatives"
 holds:
   classical: holds
-  J1: untested
+  J1: holds
   JH: untested
   JO: untested
   JP: untested
@@ -72,7 +72,8 @@ James's soundness result, scoped exactly: the calculus is consistent *as a calcu
 | setting | holds | why |
 |---|---|---|
 | classical | holds | for rungs void–C: rung C adds no rule — only names for forms already writable and theorems derived under the decree, every row engine-checked — so the soundness argument covers it unchanged, and James's own J-discipline is shown to sit inside the decree ([[C.james-discipline]]); to be re-checked at each new rung |
-| J1, JH, JO, JP | untested | each extension changes the reading and the axioms; consistency is re-proved per setting |
+| J1 | holds | re-proved per setting, as promised: [[J1.soundness]] — the ℂ reading with ω ↦ 2πi models the strict rules exactly and the witnessed ones mod Λ, so 𝕁₁ proves no false equation and ω is not void |
+| JH, JO, JP | untested | each extension changes the reading and the axioms; consistency is re-proved per setting |
 
 | reading | cell | why |
 |---|---|---|

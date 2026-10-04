@@ -1,6 +1,6 @@
 """forms.py — parser, canonicalizer and ℂ-evaluator for James boundary forms.
 
-Canonical strings use ( ) [ ] < >.  Sugar: o = (), □ = [], J = [<o>], void = empty form.
+Canonical strings use ( ) [ ] < >.  Sugar: o = (), □ = [], J = [<o>], ω = [()], void = empty form.
 Variables are single capital letters, optionally followed by one digit (A, B, X2).
 Whitespace is ignored.  Juxtaposition is an unordered multiset.
 
@@ -57,7 +57,7 @@ class BlackHole:
 
 BH = BlackHole()
 
-_TOKEN = re.compile(r"\s*(?:(void)|(o)|(□)|(J)|([A-Z][0-9]?)|([()\[\]<>]))")
+_TOKEN = re.compile(r"\s*(?:(void)|(o)|(□)|(J)|(ω)|([A-Z][0-9]?)|([()\[\]<>]))")
 
 
 def tokenize(s: str):
@@ -78,9 +78,11 @@ def tokenize(s: str):
         elif m.group(4):
             out.append(("sugar", "J"))
         elif m.group(5):
-            out.append(("var", m.group(5)))
+            out.append(("sugar", "ω"))
+        elif m.group(6):
+            out.append(("var", m.group(6)))
         else:
-            out.append(("br", m.group(6)))
+            out.append(("br", m.group(7)))
     return out
 
 
@@ -91,6 +93,8 @@ def _sugar(name: str) -> Tuple:
         return (SQUARE, ())
     if name == "J":
         return (SQUARE, ((ANGLE, ((ROUND, ()),)),))
+    if name == "ω":
+        return (SQUARE, ((ROUND, ()),))  # the period form [()] (𝕁₁; classically [o] ≐ void)
     raise ParseError(name)
 
 
@@ -140,14 +144,17 @@ def _inner_string(form: Form) -> str:
     return " ".join(to_string_child(ch) for ch in form)
 
 
-def to_string(form: Form, sugar: bool = False) -> str:
+def to_string(form: Form, sugar: bool = False, omega: bool = False) -> str:
     """Canonical ASCII string ('void' for the empty form).
-    With sugar=True, [<()>] → J, () → o and [] → □."""
+    With sugar=True, [<()>] → J, () → o and [] → □; with omega=True as well, [()] → ω (the 𝕁₁ cards)."""
     if not form:
         return "void"
     s = _inner_string(form)
     if sugar:
-        s = s.replace("[<()>]", "J").replace("()", "o").replace("[]", "□")
+        s = s.replace("[<()>]", "J")
+        if omega:
+            s = s.replace("[()]", "ω")
+        s = s.replace("()", "o").replace("[]", "□")
     return s
 
 
@@ -192,10 +199,24 @@ def substitute(form: Form, env: dict) -> Form:
     return canon(tuple(out))
 
 
+EQUALITY_SYMBOLS = ("≐", "≡", "≃", "≈")
+
+
+def split_law(law: str):
+    """(lhs, rhs, symbol) of a law written with any of the chart's equality symbols; (law, None, None) otherwise."""
+    for sym in EQUALITY_SYMBOLS:
+        if sym in law:
+            l, r = law.split(sym, 1)
+            return l.strip(), r.strip(), sym
+    return law, None, None
+
+
 # ----------------------------------------------------------------------------- evaluation
 
 Value = Union[complex, BlackHole]
 TINY = 1e-12
+OMEGA_FORM = (SQUARE, ((ROUND, ()),))
+OMEGA: complex | None = None   # set to 2πi while reading a `setting: J1` node (LEGISLATION 30b); None = classical
 
 
 def evaluate(form: Form, env: dict | None = None) -> Value:
@@ -220,6 +241,8 @@ def _eval_child(ch, env) -> Value:
         if ch[1] not in env:
             raise KeyError(f"unbound variable {ch[1]}")
         return complex(env[ch[1]])
+    if OMEGA is not None and ch == OMEGA_FORM:
+        return OMEGA  # the period form ω = [()] is the generator 2πi, not void, in 𝕁₁
     inner = evaluate(ch[1], env)
     if ch[0] == ROUND:
         if inner is BH:
@@ -245,17 +268,17 @@ def _eval_child(ch, env) -> Value:
 
 
 def equal(v1: Value, v2: Value, equality: str = "≐", tol: float = 1e-9) -> bool:
-    """Compare two values.  '≐' and '≡': exact (within tolerance).  'modΛ' / '≃': compare
-    exp of both sides, i.e. equality of the log-space values modulo 2πi."""
+    """Compare two values.  '≐' and '≡': exact (within tolerance).  '≃' (and '≈'): equal modulo the lattice
+    Λ = 2πiℤ — the difference is an integer multiple of 2πi, within tolerance — which exact equality implies."""
     if v1 is BH or v2 is BH:
         return v1 is v2
-    if equality in ("modΛ", "≃", "mod Λ"):
-        try:
-            v1, v2 = cmath.exp(v1), cmath.exp(v2)
-        except OverflowError:
-            return False
     scale = 1.0 + max(abs(v1), abs(v2))
-    return abs(v1 - v2) <= tol * scale
+    if abs(v1 - v2) <= tol * scale:
+        return True
+    if equality in ("modΛ", "≃", "mod Λ", "≈"):
+        k = (v1 - v2) / (2j * math.pi)
+        return abs(k.imag) <= tol * scale and abs(k.real - round(k.real)) <= tol * scale
+    return False
 
 
 def random_env(names, domain: str, rng: random.Random) -> dict:

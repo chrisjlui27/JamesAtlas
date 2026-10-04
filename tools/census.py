@@ -102,7 +102,7 @@ def node_assignments(nodes):
             explicit += [part.strip() for part in re.split(r"≐|:=", law)]
             theorem_lhs = []
         else:
-            theorem_lhs = [law.split("≐", 1)[0].strip()] if "≐" in law else []
+            theorem_lhs = [F.split_law(law)[0]] if F.split_law(law)[1] is not None else []
         for cands, table in ((explicit, strong), (theorem_lhs, weak)):
             for c in cands:
                 try:

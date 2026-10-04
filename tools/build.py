@@ -24,11 +24,11 @@ import census as C  # noqa: E402
 ROOT = os.path.dirname(HERE)
 OUT = os.path.join(ROOT, "site", "index.html")
 
-BASE_IDS = {"void.page", "void.space", "N.round", "Z.angle", "mult.square", "mult.involution", "mult.distribution", "Z.inversion"}
+BASE_IDS = {"void.page", "void.space", "N.round", "Z.angle", "mult.square", "mult.involution", "mult.distribution", "Z.inversion", "J1.counit"}
 PRICED_TYPES = {"primitive", "axiom", "decree", "import", "gap"}
 RUNG_TITLES = {
     "void": "The page", "N": "ℕ — piles", "Z": "ℤ — the angle boundary", "mult": "× — the square boundary",
-    "Q": "ℚ — division and fractional counts", "alg": "Radicals and the base", "C": "ℂ and J", "schema": "Schemas — one law for every n", "J1": "𝕁₁", "H": "ℍ (JH)", "O": "𝕆 (JO)", "S": "𝕊 (JS)", "J2": "𝕁₂ — the moduli of lattices",
+    "Q": "ℚ — division and fractional counts", "alg": "Radicals and the base", "C": "ℂ and J", "schema": "Schemas — one law for every n", "J1": "𝕁₁ — the receipt", "H": "ℍ (JH)", "O": "𝕆 (JO)", "S": "𝕊 (JS)", "J2": "𝕁₂ — the moduli of lattices",
     "analysis": "Analysis", "place": "Places (JP)", "logic": "Logic", "struct": "Structure", "F1": "F₁", "field": "The Field",
 }
 
@@ -300,8 +300,9 @@ def law_block(node, nodes):
             inst = law
         tmpl = law
         law = inst
-        l, r = [x.strip() for x in law.split("≐", 1)] if "≐" in law else (law, "")
-        drawing = f'{draw_form(l)}<span class="eq">≐</span>{draw_form(r)}' if r else f'<span class="lawtext">{html.escape(law)}</span>'
+        l, r, sym = F.split_law(law)
+        r = r or ""
+        drawing = f'{draw_form(l)}<span class="eq">{sym}</span>{draw_form(r)}' if r else f'<span class="lawtext">{html.escape(law)}</span>'
         return (f'<div class="law schema"><div class="drawing">{drawing}</div>'
                 f'<div class="lawrow"><code class="canon">{html.escape(tmpl)}</code>'
                 f'<span class="units">{html.escape(units)}</span></div>'
@@ -309,9 +310,9 @@ def law_block(node, nodes):
     if node.get("type") == "gap" or law.startswith("DISCIPLINE") or node.get("kind") in ("discipline", "declaration", "guard") or node.get("level") == "meta":
         cls = "law gap" if node.get("type") == "gap" else "law decree"
         return f'<div class="{cls}"><div class="lawtext">{inline(law, nodes)}</div><div class="units">{html.escape(units)}</div></div>'
-    if "≐" in law:
-        l, r = [x.strip() for x in law.split("≐", 1)]
-        drawing = f'{draw_form(l)}<span class="eq">≐</span>{draw_form(r)}'
+    if F.split_law(law)[1] is not None:
+        l, r, sym = F.split_law(law)
+        drawing = f'{draw_form(l)}<span class="eq">{sym}</span>{draw_form(r)}'
     elif ":=" in law:
         l, r = [x.strip() for x in law.split(":=", 1)]
         left = draw_form(l)
@@ -326,8 +327,9 @@ def law_block(node, nodes):
         drawing = f'<span class="lawtext">{inline(law, nodes)}</span>'
     sugar = law
     try:
-        if "≐" in law:
-            sugar = " ≐ ".join(F.to_string(F.parse(x.strip()), True) for x in law.split("≐"))
+        if F.split_law(law)[1] is not None:
+            l, r, sym = F.split_law(law)
+            sugar = f" {sym} ".join(F.to_string(F.parse(x), True, omega=node.get("setting") == "J1") for x in (l, r))
     except Exception:
         pass
     return (f'<div class="law"><div class="drawing">{drawing}</div>'
@@ -662,7 +664,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 <div class="wrap">
 <header>
   <h1>The Boundary Chart</h1>
-  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 4–6 and Appendix B, checked against the text) with the standard complex-number toolkit — and <code>schema</code>, the laws over every n (cardinality, powers, the n-th roots of unity, De Moivre) stated once as templates, checked at every n in a range, and priced with the induction gap they lean on.</p>
+  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 4–6 and Appendix B, checked against the text) with the standard complex-number toolkit — <code>schema</code>, the laws over every n (cardinality, powers, the n-th roots of unity, De Moivre) stated once as templates, checked at every n in a range, and priced with the induction gap they lean on; and <code>J1</code>, the enriched calculus 𝕁₁ — Involution split into a strict counit and a witnessed unit, the log of one kept as the period form ω rather than erased, every step graded by the receipt it posts (strict, absorbed, posted) by the receipt prover, James's two theorems of Chapter 6 re-read as true mod Λ, and the ψ-wall counting 24, 240, 504.</p>
   <div class="stats">
     <div class="stat"><b>{len(nodes)}</b><span>laws</span></div>
     <div class="stat"><b>{counts.get("theorem",0)}</b><span>theorems</span></div>

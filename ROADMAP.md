@@ -60,7 +60,7 @@ One law per node; every derivation engine-checked; referees before acceptance; t
 
 Still owed on the trunk, to be picked up as the rungs above reach them: conj(zw), |zw|, the equality of James's π with the chart's as rows (C); the multiplication of the n-th roots of unity as a schema in two parameters, and that they are *all* the roots (needs `N.order`, or a reading); the base boundary `{A} ≐ ([b][A])`, number formats and place-value carry (James A.3, B.1 — `N`/`mult`); the complex log of a turn with a bounded variable (a `unit-interval` domain or the schema machinery); an independent J1 derivation of the phase rule; a cheaper branch-reading import than ℂ for the decree (moot once J1 lands).
 
-## 5. `J1` — the decisions before the first node (2026-10-04)
+## 5. `J1` — the decisions before the first node (2026-10-04; decided the same day, LEGISLATION 30; the rung landed that evening — see README Status)
 
 Rung `schema` is done; `J1` is next. Before a node is written, six decisions are Lui's, because the ledgers do not all say the same thing and the engine has to be built to match. Each comes with a weighted recommendation; the first two settle what J1 *is*.
 

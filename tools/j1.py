@@ -33,15 +33,24 @@ GRADE_ORDER = ["strict", "absorbed", "posted", "import", "absent"]
 CELL_OF = {"strict": "holds", "absorbed": "holds", "posted": "holds-mod-Λ", "import": "guarded", "absent": "fails"}
 
 
+UNIT_RULES = {"mult.involution", "mult.log-of-one", "J1.unit"}     # rules whose unit-shaped steps post receipts
+STRICT_J1 = {"J1.counit", "J1.closure", "J1.period-form"}            # strict rules of the J1 rung itself
+ABSORB_J1 = {"J1.absorption", "J1.absorption-mirror"}                 # witnessed moves inside an instance
+
+
 def step_grade(step, grades: dict) -> str:
     """The 𝕁₁ grade of one licensed step, from its rule and position alone (no reading)."""
     x = _unit_shape(step)
-    if x is not None and (step.rule in ("mult.involution", "mult.log-of-one") or step.rule.startswith("lemma")):
+    if x is not None and (step.rule in UNIT_RULES or step.rule.startswith("lemma")):
         if _is_hole_content(x):
             return "strict"
         return {"absorbing": "absorbed", "depth-0": "posted", "under-square": "import"}[position_class(step.path)]
     if step.rule == "mult.involution" and _counit_shape(step):
         return "strict"
+    if step.rule in STRICT_J1:
+        return "strict"
+    if step.rule in ABSORB_J1:
+        return "absorbed"
     if step.rule in STRICT_NODES or step.rule == "hypothesis" or step.rule.startswith("lemma"):
         return "strict"
     if step.rule in ABSENT_NODES:
@@ -165,7 +174,13 @@ def grade_steps(steps: list, node, grades: dict, rng) -> Tape:
     domain = node.get("domain", "positive")
     for s in steps:
         x = _unit_shape(s)
-        if x is not None and s.rule in ("mult.involution", "mult.log-of-one") or (x is not None and s.rule.startswith("lemma")):
+        if s.rule in ABSORB_J1:
+            tape.receipts.append(Receipt(s.rule, F.to_string(s.redex, True), "absorbing", "absorbed", {1}))
+            tape.worse("absorbed")
+            continue
+        if s.rule in STRICT_J1:
+            continue
+        if x is not None and (s.rule in UNIT_RULES or s.rule.startswith("lemma")):
             if _is_hole_content(x):
                 continue  # the unit on the hole: a theorem of the hole rules, strict
             where = position_class(s.path)

@@ -21,7 +21,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 2 | `<> <>` | `<> <>` | reduces | 0 |  |
 | 2 | `<> []` | `<> □` | reduces | □ |  |
 | 2 | `<[]>` | `<□>` | excluded | — | [[mult.hole-exclusion]] |
-| 2 | `[()]` | `[o]` | reduces | 0 | [[mult.log-of-one]] |
+| 2 | `[()]` | `[o]` | reduces | 0 | [[J1.period-form]] |
 | 2 | `[<>]` | `[<>]` | reduces | □ |  |
 | 2 | `[[]]` | `[□]` | undefined | — | [[mult.hole-exclusion]] |
 | 2 | `[] []` | `□ □` | reduces | □ |  |
@@ -55,7 +55,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 3 | `(<>) <>` | `(<>) <>` | reduces | 1 |  |
 | 3 | `(<>) []` | `(<>) □` | reduces | □ |  |
 | 3 | `(<[]>)` | `(<□>)` | excluded | — | [[mult.hole-exclusion]] |
-| 3 | `([()])` | `([o])` | reduces | 1 |  |
+| 3 | `([()])` | `([o])` | reduces | 1 | [[J1.closure]] |
 | 3 | `([<>])` | `([<>])` | reduces | 0 |  |
 | 3 | `([[]])` | `([□])` | undefined | — | [[mult.hole-exclusion]] |
 | 3 | `([] [])` | `(□ □)` | reduces | 0 |  |
