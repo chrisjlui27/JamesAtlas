@@ -30,6 +30,7 @@ import forms as F  # noqa: E402
 import nodes as N
 import schema as S  # noqa: E402
 import licences as LC  # noqa: E402
+import j1 as J1  # noqa: E402
 import census as C  # noqa: E402
 
 ROOT = os.path.dirname(HERE)
@@ -705,17 +706,71 @@ def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 6
         rep.ok()
 
 
-def check_licences(node: N.Node, nodes, rep: Report, cache: dict):
+J1_GRADES: dict = {}     # node id -> j1.Tape, filled in walk order (cited theorems are graded before their users)
+J1_ROWS: list = []       # (node id, tape, hand cell) for census/j1-ledger.md
+GRADED_TYPES = {"theorem", "schema"}
+
+
+def check_licences(node: N.Node, nodes, rep: Report, cache: dict, rng, parent=None):
     """Every form row of a derivation must be obtained from the previous row by the rule it cites (tools/prover.py):
-    the step is *licensed*, not merely value-equal. Identity rows (medium, definition, a rule cited for a
-    regrouping) pass as identities; naming rows are not forms."""
+    the step is *licensed*, not merely value-equal. The search asks for the cheapest 𝕁₁ tape first (strict and
+    absorbed steps, then posted, then anything), and the steps it finds grade the node in 𝕁₁ (tools/j1.py)."""
     if node.get("level") != "object":
-        return
-    lic, unl, skip, details = LC.check_node(node, nodes, cache)
-    for ti, i, status, msg in details:
+        return None
+    lic, unl, skip, details = LC.check_node(node, nodes, cache, phases=J1.phases(J1_GRADES))
+    for ti, i, status, msg, _steps in details:
         if status == "UNLICENSED":
             rep.fail(node.id, f"derivation table {ti+1} row {i+1} is not licensed by the rule it cites: {msg}")
     rep.oks += lic
+    if (parent or node).get("type") not in GRADED_TYPES:
+        return None
+    tape = J1.Tape()
+    for ti, i, status, msg, steps in details:
+        if status == "UNLICENSED":
+            tape.worse("absent")
+            tape.absent.append(f"row {i+1} unlicensed")
+            continue
+        row = J1.grade_steps(steps, node, J1_GRADES, rng)
+        tape.receipts += row.receipts
+        tape.absent += row.absent
+        tape.worse(row.grade)
+    return tape
+
+
+# a hand-written J1 cell may say more than the derivation's grade, never less
+J1_ACCEPT = {
+    "holds": {"holds"},
+    "holds-mod-Λ": {"holds-mod-Λ"},
+    "guarded": {"holds", "holds-mod-Λ", "guarded"},      # a legislative guard (the stratification) may tighten a grade
+    "replaced": {"holds", "holds-mod-Λ", "guarded", "fails"},  # replaced says what takes the law's place
+    "fails": {"fails"},
+}
+
+
+def record_j1(node: N.Node, tape, rep: Report):
+    """Store the computed grade and compare it with the node's hand-written J1 cell."""
+    J1_GRADES[node.id] = tape
+    hand = (node.get("holds") or {}).get("J1", "")
+    J1_ROWS.append((node.id, tape, hand))
+    if node.get("setting") != "classical":
+        return
+    if hand == "untested":
+        rep.fail(node.id, f"J1 cell is untested but the receipt prover grades the derivation {tape.cell}: {J1.describe(tape)[:160]}")
+    elif tape.cell not in J1_ACCEPT.get(hand, set()):
+        rep.fail(node.id, f"J1 cell says {hand} but the receipt prover grades the derivation {tape.cell}: {J1.describe(tape)[:200]}")
+    else:
+        rep.ok()
+
+
+def write_j1_ledger():
+    path = os.path.join(ROOT, "census", "j1-ledger.md")
+    out = ["# 𝕁₁ ledger — computed by the receipt prover (tools/j1.py)", "",
+           "Grade of each derivation in 𝕁₁ (LEGISLATION 30): ≡ strict · absorbed (receipts paid by an instance) · posted (receipts on the tape, mod Λ) · import (a unit step under a square: sound only by the reading) · fails. Written by `tools/check.py`; do not edit.", "",
+           "| node | computed cell | hand cell | tape |", "|---|---|---|---|"]
+    for nid, tape, hand in J1_ROWS:
+        out.append(f"| `{nid}` | {tape.cell} | {hand} | {J1.describe(tape).replace('|', '/')} |")
+    open(path, "w").write("\n".join(out) + "\n")
+    return path
 
 
 def check_witness(node: N.Node, rep: Report):
@@ -793,17 +848,32 @@ def main(argv=None):
             except ValueError as ex:
                 rep.fail(node.id, f"schema does not expand: {ex}")
                 insts = []
+            tape = J1.Tape() if insts else None
             for inst in insts:
                 check_law(inst, rep, rng, max(10, args.trials // 2))
                 check_derivations(inst, rep, rng, max(10, args.trials // 2))
                 if not args.no_licences:
-                    check_licences(inst, nodes, rep, lic_cache)
+                    t = check_licences(inst, nodes, rep, lic_cache, rng, parent=node)
+                    if t is not None:
+                        tape.worse(t.grade)
+                        seen = {(r.rule, r.where, r.grade, r.content) for r in tape.receipts}
+                        for r in t.receipts:
+                            if (r.rule, r.where, r.grade, r.content) not in seen:
+                                tape.receipts.append(r)
+                                seen.add((r.rule, r.where, r.grade, r.content))
+                        tape.absent += [a for a in t.absent if a not in tape.absent]
+            if tape is not None and not args.no_licences:
+                record_j1(node, tape, rep)
         else:
             check_law(node, rep, rng, args.trials)
             check_derivations(node, rep, rng, args.trials)
             if not args.no_licences:
-                check_licences(node, nodes, rep, lic_cache)
+                tape = check_licences(node, nodes, rep, lic_cache, rng)
+                if tape is not None:
+                    record_j1(node, tape, rep)
         check_witness(node, rep)
+    if not args.no_licences:
+        write_j1_ledger()
     if not args.no_census:
         check_census(rep)
     print(f"{len(nodes)} nodes · {rep.oks} checks passed · {len(rep.warns)} warnings · {len(rep.fails)} failures")

@@ -14,7 +14,7 @@ units: "a⁰ = 1  (a ≠ 0)"
 gloss_check: "1"
 holds:
   classical: holds
-  J1: untested
+  J1: holds
   JH: holds
   JO: holds
   JP: holds
@@ -70,7 +70,7 @@ a⁰ = 1 as a *theorem* about the black hole rather than a convention about empt
 | setting | holds | why |
 |---|---|---|
 | classical, JH, JO, JP | holds | — |
-| J1 | untested | inherits the open status of □ in J1 |
+| J1 | holds | `[void]` is the pole and `([[A]] □)` sits inside an instance: ✠, strict; no unit step (receipt prover: ≡) |
 
 | reading | cell | why |
 |---|---|---|

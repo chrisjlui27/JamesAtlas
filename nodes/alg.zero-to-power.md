@@ -13,7 +13,7 @@ law: "(([[void]] [B])) is not a form"
 units: "0ᵇ is not written; neither is 0⁰"
 holds:
   classical: holds
-  J1: untested
+  J1: holds
   JH: holds
   JO: holds
   JP: holds
@@ -65,7 +65,7 @@ That 0ᵇ sits with 1/0 among the unwritable things, which is honest about 0⁰ 
 | setting | holds | why |
 |---|---|---|
 | classical, JH, JO, JP | holds | the exclusion is kept everywhere |
-| J1 | untested | depends on the status of □ in J1 |
+| J1 | holds | the exclusion `[□]` is inherited: the log of the pole is Ω's log, not a form, in 𝕁₁ as in the classical setting ([[mult.hole-exclusion]] holds in every setting) |
 
 | reading | cell | why |
 |---|---|---|

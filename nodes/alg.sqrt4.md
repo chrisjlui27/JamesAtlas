@@ -14,7 +14,7 @@ units: "√4 = 2"
 gloss_check: "2"
 holds:
   classical: holds
-  J1: holds-mod-Λ
+  J1: guarded
   JH: holds
   JO: holds
   JP: guarded
@@ -74,7 +74,7 @@ That the root of a perfect square is its base, by the mechanism itself (not by a
 | setting | holds | why |
 |---|---|---|
 | classical, JH, JO | holds | real content |
-| J1 | holds-mod-Λ | row 3's unit step sits under a square inside the instance — not absorbing; its receipt is posted. The cardinality step's hidden `[o] → ω` is absorbing |
+| J1 | guarded | three unit steps sit under a square (on void, on `[oooo][o]`, on `[oo][oo]`), each with receipt 0 in the reading; ≃ does not pass through `[ ]`, so each is an import of that fact — including the log of one, `[()] → void`, which in 𝕁₁ is the receipt ω itself and under a square cannot be absorbed |
 | JP | guarded | needs the count 2 to be a unit (odd p) and the p-adic log of 2 to converge |
 
 | reading | cell | why |

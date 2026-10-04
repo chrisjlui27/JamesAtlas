@@ -14,7 +14,7 @@ units: "i^i = e^{−π/2}"
 gloss_check: "exp(-pi/2)"
 holds:
   classical: holds
-  J1: holds-mod-Λ
+  J1: guarded
   JH: replaced
   JO: replaced
   JP: untested
@@ -76,7 +76,7 @@ Euler's i^i = e^{−π/2}, the principal value, with every step on the page. The
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | holds-mod-Λ | the step under the square is a bare Λ-step that nothing absorbs (depth-1 criterion fails there); all the others are absorbed |
+| J1 | guarded | the step under the square is a unit on `i` = `(<[oo]> [J])`, receipt 0; ≃ does not pass through `[ ]`, so the step is sound by the reading alone — an import; every other unit step is absorbed |
 | JH, JO | replaced | u^u per slice, the same real number e^{−π/2} for every unit direction u — a slice-independent value reached through slice-dependent forms |
 | JP | untested | p-adic i^i needs the p-adic logarithm of i, which exists only where i does (p ≡ 1 mod 4) and converges only if i is a 1-unit; untested |
 

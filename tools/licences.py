@@ -69,8 +69,9 @@ def table_rows(text: str):
         yield t[1:] if hdr and hdr[0] == "form" else t
 
 
-def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14):
-    """Returns (licensed, unlicensed, skipped, details)."""
+def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14, phases=None):
+    """Returns (licensed, unlicensed, skipped, details). `phases` is an optional list of step predicates tried in
+    order; the first phase whose steps suffice licenses the row (the receipt prover asks for the cheapest tape)."""
     text = node.sections.get("Derivation", "")
     lic = unl = skip = 0
     details = []
@@ -101,10 +102,10 @@ def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14):
             if not cited and set(tokens) <= IDENTITY_RULES:
                 if f == prev:
                     skip += 1
-                    details.append((ti, i, "identity", ""))
+                    details.append((ti, i, "identity", "", []))
                 else:
                     unl += 1
-                    details.append((ti, i, "UNLICENSED", f"rule {tokens} but the form changed"))
+                    details.append((ti, i, "UNLICENSED", f"rule {tokens} but the form changed", []))
                 prev = f
                 continue
             rules = []
@@ -121,13 +122,20 @@ def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14):
                             rules.append(P.Rule("hypothesis", F.parse(S.expand(tl, e2)), F.parse(S.expand(tr, e2))))
                         except Exception:
                             pass
-            L = P.licence(prev, f, rules, max_steps=max_steps)
+            if phases:
+                L = None
+                for allow in phases:
+                    L = P.licence(prev, f, rules, max_steps=max_steps, allow=allow)
+                    if L.ok:
+                        break
+            else:
+                L = P.licence(prev, f, rules, max_steps=max_steps)
             if L.ok:
                 lic += 1
-                details.append((ti, i, "ok", L.note + " " + " ".join(f"{s.rule}{s.direction}@{''.join(s.path) or 'root'}" for s in L.steps)))
+                details.append((ti, i, "ok", L.note + " " + " ".join(f"{s.rule}{s.direction}@{''.join(s.path) or 'root'}" for s in L.steps), L.steps))
             else:
                 unl += 1
-                details.append((ti, i, "UNLICENSED", L.note))
+                details.append((ti, i, "UNLICENSED", L.note, []))
             prev = f
         if first is not None and last is not None and first != last:
             lemma_rules.append(P.Rule(f"lemma#{ti}", first, last))
@@ -160,7 +168,7 @@ def main(argv=None):
             tot_l += l; tot_u += u; tot_s += s
             if u or args.verbose:
                 print(f"{t.id}: licensed {l}, unlicensed {u}, identity {s}")
-                for ti, i, status, msg in det:
+                for ti, i, status, msg, _steps in det:
                     if status == "UNLICENSED" or args.verbose:
                         print(f"    table {ti+1} row {i+1}: {status} {msg}")
     print(f"TOTAL licensed {tot_l} · unlicensed {tot_u} · identity rows {tot_s}")

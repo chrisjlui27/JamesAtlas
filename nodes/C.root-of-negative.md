@@ -14,7 +14,7 @@ units: "√(−a) = i √a  (a > 0)"
 gloss_check: "1j*sqrt(A)"
 holds:
   classical: holds
-  J1: holds-mod-Λ
+  J1: guarded
   JH: replaced
   JO: replaced
   JP: guarded
@@ -69,7 +69,7 @@ Take the square root of minus a number: it is the square root of the number, tim
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | holds-mod-Λ | inherits the bare unit of [[C.log-of-negative]], here under two squares — nothing absorbs the receipt |
+| J1 | guarded | inherits the posted receipt of [[C.log-of-negative]], here under two squares, where ≃ does not pass: sound only by the reading (the receipt is void for the domain) — an import |
 | JH, JO | replaced | one square root of −1 per slice: `(([[<A>]] <[oo]>))` picks the slice of the seed J_u |
 | JP | guarded | as [[alg.root]] and [[C.imaginary-unit]]: 2 a unit at p, and i a value at p (p ≡ 1 mod 4) |
 

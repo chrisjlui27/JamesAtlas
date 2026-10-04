@@ -255,6 +255,40 @@ def draw_env(node):
     return env
 
 
+_J1_LEDGER = None
+
+
+def j1_ledger():
+    """census/j1-ledger.md as {node id: (computed cell, tape text)} — written by check.py."""
+    global _J1_LEDGER
+    if _J1_LEDGER is None:
+        _J1_LEDGER = {}
+        path = os.path.join(ROOT, "census", "j1-ledger.md")
+        if os.path.exists(path):
+            for line in open(path):
+                if line.startswith("| `"):
+                    cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                    if len(cells) >= 4:
+                        _J1_LEDGER[cells[0].strip("`")] = (cells[1], cells[3])
+    return _J1_LEDGER
+
+
+def tape_html(nid: str) -> str:
+    """The 𝕁₁ tape of a derivation, as the receipt prover computed it (LEGISLATION 30c)."""
+    entry = j1_ledger().get(nid)
+    if not entry:
+        return ""
+    cell, tape = entry
+    return f'<div class="kv"><span class="k">𝕁₁ tape</span><span class="v tape">{inline_tape(tape)}</span></div>'
+
+
+def inline_tape(tape: str) -> str:
+    out = html.escape(tape, quote=False)
+    out = re.sub(r"`([^`]*)`", r"<code>\1</code>", out)
+    out = out.replace("absorbed [absorbing]", "<b>absorbed</b>").replace("posted [depth-0]", "<b>posted</b>").replace("import [under-square]", "<b>import</b>").replace("absent [under-square]", "<b>false</b>")
+    return out
+
+
 def law_block(node, nodes):
     law = str(node.get("law", ""))
     units = str(node.get("units", ""))
@@ -361,6 +395,7 @@ def render_node(node, nodes, used_by, depth, price):
     <div class="kv"><span class="k">uses</span><span class="v">{uses_links or "—"}</span></div>
     <div class="kv"><span class="k">used by</span><span class="v">{used_links or "—"}</span></div>
     {f'<div class="kv"><span class="k">guarded by</span><span class="v">{guard_links}</span></div>' if guard_links else ""}
+    {tape_html(nid)}
     {f'<div class="kv"><span class="k">see also</span><span class="v">{see_links}</span></div>' if see_links else ""}
     {price_html}
     <div class="kv"><span class="k">depth</span><span class="v">{depth[nid]}</span><span class="k">known since</span><span class="v">{html.escape(str(m.get("known_since","")))}</span><span class="k">entered</span><span class="v">{html.escape(str(m.get("entered","")))}</span><span class="k">equality</span><span class="v">{html.escape(str(m.get("equality","")))}</span></div>
@@ -607,6 +642,7 @@ td.fcell code {{ display:block; margin-top:2px; font-size:0.74rem; background:tr
 .nl:hover {{ border-bottom-color:var(--accent); }}
 .nl.dashed {{ border-bottom-style:dashed; }}
 .cl {{ font-size:0.84em; text-decoration:none; border-bottom:1px dotted var(--line); margin-right:6px; }}
+.v.tape {{ font-size:0.76rem; color:var(--mute); }} .v.tape b {{ color:var(--fg); font-weight:600; }}
 article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--line); font-size:0.8rem; display:flex; flex-direction:column; gap:4px; }}
 .kv {{ display:flex; gap:10px; flex-wrap:wrap; align-items:baseline; }}
 .kv .k {{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg2); min-width:60px; }}

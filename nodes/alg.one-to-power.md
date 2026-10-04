@@ -14,7 +14,7 @@ units: "1ᵇ = 1"
 gloss_check: "1"
 holds:
   classical: holds
-  J1: untested
+  J1: replaced
   JH: holds
   JO: holds
   JP: holds
@@ -69,7 +69,7 @@ One to any power is one: the log of one is nothing, the log of nothing is the pi
 | setting | holds | why |
 |---|---|---|
 | classical, JH, JO, JP | holds | — |
-| J1 | untested | the `[o] → ω` step makes `[[o]]` into `[ω]`, not □ — in J1 the base 1 has a *lattice* of logs; the law must be re-posed |
+| J1 | replaced | **fails** as stated, and the prover says where: the log of one `[()] → void` is taken *under a square*, where ≃ does not pass, with receipt ω ≠ void. In 𝕁₁ `[[o]]` is `[ω]`, and `(([[o]] [B]))` is e^{Bω}: `o` when B is a count (the outer instance absorbs Bω), a root of unity when B is a fraction — 1^{1/3} is ω₃. The law is replaced by the receptacle (`J1.receptacle`): the value 1 has a lattice of logs, and the classical law was its shadow |
 
 | reading | cell | why |
 |---|---|---|

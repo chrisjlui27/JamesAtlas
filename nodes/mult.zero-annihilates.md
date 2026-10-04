@@ -14,7 +14,7 @@ units: "e^{a} · 0 = 0  (a · 0 = 0)"
 gloss_check: "0"
 holds:
   classical: holds
-  J1: untested
+  J1: holds
   JH: holds
   JO: holds
   JP: holds
@@ -73,7 +73,7 @@ The ring theorem a · 0 = 0, and its standard proof: a·0 = a·(0+0) = a·0 + a�
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | untested | inherits the stratification of Inversion and the open status of □ |
+| J1 | holds | inside an instance the pole empties whatever holds it: strict, no unit step (receipt prover: ≡); the stratification of Inversion does not touch this derivation |
 | JH, JO | holds | the norm-form argument of JH-20 uses exactly this: `N(q) ≐ void` forces `[N] ≐ □` |
 | JP | holds | — |
 

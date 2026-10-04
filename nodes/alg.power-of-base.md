@@ -14,7 +14,7 @@ units: "e^b as the b-th power of e"
 gloss_check: "exp(B)"
 holds:
   classical: holds
-  J1: holds-mod-Λ
+  J1: guarded
   JH: holds
   JO: holds
   JP: holds
@@ -71,7 +71,7 @@ exp(b) = e^b — in analysis a theorem that takes some work (the series and the 
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | holds-mod-Λ | the unit on `(o)` sits under a square inside the inner instance — not absorbing; its receipt is posted, as at [[alg.log-of-base]]. (The later `[o] → ω` step is absorbing.) |
+| J1 | guarded | the unit on `(o)` sits under a square inside the inner instance. ≃ does not pass through `[ ]` (a lattice offset inside a log is not a lattice offset of the log), so the step is sound only because its receipt is void — k = 0, the content `o` on the strip — which 𝕁₁ cannot see and the reading can: the classical by-content guard survives as an import (receipt prover, `census/j1-ledger.md`) |
 | JH, JO, JP | holds | — |
 
 | reading | cell | why |

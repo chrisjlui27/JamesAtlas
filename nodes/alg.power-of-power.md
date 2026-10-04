@@ -14,7 +14,7 @@ units: "(a^b)^c = a^{bc}"
 gloss_check: A**(B * C)
 holds:
   classical: holds
-  J1: holds-mod-Λ
+  J1: guarded
   JH: replaced
   JO: replaced
   JP: holds
@@ -68,7 +68,7 @@ The power rule, as three unit steps; its second row is the law ln aᵇ = b ln a 
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | holds-mod-Λ | the second unit step sits under a square: its receipt is not absorbed by the inner instance — the first exponent law whose J1 cell is weaker than its classical one |
+| J1 | guarded | the second unit step sits under a square: its content `([B][[A]])` has receipt k = 0 on the positive domain, and that fact — not the position — is what makes the step sound; ≃ does not pass through `[ ]`, so the guard is an import of the reading, as at [[alg.power-of-base]] |
 | JH, JO | replaced | within one slice |
 | JP | holds | — |
 

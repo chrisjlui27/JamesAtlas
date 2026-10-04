@@ -14,7 +14,7 @@ units: "□ = ln 0 = −∞"
 gloss_check: "BH"
 holds:
   classical: holds
-  J1: untested
+  J1: replaced
   JH: holds
   JO: holds
   JP: holds
@@ -67,7 +67,7 @@ That −∞ is a legitimate point of the *additive* layer: the calculus's log sp
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | untested | the page-logic draft identifies "pole = Λ"; whether □ and the pole are the same object in J1 is not settled |
+| J1 | replaced | □ is the **pole**, read by polarity (LEGISLATION 30f): inside an instance it is ✠, concession — `(A □) ≡ void` strictly; outside it is Ω, the Λ-indeterminate log of nothing (ln 0 has every branch: "pole = Λ"). A receipt that reaches the pole is an opaque token that never cancels. The same form, the same three laws; a different reading of the empty square from outside |
 | JH, JO | holds | the black hole "knows about singular matrices" (JH-20) |
 | JP | holds | at a place □ sits at the end of the rung-count axis: −∞ at ∞, +∞·[p] at p — a consequence of the rung's size, not a choice (p-adic-wall) |
 

@@ -14,7 +14,7 @@ units: 0 ÷ a = 0
 gloss_check: 0
 holds:
   classical: holds
-  J1: untested
+  J1: holds
   JH: holds
   JO: holds
   JP: holds
@@ -66,7 +66,7 @@ Nothing shared among any number of people (at least one) is nothing each: the bo
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | untested | inherits the open status of □ in J1 |
+| J1 | holds | inside an instance: ✠, strict; no unit step (receipt prover: ≡) |
 | JH, JO, JP | holds | — |
 
 | reading | cell | why |

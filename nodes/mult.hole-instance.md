@@ -14,7 +14,7 @@ units: "e^{−∞} = 0"
 gloss_check: "0"
 holds:
   classical: holds
-  J1: untested
+  J1: holds
   JH: holds
   JO: holds
   JP: holds
@@ -68,7 +68,7 @@ e^{−∞} = 0 — the limit analysis takes, here one instance of Involution. It
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | untested | depends on the status of □ in J1 |
+| J1 | holds | the pole seen from inside an instance is ✠, concession: `(□) ≡ void` strictly (LEGISLATION 30f); the derivation has no unit step (receipt prover: ≡) |
 | JH, JO, JP | holds | — |
 
 | reading | cell | why |

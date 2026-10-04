@@ -14,7 +14,7 @@ units: "π = iπ / i"
 gloss_check: "pi"
 holds:
   classical: holds
-  J1: untested
+  J1: holds
   JH: replaced
   JO: replaced
   JP: untested
@@ -67,7 +67,7 @@ That π is not a primitive of the calculus but a quotient — the last of Euler'
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | untested | the J1 reading of `[J]` — the log of the half-period ω/2 — is not in the survival ledger; what `([J] <[i]>)` is there is owed |
+| J1 | holds | `[J]` is the principal log of the half-period, a definite value; the whole form is an instance and absorbs any receipt — the reading evaluates π exactly. What 𝕁₁ adds is that `[J]`, a log of non-instance content, carries the usual Λ-ambiguity, which the instance pays |
 | JH, JO | replaced | per slice the quotient `([J_u] <[u]>)` is π for every u, so π is the one slice-independent *value* of the phase sphere; but it is not a single form |
 | JP | untested | there is no π at a finite place; whether the form `([J_p] <[i_p]>)` converges at p, and to what, is untested |
 

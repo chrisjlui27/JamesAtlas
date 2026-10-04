@@ -249,7 +249,7 @@ def distance(a: Form, b: Form) -> int:
     return total
 
 
-def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000) -> list:
+def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000, allow=None) -> list:
     """One-step rewrites of `form` by `rules`, tried at this level and inside every child that differs from
     `target` (a rewrite inside a child both forms share would not bring them closer). Each differing child is
     guided toward the most similar differing child of the target."""
@@ -263,7 +263,10 @@ def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000) ->
                 if not red:
                     continue  # a redex that is nothing (every variable void) rewrites nothing into something: noise
                 res = F.substitute(to, env)
-                out.append((F.canon(rest + res), Step(r.id, direction, (), tuple(sorted(env.items())), red, res)))
+                step = Step(r.id, direction, (), tuple(sorted(env.items())), red, res)
+                if allow is not None and not allow(step):
+                    continue
+                out.append((F.canon(rest + res), step))
                 if len(out) >= limit:
                     return out
     ca, cb = Counter(form), Counter(target)
@@ -279,7 +282,7 @@ def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000) ->
         # with no counterpart of the same kind in the target the child must still be rewritten (it may be about
         # to disappear, e.g. by a counit or a cancellation): descend unguided
         y_sub = min(cands, key=lambda y: distance(x[1], y[1]))[1] if cands else ()
-        for new_sub, step in rewrites_toward(x[1], y_sub, rules, limit):
+        for new_sub, step in rewrites_toward(x[1], y_sub, rules, limit, allow=_shift_allow(allow, x[0])):
             lst = list(form)
             lst[lst.index(x)] = (x[0], new_sub)
             out.append((F.canon(tuple(lst)), Step(step.rule, step.direction, (x[0],) + step.path, step.env, step.redex, step.result)))
@@ -288,28 +291,43 @@ def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000) ->
     return out
 
 
-def licence(prev: Form, cur: Form, rules: list, max_steps: int = 14, beam: int = 8) -> Licence:
+def _shift_allow(allow, kind):
+    """The predicate sees paths from the root: prepend this level's boundary kind for the recursive call."""
+    if allow is None:
+        return None
+    return lambda step: allow(Step(step.rule, step.direction, (kind,) + step.path, step.env, step.redex, step.result))
+
+
+def licence(prev: Form, cur: Form, rules: list, max_steps: int = 14, beam: int = 8, allow=None) -> Licence:
     """Is `cur` obtained from `prev` by at most `max_steps` applications of the given rules? One step is decided
-    exactly; longer chains by a greedy beam search guided by the structural distance, run from both ends."""
+    exactly; longer chains by a greedy beam search guided by the structural distance, run from both ends.
+    `allow(step)` restricts the steps that may be used (the receipt prover grades by phases)."""
     if prev == cur:
         return Licence(True, [], "identity")
     if not rules:
         return Licence(False, [], "no rule cited")
     for a, b, back in ((prev, cur, False), (cur, prev, True)):
-        res = _greedy(a, b, rules, max_steps, beam)
+        res = _greedy(a, b, rules, max_steps, beam, _flip_allow(allow) if back else allow)
         if res is not None:
             steps = _reverse_steps(res) if back else res
             return Licence(True, steps, f"{len(steps)} step(s)")
     return Licence(False, [], f"not reached in {max_steps} step(s) by {', '.join(sorted({r.id for r in rules}))}")
 
 
-def _greedy(a: Form, b: Form, rules: list, max_steps: int, beam: int):
+def _flip_allow(allow):
+    """Searching backwards, a step is the forward step with the opposite orientation (and redex/result swapped)."""
+    if allow is None:
+        return None
+    return lambda s: allow(Step(s.rule, "←" if s.direction == "→" else "→", s.path, s.env, s.result, s.redex))
+
+
+def _greedy(a: Form, b: Form, rules: list, max_steps: int, beam: int, allow=None):
     frontier = [(a, [])]
     seen = {a}
     for _ in range(max_steps):
         scored = []
         for f, steps in frontier:
-            for g, step in rewrites_toward(f, b, rules):
+            for g, step in rewrites_toward(f, b, rules, allow=allow):
                 if g == b:
                     return steps + [step]
                 if g in seen:

@@ -14,7 +14,7 @@ units: "|r cos πt + i r sin πt| = r  (r > 0)"
 gloss_check: "R"
 holds:
   classical: holds
-  J1: holds-mod-Λ
+  J1: guarded
   JH: replaced
   JO: replaced
   JP: untested
@@ -91,7 +91,7 @@ Then the modulus of that rectangular number:
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | holds-mod-Λ | the log-law step is a bare Λ-step under a square; all others are absorbed |
+| J1 | guarded | the log-law step ([[alg.log-law]], a law with a posted receipt) is used under a square, where ≃ does not pass — an import of the reading's receipt check; every other unit step is absorbed by an instance (the prover lists eleven, with receipts k up to 6 paid on the spot) |
 | JH, JO | replaced | per slice; the quaternionic modulus has four parts |
 | JP | untested | — |
 

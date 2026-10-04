@@ -14,7 +14,7 @@ units: √(ab) = √a · √b
 gloss_check: sqrt(A*B)
 holds:
   classical: holds
-  J1: holds-mod-Λ
+  J1: guarded
   JH: replaced
   JO: replaced
   JP: guarded
@@ -68,7 +68,7 @@ The root of a product is the product of the roots: halving a sum of logs is halv
 | setting | holds | why |
 |---|---|---|
 | classical | holds | on positive content, by the seam decree |
-| J1 | holds-mod-Λ | the second row's unit step sits under a square and posts an unabsorbed receipt |
+| J1 | guarded | the second row uses [[alg.log-law]] — a law with a posted receipt — under a square; ≃ does not pass through `[ ]`, so the step is sound only by the reading (the receipt is void for positive A, B): an import |
 | JH, JO | replaced | within one slice |
 | JP | guarded | where the roots are forms at p |
 
