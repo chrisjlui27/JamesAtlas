@@ -17,6 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import forms as F
 import check as CHK  # noqa: E402
+import schema as SCH  # noqa: E402
 import nodes as N  # noqa: E402
 import census as C  # noqa: E402
 
@@ -24,10 +25,10 @@ ROOT = os.path.dirname(HERE)
 OUT = os.path.join(ROOT, "site", "index.html")
 
 BASE_IDS = {"void.page", "void.space", "N.round", "Z.angle", "mult.square", "mult.involution", "mult.distribution", "Z.inversion"}
-PRICED_TYPES = {"primitive", "axiom", "decree", "import"}
+PRICED_TYPES = {"primitive", "axiom", "decree", "import", "gap"}
 RUNG_TITLES = {
     "void": "The page", "N": "ℕ — piles", "Z": "ℤ — the angle boundary", "mult": "× — the square boundary",
-    "Q": "ℚ — division and fractional counts", "alg": "Radicals and the base", "C": "ℂ and J", "J1": "𝕁₁", "H": "ℍ (JH)", "O": "𝕆 (JO)", "S": "𝕊 (JS)",
+    "Q": "ℚ — division and fractional counts", "alg": "Radicals and the base", "C": "ℂ and J", "schema": "Schemas — one law for every n", "J1": "𝕁₁", "H": "ℍ (JH)", "O": "𝕆 (JO)", "S": "𝕊 (JS)", "J2": "𝕁₂ — the moduli of lattices",
     "analysis": "Analysis", "place": "Places (JP)", "logic": "Logic", "struct": "Structure", "F1": "F₁", "field": "The Field",
 }
 
@@ -244,9 +245,33 @@ def chips(d: dict, kind: str) -> str:
     return "".join(cells)
 
 
+def draw_env(node):
+    spec = str(node.get("schema_draw", "n=3; k=1"))
+    env = {}
+    for c in spec.split(";"):
+        if "=" in c:
+            k, v = c.split("=", 1)
+            env[k.strip()] = int(v.strip())
+    return env
+
+
 def law_block(node, nodes):
     law = str(node.get("law", ""))
     units = str(node.get("units", ""))
+    if node.get("type") == "schema":
+        env = draw_env(node)
+        try:
+            inst = SCH.expand(law, env)
+        except ValueError:
+            inst = law
+        tmpl = law
+        law = inst
+        l, r = [x.strip() for x in law.split("≐", 1)] if "≐" in law else (law, "")
+        drawing = f'{draw_form(l)}<span class="eq">≐</span>{draw_form(r)}' if r else f'<span class="lawtext">{html.escape(law)}</span>'
+        return (f'<div class="law schema"><div class="drawing">{drawing}</div>'
+                f'<div class="lawrow"><code class="canon">{html.escape(tmpl)}</code>'
+                f'<span class="units">{html.escape(units)}</span></div>'
+                f'<div class="lawrow"><span class="sugar">drawn at {html.escape(SCH.describe(env))}; checked for {html.escape(str(node.get("schema_range", "")))}</span></div></div>')
     if node.get("type") == "gap" or law.startswith("DISCIPLINE") or node.get("kind") in ("discipline", "declaration", "guard") or node.get("level") == "meta":
         cls = "law gap" if node.get("type") == "gap" else "law decree"
         return f'<div class="{cls}"><div class="lawtext">{inline(law, nodes)}</div><div class="units">{html.escape(units)}</div></div>'
@@ -324,7 +349,7 @@ def render_node(node, nodes, used_by, depth, price):
   <div class="settings">{chips(m.get("holds") or {}, "h")}<span class="sep"></span>{chips(m.get("readings") or {}, "r")}</div>
   <details class="deriv" open>
     <summary>Derivation</summary>
-    {md(secs.get("Derivation", ""), nodes, draw_first_col=True)}
+    {md(SCH.expand_derivation(secs.get("Derivation", ""), draw_env(node), keep_fixed="all", captions=True) if m.get("type") == "schema" else secs.get("Derivation", ""), nodes, draw_first_col=True)}
   </details>
   <details class="more">
     <summary>Confirms · settings · notes</summary>
@@ -457,19 +482,19 @@ def main():
 :root {{
   --bg:#f6f7f5; --bg2:#ffffff; --bg3:#eceeea; --fg:#1f2421; --fg2:#5a635e; --line:#d6dad4; --accent:#1f5f8b;
   --round:#2a6f97; --square:#b07a1a; --angle:#b23a48;
-  --t-primitive:#4c6a92; --t-axiom:#b23a48; --t-definition:#2e8b8b; --t-theorem:#3e7d3a; --t-decree:#b07a1a; --t-import:#7a5ca8; --t-gap:#7d7f7a;
+  --t-primitive:#4c6a92; --t-axiom:#b23a48; --t-definition:#2e8b8b; --t-theorem:#3e7d3a; --t-decree:#b07a1a; --t-import:#7a5ca8; --t-gap:#7d7f7a; --t-schema:#2f6f9f;
   --ok:#3e7d3a; --warn:#b07a1a; --bad:#b23a48; --mute:#8a8f8a;
   --serif:"IBM Plex Serif", Georgia, "Times New Roman", serif; --sans:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif; --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
 }}
 @media (prefers-color-scheme: dark) {{ :root:not([data-theme="light"]) {{
   --bg:#181b19; --bg2:#202421; --bg3:#2a2f2b; --fg:#e6e9e4; --fg2:#a6ada7; --line:#3a403b; --accent:#7fb3d5;
   --round:#7fb3d5; --square:#d9a84a; --angle:#e07a86;
-  --t-primitive:#8fa8cc; --t-axiom:#e07a86; --t-definition:#6fc1c1; --t-theorem:#7fbf78; --t-decree:#d9a84a; --t-import:#b39ddb; --t-gap:#9a9e98;
+  --t-primitive:#8fa8cc; --t-axiom:#e07a86; --t-definition:#6fc1c1; --t-theorem:#7fbf78; --t-decree:#d9a84a; --t-import:#b39ddb; --t-gap:#9a9e98; --t-schema:#6ea8d8;
   --ok:#7fbf78; --warn:#d9a84a; --bad:#e07a86; --mute:#767b76; color-scheme: dark }} }}
 :root[data-theme="dark"] {{
   --bg:#181b19; --bg2:#202421; --bg3:#2a2f2b; --fg:#e6e9e4; --fg2:#a6ada7; --line:#3a403b; --accent:#7fb3d5;
   --round:#7fb3d5; --square:#d9a84a; --angle:#e07a86;
-  --t-primitive:#8fa8cc; --t-axiom:#e07a86; --t-definition:#6fc1c1; --t-theorem:#7fbf78; --t-decree:#d9a84a; --t-import:#b39ddb; --t-gap:#9a9e98;
+  --t-primitive:#8fa8cc; --t-axiom:#e07a86; --t-definition:#6fc1c1; --t-theorem:#7fbf78; --t-decree:#d9a84a; --t-import:#b39ddb; --t-gap:#9a9e98; --t-schema:#6ea8d8;
   --ok:#7fbf78; --warn:#d9a84a; --bad:#e07a86; --mute:#767b76; color-scheme: dark }}
 body {{ background:var(--bg); color:var(--fg); font-family:var(--sans); font-size:15px; line-height:1.5; margin:0; }}
 .wrap {{ max-width:1040px; margin:0 auto; padding-block:20px 60px; padding-inline:16px; }}
@@ -510,7 +535,7 @@ a {{ color:var(--accent); }}
 #dag .gt {{ font-size:9.5px; fill:var(--fg2) !important; font-family:var(--sans); }}
 #dag .glab {{ font-size:9px; fill:var(--fg2); text-transform:uppercase; letter-spacing:0.08em; }}
 #dag .t-primitive rect {{ stroke:var(--t-primitive); }} #dag .t-axiom rect {{ stroke:var(--t-axiom); }} #dag .t-definition rect {{ stroke:var(--t-definition); }}
-#dag .t-theorem rect {{ stroke:var(--t-theorem); }} #dag .t-decree rect {{ stroke:var(--t-decree); }} #dag .t-import rect {{ stroke:var(--t-import); }} #dag .t-gap rect {{ stroke:var(--t-gap); }}
+#dag .t-theorem rect {{ stroke:var(--t-theorem); }} #dag .t-decree rect {{ stroke:var(--t-decree); }} #dag .t-import rect {{ stroke:var(--t-import); }} #dag .t-gap rect {{ stroke:var(--t-gap); }} #dag .t-schema rect {{ stroke:var(--t-schema); stroke-dasharray:6 3; }}
 .hint {{ font-size:0.75rem; color:var(--fg2); margin:6px 0 0; }}
 article.node {{ background:var(--bg2); border:1px solid var(--line); border-left:4px solid var(--mute); border-radius:6px; padding:14px 16px 10px; margin:12px 0; scroll-margin-top:70px; }}
 article.node.hidden-by-search {{ display:none; }}
@@ -520,7 +545,7 @@ article.node.hidden-by-search {{ display:none; }}
 .id {{ font-family:var(--mono); font-weight:500; text-decoration:none; color:var(--fg2); }}
 .bd {{ display:inline-block; padding:1px 7px; border-radius:10px; border:1px solid var(--line); color:var(--fg2); line-height:1.4; white-space:nowrap; }}
 .bd.type {{ color:#fff; border-color:transparent; font-weight:500; }}
-.bd.type.t-primitive {{ background:var(--t-primitive); }} .bd.type.t-axiom {{ background:var(--t-axiom); }} .bd.type.t-definition {{ background:var(--t-definition); }} .bd.type.t-theorem {{ background:var(--t-theorem); }} .bd.type.t-decree {{ background:var(--t-decree); }} .bd.type.t-import {{ background:var(--t-import); }} .bd.type.t-gap {{ background:var(--t-gap); }}
+.bd.type.t-primitive {{ background:var(--t-primitive); }} .bd.type.t-axiom {{ background:var(--t-axiom); }} .bd.type.t-definition {{ background:var(--t-definition); }} .bd.type.t-theorem {{ background:var(--t-theorem); }} .bd.type.t-decree {{ background:var(--t-decree); }} .bd.type.t-import {{ background:var(--t-import); }} .bd.type.t-gap {{ background:var(--t-gap); }} .bd.type.t-schema {{ background:var(--t-schema); }}
 .bd.status {{ font-weight:500; }}
 .bd.s-native, .bd.s-nativebydecree {{ color:var(--ok); border-color:var(--ok); }}
 .bd.s-imported, .bd.s-analogy, .bd.s-conjecture {{ color:var(--warn); border-color:var(--warn); }}
@@ -542,6 +567,7 @@ article.node.hidden-by-search {{ display:none; }}
 .lawrow .units {{ color:var(--fg2); font-family:var(--serif); font-style:italic; }}
 .law.gap {{ border:1px dashed var(--t-gap); background:transparent; }}
 .law.decree {{ border:1px solid var(--t-decree); }}
+.law.schema {{ border:1px dashed var(--accent); }}
 .law .lawtext {{ font-size:0.95rem; }}
 svg.form {{ overflow:visible; vertical-align:middle; flex:none; }}
 .law .drawing svg.form {{ max-width:100%; height:auto; }}
@@ -599,7 +625,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 <div class="wrap">
 <header>
   <h1>The Boundary Chart</h1>
-  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 4–6 and Appendix B, checked against the text) with the standard complex-number toolkit, modulo what the induction gap blocks (general n-th roots, general De Moivre).</p>
+  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 4–6 and Appendix B, checked against the text) with the standard complex-number toolkit — and <code>schema</code>, the laws over every n (cardinality, powers, the n-th roots of unity, De Moivre) stated once as templates, checked at every n in a range, and priced with the induction gap they lean on.</p>
   <div class="stats">
     <div class="stat"><b>{len(nodes)}</b><span>laws</span></div>
     <div class="stat"><b>{counts.get("theorem",0)}</b><span>theorems</span></div>
@@ -617,7 +643,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
     <span>● {und.get('yes',0)} · ◐ {und.get('partial',0)} · ○ {und.get('no',0)}</span>
   </div>
   <div class="legend">
-    <span><i class="sw" style="background:var(--t-primitive)"></i>primitive</span><span><i class="sw" style="background:var(--t-axiom)"></i>axiom</span><span><i class="sw" style="background:var(--t-definition)"></i>definition</span><span><i class="sw" style="background:var(--t-theorem)"></i>theorem</span><span><i class="sw" style="background:var(--t-decree)"></i>decree</span><span><i class="sw" style="background:var(--t-import)"></i>import</span><span><i class="sw" style="background:var(--t-gap);opacity:.6"></i>gap</span>
+    <span><i class="sw" style="background:var(--t-primitive)"></i>primitive</span><span><i class="sw" style="background:var(--t-axiom)"></i>axiom</span><span><i class="sw" style="background:var(--t-definition)"></i>definition</span><span><i class="sw" style="background:var(--t-theorem)"></i>theorem</span><span><i class="sw" style="background:var(--t-decree)"></i>decree</span><span><i class="sw" style="background:var(--t-import)"></i>import</span><span><i class="sw" style="background:var(--t-gap);opacity:.6"></i>gap</span><span><i class="sw" style="background:var(--t-schema)"></i>schema</span>
     <span style="margin-left:10px"><i class="sw" style="background:var(--round);border-radius:6px"></i>( ) round</span><span><i class="sw" style="background:var(--square);border-radius:0"></i>[ ] square</span><span><i class="sw" style="background:var(--angle);transform:rotate(45deg)"></i>&lt; &gt; angle</span>
   </div>
 </header>

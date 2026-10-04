@@ -27,7 +27,8 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import forms as F  # noqa: E402
-import nodes as N  # noqa: E402
+import nodes as N
+import schema as S  # noqa: E402
 import census as C  # noqa: E402
 
 ROOT = os.path.dirname(HERE)
@@ -36,7 +37,7 @@ REQUIRED = ["id", "title", "type", "level", "kind", "rung", "order", "setting", 
             "holds", "readings", "status", "verified", "known_since", "entered", "guide", "band", "uses", "see_also",
             "aliases", "concepts", "understood", "reentry"]
 NAMING_RULES = {"name"}
-ALLOWED_RULES = {"given", "medium", "substitution", "congruence", "definition", "name", "lemma"}
+ALLOWED_RULES = {"given", "medium", "substitution", "congruence", "definition", "name", "lemma", "hypothesis"}
 
 
 class Report:
@@ -92,6 +93,16 @@ def check_schema(node: N.Node, nodes, rep: Report):
     for reading, cell in (m.get("readings") or {}).items():
         if cell not in N.READING_CELLS:
             rep.fail(nid, f"bad readings cell {reading}: {cell}")
+    if m.get("type") == "schema":
+        if not m.get("schema_range"):
+            rep.fail(nid, "schema nodes need schema_range (e.g. n=2..8)")
+        if m.get("status") != "NATIVE-BY-SCHEMA":
+            rep.fail(nid, "schema nodes have status NATIVE-BY-SCHEMA")
+        if not N.parse_tables(node.sections.get("Derivation", "")):
+            rep.fail(nid, "schema nodes need a derivation table (the induction step)")
+        uses = m.get("uses") or []
+        if "N.induction" not in uses and not any(u in nodes and nodes[u].get("type") == "schema" for u in uses):
+            rep.fail(nid, "a schema cites [[N.induction]] in its hypothesis row, or rests on another schema (the price of the meta-move)")
     if m.get("type") == "gap":
         if m.get("status") != "ABSENT":
             rep.fail(nid, "gap nodes have status ABSENT")
@@ -324,7 +335,7 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
             lasts.append(prev)
     # endpoints: for an object-level theorem the tables must start at one side of the law and end at the other
     law = str(node.get("law", ""))
-    if node.get("type") == "theorem" and node.get("level") == "object" and "≐" in law and firsts and lasts:
+    if node.get("type") in ("theorem", "schema") and node.get("level") == "object" and "≐" in law and firsts and lasts:
         lhs, rhs = (parse_or_none(x.strip()) for x in law.split("≐", 1))
         if lhs is not None and rhs is not None:
             def hits(cands, target):
@@ -540,11 +551,30 @@ def seam_reliance(node: N.Node, rng=None, trials: int = 60):
     return rel
 
 
+def schema_instances(node: N.Node):
+    """The engine-checked instances of a schema node: one Node copy per parameter environment in schema_range,
+    with the law and the Derivation expanded (base-case tables kept only at their own parameter value)."""
+    out = []
+    for env in S.parse_range(node.get("schema_range", "n=2..6")):
+        meta = dict(node.meta)
+        meta["law"] = S.expand(str(node.get("law", "")), env)
+        secs = dict(node.sections)
+        secs["Derivation"] = S.expand_derivation(node.sections.get("Derivation", ""), env, keep_fixed="match")
+        out.append(N.Node(id=f"{node.id}@{S.describe(env)}", path=node.path, meta=meta, sections=secs, body=node.body))
+    return out
+
+
 def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 60):
     """`guarded_by` is mechanical (Amendment A2): a node declares guarded_by: [mult.seam-decree] iff its derivation
-    relies on a clause of the decree (seam_reliance non-empty) — and only then."""
+    relies on a clause of the decree (seam_reliance non-empty) — and only then. A schema's reliance is the union over
+    its instances."""
     nid = node.id
-    rel = seam_reliance(node, rng, trials)
+    if node.get("type") == "schema":
+        rel = set()
+        for inst in schema_instances(node):
+            rel |= seam_reliance(inst, rng, trials)
+    else:
+        rel = seam_reliance(node, rng, trials)
     declared = list(node.get("guarded_by", []) or [])
     for g in declared:
         if g not in nodes:
@@ -628,8 +658,18 @@ def main(argv=None):
         check_tables_agree(node, rep)
         check_dag(node, nodes, rep)
         check_guarded_by(node, nodes, rep, rng, max(60, args.trials))
-        check_law(node, rep, rng, args.trials)
-        check_derivations(node, rep, rng, args.trials)
+        if node.get("type") == "schema":
+            try:
+                insts = schema_instances(node)
+            except ValueError as ex:
+                rep.fail(node.id, f"schema does not expand: {ex}")
+                insts = []
+            for inst in insts:
+                check_law(inst, rep, rng, max(10, args.trials // 2))
+                check_derivations(inst, rep, rng, max(10, args.trials // 2))
+        else:
+            check_law(node, rep, rng, args.trials)
+            check_derivations(node, rep, rng, args.trials)
         check_witness(node, rep)
     if not args.no_census:
         check_census(rep)

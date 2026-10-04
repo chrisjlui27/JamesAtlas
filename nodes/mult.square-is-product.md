@@ -31,7 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: "6–8"
 uses: [mult.exponentiation, mult.cardinality, mult.multiplication]
-see_also: []
+see_also: [schema.power]
 aliases: [squaring, "a^2 = a·a", powers as repeated multiplication]
 concepts: [exponentiation, multiplication]
 understood: yes

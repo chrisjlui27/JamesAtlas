@@ -32,7 +32,7 @@ guide: shape-led
 band: "9–12"
 uses: [mult.exponentiation, N.numeral, mult.distribution, mult.unit-law, mult.involution, mult.cardinality]
 guarded_by: [mult.seam-decree]
-see_also: [C.turn-of-sum, mult.exponentiation, C.cube-root-of-unity, N.induction]
+see_also: [C.turn-of-sum, mult.exponentiation, C.cube-root-of-unity, N.induction, schema.de-moivre]
 aliases: [De Moivre, "(cos θ + i sin θ)^n"]
 concepts: [trigonometry, phase, exponentiation]
 understood: "no"
@@ -68,7 +68,7 @@ Cube a turn and you have turned three times as far. The page proves it by turnin
 
 ## Confirms
 
-(cos θ + i sin θ)^n = cos nθ + i sin nθ, at n = 3 and for every real θ — with no principal-branch condition, because the power is unfolded into a product *before* any log is taken: the only unit steps are inside the instance. It is **not** the general law: for a general numeral n the unfolding `(([[X]] [n])) ≐ ([X] … [X])` and the cardinality of n copies are schemas over n, which is the induction gap ([[N.induction]]); each n is a node like this one until then. And it is **not** true for a non-numeral exponent without a condition: `(([[X]] [N]))` with N a real count is X^N in the principal sense, e^{N·Ln X}, which equals the turn by Nt exactly when N(t − τ) is an even integer, τ being t reduced into (−1, 1] — always for integer N (which *is* De Moivre), and for every N when t is already in (−1, 1].
+(cos θ + i sin θ)^n = cos nθ + i sin nθ, at n = 3 and for every real θ — with no principal-branch condition, because the power is unfolded into a product *before* any log is taken: the only unit steps are inside the instance. It is **not** the general law: for a general numeral n the unfolding `(([[X]] [n])) ≐ ([X] … [X])` and the cardinality of n copies are schemas over n — [[schema.power]] and [[schema.cardinality]], and De Moivre for every n is [[schema.de-moivre]], all priced with the induction gap ([[N.induction]]); this node is the instance n = 3 the reader meets first. And it is **not** true for a non-numeral exponent without a condition: `(([[X]] [N]))` with N a real count is X^N in the principal sense, e^{N·Ln X}, which equals the turn by Nt exactly when N(t − τ) is an even integer, τ being t reduced into (−1, 1] — always for integer N (which *is* De Moivre), and for every N when t is already in (−1, 1].
 
 ## Settings and readings
 

@@ -11,9 +11,9 @@ from dataclasses import dataclass, field
 
 LINK = re.compile(r"\[\[([A-Za-z0-9]+\.[A-Za-z0-9-]+)\]\]")
 
-TYPES = {"primitive", "axiom", "definition", "theorem", "decree", "import", "gap"}
+TYPES = {"primitive", "axiom", "definition", "theorem", "decree", "import", "gap", "schema"}
 LEVELS = {"object", "meta"}
-STATUS = {"NATIVE", "NATIVE-BY-DECREE", "IMPORTED", "ANALOGY", "CONJECTURE", "REFUTED", "ABSENT"}
+STATUS = {"NATIVE", "NATIVE-BY-DECREE", "NATIVE-BY-SCHEMA", "IMPORTED", "ANALOGY", "CONJECTURE", "REFUTED", "ABSENT"}
 VERIFIED = ["none", "hand", "engine", "numeric", "lean"]
 GUIDE = {"shape-led", "need-led"}
 HOLDS = {"holds", "holds-mod-Λ", "guarded", "replaced", "fails", "untested"}
@@ -21,7 +21,7 @@ READING_CELLS = {"EXACT", "PARTIAL", "ANALOGY", "ABSENT", "CONVERSE", "untested"
 EQUALITIES = {"≐", "≡", "≃", "≈"}
 DOMAINS = {"natural", "positive", "negative", "real", "complex"}
 SECTIONS = ["Law", "Plain", "Derivation", "Confirms", "Settings and readings", "Refuted readings", "Notes", "Plan"]
-RUNGS = ["void", "N", "Z", "mult", "Q", "alg", "C", "J1", "H", "O", "S", "analysis", "place", "logic", "struct", "F1", "field"]
+RUNGS = ["void", "N", "Z", "mult", "Q", "alg", "C", "schema", "J1", "place", "H", "analysis", "J2", "logic", "struct", "F1", "O", "S", "field"]
 
 
 @dataclass

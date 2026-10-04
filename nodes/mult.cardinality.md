@@ -31,7 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: "3–5"
 uses: [mult.distribution, mult.unit-law, mult.involution, void.space]
-see_also: [mult.product-of-numerals, mult.square-is-product, mult.exponentiation]
+see_also: [mult.product-of-numerals, mult.square-is-product, mult.exponentiation, schema.cardinality]
 aliases: [Cardinality, repetition, scalar multiple, "n·A"]
 concepts: [multiplication, counting]
 understood: yes
@@ -64,7 +64,7 @@ Repetition itself becomes a form: n copies of `A` standing together may be writt
 
 ## Confirms
 
-n·a as a form, and with it the possibility of *fractional* and *negative* counts — `([A]<[oo]>)` will be a/2 at rung Q, and fractional counts of J give the roots of unity at rung C. In J1, cardinality `([A][n])` is read as the graded exponential `!ₙ` (contraction priced by a count). It is **not** a new axiom: James's "cardinality" is a theorem schema of Distribution and Involution.
+n·a as a form, and with it the possibility of *fractional* and *negative* counts — `([A]<[oo]>)` will be a/2 at rung Q, and fractional counts of J give the roots of unity at rung C. In J1, cardinality `([A][n])` is read as the graded exponential `!ₙ` (contraction priced by a count). It is **not** a new axiom: James's "cardinality" is a theorem schema of Distribution and Involution — this node is its first instance, n = 2, and [[schema.cardinality]] is the statement for every n with James's own induction (p. 27).
 
 ## Settings and readings
 

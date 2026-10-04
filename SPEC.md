@@ -45,7 +45,8 @@ The chart is **not** a book. It is the data a book, a game, or an encyclopedia i
 | **receipt** | in `J1` and later: the Λ-valued record of what a non-strict step dropped |
 | **price** | the set of non-derivable ancestors of a node (primitives, axioms, decrees, imports) — computed, never typed |
 | **gap** | a node of type `gap`: a concept with no form, or a form with no reading |
-| **walk** | the linear order in which the chart is read; a total order refining the dependency DAG |
+| **walk** | the linear order in which the chart is read; a total order refining the dependency DAG. Rung order (LEGISLATION 29): `void N Z mult Q alg C` · `schema` · `J1` · `place` · `H` · `analysis` · `J2` · `logic` `struct` · `F1`; `O`, `S` are a branch |
+| **schema** | a node whose law carries a count parameter (`n`, and optionally `k`); the engine instantiates it over a declared range and checks every instance; its derivation is an induction step (LEGISLATION 29) |
 
 Equality symbols, as used across the program: `≐` strict convertibility in the classical calculus; `≡` syntactic (strict) in `J1`; `≃` witnessed (receipt-bearing); `≈` evaluated. Each node declares which is in force (`equality:` field).
 
@@ -153,11 +154,24 @@ Price and used-by are **not** written in the file; the generator computes and re
 - Boundaries: `( )`, `[ ]`, `< >`. Later primitives: `[ ; ]` ordered bracket (JH), `{ }` brace (extrusion), `{n }` lens (JP). Whitespace is ignored.
 - Sugar accepted by the parser and expanded before checking: `o` = `()`, `□` = `[]`, `J` = `[<o>]`, `void` = the empty form. Numerals `n` are **not** sugar in canonical strings (write the pile) except inside `[[...]]` prose.
 - Variables: single capital letters `A`–`Z`, optionally followed by a digit. A law with variables is a **schema**; the checker instantiates it.
-- Repetition schemas ("n copies") are written with an explicit small instance in the table and the general statement in `law:` using `^n` superscript notation only in `units:`, never in a canonical string.
+- Repetition over a count ("n copies") is a `schema` node (§2.7), whose canonical strings are templates in `X^{e}` / `Σ{…}` notation; an object law writes its small instance out in full (`A A`, `J J`), never a superscript.
 
 ### 2.6 Rendering conventions (generator)
 
 Canonical strings are drawn as nested boundaries: round → rounded capsule, square → rectangle, angle → hexagon with pointed sides. Beside the drawing: the ASCII string, the units form, the standard form. Type = colour; status = badge; verified = badge; band = small tag. Refuted content is struck through. House typographic notation in prose: *italic* for a reduction (an emptying), ***bold-italic*** for an emergent operation, **bold** for a settled one, ~~strikethrough~~ for wrong, "scare-quotes" to hold a term at arm's length.
+
+---
+
+### 2.7 Schema nodes (LEGISLATION 29)
+
+A `type: schema` node states a law for every value of a count parameter. The law and the derivation rows are **templates**:
+
+- `X^{e}` — e juxtaposed copies of X, where X is a variable, `o`, `J`, `□`, or a bracketed group, and e is an expression in the parameters (`n`, `k`, `n-1`, `2k`, `2k+1`, `n+1`); `o^{n}` is the pile n.
+- `Σ{k=a..b: F}` — the juxtaposition of F for k = a, …, b, with `{k}` expressions inside F.
+- `schema_range:` in the front matter, e.g. `n=2..8` or `n=2..7; k=1..n-1`, gives the instances the engine checks. A derivation table whose header reads `| form (n = 1) | rule | note |` is the base case, instantiated only at that value; the other tables are the step, instantiated at every value in range.
+- The step may cite the schema itself at a smaller parameter with the rule `hypothesis`, and that row cites `[[N.induction]]` in its note, which puts the gap in `uses` and so in the price.
+- The engine checks each instance exactly as it checks an object law — law shadow, row equality, seam decree, `guarded_by` (the union over instances), endpoints — so a schema is verified *up to the range* and no further; that is what `NATIVE-BY-SCHEMA` records. Cards draw one instance (n = 3 by default, `schema_draw:`) and show the template beneath it; each derivation table is captioned with the values it is drawn at.
+- Only canonical cells are expanded: the `law:` string and the form column of a derivation table. Rule and note cells and the prose of the section are kept as written, so a note may say `a^{n−1}` or ω^{n+1} without being a template. A row whose instance coincides with the row before it (the pile n *is* the pile n − 1 beside a unit) is legal and says so in its note.
 
 ---
 
@@ -209,6 +223,7 @@ James 1993 is the ground truth for `classical` (the thesis is in `references/jam
 | status | meaning |
 |---|---|
 | `NATIVE` | derived inside the setting from its own axioms; or a primitive/axiom of the base three |
+| `NATIVE-BY-SCHEMA` | holds for every value of a count parameter by an induction the calculus cannot do natively: each instance in the declared range is engine-checked and the step is checked as a template; the induction gap `N.induction` is in the price |
 | `NATIVE-BY-DECREE` | the *statement* holds because a decree was issued — exclusions (`a/0 is not a form`), the decrees themselves, and the meta theorems about the decree-governed calculus (consistency; James's rules sitting inside the decree). A node whose *derivation* merely passes through a guarded unit step stays `NATIVE` and declares `guarded_by` (§5.4, Amendment A2) |
 | `IMPORTED` | used, not derived; the import is named and dated |
 | `ANALOGY` | a correspondence asserted but not an equation of forms (e.g. 24 ↔ ν) |
@@ -230,7 +245,7 @@ Mapping from the old ledgers (recorded in `aliases`/`notes`, never silently): EX
 
 ### 5.4 Price (computed; LEGISLATION 11)
 
-`price(n)` = the set of ancestors of `n` along `uses` whose type is `primitive`, `axiom`, `decree`, or `import`, together with every `guarded_by` along the way (so a guard declared by an ancestor is inherited by price, never by re-declaring the field), partitioned into:
+`price(n)` = the set of ancestors of `n` along `uses` whose type is `primitive`, `axiom`, `decree`, `import`, or `gap` (a schema cites the induction gap in its hypothesis row, so induction is priced), together with every `guarded_by` along the way (so a guard declared by an ancestor is inherited by price, never by re-declaring the field), partitioned into:
 
 - **base**: the three boundaries, the medium, and James's three axioms;
 - **extra**: everything else — further primitives, axioms, decrees, imports.
@@ -358,7 +373,7 @@ Zero dependencies beyond Python 3. `python3 tools/check.py` must exit 0 before a
 
 ## 13. Seeding and backfill (LEGISLATION 25)
 
-1. **Fresh uniform walk** of the trunk to ℂ: rungs `void`, `N`, `Z`, `mult`, `Q`, `alg`, `C`, in that order, each rung refereed before the next. Estimated: 30 (pilot) + ~45; actual, 2026-10-03: 138 laws through `C`, every rung refereed twice and `C` five times, the last against the thesis text.
+1. **Fresh uniform walk** of the trunk to ℂ: rungs `void`, `N`, `Z`, `mult`, `Q`, `alg`, `C`, in that order, each rung refereed before the next. Estimated: 30 (pilot) + ~45; actual, 2026-10-03: 138 laws through `C`, every rung refereed twice and `C` five times, the last against the thesis text. 2026-10-04: rung `schema` — seven laws over every n (145 laws), the induction gap priced on each; the walk continues in the order of LEGISLATION 29 (`J1`, `place`, `H`, `analysis`, `J2`, `logic`, `struct`, `F1`).
 2. **Backfill the branches** from the existing ledgers, keeping the old ids as aliases: `JH-1…22` (Exposition Guide App. C), `JO-1…34`, `JS-1…41`, `JP-1…` (Shell Calculus, settlements, adelic page), the exp–log ledger with its known-since column, the motivic rule card, The Field's results and prohibitions.
 3. **Place the F₁ node** and the three roads as readings on the trunk; fill `finset` cells on every trunk node.
 4. **Census** to size 4; assign or list.

@@ -32,7 +32,7 @@ guide: shape-led
 band: "9–12"
 uses: [C.cube-root-of-unity, mult.multiplication, N.unit, mult.unit-law, Q.self-division, mult.involution, mult.distribution, mult.inverse-promotion, Z.collection, Z.inversion, mult.black-hole, mult.zero-annihilates]
 guarded_by: [mult.seam-decree]
-see_also: [C.cube-root-of-unity, Q.self-division, alg.irrationality]
+see_also: [C.cube-root-of-unity, Q.self-division, alg.irrationality, schema.roots-sum]
 aliases: ["1 + ω + ω² = 0", cyclotomic relation, omega sum]
 concepts: [root, phase, one, zero]
 understood: "no"
@@ -73,7 +73,7 @@ Take two thirds of a half-turn, its double, and one: the three point in three di
 
 ## Confirms
 
-1 + ω + ω² = 0, proved as the textbook proves it — (ω − 1)(ω² + ω + 1) = ω³ − 1 = 0 and ω ≠ 1 — but with the division made explicit: the sum S is multiplied by (ω − 1)/(ω − 1), which is `o` by [[Q.self-division]], the product collapses to nothing by ω³ ≐ o ([[C.cube-root-of-unity]]) and three Inversions, and `(□ <[ω − 1]>)` is void by the hole rules. The forms do not need "no zero divisors": what carries that weight is the invertibility of ω − 1 — a reading-level fact, ω ≠ 1, of the same kind as [[alg.irrationality]] — together with `(□ C) ≐ void`. It is **not** a proof that ω is irrational or that it generates a field of degree 2: those are statements about which *other* forms equal `ω`, i.e. about the reading, like [[alg.irrationality]].
+1 + ω + ω² = 0, proved as the textbook proves it — (ω − 1)(ω² + ω + 1) = ω³ − 1 = 0 and ω ≠ 1 — but with the division made explicit: the sum S is multiplied by (ω − 1)/(ω − 1), which is `o` by [[Q.self-division]], the product collapses to nothing by ω³ ≐ o ([[C.cube-root-of-unity]]) and three Inversions, and `(□ <[ω − 1]>)` is void by the hole rules. The forms do not need "no zero divisors": what carries that weight is the invertibility of ω − 1 — a reading-level fact, ω ≠ 1, of the same kind as [[alg.irrationality]] — together with `(□ C) ≐ void`. The same cancellation for the n-th roots of unity, every n, is [[schema.roots-sum]]. It is **not** a proof that ω is irrational or that it generates a field of degree 2: those are statements about which *other* forms equal `ω`, i.e. about the reading, like [[alg.irrationality]].
 
 ## Settings and readings
 

@@ -31,7 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: "9–12"
 uses: [mult.multiplication, C.phase, mult.involution, mult.cardinality, mult.unit-law, mult.distribution, Z.inversion, C.double-phase]
-see_also: [C.cube-root-of-negation, C.double-phase, C.period-absorption]
+see_also: [C.cube-root-of-negation, C.double-phase, C.period-absorption, schema.roots-of-unity]
 aliases: [cube root of unity, ω, "e^{2πi/3}", roots of unity]
 concepts: [phase, root, one, period]
 understood: "no"
@@ -67,7 +67,7 @@ Two thirds of a half-turn, three times over, is two half-turns — a whole turn,
 
 ## Confirms
 
-ω³ = 1, and with it the pattern: the n-th roots of unity are `(([J] [2k] <[n]>))` for k = 0, …, n−1, and their multiplication is the addition of counts, with [[C.period-absorption]] reducing the count mod 2 — the cyclic group ℤ/n as the arithmetic of fractions of J under an instance. This node is the case n = 3, k = 1, written out; the general statement is a schema the chart will need the induction gap for ([[N.induction]]). It is **not** yet a theory of cyclotomic fields: that ω satisfies ω² + ω + 1 = 0 is the further law [[C.omega-sum]].
+ω³ = 1, and with it the pattern: the n-th roots of unity are `(([J] [2k] <[n]>))` for k = 0, …, n−1, and their multiplication is the addition of counts, with [[C.period-absorption]] reducing the count mod 2 — the cyclic group ℤ/n as the arithmetic of fractions of J under an instance. This node is the case n = 3, k = 1, written out; the statement for every n and k is [[schema.roots-of-unity]], which pays the induction gap ([[N.induction]]) once instead of once per n. It is **not** yet a theory of cyclotomic fields: that ω satisfies ω² + ω + 1 = 0 is the further law [[C.omega-sum]].
 
 ## Settings and readings
 

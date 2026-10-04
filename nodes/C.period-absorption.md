@@ -32,7 +32,7 @@ guide: shape-led
 band: "9–12"
 uses: [mult.involution, C.double-phase, mult.unit-law]
 guarded_by: [mult.seam-decree]
-see_also: [C.double-phase, C.phase-sign, mult.seam-decree, C.james-discipline]
+see_also: [C.double-phase, C.phase-sign, mult.seam-decree, C.james-discipline, schema.period-multiple]
 aliases: [period absorption, J-cancellation inside an instance, "e^{a+2πi} = e^a", periodicity of exp]
 concepts: [phase, period, exponential]
 understood: "no"
