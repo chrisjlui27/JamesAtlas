@@ -8,7 +8,7 @@ rung: Z
 order: 260
 setting: classical
 equality: "≐"
-domain: real
+domain: complex
 law: "<A> <B> ≐ <A B>"
 units: "(−a) + (−b) = −(a + b)"
 gloss_check: "-(A + B)"
@@ -83,5 +83,7 @@ Minus two and minus three together make minus five — you may put the two mirro
 none
 
 ## Notes
+
+Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and a law may be cited only inside its declared domain ([[mult.consistency]], Confirms); every row of its derivation is exact on ℂ×. The home band and reading are unchanged.
 
 With this law, [[Z.negative-numeral]]'s two spellings of −3 — `<ooo>` and `<o><o><o>` — are equivalent.

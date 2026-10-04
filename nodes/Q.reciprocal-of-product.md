@@ -8,7 +8,7 @@ rung: Q
 order: 610
 setting: classical
 equality: ≐
-domain: positive
+domain: complex
 law: "(<[([A] [B])]>) ≐ (<[A]> <[B]>)"
 units: 1/(ab) = (1/a)(1/b)
 gloss_check: 1/(A*B)
@@ -31,6 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: 6–8
 uses: [Q.reciprocal, mult.multiplication, mult.involution, Z.collection]
+guarded_by: [mult.seam-decree]
 see_also: [Z.collection, Q.multiply-fractions]
 aliases: [1/(ab), reciprocal of a product]
 concepts: [division, inverse]
@@ -85,4 +86,4 @@ none
 
 ## Notes
 
-—
+Domain `complex` (widened 2026-10-03, C referee pass): [[C.cosine-addition]] and [[C.sine-addition]] instantiate this law at complex turns, and a law may be cited only inside its declared domain ([[mult.consistency]], Confirms); every row of its derivation is exact on ℂ× (for the reciprocal of a product, its hidden unit step `[A] [B] → [([A] [B])]` is a seam step on complex content, so the law is now guarded by position). The home band and reading are unchanged.

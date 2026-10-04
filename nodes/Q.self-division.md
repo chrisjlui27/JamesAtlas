@@ -8,7 +8,7 @@ rung: Q
 order: 502
 setting: classical
 equality: ≐
-domain: positive
+domain: complex
 law: "([A] <[A]>) ≐ o"
 units: a ÷ a = 1
 gloss_check: 1
@@ -81,4 +81,4 @@ none
 
 ## Notes
 
-—
+Domain `complex` (widened 2026-10-03, C referee pass): [[C.omega-sum]] instantiates this law at ω − 1, and a law may be cited only inside its declared domain ([[mult.consistency]], Confirms); every row of its derivation is exact on ℂ×. The home band and reading are unchanged.

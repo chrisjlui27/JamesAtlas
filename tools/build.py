@@ -158,11 +158,15 @@ def md(text: str, nodes, draw_first_col=False) -> str:
             for i, c in enumerate(r):
                 if draw_here and i == 0:
                     raw = c.strip().strip("`").strip()
-                    cells.append(f'<td class="fcell">{draw_form(raw, "form sm")}<code>{html.escape(raw)}</code></td>')
+                    cells.append(f'<td class="fcell"><div class="draw">{draw_form(raw, "form sm")}</div><code>{html.escape(raw)}</code></td>')
                 else:
                     cells.append(f"<td>{inline(c, nodes)}</td>")
             b.append("<tr>" + "".join(cells) + "</tr>")
-        out.append(f'<div class="tw"><table><thead><tr>{h}</tr></thead><tbody>{"".join(b)}</tbody></table></div>')
+        # a derivation table keeps its rule and note columns on screen however wide a drawn form is: fixed layout,
+        # the drawing scrolls inside its own cell at legible size, the code string wraps
+        colgroup = '<colgroup><col class="c-form"><col class="c-rule"><col class="c-note"></colgroup>' if draw_here and len(head) >= 3 else ""
+        cls = ' class="deriv"' if draw_here else ""
+        out.append(f'<div class="tw"><table{cls}>{colgroup}<thead><tr>{h}</tr></thead><tbody>{"".join(b)}</tbody></table></div>')
         table.clear()
 
     for line in text.split("\n"):
@@ -565,7 +569,11 @@ summary:focus-visible {{ outline:2px solid var(--accent); }}
 table {{ border-collapse:collapse; font-size:0.86rem; width:100%; }}
 th, td {{ text-align:left; vertical-align:top; padding:5px 8px; border-bottom:1px solid var(--line); }}
 th {{ font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg2); font-weight:600; }}
-td.fcell {{ white-space:nowrap; }}
+table.deriv {{ table-layout:fixed; }}
+table.deriv col.c-form {{ width:50%; }} table.deriv col.c-rule {{ width:17%; }} table.deriv col.c-note {{ width:33%; }}
+td.fcell {{ white-space:normal; }}
+td.fcell .draw {{ overflow-x:auto; max-width:100%; padding-bottom:4px; }}
+td.fcell code {{ white-space:pre-wrap; word-break:break-all; }}
 td.fcell code {{ display:block; margin-top:2px; font-size:0.74rem; background:transparent; padding:0; color:var(--fg2); }}
 .deriv table td:nth-child(2) {{ white-space:nowrap; }}
 .nl {{ font-family:var(--mono); font-size:0.84em; text-decoration:none; border-bottom:1px solid var(--line); }}
@@ -591,7 +599,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 <div class="wrap">
 <header>
   <h1>The Boundary Chart</h1>
-  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — through the named forms and the J-discipline of James 1993, Chapters 3–5 (the Pythagorean identity, ω² + ω + 1, the conjugate and the angle-addition formulas are owed).</p>
+  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 3–5) with the standard complex-number toolkit, modulo what the induction gap blocks (general n-th roots, general De Moivre).</p>
   <div class="stats">
     <div class="stat"><b>{len(nodes)}</b><span>laws</span></div>
     <div class="stat"><b>{counts.get("theorem",0)}</b><span>theorems</span></div>

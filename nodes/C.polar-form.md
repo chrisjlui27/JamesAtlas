@@ -62,7 +62,7 @@ Any complex number is a size and a turn. The size goes in as a log, the turn as 
 
 ## Confirms
 
-The polar form r e^{iθ} with θ = πt. Multiplication of complex numbers in polar form is the addition of logs and of counts — `([R₁] ([J][T₁])) × ([R₂] ([J][T₂]))` collects under one instance by the exponential law — and division is the mirror. The angle-addition formulas of trigonometry follow from these two moves applied to the cosine and sine forms, but that computation is not yet on the chart (owed). It is **not** canonical: t and t + 2 give the same value by [[C.period-absorption]], and the form does not reduce one to the other; a principal t ∈ (−1, 1] is a choice made in the reading.
+The polar form r e^{iθ} with θ = πt. Multiplication of complex numbers in polar form is the addition of logs and of counts — `([R₁] ([J][T₁])) × ([R₂] ([J][T₂]))` collects under one instance by the exponential law — and division is the mirror. The angle-addition formulas of trigonometry follow from these two moves applied to the cosine and sine forms ([[C.turn-of-sum]], [[C.cosine-addition]], [[C.sine-addition]]); the product with moduli is [[C.polar-product]]. It is **not** canonical: t and t + 2 give the same value by [[C.period-absorption]], and the form does not reduce one to the other; a principal t ∈ (−1, 1] is a choice made in the reading.
 
 ## Settings and readings
 
