@@ -30,7 +30,7 @@ known_since: 1993 (James); the fact is ancient
 entered: 2026-10-03
 guide: shape-led
 band: 3–5
-uses: [Q.division, mult.unit-law, Z.void-inverse, void.page, mult.involution]
+uses: [Q.division, Z.void-inverse, void.page, mult.involution, mult.log-of-one]
 see_also: [Q.self-division, mult.unit-law]
 aliases: [a/1 = a]
 concepts: [division, one]
@@ -54,7 +54,7 @@ Dividing by one does nothing, because the box around one is empty and the mirror
 | form | rule | note |
 |---|---|---|
 | `([A] <[o]>)` | given | a ÷ 1, [[Q.division]] |
-| `([A] <>)` | [[mult.unit-law]] | `[o] ≐ void` |
+| `([A] <>)` | [[mult.log-of-one]] | `[o] ≐ void` |
 | `([A] void)` | [[Z.void-inverse]] | `<> ≐ void` |
 | `([A])` | [[void.page]] | — |
 | `A` | [[mult.involution]] | `([A]) ≐ A` |

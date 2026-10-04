@@ -30,9 +30,9 @@ known_since: "1993 (James); the fact is ancient"
 entered: 2026-10-03
 guide: shape-led
 band: "6–8"
-uses: [alg.root, mult.product-of-numerals, mult.involution, mult.cardinality, Z.inversion]
+uses: [alg.root, mult.involution, mult.cardinality, Z.inversion, mult.distribution, mult.log-of-one]
 guarded_by: [mult.seam-decree]
-see_also: [alg.sqrt2, alg.root-squared]
+see_also: [alg.sqrt2, alg.root-squared, mult.product-of-numerals]
 aliases: ["√4 = 2"]
 concepts: [root, natural-number]
 understood: "yes"
@@ -57,7 +57,7 @@ The square root of four is two: four is two twos, the double log collects the tw
 | form | rule | note |
 |---|---|---|
 | `(([[oooo]] <[oo]>))` | given | √4, [[alg.root]] |
-| `(([[([oo] [oo])]] <[oo]>))` | [[mult.product-of-numerals]] | 4 = 2 × 2, right to left |
+| `(([[([oo] [oo])]] <[oo]>))` | [[mult.distribution]] [[mult.log-of-one]] [[mult.involution]] | 4 = 2 × 2, right to left: the counit twice, the log of one twice, and Distribution collects the two units — `mult.product-of-numerals` computed for 2 × 2 |
 | `(([[oo] [oo]] <[oo]>))` | [[mult.involution]] | the unit; content 2 ln 2, real |
 | `(([([[oo]] [oo])] <[oo]>))` | [[mult.cardinality]] | two copies of `[oo]` are one copy with count 2 |
 | `(([[oo]] [oo] <[oo]>))` | [[mult.involution]] | the unit; content ln ln 2 + ln 2 = ln(2 ln 2), real |

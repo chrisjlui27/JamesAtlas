@@ -30,7 +30,7 @@ known_since: "1993 (James); the fact is ancient"
 entered: 2026-10-03
 guide: shape-led
 band: "6–8"
-uses: [mult.exponentiation, mult.unit-law, void.page, mult.involution]
+uses: [mult.exponentiation, void.page, mult.involution, mult.log-of-one]
 see_also: [alg.zeroth-power, mult.square-is-product]
 aliases: ["a^1 = a"]
 concepts: [exponentiation, one]
@@ -54,7 +54,7 @@ A number to the first power is itself: the box around one is empty, and the two 
 | form | rule | note |
 |---|---|---|
 | `(([[A]] [o]))` | given | a^1, [[mult.exponentiation]] |
-| `(([[A]] void))` | [[mult.unit-law]] | `[o] ≐ void` |
+| `(([[A]] void))` | [[mult.log-of-one]] | `[o] ≐ void` |
 | `(([[A]]))` | [[void.page]] | — |
 | `([A])` | [[mult.involution]] | the counit |
 | `A` | [[mult.involution]] | the counit again |

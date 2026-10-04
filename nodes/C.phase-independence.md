@@ -30,7 +30,7 @@ known_since: "1993 (James, Ch. 6 §6.2.1, p. 44, Theorem 1 'Phase Independence',
 entered: 2026-10-03
 guide: need-led
 band: "9–12"
-uses: [C.phase, mult.hole-instance, mult.dominion, Z.inversion, mult.distribution, mult.unit-law, mult.involution]
+uses: [C.phase, mult.hole-instance, mult.dominion, Z.inversion, mult.distribution, mult.involution, mult.log-of-one]
 guarded_by: [mult.seam-decree]
 see_also: [C.log-of-negative, C.phase-under-instance, C.double-phase, C.james-discipline, mult.seam-decree]
 aliases: [phase independence, phase operator, "[<(A)>] = A J", James's Theorem 1]
@@ -63,7 +63,7 @@ James's own proof (p. 44), row for row; the chart's engine adjudicates the last 
 | `[<(A)> (A [])]` | [[mult.dominion]] | `□ ≐ □ A`, right to left, inside the instance |
 | `[<(A)> (A [() <()>])]` | [[Z.inversion]] | a unit and its mirror created inside the hole |
 | `[<(A)> (A [()]) (A [<()>])]` | [[mult.distribution]] | — |
-| `[<(A)> (A) (A [<()>])]` | [[mult.unit-law]] | `[o] ≐ void` — James writes "Involution" |
+| `[<(A)> (A) (A [<()>])]` | [[mult.log-of-one]] | `[o] ≐ void` — James writes "Involution" |
 | `[(A [<()>])]` | [[Z.inversion]] | `<(A)> (A)` cancels |
 | `A [<()>]` | [[mult.involution]] | the unit `[(X)] ≐ X` at depth 0 with X = `A J`: admitted by the seam decree exactly when a + iπ is on the strip — for real a, on its closed edge. **This is the row.** For A = J the content is 2πi and the step is refused |
 

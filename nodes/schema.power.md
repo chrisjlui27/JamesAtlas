@@ -32,7 +32,7 @@ known_since: "1993 (James, Ch. 4 §4.4.2, p. 28: 'cardinality of multiplication 
 entered: 2026-10-03
 guide: need-led
 band: "9–12"
-uses: [mult.exponentiation, mult.unit-law, mult.involution, mult.distribution, N.induction, N.numeral]
+uses: [mult.exponentiation, mult.involution, mult.distribution, N.induction, N.numeral, mult.log-of-one]
 guarded_by: [mult.seam-decree]
 see_also: [mult.exponentiation, mult.square-is-product, schema.cardinality, schema.de-moivre]
 aliases: [power schema, "xⁿ = x ⋯ x"]
@@ -59,7 +59,7 @@ A to the n is a times a, n times over. The page proves it by peeling one factor 
 | form (n = 1) | rule | note |
 |---|---|---|
 | `(([[A]] [o]))` | given | a to the first, [[mult.exponentiation]] |
-| `(([[A]]))` | [[mult.unit-law]] | `[o] ≐ void` |
+| `(([[A]]))` | [[mult.log-of-one]] | `[o] ≐ void` |
 | `([A])` | [[mult.involution]] | the counit on `([[A]])`: one factor |
 
 | form | rule | note |
@@ -67,7 +67,7 @@ A to the n is a times a, n times over. The page proves it by peeling one factor 
 | `(([[A]] [o^{n}]))` | given | a to the n, [[mult.exponentiation]] |
 | `(([[A]] [o^{n-1} o]))` | definition | the pile n is the pile n − 1 beside a unit ([[N.numeral]]) — the same multiset |
 | `(([[A]] [o^{n-1}]) ([[A]] [o]))` | [[mult.distribution]] | distribute over the two counts |
-| `(([[A]] [o^{n-1}]) ([[A]]))` | [[mult.unit-law]] | `[o] ≐ void` |
+| `(([[A]] [o^{n-1}]) ([[A]]))` | [[mult.log-of-one]] | `[o] ≐ void` |
 | `(([[A]] [o^{n-1}]) [A])` | [[mult.involution]] | the counit `([[A]]) ≐ [A]` |
 | `([(([[A]] [o^{n-1}]))] [A])` | [[mult.involution]] | the unit right to left on the first factor, directly inside the instance — absorbing (content (n − 1) ln a: on the strip at n = 2, off it for n ≥ 3 when |arg a| > π/(n − 1) — a seam step) |
 | `([([A]^{n-1})] [A])` | hypothesis | the schema at n − 1: a^{n−1} is the product of n − 1 copies of `[A]` ([[N.induction]]) |

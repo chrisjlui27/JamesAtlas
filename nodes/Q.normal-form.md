@@ -30,8 +30,8 @@ known_since: "1993 (James); the arithmetic is ancient"
 entered: 2026-10-03
 guide: need-led
 band: "3–5"
-uses: [Q.rational, Z.subtraction, Q.negative-fraction, Q.add-fractions, mult.product-of-numerals, mult.inverse-promotion, mult.unit-law, Z.normal-form, Z.collection, mult.involution]
-see_also: [Q.lowest-terms, Q.cross-multiplication, Z.normal-form]
+uses: [Q.rational, Z.subtraction, Q.negative-fraction, Q.add-fractions, mult.product-of-numerals, mult.inverse-promotion, mult.unit-law, Z.collection, mult.involution, mult.distribution, mult.log-of-one, Z.inversion]
+see_also: [Q.lowest-terms, Q.cross-multiplication, Z.normal-form, mult.product-of-numerals]
 aliases: [subtracting fractions, closure of ℚ, fraction normal form]
 concepts: [fraction, normal-form, subtraction]
 understood: no
@@ -58,10 +58,10 @@ Two-thirds take away a half is a sixth — and the page gets there by moving the
 | `([oo] <[ooo]>) <([o] <[oo]>)>` | given | 2/3 and the mirror of 1/2, [[Q.rational]]: a difference by [[Z.subtraction]] |
 | `([oo] <[ooo]>) ([<o>] <[oo]>)` | [[Q.negative-fraction]] | the sign in front moves onto the numerator, right to left |
 | `([([oo] [oo]) ([<o>] [ooo])] <[ooo]> <[oo]>)` | [[Q.add-fractions]] | a common denominator: A = `oo`, B = `ooo`, C = `<o>`, D = `oo` |
-| `([oooo ([<o>] [ooo])] <[ooo]> <[oo]>)` | [[mult.product-of-numerals]] | 2 × 2 = 4 |
+| `([oooo ([<o>] [ooo])] <[ooo]> <[oo]>)` | [[mult.distribution]] [[mult.log-of-one]] [[mult.involution]] | 2 × 2 = 4: Distribution over the two units, the log of one twice, the counit twice — the computation of `mult.product-of-numerals` for another pair |
 | `([oooo <([o] [ooo])>] <[ooo]> <[oo]>)` | [[mult.inverse-promotion]] | the mirrored numerator's sign comes out of its product, right to left |
 | `([oooo <ooo>] <[ooo]> <[oo]>)` | [[mult.unit-law]] | 1 × 3 = 3 |
-| `([o] <[ooo]> <[oo]>)` | [[Z.normal-form]] | 4 − 3 = 1 |
+| `([o] <[ooo]> <[oo]>)` | [[Z.collection]] [[Z.inversion]] | 4 − 3 = 1: the mirror of the pile is the pile of mirrors, and three pairs cancel — the computation of `Z.normal-form` for another pair |
 | `([o] <[ooo] [oo]>)` | [[Z.collection]] | gather the mirrors |
 | `([o] <[([ooo] [oo])]>)` | [[mult.involution]] | the unit, right to left: the denominator as a product |
 | `([o] <[oooooo]>)` | [[mult.product-of-numerals]] | 3 × 2 = 6 |

@@ -30,7 +30,7 @@ known_since: "Wessel 1797 (length and direction); Argand 1806 (the modulus by na
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
-uses: [C.polar-form, mult.involution, C.euler-formula, mult.distribution, C.complex-number, C.modulus, C.pythagorean, mult.unit-law, alg.log-law, mult.cardinality, Z.inversion]
+uses: [C.polar-form, mult.involution, C.euler-formula, mult.distribution, C.complex-number, C.modulus, C.pythagorean, alg.log-law, mult.cardinality, Z.inversion, mult.log-of-one]
 guarded_by: [mult.seam-decree]
 see_also: [C.modulus, C.pythagorean, C.polar-form, alg.log-law]
 aliases: [modulus of the polar form, "|r e^{iθ}| = r"]
@@ -74,7 +74,7 @@ Then the modulus of that rectangular number:
 | `(([[([R] [R] [([([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)] [([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)])]) ([R] [R] [([([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)] [([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)])])]] <[oo]>))` | [[mult.involution]] | the unit right to left on `[cos] [cos]` and on `[sin] [sin]`, directly inside their instances — absorbing |
 | `(([[([R] [R] [([([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)] [([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)]) ([([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)] [([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)])])]] <[oo]>))` | [[mult.distribution]] | collect over the shared `[R] [R]`, right to left: r²(cos² + sin²) |
 | `(([[([R] [R] [o])]] <[oo]>))` | [[C.pythagorean]] | cos² + sin² ≐ 1 |
-| `(([[([R] [R])]] <[oo]>))` | [[mult.unit-law]] | `[o] ≐ void`: the square of the modulus is r² |
+| `(([[([R] [R])]] <[oo]>))` | [[mult.log-of-one]] | `[o] ≐ void`: the square of the modulus is r² |
 | `(([[R] [R]] <[oo]>))` | [[alg.log-law]] | `[([R] [R])] ≐ [R] [R]` — the log of the product, under a square where nothing absorbs: admitted because 2 ln r is real (guarded by content, inherited) |
 | `(([([[R]] [oo])] <[oo]>))` | [[mult.cardinality]] | `[R] [R] ≐ ([[R]] [oo])`: two copies of the log are the log with the count 2 |
 | `(([[R]] [oo] <[oo]>))` | [[mult.involution]] | the unit on `[([[R]] [oo])]`, directly inside the inner instance — absorbing |

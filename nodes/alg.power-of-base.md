@@ -30,7 +30,7 @@ known_since: "1993 (James); Euler for the identification"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
-uses: [mult.exponentiation, alg.base, mult.involution, mult.unit-law, void.page]
+uses: [mult.exponentiation, alg.base, mult.involution, void.page, mult.log-of-one]
 guarded_by: [mult.seam-decree]
 see_also: [alg.log-of-base, alg.exp-law]
 aliases: ["e^b", "exp as a power"]
@@ -58,7 +58,7 @@ The law that ties [[alg.base]] to [[mult.exponentiation]]: raising the base to a
 |---|---|---|
 | `(([[(o)]] [B]))` | given | e^B by [[mult.exponentiation]], with the base [[alg.base]] |
 | `(([o] [B]))` | [[mult.involution]] | the unit on `(o)`: content 1, on the strip |
-| `((void [B]))` | [[mult.unit-law]] | `[o] ≐ void` |
+| `((void [B]))` | [[mult.log-of-one]] | `[o] ≐ void` |
 | `(([B]))` | [[void.page]] | — |
 | `(B)` | [[mult.involution]] | the counit |
 

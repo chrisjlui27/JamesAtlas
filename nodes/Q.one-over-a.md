@@ -30,7 +30,7 @@ known_since: 1993 (James); the fact is ancient
 entered: 2026-10-03
 guide: shape-led
 band: 6–8
-uses: [Q.division, Q.reciprocal, mult.unit-law, void.page]
+uses: [Q.division, Q.reciprocal, void.page, mult.log-of-one]
 see_also: [Q.reciprocal]
 aliases: [1 ÷ a]
 concepts: [division, inverse]
@@ -54,7 +54,7 @@ One divided by a number is one over that number — the box around one vanishes 
 | form | rule | note |
 |---|---|---|
 | `([o] <[A]>)` | given | 1 ÷ A, [[Q.division]] |
-| `(void <[A]>)` | [[mult.unit-law]] | `[o] ≐ void` |
+| `(void <[A]>)` | [[mult.log-of-one]] | `[o] ≐ void` |
 | `(<[A]>)` | [[void.page]] | the reciprocal, [[Q.reciprocal]] |
 
 ## Confirms

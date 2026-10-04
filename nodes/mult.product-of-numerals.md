@@ -30,7 +30,7 @@ known_since: "1993 (James, §3 worked example)"
 entered: 2026-10-03
 guide: shape-led
 band: "3–5"
-uses: [mult.multiplication, mult.distribution, mult.unit-law, mult.involution, N.numeral]
+uses: [mult.multiplication, mult.distribution, mult.involution, N.numeral, mult.log-of-one]
 see_also: [mult.cardinality, N.addition]
 aliases: [3 × 2, times table, multiplication of naturals]
 concepts: [multiplication, natural-number]
@@ -58,7 +58,7 @@ Three times two really is six: the box-and-circle recipe, run on piles, gives ba
 | `([ooo] [oo])` | [[mult.multiplication]] | 3 × 2, [[N.numeral]] |
 | `([ooo] [o o])` | definition | the pile 2 is two units |
 | `([ooo] [o]) ([ooo] [o])` | [[mult.distribution]] | distribute the instance over the abstract's two units |
-| `([ooo]) ([ooo])` | [[mult.unit-law]] | `[o] ≐ void` in each factor |
+| `([ooo]) ([ooo])` | [[mult.log-of-one]] | `[o] ≐ void` in each factor |
 | `ooo ooo` | [[mult.involution]] | `([A]) ≐ A`, twice |
 | `oooooo` | definition | the pile 6 |
 

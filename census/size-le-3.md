@@ -21,7 +21,7 @@ Totals: excluded 11, hole 1, new 10, numeral 4, reduces 64, undefined 11 — 101
 | 2 | `<> <>` | `<> <>` | reduces | 0 |  |
 | 2 | `<> []` | `<> □` | reduces | □ |  |
 | 2 | `<[]>` | `<□>` | excluded | — | [[mult.hole-exclusion]] |
-| 2 | `[()]` | `[o]` | reduces | 0 |  |
+| 2 | `[()]` | `[o]` | reduces | 0 | [[mult.log-of-one]] |
 | 2 | `[<>]` | `[<>]` | reduces | □ |  |
 | 2 | `[[]]` | `[□]` | undefined | — | [[mult.hole-exclusion]] |
 | 2 | `[] []` | `□ □` | reduces | □ |  |

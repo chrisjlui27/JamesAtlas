@@ -30,7 +30,7 @@ known_since: "De Moivre 1707–1722; Euler 1748 for the exponential form"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
-uses: [mult.exponentiation, N.numeral, mult.distribution, mult.unit-law, mult.involution, mult.cardinality]
+uses: [mult.exponentiation, N.numeral, mult.distribution, mult.unit-law, mult.involution, mult.cardinality, mult.log-of-one]
 guarded_by: [mult.seam-decree]
 see_also: [C.turn-of-sum, mult.exponentiation, C.cube-root-of-unity, N.induction, schema.de-moivre]
 aliases: [De Moivre, "(cos θ + i sin θ)^n"]
@@ -58,7 +58,7 @@ Cube a turn and you have turned three times as far. The page proves it by turnin
 |---|---|---|
 | `(([[(([J] [T]))]] [ooo]))` | given | the cube of the turn: [[mult.exponentiation]] with exponent 3 ([[N.numeral]]) |
 | `(([[(([J] [T]))]] [o]) ([[(([J] [T]))]] [o]) ([[(([J] [T]))]] [o]))` | [[mult.distribution]] | distribute over the three units of the pile, twice |
-| `(([[(([J] [T]))]]) ([[(([J] [T]))]]) ([[(([J] [T]))]]))` | [[mult.unit-law]] | `[o] ≐ void`, three times |
+| `(([[(([J] [T]))]]) ([[(([J] [T]))]]) ([[(([J] [T]))]]))` | [[mult.log-of-one]] | `[o] ≐ void`, three times |
 | `([(([J] [T]))] [(([J] [T]))] [(([J] [T]))])` | [[mult.involution]] | the counit `([Y]) ≐ Y` with Y = `[X]`, three times: the cube is the triple product |
 | `(([J] [T]) ([J] [T]) ([J] [T]))` | [[mult.involution]] | the unit on each `[(([J] [T]))]`, directly inside the instance — absorbing; for t ∉ (−1, 1] the content iπt is off the strip (guarded by position) |
 | `(([([J] [T])] [oo]) ([J] [T]))` | [[mult.cardinality]] | two copies become the count 2 |

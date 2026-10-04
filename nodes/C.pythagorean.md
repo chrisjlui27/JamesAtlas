@@ -30,9 +30,9 @@ known_since: "Pythagoras, for the triangle; from the exponential forms, Euler 17
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
-uses: [mult.multiplication, C.cosine, C.sine, mult.involution, Z.collection, C.i-squared, C.phase-sign, C.phase-under-instance, mult.distribution, mult.inverse-promotion, Z.cancellation, Z.inversion, mult.cardinality, mult.product-of-numerals]
+uses: [mult.multiplication, C.cosine, C.sine, mult.involution, Z.collection, C.i-squared, C.phase-sign, C.phase-under-instance, mult.distribution, mult.inverse-promotion, Z.cancellation, Z.inversion, mult.cardinality, mult.log-of-one]
 guarded_by: [mult.seam-decree]
-see_also: [C.cosine, C.sine, C.euler-formula, Q.reciprocal-law, C.turn-of-sum]
+see_also: [C.cosine, C.sine, C.euler-formula, Q.reciprocal-law, C.turn-of-sum, mult.product-of-numerals]
 aliases: [Pythagorean identity, "cos² + sin² = 1"]
 concepts: [trigonometry, phase, one]
 understood: "no"
@@ -73,7 +73,7 @@ How-far-along squared plus how-far-up squared is one: a turn has length one. On 
 | `(<[oo]> <[oo]> [(([J] [T]))] [(<[(([J] [T]))]>)] [oooo])` | [[mult.involution]] | the unit, directly inside the instance — absorbing |
 | `(<[oo] [oo]> [(([J] [T]))] [(<[(([J] [T]))]>)] [oooo])` | [[Z.collection]] | the two mirrored counts collect |
 | `(<[([oo] [oo])]> [(([J] [T]))] [(<[(([J] [T]))]>)] [oooo])` | [[mult.involution]] | the unit right to left on `[oo] [oo]`, inside an angle directly inside the instance — absorbing |
-| `(<[oooo]> [(([J] [T]))] [(<[(([J] [T]))]>)] [oooo])` | [[mult.product-of-numerals]] | 2 × 2 = 4 — an instance of that law's schema (its stated case is 3 × 2) |
+| `(<[oooo]> [(([J] [T]))] [(<[(([J] [T]))]>)] [oooo])` | [[mult.distribution]] [[mult.log-of-one]] [[mult.involution]] | 2 × 2 = 4, inside the mirror: Distribution over the two units, the log of one twice, the counit twice — `mult.product-of-numerals` computed for 2 × 2 |
 | `([(([J] [T]))] [(<[(([J] [T]))]>)])` | [[Z.inversion]] | the count 4 and its mirror cancel: X X̄ |
 | `([(([J] [T]))] <[(([J] [T]))]>)` | [[mult.involution]] | the unit on `[(<[X]>)]`, directly inside the instance — absorbing |
 | `o` | [[Z.inversion]] | `[X] <[X]>` cancels, leaving the instance of nothing — which is `o` |

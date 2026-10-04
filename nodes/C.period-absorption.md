@@ -30,7 +30,7 @@ known_since: "1993 (James, Ch. 6 §6.3 p. 47, constraint 2: 'Allow Js to cancel 
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
-uses: [mult.involution, C.double-phase, mult.unit-law]
+uses: [mult.involution, C.double-phase, mult.log-of-one]
 guarded_by: [mult.seam-decree]
 see_also: [C.double-phase, C.phase-sign, mult.seam-decree, C.james-discipline, schema.period-multiple]
 aliases: [period absorption, J-cancellation inside an instance, "e^{a+2πi} = e^a", periodicity of exp]
@@ -59,7 +59,7 @@ Inside a circle, a whole turn is nothing. Outside one, it is a whole turn, and m
 | `(A J J)` | given | — |
 | `(A [(J J)])` | [[mult.involution]] | the unit right to left on `J J`, directly inside the instance — an absorbing position |
 | `(A [o])` | [[C.double-phase]] | `(J J) ≐ o` |
-| `(A)` | [[mult.unit-law]] | `[o] ≐ void` |
+| `(A)` | [[mult.log-of-one]] | `[o] ≐ void` |
 
 ## Confirms
 

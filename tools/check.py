@@ -29,6 +29,7 @@ sys.path.insert(0, HERE)
 import forms as F  # noqa: E402
 import nodes as N
 import schema as S  # noqa: E402
+import licences as LC  # noqa: E402
 import census as C  # noqa: E402
 
 ROOT = os.path.dirname(HERE)
@@ -704,6 +705,19 @@ def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 6
         rep.ok()
 
 
+def check_licences(node: N.Node, nodes, rep: Report, cache: dict):
+    """Every form row of a derivation must be obtained from the previous row by the rule it cites (tools/prover.py):
+    the step is *licensed*, not merely value-equal. Identity rows (medium, definition, a rule cited for a
+    regrouping) pass as identities; naming rows are not forms."""
+    if node.get("level") != "object":
+        return
+    lic, unl, skip, details = LC.check_node(node, nodes, cache)
+    for ti, i, status, msg in details:
+        if status == "UNLICENSED":
+            rep.fail(node.id, f"derivation table {ti+1} row {i+1} is not licensed by the rule it cites: {msg}")
+    rep.oks += lic
+
+
 def check_witness(node: N.Node, rep: Report):
     w = node.get("witness")
     if not w:
@@ -760,10 +774,12 @@ def main(argv=None):
     ap.add_argument("--seed", type=int, default=20261003)
     ap.add_argument("--trials", type=int, default=40)
     ap.add_argument("--no-census", action="store_true")
+    ap.add_argument("--no-licences", action="store_true", help="skip the derivation checker (tools/prover.py)")
     args = ap.parse_args(argv)
     rng = random.Random(args.seed)
     nodes = N.load_nodes(os.path.join(ROOT, "nodes"))
     rep = Report()
+    lic_cache = {}
     check_orders(nodes, rep)
     for node in sorted(nodes.values(), key=lambda n: n.get("order", 0) if isinstance(n.get("order"), int) else 0):
         check_schema(node, nodes, rep)
@@ -780,9 +796,13 @@ def main(argv=None):
             for inst in insts:
                 check_law(inst, rep, rng, max(10, args.trials // 2))
                 check_derivations(inst, rep, rng, max(10, args.trials // 2))
+                if not args.no_licences:
+                    check_licences(inst, nodes, rep, lic_cache)
         else:
             check_law(node, rep, rng, args.trials)
             check_derivations(node, rep, rng, args.trials)
+            if not args.no_licences:
+                check_licences(node, nodes, rep, lic_cache)
         check_witness(node, rep)
     if not args.no_census:
         check_census(rep)

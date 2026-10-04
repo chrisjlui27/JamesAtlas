@@ -30,7 +30,7 @@ known_since: "1993 (James); the fact is ancient"
 entered: 2026-10-03
 guide: shape-led
 band: "6–8"
-uses: [mult.exponentiation, mult.unit-law, mult.black-hole, mult.dominion, mult.hole-instance, N.unit]
+uses: [mult.exponentiation, mult.black-hole, mult.dominion, mult.hole-instance, N.unit, mult.log-of-one]
 see_also: [alg.zeroth-power, alg.first-power]
 aliases: ["1^b = 1"]
 concepts: [exponentiation, one, zero]
@@ -54,7 +54,7 @@ One to any power is one: the log of one is nothing, the log of nothing is the pi
 | form | rule | note |
 |---|---|---|
 | `(([[o]] [B]))` | given | 1^B, [[mult.exponentiation]] |
-| `(([void] [B]))` | [[mult.unit-law]] | `[o] ≐ void` |
+| `(([void] [B]))` | [[mult.log-of-one]] | `[o] ≐ void` |
 | `((□ [B]))` | [[mult.black-hole]] | `[void]` is □ |
 | `((□))` | [[mult.dominion]] | □ swallows `[B]` |
 | `(void)` | [[mult.hole-instance]] | — |

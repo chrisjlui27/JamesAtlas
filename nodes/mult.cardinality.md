@@ -30,7 +30,7 @@ known_since: "1993 (James)"
 entered: 2026-10-03
 guide: shape-led
 band: "3–5"
-uses: [mult.distribution, mult.unit-law, mult.involution, void.space]
+uses: [mult.distribution, mult.involution, void.space, mult.log-of-one]
 see_also: [mult.product-of-numerals, mult.square-is-product, mult.exponentiation, schema.cardinality]
 aliases: [Cardinality, repetition, scalar multiple, "n·A"]
 concepts: [multiplication, counting]
@@ -59,7 +59,7 @@ Repetition itself becomes a form: n copies of `A` standing together may be writt
 | `([A] [oo])` | given | A with count 2 |
 | `([A] [o o])` | definition | the pile 2 |
 | `([A] [o]) ([A] [o])` | [[mult.distribution]] | distribute over the two units |
-| `([A]) ([A])` | [[mult.unit-law]] | `[o] ≐ void` |
+| `([A]) ([A])` | [[mult.log-of-one]] | `[o] ≐ void` |
 | `A A` | [[mult.involution]] | strip the instance-of-abstract, twice; regroup by [[void.space]] |
 
 ## Confirms

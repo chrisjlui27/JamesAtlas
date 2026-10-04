@@ -30,7 +30,7 @@ known_since: 1993 (James); the rule is ancient
 entered: 2026-10-03
 guide: shape-led
 band: 9–12
-uses: [alg.root, mult.multiplication, mult.involution, mult.cardinality, Q.fraction]
+uses: [alg.root, mult.multiplication, mult.involution, mult.cardinality, Q.fraction, mult.unit-law, mult.distribution]
 see_also: [alg.nth-root, alg.power-of-power]
 aliases: [a^{m/n}, (√a)³ = a^{3/2}, rational exponents]
 concepts: [root, exponentiation, fraction]
@@ -55,7 +55,7 @@ Three copies of the square root multiply into a-to-the-three-halves: the three h
 |---|---|---|
 | `([(([[A]] <[oo]>))] [(([[A]] <[oo]>))] [(([[A]] <[oo]>))])` | given | √a × √a × √a, [[alg.root]] and [[mult.multiplication]] |
 | `(([[A]] <[oo]>) ([[A]] <[oo]>) ([[A]] <[oo]>))` | [[mult.involution]] | the unit, three times, directly under the instance |
-| `(([([[A]] <[oo]>)] [ooo]))` | [[mult.cardinality]] | three copies are one copy with count 3 |
+| `(([([[A]] <[oo]>)] [ooo]))` | [[mult.cardinality]] [[mult.unit-law]] [[mult.distribution]] | three copies are one copy with count 3: two copies become the count 2, the third gets the count 1, Distribution collects the counts |
 | `(([[A]] <[oo]> [ooo]))` | [[mult.involution]] | the unit, directly under the inner instance |
 | `(([[A]] [([ooo] <[oo]>)]))` | [[mult.involution]] | the unit right to left on `[ooo] <[oo]>`: the exponent as the fraction 3/2, [[Q.fraction]] |
 

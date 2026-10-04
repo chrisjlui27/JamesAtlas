@@ -10,7 +10,7 @@ setting: classical
 equality: "≐"
 domain: complex
 law: "([A] [o]) ≐ A"
-units: "a · 1 = a ;  ln 1 = 0"
+units: "a · 1 = a"
 gloss_check: "A"
 holds:
   classical: holds
@@ -30,9 +30,9 @@ known_since: "1993 (James)"
 entered: 2026-10-03
 guide: shape-led
 band: "3–5"
-uses: [mult.multiplication, mult.involution, void.page]
-see_also: [N.unit, mult.product-of-numerals]
-aliases: [multiplicative identity, "[o] = void", ln 1 = 0]
+uses: [mult.multiplication, mult.log-of-one, void.page, mult.involution]
+see_also: [N.unit, mult.log-of-one, mult.product-of-numerals]
+aliases: [multiplicative identity, a · 1 = a]
 concepts: [one, multiplication, logarithm]
 understood: yes
 understood_note: ""
@@ -44,7 +44,6 @@ reentry: false
 | form | units | standard |
 |---|---|---|
 | `([A] [o]) ≐ A` | — | a · 1 = a |
-| `[o] ≐ void` | — | ln 1 = 0 |
 
 ## Plain
 
@@ -54,11 +53,9 @@ Multiplying by one changes nothing, because the box around one circle is empty.
 
 | form | rule | note |
 |---|---|---|
-| `([A] [o])` | [[mult.multiplication]] | a × 1, with `o` = `()` |
-| `([A] [()])` | definition | unfold the abbreviation `o` |
-| `([A] void)` | [[mult.involution]] | `[(void)] ≐ void` — the abstract of the instance of nothing |
-| `([A])` | [[void.page]] | void is transparent |
-| `A` | [[mult.involution]] | `([A]) ≐ A` |
+| `([A] [o])` | [[mult.multiplication]] | a × 1 |
+| `([A])` | [[mult.log-of-one]] | `[o] ≐ void`: the abstract of one is nothing, and void is transparent ([[void.page]]) |
+| `A` | [[mult.involution]] | the counit `([A]) ≐ A` |
 
 ## Confirms
 
