@@ -84,4 +84,6 @@ none
 
 ## Notes
 
+James, §6.2.3 p. 46: "Interpreting (([J]<[oo]>)) as i reveals the oscillation function to be a multiplication by i"; glossary p. 63: "i — a complex number formed with a half cardinality of J". His route to i is the four-step oscillation `o → ((…)) → (J) → … `, i.e. the powers of i.
+
 The form has 10 boundaries. In the census it is the first of the fractional counts of J; the n-th roots of unity and of −1 are the others ([[C.cube-root-of-negation]], [[C.cube-root-of-unity]]).

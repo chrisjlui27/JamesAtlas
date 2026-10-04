@@ -25,7 +25,7 @@ readings:
   logic: ABSENT
 status: NATIVE-BY-DECREE
 verified: hand
-known_since: "1993 (James, Ch. 5: the J-discipline — convert [<A>] to [A] J on sight; J-cancellation only inside an instance, last); JH-3 (2026-08) for the semantic seam guard; the rung-mult collapse route and the failure of the syntactic signature: referee and witness passes 2026-10-03"
+known_since: "1993 (James, Ch. 6 §6.3 p. 47: the two constraints on J — convert [<A>] to [A] J on sight; cancel Js only within an instance boundary and after other reductions); JH-3 (2026-08) for the semantic seam guard; the rung-mult collapse route and the failure of the syntactic signature: referee and witness passes 2026-10-03"
 entered: 2026-10-03
 guide: need-led
 band: beyond
@@ -56,7 +56,7 @@ none — adjoined, as a decree about the unit direction of [[mult.involution]], 
 
 ## Confirms
 
-James's own repair of the "crack" in his calculus (Chapter 5): J-cancellation permitted only inside an instance boundary, and only after other reductions. The chart states a stronger rule one rung earlier, and semantically — James's two J-rules sit inside it as special cases ([[C.james-discipline]]) — because the collapse can be written as soon as `[<o>]` or `[[[oo]]]` can — at rung `mult`, before J is a named form — and because no syntactic signature of "off the strip" is available in the calculus (the witness `[[[oo]]]` refutes the natural one). Soundness under the decree is the theorem [[mult.consistency]]. JH's seam guard — `[(A)] → A` only when `L(exp V(A)) = V(A)` — is the same rule; J1's answer is different in kind: it does not refuse the step, it *prices* it with a receipt, and the depth-1 criterion ([[mult.involution]], Notes) says when the price is absorbed.
+James's own repair of the "crack" in his calculus (Ch. 6 §6.3, p. 47): J-cancellation permitted only inside an instance boundary, and only after other reductions — constraints he himself calls "not exhaustive". The chart states a stronger rule one rung earlier, and semantically — James's two J-rules sit inside it as special cases ([[C.james-discipline]]) — because the collapse can be written as soon as `[<o>]` or `[[[oo]]]` can — at rung `mult`, before J is a named form — and because no syntactic signature of "off the strip" is available in the calculus (the witness `[[[oo]]]` refutes the natural one). Soundness under the decree is the theorem [[mult.consistency]]. JH's seam guard — `[(A)] → A` only when `L(exp V(A)) = V(A)` — is the same rule; J1's answer is different in kind: it does not refuse the step, it *prices* it with a receipt, and the depth-1 criterion ([[mult.involution]], Notes) says when the price is absorbed.
 
 ## Settings and readings
 

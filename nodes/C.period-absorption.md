@@ -26,7 +26,7 @@ readings:
   logic: ABSENT
 status: NATIVE
 verified: engine
-known_since: "1993 (James, Chapter 5: 'J J may be cancelled only inside an instance, and last')"
+known_since: "1993 (James, Ch. 6 §6.3 p. 47, constraint 2: 'Allow Js to cancel only within an instance boundary and after applying other reductions')"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"

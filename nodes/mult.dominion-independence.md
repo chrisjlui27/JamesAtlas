@@ -84,4 +84,6 @@ none
 
 ## Notes
 
+James's own proof of Dominion (p. 28, via void multiplication p. 26) assumes that "collection is additive" — no element is idempotent, `ee ≠ e` unless e is void. The witness model has 1 + 1 = 1: it is a model of Involution and Distribution in which collection is *not* additive, and Dominion fails. So the independence result locates James's hidden assumption exactly; with Inversion in hand (Ch. 5) the assumption is unnecessary, as [[mult.zero-annihilates]] shows.
+
 Method note for the chart: this is the template for every *independence* node — a finite model found by brute force, stored under `tools/models/`, cited as `witness:` in the front matter, and re-run by the checker.

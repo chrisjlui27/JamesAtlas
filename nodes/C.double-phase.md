@@ -26,7 +26,7 @@ readings:
   logic: ABSENT
 status: NATIVE
 verified: engine
-known_since: "1993 (James, Chapter 5: J-cancellation, in its sound form)"
+known_since: "1993 (James, Ch. 6 §6.2.2 p. 45, Theorem 2 'J Cancellation' — stated there without its instance; in its sound form here)"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"

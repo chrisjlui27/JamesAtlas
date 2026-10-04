@@ -46,7 +46,7 @@ reentry: false
 |---|---|---|
 | `([R] ([J] [T]))` | — | r · e^{iπt}, the angle t measured in half-turns |
 
-The log of a modulus beside a count of J, under one instance (a negative R folds its sign into the phase: `[R]` then carries a J of its own). James measures angles in units of J — half-turns — which is why no π appears in the form.
+The log of a modulus beside a count of J, under one instance (a negative R folds its sign into the phase: `[R]` then carries a J of its own). The chart measures angles as counts of J — half-turns — which is why no π appears in the form; James's own trigonometry (p. 49) measures in radians, writing e^{ix} as `(([x] ([J] <[oo]>)))`, x times i; the two conventions differ by the factor π = `([J] <[i]>)`.
 
 ## Plain
 

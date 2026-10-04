@@ -91,4 +91,4 @@ none
 
 ## Notes
 
-—
+James, p. 46: "other cardinalities of J can be taken to produce other periodicities, forming the roots of unity" — stated, not derived, in the thesis.

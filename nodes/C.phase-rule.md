@@ -26,13 +26,13 @@ readings:
   logic: ABSENT
 status: NATIVE
 verified: engine
-known_since: "1993 (James, Chapter 4: 'negative cardinality')"
+known_since: "1993 (James: negative cardinality, Ch. 5 §5.5.1 p. 40; <a> = ([a][<o>]) via phase independence, Ch. 6 p. 44; glossary p. 64: '(J[A]) = <A>')"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
 uses: [C.phase, void.page, Z.inversion, mult.unit-law, mult.distribution, mult.black-hole, mult.zero-annihilates]
 see_also: [C.log-of-negative, mult.cardinality, mult.product-of-negatives]
-aliases: [phase rule, negative cardinality, "−a = a · (−1)", "<A> = ([A] J)"]
+aliases: [phase rule, negative cardinality, "−a = a · (−1)", "<A> = ([A] J)", "(J[A]) = <A>"]
 concepts: [phase, negation, multiplication]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
@@ -45,7 +45,7 @@ reentry: false
 |---|---|---|
 | `<A> ≐ ([A] J)` | `<A> ≐ ([A] [<o>])` | −a = a · (−1) = e^{ln a + iπ} |
 
-Negation is multiplication by −1: the mirror is a *count* of −1, read through [[mult.cardinality]] with the count mirrored. Equivalently, negation is a half-turn of phase. James calls this negative cardinality; the chart takes it as the phase rule.
+Negation is multiplication by −1: the mirror is a *count* of −1, read through [[mult.cardinality]] with the count mirrored. Equivalently, negation is a half-turn of phase. James calls this negative cardinality (Ch. 5 §5.5.1, p. 40) and, in the glossary (p. 64), says J "serves as the inverse when placed in the modifier form, (J[A]) = <A>"; he derives it from phase independence (p. 44). The chart takes it as the phase rule and derives it without any unit step.
 
 ## Plain
 

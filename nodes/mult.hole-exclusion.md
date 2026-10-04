@@ -79,4 +79,6 @@ Division by zero as *the* exclusion of arithmetic, and ln(−∞) beside it. The
 
 ## Notes
 
+Against the thesis: the exclusion of `<□>` is James's own — rule 3 of the three-boundary calculus, p. 31 ("if b belongs to B and b ≠ □, then <b> belongs to B … <□> is undefined"), motivated at §5.4.3 p. 39 ("Dominion, a□ = □, loses information and necessitates excluding <□> from the calculus"). The exclusion of `[□]` is the chart's: James lists `[□]` among the elements (p. 22) and sets nestings of the abstract aside as "beyond the scope of this thesis" (p. 21); the pilot referee pass showed that admitting it collapses the calculus (Route A), so the chart excludes it by decree.
+
 Lui's open question (p-adic-wall thread) whether `[ ]` can be split into ±∞ and what that does to `<[ ]>` is a *plan* against this decree; it is recorded there, not here, until it produces a form.

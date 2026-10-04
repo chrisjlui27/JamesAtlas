@@ -82,4 +82,6 @@ none
 
 ## Notes
 
+James, p. 47 and p. 50: "The base of these operations is not constrained by the calculus … An equality could be introduced that defined this to be non-transcendental, such as base two with the definition `(o) ≐ oo`. Everything in the calculus would still hold as none of it is dependent on this value." — the chart's base finding, in his words; `(o)` is his e (p. 48, glossary p. 63), "incommensurable with any other boundary construction".
+
 The census's size-3 constants `(<o>)` (1/e) and `<(o)>` (−e) are the chart's smallest illustration of the JH Depth Principle: the same two boundaries, nested the other way, name different numbers. Both are assigned to this node; `(o) o` likewise.

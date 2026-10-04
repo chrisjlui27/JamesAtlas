@@ -26,7 +26,7 @@ readings:
   logic: ABSENT
 status: NATIVE-BY-DECREE
 verified: engine
-known_since: "1993 (James, Chapter 5: the 'crack' and its repair); the comparison with the semantic guard: this chart, 2026-10-03"
+known_since: "1993 (James, Ch. 6 §6.3 pp. 46–47: multiple value, and the two constraints, 'not exhaustive but they do approximate'); the comparison with the semantic guard: this chart, 2026-10-03"
 entered: 2026-10-03
 guide: need-led
 band: beyond
@@ -45,7 +45,7 @@ reentry: false
 |---|---|---|
 | rule 1, `[<A>] → [A] J` ⊂ the content clause (and only for Im Ln A ∈ (−π, 0]); rule 2, J-cancellation inside an instance ⊂ the position clause; decree ⊋ rules | — | the J-discipline is a special case of the seam decree, not the same rule |
 
-James found that his three axioms, read naively, prove `J J ≐ void` and from it collapse the calculus (the "crack", Chapter 5), and repaired it with two rules of procedure about J. The chart's repair is a decree about the unit step, stated two rungs earlier and without mentioning J ([[mult.seam-decree]]). This node records how the two relate: everything James's rules *soundly* admit, the decree admits — a restriction of rule 1 and all of rule 2 — and the decree refuses more, including a route to the crack that the J-rules, as the chart has them, do not close.
+James found that his three axioms, read naively, prove `J J ≐ void` — his Theorem 2 of Chapter 6 (p. 45), derived from his Theorem 1, *phase independence* `[<(A)>] ≐ A J` (p. 44), whose proof ends with the unit step at depth 0 on content `A J` — and that this gives J an ambiguous sign and an ambiguous cardinality (§6.3, pp. 46–47: `J = <J>`, `void = J J = J J J J = …`), which "undermines the calculus". He repaired it with two constraints of procedure about J (p. 47), adding that they "are not exhaustive but they do approximate the constraints on collapsing complex numbers to radian values within complex exponentials". The chart's repair is a decree about the unit step, stated two rungs earlier and without mentioning J ([[mult.seam-decree]]). This node records how the two relate: everything James's rules *soundly* admit, the decree admits — a restriction of rule 1 and all of rule 2 — and the decree refuses more, including a route to the crack that the J-rules, as the chart has them, do not close.
 
 ## Plain
 
@@ -53,7 +53,7 @@ James patched the crack by giving rules for handling J. The chart patched it by 
 
 ## Derivation
 
-The J-rules compared here are the chart's paraphrase of Chapter 5 (page citations owed); the comparison is against that paraphrase.
+The J-rules compared here are James's two constraints of Ch. 6 §6.3, p. 47, quoted: (1) "*Convert inverse boundaries to Js.* Whenever the inverse boundary is wrapped by the abstract boundary, as `[<A>]`, pull the inverse out, as `[A] J`." (2) "*Limit J cancellation.* Allow Js to cancel only within an instance boundary and *after* applying other reductions." The thesis is in the repository (`references/james-1993-calculus-of-number.pdf`).
 
 | statement | rule | note |
 |---|---|---|
@@ -65,7 +65,7 @@ The J-rules compared here are the chart's paraphrase of Chapter 5 (page citation
 
 ## Confirms
 
-That the classical setting of the chart — three boundaries, three axioms, two decrees — contains the classical James algebra of the thesis: three boundaries, three axioms, J, and the J-discipline. The discipline is not a fourth axiom and not a convention about J; it is a procedural shadow of the condition under which the unit step is *harmless* — true on the strip, absorbed inside an instance — and J is where the condition first bites: `<J>` (four boundaries, value −iπ) is the smallest form whose content leaves the half-open strip, and `J J` the smallest whose content leaves it by a whole period. What this node does **not** show: that the two repairs are equivalent (they are not — the decree is strictly stronger, and rule 1 is refuted as stated); that the decree is the *only* repair (J1 prices the step with a receipt instead of refusing it, and JH guards one orientation semantically); or that the decree follows from the axioms (it is adjoined, in both tellings). Nor does it certify James's own text: the rules compared are the chart's paraphrase, and the thesis may restrict Involution-down as well — the page citations are owed.
+That the classical setting of the chart — three boundaries, three axioms, two decrees — contains the classical James algebra of the thesis: three boundaries, three axioms, J, and the J-discipline. The discipline is not a fourth axiom and not a convention about J; it is a procedural shadow of the condition under which the unit step is *harmless* — true on the strip, absorbed inside an instance — and J is where the condition first bites: `<J>` (four boundaries, value −iπ) is the smallest form whose content leaves the half-open strip, and `J J` the smallest whose content leaves it by a whole period. What this node does **not** show: that the two repairs are equivalent (they are not — the decree is strictly stronger, and rule 1 is refuted as stated); that the decree is the *only* repair (J1 prices the step with a receipt instead of refusing it, and JH guards one orientation semantically); or that the decree follows from the axioms (it is adjoined, in both tellings). The text has now been checked against the thesis: James's constraints are exactly the two quoted above (p. 47); he does not restrict Involution-down, and his own proof of phase independence (p. 44) takes the unguarded unit step at depth 0 as its last line — which is where the crack is, in the chart's reading ([[C.phase-independence]]).
 
 ## Settings and readings
 
@@ -92,4 +92,4 @@ The refutations of `J J ≐ void` and `J ≐ <J>` as depth-0 laws, and of the on
 
 ## Notes
 
-The witness `tools/models/j_discipline.py` tests four facts of the ℂ reading and one behaviour of the engine (`check_seam`, the chart's implementation of the decree); it witnesses the rows above, not a theorem about two derivation systems — that would need James's rules formalized from the text. James 1993, Chapter 5, page citations are owed (the chart's copy of the thesis is the 2026 transcription). The 2026-10-01 and 2026-10-03 sessions found the collapse route independently and legislated the decree at rung `mult` under referee pressure; this node closes that loop by placing James's own rules inside it.
+The witness `tools/models/j_discipline.py` tests four facts of the ℂ reading and one behaviour of the engine (`check_seam`, the chart's implementation of the decree); it witnesses the rows above, not a theorem about two derivation systems — that would need James's rules formalized from the text. Citations are to J. M. James, *A Calculus of Number Based on Spatial Forms*, M.S. thesis, University of Washington, 1993 — Ch. 6 "Phase", pp. 43–50; the thesis is in `references/`. The 2026-10-01 and 2026-10-03 sessions found the collapse route independently and legislated the decree at rung `mult` under referee pressure; this node closes that loop by placing James's own rules inside it.

@@ -198,7 +198,7 @@ Readings are how the moduli-stack idea (LEGISLATION 17) enters the chart without
 
 ### 4.3 Bricken (LEGISLATION 9)
 
-James 1993 is the ground truth for `classical`. Bricken's constructs (`[[ ]]` as complex infinity, unit-ensemble presentations, parallel forms) enter as **attributed notes** inside the node they vary, tagged by volume (*Iconic Arithmetic* I/II/III), and become nodes only where they add a law James does not have.
+James 1993 is the ground truth for `classical` (the thesis is in `references/james-1993-calculus-of-number.pdf`; its page numbers are cited in `known_since` and Notes). Bricken's constructs (`[[ ]]` as complex infinity, unit-ensemble presentations, parallel forms) enter as **attributed notes** inside the node they vary, tagged by volume (*Iconic Arithmetic* I/II/III), and become nodes only where they add a law James does not have.
 
 ---
 
@@ -358,7 +358,7 @@ Zero dependencies beyond Python 3. `python3 tools/check.py` must exit 0 before a
 
 ## 13. Seeding and backfill (LEGISLATION 25)
 
-1. **Fresh uniform walk** of the trunk to ℂ: rungs `void`, `N`, `Z`, `mult`, `Q`, `alg`, `C`, in that order, each rung refereed before the next. Estimated: 30 (pilot) + ~45; actual, 2026-10-03: 136 laws through `C`, every rung refereed twice and `C` three times.
+1. **Fresh uniform walk** of the trunk to ℂ: rungs `void`, `N`, `Z`, `mult`, `Q`, `alg`, `C`, in that order, each rung refereed before the next. Estimated: 30 (pilot) + ~45; actual, 2026-10-03: 138 laws through `C`, every rung refereed twice and `C` five times, the last against the thesis text.
 2. **Backfill the branches** from the existing ledgers, keeping the old ids as aliases: `JH-1…22` (Exposition Guide App. C), `JO-1…34`, `JS-1…41`, `JP-1…` (Shell Calculus, settlements, adelic page), the exp–log ledger with its known-since column, the motivic rule card, The Field's results and prohibitions.
 3. **Place the F₁ node** and the three roads as readings on the trunk; fill `finset` cells on every trunk node.
 4. **Census** to size 4; assign or list.

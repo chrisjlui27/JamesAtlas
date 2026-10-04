@@ -45,7 +45,7 @@ reentry: false
 |---|---|---|
 | `([J] <[(([J] <[oo]>))]>)` | `([J] <[i]>)` | iπ / i = π |
 
-π is J with the i taken out: the quotient of two phases, and a real number.
+π is J with the i taken out: the quotient of two phases, and a real number. James's own form (Table 6.1, p. 49) is `(J [J] ([J] <[oo]>))`, "−1 × i × iπ"; the two agree, since `<[i]>` and `J ([J] <[oo]>)`-less-`[J]` differ by a whole period inside the instance — see Notes.
 
 ## Plain
 
@@ -84,4 +84,4 @@ none
 
 ## Notes
 
-—
+James's π (p. 49, glossary p. 64) is `(J [J] ([J] <[oo]>))` = (−1)·(iπ)·i, read as "the radian unit": he insists it "treats it not as a real number but as the radian unit. Its semantic value comes out of this algebraic construction and has no relation to its numerical value of π = 3.14159…" — the chart's "π is read, not computed" in his words. The two forms are equal: `([J] <[i]>)` has `<[i]>` = −iπ/2 beside `[J]`, and James's has `J H` = 3iπ/2 beside `[J]`, with H = `([J] <[oo]>)`; the difference is a whole period, absorbed by the instance ([[C.period-absorption]] with `<H> J J ≐ <H> H H J ≐ H J` by [[Q.fractional-cardinality]]). Writing that equality as rows is owed.

@@ -599,7 +599,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 <div class="wrap">
 <header>
   <h1>The Boundary Chart</h1>
-  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 3–5, as the chart paraphrases them) with the standard complex-number toolkit, modulo what the induction gap blocks (general n-th roots, general De Moivre).</p>
+  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 4–6 and Appendix B, checked against the text) with the standard complex-number toolkit, modulo what the induction gap blocks (general n-th roots, general De Moivre).</p>
   <div class="stats">
     <div class="stat"><b>{len(nodes)}</b><span>laws</span></div>
     <div class="stat"><b>{counts.get("theorem",0)}</b><span>theorems</span></div>

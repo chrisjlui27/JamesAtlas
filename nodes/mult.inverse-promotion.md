@@ -96,4 +96,4 @@ none
 
 ## Notes
 
-—
+James's Theorem 3 (Ch. 5 §5.3.1, p. 34), stated "for all A, B, C ∈ B, B ≠ □", proved by void multiplication, Inversion, Distribution, Inverse — the same route as the chart's first table. The side condition B ≠ □ is the chart's exclusion of `<□>` ([[mult.hole-exclusion]]). A second proof through phase independence is given at p. 44.

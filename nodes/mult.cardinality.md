@@ -88,4 +88,6 @@ none
 
 ## Notes
 
+James's Theorem 1 (Ch. 4 §4.4, p. 27): "Multiple references in the same context may be reduced to a single reference with multiple units signifying its quantity, as A…A = ([A][o…o])", proved for 2 and then by the induction step `A…AA = ([A][o…o])([A][o]) = ([A][o…oo])` — the schema over n is an induction in the thesis too, which is the chart's [[N.induction]] gap. "Cardinality applies at any depth" (p. 27) is the congruence rule, and "everything has a count of one, A = ([A]) = ([A][o])" is [[mult.unit-law]] read backwards.
+
 Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and under the chart's citation discipline ([[mult.consistency]], Confirms) a law may be cited only inside its declared domain; every row of its derivation is exact on ℂ×, as the engine confirms. The law's home band and reading are unchanged.

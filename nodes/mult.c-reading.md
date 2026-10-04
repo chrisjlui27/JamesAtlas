@@ -25,7 +25,7 @@ readings:
   logic: ABSENT
 status: IMPORTED
 verified: hand
-known_since: "Euler, for exp and log; 1993 (James, Chapter 5) for the reading of the three boundaries"
+known_since: "Euler, for exp and log; 1993 (James, Ch. 6 §6.4 pp. 47–48) for the reading of instance and abstract as e^x and ln x"
 entered: 2026-10-03
 guide: need-led
 band: beyond
@@ -56,7 +56,7 @@ none — adjoined, as an import. It interprets the three boundaries [[N.round]],
 
 ## Confirms
 
-That the classical calculus has a model: this is the content of James's Chapter 5 ("the calculus is sound in ℂ"). It is **not** native — the calculus does not construct e or ln; it names them — and the chart counts it as a price wherever a meta-claim leans on it ([[mult.consistency]]). The engine (`tools/forms.py`) is this reading mechanized: a derivation step is checked by evaluating both forms here.
+That the classical calculus has a model: this is the content of James's Ch. 6 §6.4 (pp. 47–48), where instance and abstract are read as e^x and ln x — a reading James offers, with the remark (p. 47, p. 50) that the base is not constrained by the calculus. It is **not** native — the calculus does not construct e or ln; it names them — and the chart counts it as a price wherever a meta-claim leans on it ([[mult.consistency]]). The engine (`tools/forms.py`) is this reading mechanized: a derivation step is checked by evaluating both forms here.
 
 ## Settings and readings
 

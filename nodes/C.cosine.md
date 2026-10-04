@@ -26,7 +26,7 @@ readings:
   logic: ABSENT
 status: NATIVE
 verified: engine
-known_since: "Euler 1748 for cos as half the sum of the exponentials; 1993 (James) for its spelling"
+known_since: "Euler 1748 for cos as half the sum of the exponentials; 1993 (James, Ch. 6 §6.5.3 p. 49) for its spelling in forms, in radians"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
@@ -45,7 +45,7 @@ reentry: false
 |---|---|---|
 | `([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)` | — | cos πt = (e^{iπt} + e^{−iπt}) / 2 |
 
-Write X for the pure phase `(([J] [T]))`, a turn of t half-turns. Then the cosine is (X + 1/X) ÷ 2: the turn and its reverse added, halved. Cosine is *defined* here, from the phase; it is not a ratio of sides.
+Write X for the pure phase `(([J] [T]))`, a turn of t half-turns. Then the cosine is (X + 1/X) ÷ 2: the turn and its reverse added, halved. Cosine is *defined* here, from the phase; it is not a ratio of sides. James's cosine (p. 49) is the same construction in radians: `([(([x] ([J] <[oo]>))) ((<[x]> ([J] <[oo]>)))] <[oo]>)`, with e^{ix} as the instance of x times i — the chart's half-turn count T is his x/π.
 
 ## Plain
 

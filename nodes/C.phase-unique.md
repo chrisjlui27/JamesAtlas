@@ -26,7 +26,7 @@ readings:
   logic: ABSENT
 status: NATIVE
 verified: engine
-known_since: "1993 (James, Chapter 4: 'the unique stable configuration that uses each of the three boundaries exactly once')"
+known_since: "1993 (James, Ch. 6 §6.2, p. 44: J 'uses all three boundaries exactly once. All other legal configurations of three different boundaries reduce to void'; the sixth, (<[]>), undefined)"
 entered: 2026-10-03
 guide: shape-led
 band: beyond

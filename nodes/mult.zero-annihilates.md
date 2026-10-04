@@ -90,6 +90,8 @@ none
 
 ## Notes
 
+James proves "void multiplication" `([a][]) = void` (p. 26) from Distribution plus the principle that collection has no idempotents; the chart proves it from Inversion. The two routes come apart in the 3-element model of [[mult.dominion-independence]].
+
 Domain `complex` (widened 2026-10-03, C referee pass): rung C instantiates this law at complex content, and a law may be cited only inside its declared domain ([[mult.consistency]], Confirms); the law is exact on ℂ ∪ {□}. The home band and reading are unchanged.
 
 Tagged *need-led*: the shape of the forms gives the idempotent for free; arithmetic insists on void, and insisting costs an axiom.

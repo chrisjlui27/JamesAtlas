@@ -25,7 +25,7 @@ readings:
   logic: ABSENT
 status: ABSENT
 verified: hand
-known_since: "James 1993, Chapter 5 (the two cracks in J, per Book One's reading — page to be cited); the gap as stated: 2026-10-03"
+known_since: "James 1993, Ch. 6 §6.3 pp. 46–47 ('J has ambiguous sign and ambiguous (multi-valued) cardinality'; the constraints 'approximate the constraints on collapsing complex numbers to radian values'); the gap as stated: 2026-10-03"
 entered: 2026-10-03
 guide: need-led
 band: beyond

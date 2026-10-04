@@ -26,7 +26,7 @@ readings:
   logic: ABSENT
 status: NATIVE
 verified: engine
-known_since: "1993 (James, Chapter 4)"
+known_since: "1993 (James, Ch. 6 §6.2.1 p. 45: 'the inverse jumping inside of the instance boundary', <(A)> = (A J))"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"

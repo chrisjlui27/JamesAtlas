@@ -26,7 +26,7 @@ readings:
   logic: ABSENT
 status: NATIVE
 verified: engine
-known_since: "1993 (James: 'convert [<A>] to [A] J on sight'); its failure for negative A: alg referee pass 2026-10-03"
+known_since: "1993 (James, Ch. 6 p. 45: 'the inverse jumping outside of the abstract boundary', [<A>] = [A] J; and §6.3 p. 47, constraint 1: convert inverse boundaries to Js on sight); its failure for negative A: alg referee pass 2026-10-03"
 entered: 2026-10-03
 guide: need-led
 band: "9–12"

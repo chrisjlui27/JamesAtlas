@@ -26,7 +26,7 @@ readings:
   logic: ABSENT
 status: NATIVE
 verified: engine
-known_since: "1993 (James, Chapter 4); the question of ln(−1) was posed in the Leibniz–Bernoulli exchange of 1712–13, taken up by Euler and Bernoulli in 1727–31, and settled by Euler as iπ plus the other branches in E168 (1747/1751)"
+known_since: "1993 (James, Ch. 6 §6.2, p. 43: J ≐ [<o>], the phase element); the question of ln(−1) was posed in the Leibniz–Bernoulli exchange of 1712–13, taken up by Euler and Bernoulli in 1727–31, and settled by Euler as iπ plus the other branches in E168 (1747/1751)"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
@@ -45,7 +45,7 @@ reentry: false
 |---|---|---|
 | `[<o>]` | `J` | ln(−1) = iπ |
 
-The abstract of the mirrored unit: the logarithm of −1. James names it J. It is the form the whole program turns on — the one place the three boundaries meet once each and survive ([[C.phase-unique]]).
+The abstract of the mirrored unit: the logarithm of −1. James names it J — "the inverse boundary … separated from what it previously contained, into the encapsulated form `[<o>]`" (p. 43) — and reads it as "the radian value iπ". It is the form the whole program turns on — the one place the three boundaries meet once each and survive ([[C.phase-unique]]).
 
 ## Plain
 

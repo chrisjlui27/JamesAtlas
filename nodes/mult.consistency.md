@@ -26,7 +26,7 @@ readings:
 status: NATIVE-BY-DECREE
 verified: engine
 witness: tools/models/consistency_check.py
-known_since: "1993 (James, Chapter 5, soundness in ℂ under the J-discipline); the two collapse routes and this scoping: referee passes 2026-10-03"
+known_since: "1993 (James, Ch. 6 §6.3 p. 47: the constraints 'approximate the constraints on collapsing complex numbers to radian values within complex exponentials' — soundness asserted, not proved); the two collapse routes and this scoping: referee passes 2026-10-03"
 entered: 2026-10-03
 guide: need-led
 band: beyond

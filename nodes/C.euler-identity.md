@@ -82,4 +82,4 @@ none
 
 ## Notes
 
-—
+James, p. 48: "Interpreting the abstract boundary as the natural logarithm makes J = ln −1 = iπ. This interpretation fulfills Euler's formula translated to J wrapped by instance: 1 + e^{iπ} = 0 versus o([<o>]) ="; and Appendix A.5, p. 73: "Euler's formula works because the form [<o>] was defined that way."

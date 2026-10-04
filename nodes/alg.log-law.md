@@ -83,4 +83,4 @@ none
 
 ## Notes
 
-—
+James states this law unrestricted — p. 48 and Appendix A.5 p. 72, "These logarithmic formulas reduce directly by involution" — which is true as a formal move and false in ℂ off the strip; the chart's `domain: positive` and guard are the restriction his reading needs.
