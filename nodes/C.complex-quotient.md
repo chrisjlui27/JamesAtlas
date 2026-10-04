@@ -75,7 +75,7 @@ To divide by a complex number, multiply top and bottom by its flipped twin: the 
 
 ## Confirms
 
-The rectangular formula for a quotient — the only law of the rung with four real variables. What the derivation shows is that division needs nothing new: `([z] <[w]>)` was a form at rung `Q` for any nonzero w, and the "realize the denominator" trick is one Inversion, one Collection, and the modulus identity. It is **not** a definition of division in ℂ — division was defined once, at [[Q.division]], for all forms — and it is **not** needed to *compute* with the chart's forms; it is needed to *read* them in the way the textbook does.
+The rectangular formula for a quotient. What the derivation shows is that division needs nothing new: `([z] <[w]>)` was a form at rung `Q` for any nonzero w, and the "realize the denominator" trick is one Inversion, one Collection, and the modulus identity. It is **not** a definition of division in ℂ — division was defined once, at [[Q.division]], for all forms — and it is **not** needed to *compute* with the chart's forms; it is needed to *read* them in the way the textbook does.
 
 ## Settings and readings
 
@@ -99,4 +99,4 @@ none
 
 ## Notes
 
-Guarded by position (Amendment A2). Two kinds of seam step: the unit right to left on `[w] [w̄]`, inside an angle directly inside the instance, whose content is 2 ln|w| + 2πi exactly at d = 0 with c < 0 (for every d ≠ 0 the two arguments cancel and the content is real); and the units on `[([B] [i])]` and `[([D] [i])]`, whose content ln b + iπ/2 is ln|b| + 3πi/2 for negative b. The instances absorb both, and the law carries the decree in its price while its statement is exact in ℂ.
+Guarded by position (Amendment A2). The seam steps the engine finds are the units on `[([B] [i])]` and `[([D] [i])]` (content ln b + iπ/2, which is ln|b| + 3πi/2 for negative b) and the right-to-left units on the real products `[A] [C]`, `[A] [D]`, `[B] [C]`, `[B] [D]` (content 2πi + ln|ac| when both factors are negative); all sit directly inside instances. The unit right to left on `[w] [w̄]` is free on the sampled domain: the two arguments cancel for every d ≠ 0, and d = 0 — where the content would be 2 ln|w| + 2πi for c < 0 — is not in the domain, since `[D]` would be the hole. For the same reason 1/(c + di) is not an instance of this law (b = 0 is the hole): the reciprocal is `(<[w]>)` directly, and its rectangular form follows by the same rows with z = `o`.

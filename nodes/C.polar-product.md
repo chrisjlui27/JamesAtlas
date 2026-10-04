@@ -8,7 +8,7 @@ rung: C
 order: 1053
 setting: classical
 equality: "≐"
-domain: positive
+domain: real
 law: "([([R1] ([J] [T1]))] [([R2] ([J] [T2]))]) ≐ ([([R1] [R2])] ([J] [T1 T2]))"
 units: "r₁e^{iπt₁} · r₂e^{iπt₂} = (r₁r₂) e^{iπ(t₁+t₂)}"
 gloss_check: "R1*R2*exp(1j*pi*(T1+T2))"
@@ -30,7 +30,7 @@ known_since: "Euler 1748; geometrically, Wessel 1797 and Argand 1806"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
-uses: [mult.multiplication, C.polar-form, mult.involution, mult.distribution, C.turn-of-sum]
+uses: [mult.multiplication, C.polar-form, mult.involution, mult.distribution]
 guarded_by: [mult.seam-decree]
 see_also: [C.turn-of-sum, C.polar-form, C.complex-product]
 aliases: [polar product, moduli multiply, angles add]
@@ -58,7 +58,7 @@ To multiply two numbers given as size-and-turn: multiply the sizes, add the turn
 |---|---|---|
 | `([([R1] ([J] [T1]))] [([R2] ([J] [T2]))])` | given | the product of two numbers in polar form, [[mult.multiplication]], [[C.polar-form]] |
 | `([R1] ([J] [T1]) [R2] ([J] [T2]))` | [[mult.involution]] | the unit on each `[([R] ([J] [T]))]`, directly inside the instance — absorbing (content ln r + iπt, off the strip for |t| > 1: guarded by position) |
-| `([R1] [R2] ([J] [T1 T2]))` | [[mult.distribution]] | the two turns collect over the shared `[J]`, right to left: the counts add ([[C.turn-of-sum]] is this step alone) |
+| `([R1] [R2] ([J] [T1 T2]))` | [[mult.distribution]] | the two turns collect over the shared `[J]`, right to left: the counts add (the turn of a sum, as a step) |
 | `([([R1] [R2])] ([J] [T1 T2]))` | [[mult.involution]] | the unit right to left on `[R1] [R2]`, directly inside the instance — absorbing (content ln r₁ + ln r₂, real): the moduli multiply |
 
 ## Confirms

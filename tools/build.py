@@ -570,12 +570,12 @@ table {{ border-collapse:collapse; font-size:0.86rem; width:100%; }}
 th, td {{ text-align:left; vertical-align:top; padding:5px 8px; border-bottom:1px solid var(--line); }}
 th {{ font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg2); font-weight:600; }}
 table.deriv {{ table-layout:fixed; }}
-table.deriv col.c-form {{ width:50%; }} table.deriv col.c-rule {{ width:17%; }} table.deriv col.c-note {{ width:33%; }}
+table.deriv col.c-form {{ width:46%; }} table.deriv col.c-rule {{ width:22%; }} table.deriv col.c-note {{ width:32%; }}
 td.fcell {{ white-space:normal; }}
 td.fcell .draw {{ overflow-x:auto; max-width:100%; padding-bottom:4px; }}
 td.fcell code {{ white-space:pre-wrap; word-break:break-all; }}
 td.fcell code {{ display:block; margin-top:2px; font-size:0.74rem; background:transparent; padding:0; color:var(--fg2); }}
-.deriv table td:nth-child(2) {{ white-space:nowrap; }}
+.deriv table td:nth-child(2) {{ white-space:normal; overflow-wrap:anywhere; }}
 .nl {{ font-family:var(--mono); font-size:0.84em; text-decoration:none; border-bottom:1px solid var(--line); }}
 .nl:hover {{ border-bottom-color:var(--accent); }}
 .nl.dashed {{ border-bottom-style:dashed; }}
@@ -599,7 +599,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 <div class="wrap">
 <header>
   <h1>The Boundary Chart</h1>
-  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 3–5) with the standard complex-number toolkit, modulo what the induction gap blocks (general n-th roots, general De Moivre).</p>
+  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 3–5, as the chart paraphrases them) with the standard complex-number toolkit, modulo what the induction gap blocks (general n-th roots, general De Moivre).</p>
   <div class="stats">
     <div class="stat"><b>{len(nodes)}</b><span>laws</span></div>
     <div class="stat"><b>{counts.get("theorem",0)}</b><span>theorems</span></div>

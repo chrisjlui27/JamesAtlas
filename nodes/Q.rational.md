@@ -45,7 +45,7 @@ reentry: false
 |---|---|---|
 | `<([oo] <[ooo]>)>` | — | −2/3 |
 
-A rational number is a fraction of piles, the mirror of one, or the void. The class is closed under the arithmetic of this rung: a juxtaposition of instances, mirrored or not, whose contents are juxtapositions of `[pile]` and `<[pile]>`, reduces to one of these — a normal-form theorem owed as `Q.normal-form` (see Notes).
+A rational number is a fraction of piles, the mirror of one, or the void. The class is closed under the arithmetic of this rung: a juxtaposition of instances, mirrored or not, whose contents are juxtapositions of `[pile]` and `<[pile]>`, reduces to one of these — the normal-form theorem [[Q.normal-form]] (see Notes).
 
 ## Plain
 
@@ -82,4 +82,4 @@ The rationals are the fractions, their mirror images, and zero.
 
 ## Notes
 
-The normal-form theorem for this class — derivable from [[Q.add-fractions]], [[Q.negative-fraction]], [[mult.product-of-numerals]], [[Z.normal-form]], [[Q.zero-divided]] for a void numerator, and the degenerate shapes [[Q.division-by-one]] and [[Q.one-over-a]] — is not yet written as a node; `Q.normal-form` is owed.
+The normal-form theorem for this class — derivable from [[Q.add-fractions]], [[Q.negative-fraction]], [[mult.product-of-numerals]], [[Z.normal-form]], [[Q.zero-divided]] for a void numerator, and the degenerate shapes [[Q.division-by-one]] and [[Q.one-over-a]] — is the node [[Q.normal-form]].

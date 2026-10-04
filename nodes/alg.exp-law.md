@@ -8,7 +8,7 @@ rung: alg
 order: 710
 setting: classical
 equality: ≐
-domain: real
+domain: complex
 law: "([(A)] [(B)]) ≐ (A B)"
 units: "e^a · e^b = e^{a+b}"
 gloss_check: exp(A + B)
@@ -31,6 +31,7 @@ entered: 2026-10-03
 guide: shape-led
 band: 9–12
 uses: [mult.multiplication, mult.involution]
+guarded_by: [mult.seam-decree]
 see_also: [alg.log-law, alg.product-of-powers, N.addition]
 aliases: [e^a e^b = e^{a+b}, exponents add, the law of exponents]
 concepts: [exponential, multiplication, addition]
@@ -84,4 +85,4 @@ none
 
 ## Notes
 
-—
+Domain `complex` (widened 2026-10-03, C referee pass): the exponential law is the complex exponent law, e^{a}e^{b} = e^{a+b} for all complex a, b; its unit steps sit directly inside the instance and are seam steps for content off the strip, so the law is guarded by position. The home band and reading are unchanged.

@@ -26,11 +26,11 @@ readings:
   logic: ABSENT
 status: NATIVE
 verified: engine
-known_since: "Argand 1806"
+known_since: "Wessel 1797 (length and direction); Argand 1806 (the modulus by name)"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
-uses: [C.modulus, mult.involution, mult.distribution, C.pythagorean, mult.unit-law, alg.log-law, mult.cardinality, Z.inversion]
+uses: [C.polar-form, mult.involution, C.euler-formula, mult.distribution, C.complex-number, C.modulus, C.pythagorean, mult.unit-law, alg.log-law, mult.cardinality, Z.inversion]
 guarded_by: [mult.seam-decree]
 see_also: [C.modulus, C.pythagorean, C.polar-form, alg.log-law]
 aliases: [modulus of the polar form, "|r e^{iθ}| = r"]
@@ -44,15 +44,28 @@ reentry: false
 
 | form | units | standard |
 |---|---|---|
-| `(([[([([R] [([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)])] [([R] [([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)])]) ([([R] [([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)])] [([R] [([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)])])]] <[oo]>)) ≐ R` | the modulus of `([R] [cos πT])` + i `([R] [sin πT])` | √((r cos θ)² + (r sin θ)²) = r |
+| `(([[([([R] [([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)])] [([R] [([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)])]) ([([R] [([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)])] [([R] [([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)])])]] <[oo]>)) ≐ R` | the modulus of the rectangular parts of `([R] ([J] [T]))`, which the bridge below shows are `([R] [cos πT])` and `([R] [sin πT])` | √((r cos θ)² + (r sin θ)²) = r |
 
-The two spellings of size agree: the modulus computed from rectangular parts ([[C.modulus]]) of a number whose parts come from the polar form ([[C.polar-form]], read through [[C.euler-formula]]) is the polar r. The Pythagorean identity does the work.
+The two spellings of size agree: the polar form `([R] ([J] [T]))` is, by Euler's formula, the rectangular number with parts r cos πt and r sin πt (the bridge table), and the modulus of that number ([[C.modulus]]) is r. The Pythagorean identity does the work.
 
 ## Plain
 
 Measure the length of a size-and-turn number by squaring its two parts and adding: the turn drops out, because cosine squared plus sine squared is one, and the length is the size.
 
 ## Derivation
+
+First, the bridge: the polar form's rectangular parts are r cos πt and r sin πt —
+
+| form | rule | note |
+|---|---|---|
+| `([R] ([J] [T]))` | given | the polar form, [[C.polar-form]] |
+| `([R] [(([J] [T]))])` | [[mult.involution]] | the unit right to left on the turn `([J] [T])`, directly inside the instance — absorbing (content iπt, off the strip for |t| > 1: guarded by position) |
+| `([R] [([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>) ([(([J] <[oo]>))] [([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)])])` | [[C.euler-formula]] | the turn is its cosine plus i times its sine, inside the square |
+| `([R] [([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)]) ([R] [([(([J] <[oo]>))] [([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)])])` | [[mult.distribution]] | distribute `[R]` over the two parts |
+| `([R] [([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)]) ([R] [(([J] <[oo]>))] [([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)])` | [[mult.involution]] | the unit on `[([i] [sin])]`, directly inside its instance — absorbing |
+| `([R] [([(([J] [T])) (<[(([J] [T]))]>)] <[oo]>)]) ([([R] [([(([J] [T])) <(<[(([J] [T]))]>)>] <[oo]> <[(([J] <[oo]>))]>)])] [(([J] <[oo]>))])` | [[mult.involution]] | the unit right to left on `[R] [sin πT]` — absorbing: the rectangular parts are r cos πt and r sin πt, in the shape of [[C.complex-number]] |
+
+Then the modulus of that rectangular number:
 
 | form | rule | note |
 |---|---|---|
@@ -95,4 +108,4 @@ none
 
 ## Notes
 
-Guarded by content and by position (Amendment A2): the log-law step `[([R] [R])] → [R] [R]` sits under a square, where nothing absorbs, and is admitted because its content 2 ln r is real; the units on `[([R] [cos πT])]` and `[([R] [sin πT])]` have content ln r + Ln(cos πt), which is off the half-open strip when the sine is negative — they sit directly inside an instance. The law carries the decree in its price on both counts.
+Guarded by content and by position (Amendment A2). By content: the log-law step `[([R] [R])] → [R] [R]` sits under a square, where nothing absorbs, and is admitted because its content 2 ln r is real. By position: the right-to-left units on `[cos πT] [cos πT]` and `[sin πT] [sin πT]` in the second table have content 2 Ln(cos πt), resp. 2 Ln(sin πt), which is 2 ln|cos πt| + 2πi whenever the cosine is negative (t = 0.75: −0.693 + 6.283i) — off the strip — and sit directly inside an instance; so does the unit on the turn in the bridge for |t| > 1. The units on `[([R] [cos πT])]` themselves are free: their content ln r + Ln(cos πt) has imaginary part 0 or π, on the strip. The law carries the decree in its price on both counts.

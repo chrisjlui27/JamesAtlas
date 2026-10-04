@@ -234,7 +234,7 @@ def _eval_child(ch, env) -> Value:
             return BH
         # snap values that are real up to rounding onto the axis, so that the principal log of a
         # negative real is +iπ consistently and the branch cut is not decided by floating-point noise
-        if abs(inner.imag) <= 1e-9 * (1.0 + abs(inner.real)):
+        if abs(inner.imag) <= 1e-9 * abs(inner):  # relative: a tiny value keeps its argument
             inner = complex(inner.real, 0.0)
         return cmath.log(inner)
     if ch[0] == ANGLE:

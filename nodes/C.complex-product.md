@@ -68,7 +68,7 @@ Multiply out the four pairs; the pair of i-terms picks up i times i, which is mi
 
 ## Confirms
 
-(a + bi)(c + di) = (ac − bd) + (ad + bc)i. Nine rows: two Distributions, four absorbing unit steps, the i² step, and two collections. It is **not** needed for the page to multiply — `([z] [w])` *is* the product — but to *read* the product in rectangular parts; [[C.modulus-squared]] is this law at c = a, d = −b, and [[C.complex-quotient]] rests on it.
+(a + bi)(c + di) = (ac − bd) + (ad + bc)i. Eight steps: two Distributions, three rows of unit steps (seven applications), the i² step, J becoming a sign, and one collection. It is **not** needed for the page to multiply — `([z] [w])` *is* the product — but to *read* the product in rectangular parts; [[C.modulus-squared]] is this law at c = a, d = −b, and [[C.complex-quotient]] repeats its expansion for z w̄.
 
 ## Settings and readings
 
@@ -92,4 +92,4 @@ none
 
 ## Notes
 
-Guarded by position (Amendment A2): the units on `[([B] [i])]` and `[([D] [i])]` have content ln b + iπ/2, which for negative b is ln|b| + 3πi/2 — off the strip; they sit directly inside their instances, which absorb the difference. The engine computes the guard from the derivation.
+Guarded by position (Amendment A2): the units on `[([B] [i])]` and `[([D] [i])]` have content ln b + iπ/2, which for negative b is ln|b| + 3πi/2 — off the strip — and the right-to-left units on `[A] [D]` and `[B] [C]` have content 2πi + ln|ad| when both factors are negative; all sit directly inside their instances, which absorb the difference. The engine computes the guard from the derivation.

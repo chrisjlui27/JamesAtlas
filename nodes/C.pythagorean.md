@@ -104,6 +104,6 @@ none
 
 ## Notes
 
-Guarded by position (Amendment A2): the units on the two sine abstracts have content ln|sin πt| − iπ when the sine is negative, off the half-open strip; so does `[(<[X]>)]` at odd t (content −iπ) and the unit on `[P]` in the cardinality row; all sit directly inside an instance — a seam step, admitted by the decree's position clause, so the law carries the decree in its price while its statement is exact in ℂ.
+Guarded by position (Amendment A2): the units on the two sine abstracts have content ln|sin πt| − iπ when the sine is negative, off the half-open strip; so does `[(<[X]>)]` at odd t (content −iπ) and the unit on `[P]` in row 15 (P the product term; content 2πi at odd t); all sit directly inside an instance — a seam step, admitted by the decree's position clause, so the law carries the decree in its price while its statement is exact in ℂ.
 
 The i² = −1 that turns the minus of the sine-square into a plus is [[C.i-squared]] followed by [[C.phase-sign]] and [[C.phase-under-instance]]: `<[i] [i]>` is `<J>`, and `<J>` under an instance is J, which is a sign.

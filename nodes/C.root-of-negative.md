@@ -26,11 +26,11 @@ readings:
   logic: ABSENT
 status: NATIVE
 verified: engine
-known_since: "Bombelli 1572 for the arithmetic of √−1; Euler 1770 (Elements of Algebra, §148) for √(−a) = √a·√(−1), and 1777 for the letter i"
+known_since: "Bombelli 1572 for the arithmetic of √−1; Euler 1770 (Elements of Algebra, §147) for √(−a) = √a·√(−1), and 1777 for the letter i"
 entered: 2026-10-03
 guide: shape-led
 band: "9–12"
-uses: [alg.root, C.log-of-negative, mult.distribution, mult.involution, alg.exp-law]
+uses: [alg.root, C.log-of-negative, mult.distribution, mult.involution]
 see_also: [alg.root, C.imaginary-unit, C.log-of-negative, alg.root-of-product]
 aliases: ["√(−a) = i√a", root of a negative, imaginary root]
 concepts: [root, phase, complex-number]
@@ -58,7 +58,7 @@ Take the square root of minus a number: it is the square root of the number, tim
 | `(([[<A>]] <[oo]>))` | given | √(−a): [[alg.root]] with the radicand `<A>` |
 | `(([[A] J] <[oo]>))` | [[C.log-of-negative]] | `[<A>] ≐ [A] J` under the outer square (A positive) |
 | `(([[A]] <[oo]>) ([J] <[oo]>))` | [[mult.distribution]] | half of a sum is the sum of halves: `(<[oo]> [[A] J]) ≐ (<[oo]> [[A]]) (<[oo]> [J])` |
-| `([(([[A]] <[oo]>))] [(([J] <[oo]>))])` | [[mult.involution]] | the unit right to left on each summand, directly inside the instance — absorbing: the instance of a sum is the product of the instances ([[alg.exp-law]] is this step as a law) — √a times i |
+| `([(([[A]] <[oo]>))] [(([J] <[oo]>))])` | [[mult.involution]] | the unit right to left on each summand, directly inside the instance — absorbing: the instance of a sum is the product of the instances (the exponential law, as a step) — √a times i |
 
 ## Confirms
 
@@ -86,4 +86,4 @@ none
 
 ## Notes
 
-Euler's *Elements of Algebra* (1770, §148) writes √(−a) = √a·√(−1) — the letter i is from 1777 — and in the same passage commits √(−1)·√(−4) = √4 = 2, the very error the Confirms warns against; the chart's one-valued √ cannot make it.
+Euler's *Elements of Algebra* (1770) writes √(−a) = √a·√(−1) in §147 — the letter i is from 1777 — and in §148 commits √(−1)·√(−4) = √4 = 2, the very error the Confirms warns against; the chart's one-valued √ cannot make it.
