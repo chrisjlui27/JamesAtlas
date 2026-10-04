@@ -4,6 +4,8 @@ A step-by-step exposition of mathematics in James boundary arithmetic, from the 
 
 - `SPEC.md` — the data model, the node format, links, settings and readings, status, price, gaps, scope, verification, build plan.
 - `LEGISLATION.md` — the binding decisions, numbered.
+- `ROADMAP.md` — the path from the classical algebra to the F₁ / motivic / Berkovich pictures, and the proposed rung order (pending confirmation).
+- `references/` — James 1993, the ground truth for the classical setting.
 - `nodes/<rung>.<slug>.md` — one law each. Open `nodes/` as an Obsidian vault to get the graph view.
 - `concepts/<slug>.md` — one paragraph per concept (optional; the index is computed from nodes' `concepts:` fields).
 - `census/` — the small-form census (generated) and the hand-kept list of open forms.
