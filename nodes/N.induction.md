@@ -56,7 +56,7 @@ none — gap.
 
 ## Confirms
 
-That James's calculus is an *equational* theory of forms, not a *logic*: it has no quantifiers, no implication, no variables ranging over properties. Every "for all n" in the chart (every `kind: schema` node) is a meta-statement the reader supplies. The two ends of the chart both need this gap closed: the Lean expansion (where `Nat.rec` is native) and the F₁ end (where ℕ must be recognized as the *free* commutative monoid on `o`).
+That James's calculus is an *equational* theory of forms, not a *logic*: it has no quantifiers, no implication, no variables ranging over properties. Every "for all n" in the chart is a meta-statement the reader supplies: a `kind: instance` node states one value of such a family, and a `schema` node (rung `schema`, SPEC §2.7) states the family as a template, checked by the engine at every value in a declared range and closed by a `hypothesis` row that cites this gap — so from rung `schema` on the gap is *priced* (it appears in the price of every schema and of everything built on one) rather than merely named. That is the Plan's option (i), the schema as an admissible rule of the chart's proof language, taken in its weakest form: the engine checks the base case and that the hypothesis row is the law at a smaller parameter; the passage to all n it cannot check, and does not claim to. The two ends of the chart both need this gap closed: the Lean expansion (where `Nat.rec` is native) and the F₁ end (where ℕ must be recognized as the *free* commutative monoid on `o`).
 
 ## Settings and readings
 
@@ -77,7 +77,7 @@ none
 
 ## Notes
 
-This is the first honest gap the reader meets (LEGISLATION 17). It is deliberately not smoothed over.
+This is the first honest gap the reader meets (LEGISLATION 17). It is deliberately not smoothed over. Since 2026-10-04 it is cited by [[schema.cardinality]], [[schema.power]] and [[schema.period-multiple]] and inherited by every schema built on them (LEGISLATION 29): a gap in the price, not a gap in the chart's knowledge of where it stands.
 
 ## Plan
 

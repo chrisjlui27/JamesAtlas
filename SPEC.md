@@ -69,6 +69,7 @@ Path: `nodes/<id>.md`, where `id = <rung>.<slug>`, e.g. `nodes/Z.collection.md`.
 | `decree` | ***legislates*** | a rule imposed from outside the equational base: an exclusion (`<□>` is not a form), a discipline (J-cancellation only inside an instance, last), a declared-void pile, a guard | yes |
 | `import` | borrows | a fact used but not derived (a theorem of ordinary mathematics, a labelling, a count) | yes |
 | `gap` | *names* | a concept without a form, or a form without a reading, with a plan | no (it has no derivation) |
+| `schema` | **settles** up to the range | a theorem with a count parameter, stated as a template, checked at every value in a declared range and derived by an induction step (§2.7); the passage to all n is the gap | no — but its hypothesis row cites the gap `N.induction`, which is |
 
 Every type is a step of the walk (LEGISLATION 4). The type is the node's colour in every rendering.
 
@@ -80,9 +81,9 @@ A node also has a **level**: `object` (an equation between forms) or `meta` (a s
 ---
 id: Z.collection
 title: Inverse collection
-type: theorem                 # primitive | axiom | definition | theorem | decree | import | gap
+type: theorem                 # primitive | axiom | definition | theorem | decree | import | gap | schema
 level: object                 # object | meta
-kind: law                     # primitive: boundary | medium ; decree: exclusion | discipline | declaration | guard ; theorem/axiom: law | schema ; gap: concept | form
+kind: law                     # primitive: boundary | medium ; decree: exclusion | discipline | declaration | guard ; theorem/axiom/definition: law | instance (one value of a family over n) ; gap: concept | form
 rung: Z
 order: 230                    # walk order; integers with gaps of 10 so nodes can be inserted
 setting: classical            # the setting the law is stated in
@@ -91,6 +92,8 @@ domain: real                  # variables range over: natural | positive | real 
 law: "<A><B> ≐ <A B>"         # canonical string; for definitions "name := form"; for gaps a one-line statement of what is missing
 units: "−a + −b = −(a + b)"   # the law in standard notation (the ℂ reading)
 gloss_check: "-A + -B == -(A+B)"   # optional: a Python expression the checker evaluates against the form's value
+schema_range: "n=2..8"        # schema nodes only: the instances the engine checks ("n=1..6; k=1..n" for two parameters)
+schema_draw: "n=3"            # schema nodes only, optional: the instance the card draws (default n=3; k=1)
 holds:                        # settings table: holds | holds-mod-Λ | guarded | replaced | fails | untested
   classical: holds
   J1: holds
@@ -101,7 +104,7 @@ readings:                     # readings table: EXACT | PARTIAL | ANALOGY | ABSE
   lambda: untested
   CC: untested
   logic: untested
-status: NATIVE                # NATIVE | NATIVE-BY-DECREE | IMPORTED | ANALOGY | CONJECTURE | REFUTED | ABSENT
+status: NATIVE                # NATIVE | NATIVE-BY-SCHEMA | NATIVE-BY-DECREE | IMPORTED | ANALOGY | CONJECTURE | REFUTED | ABSENT
 verified: engine              # none | hand | engine | numeric | lean
 known_since: "1993 (James); the arithmetic fact is ancient"
 entered: 2026-10-03
@@ -139,7 +142,7 @@ Field rules:
    | <A><B> A B <A B> | [[Z.inversion]] | create the pair (A B)<A B> |
    | <A B> | [[Z.inversion]] | cancel A<A> and B<B> |
    ```
-   Allowed rules: `given`, `[[id]]` (one or more), `medium` (rearrangement in space — must also cite `[[void.space]]` once in the table), `substitution` (replacing a variable by a form), `congruence` (applying the same operation to both sides), `definition` (unfolding a definition — cite it), `name` (a row that merely names the previous form in standard notation, e.g. `A × B`; not a form, not checked), `lemma` (an equation proved by an earlier table of the same node, used right to left). Axioms, primitives, decrees and imports write `none — adjoined` and cite in prose the nodes their statement is built from — those citations are their `uses`. Gaps write `none — gap`. Meta-level nodes use a `| statement | rule | note |` table instead: prose steps, each citing the laws it leans on, plus a `witness:` script in the front matter where a computation carries the proof.
+   Allowed rules: `given`, `[[id]]` (one or more), `medium` (rearrangement in space — must also cite `[[void.space]]` once in the table), `substitution` (replacing a variable by a form), `congruence` (applying the same operation to both sides), `definition` (unfolding a definition — cite it), `name` (a row that merely names the previous form in standard notation, e.g. `A × B`; not a form, not checked), `lemma` (an equation proved by an earlier table of the same node, used right to left), `hypothesis` (schema nodes only: the schema's own law at a smaller parameter — the note cites `[[N.induction]]`; §2.7). Axioms, primitives, decrees and imports write `none — adjoined` and cite in prose the nodes their statement is built from — those citations are their `uses`. Gaps write `none — gap`. Meta-level nodes use a `| statement | rule | note |` table instead: prose steps, each citing the laws it leans on, plus a `witness:` script in the front matter where a computation carries the proof.
    The engine evaluates every consecutive pair of forms on random values and fails the node if any step is not an equality in the declared sense; for an object-level theorem it also requires the tables to start at one side of the law and end at the other. **The engine does not check that the rule cited for a step actually licenses it** — a numerically true step with the wrong rule passes. That is the referee's job (§10), and the reason `engine` is not the top tier.
 4. **Confirms** — the standard-notation fact (with its usual name) that this law *is*, and what it is **not** (where a naive reading overreaches). This is the "in-house confirmation" line for the walk.
 5. **Settings and readings** — the two tables from the front matter, with one-line justifications for any cell that is not `holds`/`EXACT`.
@@ -153,7 +156,7 @@ Price and used-by are **not** written in the file; the generator computes and re
 
 - Boundaries: `( )`, `[ ]`, `< >`. Later primitives: `[ ; ]` ordered bracket (JH), `{ }` brace (extrusion), `{n }` lens (JP). Whitespace is ignored.
 - Sugar accepted by the parser and expanded before checking: `o` = `()`, `□` = `[]`, `J` = `[<o>]`, `void` = the empty form. Numerals `n` are **not** sugar in canonical strings (write the pile) except inside `[[...]]` prose.
-- Variables: single capital letters `A`–`Z`, optionally followed by a digit. A law with variables is a **schema**; the checker instantiates it.
+- Variables: single capital letters `A`–`Z`, optionally followed by a digit. The checker instantiates them on random values of the node's domain (the shadow check). A node whose law is one value of a family over n (`A A ≐ ([A][oo])`, the pile `ooo`) is marked `kind: instance`; the family itself, when the chart states it, is a `schema` node (§2.7).
 - Repetition over a count ("n copies") is a `schema` node (§2.7), whose canonical strings are templates in `X^{e}` / `Σ{…}` notation; an object law writes its small instance out in full (`A A`, `J J`), never a superscript.
 
 ### 2.6 Rendering conventions (generator)
@@ -167,10 +170,10 @@ Canonical strings are drawn as nested boundaries: round → rounded capsule, squ
 A `type: schema` node states a law for every value of a count parameter. The law and the derivation rows are **templates**:
 
 - `X^{e}` — e juxtaposed copies of X, where X is a variable, `o`, `J`, `□`, or a bracketed group, and e is an expression in the parameters (`n`, `k`, `n-1`, `2k`, `2k+1`, `n+1`); `o^{n}` is the pile n.
-- `Σ{k=a..b: F}` — the juxtaposition of F for k = a, …, b, with `{k}` expressions inside F.
-- `schema_range:` in the front matter, e.g. `n=2..8` or `n=2..7; k=1..n-1`, gives the instances the engine checks. A derivation table whose header reads `| form (n = 1) | rule | note |` is the base case, instantiated only at that value; the other tables are the step, instantiated at every value in range.
-- The step may cite the schema itself at a smaller parameter with the rule `hypothesis`, and that row cites `[[N.induction]]` in its note, which puts the gap in `uses` and so in the price.
-- The engine checks each instance exactly as it checks an object law — law shadow, row equality, seam decree, `guarded_by` (the union over instances), endpoints — so a schema is verified *up to the range* and no further; that is what `NATIVE-BY-SCHEMA` records. Cards draw one instance (n = 3 by default, `schema_draw:`) and show the template beneath it; each derivation table is captioned with the values it is drawn at.
+- `Σ{j=a..b: F}` — the juxtaposition of F for j = a, …, b, with counts `^{…j…}` inside F (an empty range, b = a − 1, is void).
+- `schema_range:` in the front matter, e.g. `n=2..8` or `n=2..7; k=1..n-1`, gives the instances the engine checks. A derivation table whose header reads `| form (n = 1) | rule | note |` (any parameter, any value) is a **base case**; the other tables are the **step**. An instance at a base value consists of the base table alone; an instance at any other value consists of the step tables alone — so a `hypothesis` row always points at a value already checked, and the range may not start below the base.
+- The step may cite the schema itself at a smaller parameter with the rule `hypothesis`, and that row cites `[[N.induction]]` in its note, which puts the gap in `uses` and so in the price. A schema with a `hypothesis` row must have a base case at the minimum of its range; a schema without one (one that reduces to earlier schemas, as the roots of unity reduce to cardinality) needs no base.
+- What the engine checks, per instance: the law shadow, every consecutive pair of rows as an equality in ℂ, the seam decree on every row (with `guarded_by` the union over instances), and the endpoints — the first row is the instantiated law's left side and the last its right side *as forms*, not merely in value. For a `hypothesis` row it checks, syntactically, that the row is obtained from the previous one by one application, in either direction, of the schema's own law at a smaller parameter in range (any smaller one — strong induction — with the variables kept as written, so a hypothesis applied under a substitution is a `substitution` row first and a `hypothesis` row after). What it does **not** check: that any other cited rule licenses its step (the referee's job, as everywhere), and the passage to all n — that is the gap, and it is priced. So a schema is verified *up to the range* and no further; that is what `NATIVE-BY-SCHEMA` records. Cards draw one instance (n = 3 by default, `schema_draw:`) and show the template beneath it; each derivation table is captioned with the values it is drawn at.
 - Only canonical cells are expanded: the `law:` string and the form column of a derivation table. Rule and note cells and the prose of the section are kept as written, so a note may say `a^{n−1}` or ω^{n+1} without being a template. A row whose instance coincides with the row before it (the pile n *is* the pile n − 1 beside a unit) is legal and says so in its note.
 
 ---
@@ -223,7 +226,7 @@ James 1993 is the ground truth for `classical` (the thesis is in `references/jam
 | status | meaning |
 |---|---|
 | `NATIVE` | derived inside the setting from its own axioms; or a primitive/axiom of the base three |
-| `NATIVE-BY-SCHEMA` | holds for every value of a count parameter by an induction the calculus cannot do natively: each instance in the declared range is engine-checked and the step is checked as a template; the induction gap `N.induction` is in the price |
+| `NATIVE-BY-SCHEMA` | holds for every value of a count parameter by an induction the calculus cannot do natively: each instance in the declared range is engine-checked (base case at the base, step at every other value, the hypothesis row verified to be the law at a smaller parameter); the passage to all n is not checked, and the induction gap `N.induction` is in the price |
 | `NATIVE-BY-DECREE` | the *statement* holds because a decree was issued — exclusions (`a/0 is not a form`), the decrees themselves, and the meta theorems about the decree-governed calculus (consistency; James's rules sitting inside the decree). A node whose *derivation* merely passes through a guarded unit step stays `NATIVE` and declares `guarded_by` (§5.4, Amendment A2) |
 | `IMPORTED` | used, not derived; the import is named and dated |
 | `ANALOGY` | a correspondence asserted but not an equation of forms (e.g. 24 ↔ ν) |
@@ -313,7 +316,7 @@ Refutations are kept, never deleted. Attached to the node they were mistaken for
 
 ### 8.2 Rungs (chapters), in walk order
 
-`void` → `N` → `Z` → `mult` → `Q` → `alg` → `C` → `J1` → `H` → `O` → `S` → `analysis` → `place` → `logic` → `struct` → `F1` (→ re-entry to `void`). `field` is a side chapter. The additive-first order (ℤ before the square boundary) follows the Iconic Mathematics scope and sequence and is the walk's own ordering principle: each stage adds an idea, not necessarily a boundary; the inverse boundary gains multiplicative powers only when it meets the square.
+`void` → `N` → `Z` → `mult` → `Q` → `alg` → `C` → `schema` → `J1` → `place` → `H` → `analysis` → `J2` → `logic` → `struct` → `F1` (→ re-entry to `void`), with `O` and `S` a branch off `H` (LEGISLATION 29). `field` is a side chapter. The additive-first order (ℤ before the square boundary) follows the Iconic Mathematics scope and sequence and is the walk's own ordering principle: each stage adds an idea, not necessarily a boundary; the inverse boundary gains multiplicative powers only when it meets the square.
 
 ### 8.3 Trunk and roads (LEGISLATION 19)
 

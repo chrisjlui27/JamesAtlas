@@ -3,7 +3,7 @@ id: alg.exp-of-pile
 title: A pile under a circle is a power of the base
 type: theorem
 level: object
-kind: schema
+kind: instance
 rung: alg
 order: 730
 setting: classical

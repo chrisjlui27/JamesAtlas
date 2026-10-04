@@ -60,9 +60,9 @@ Turn by t, n times over: you have turned by nt. The page unfolds the power into 
 |---|---|---|
 | `(([[(([J] [T]))]] [o^{n}]))` | given | the n-th power of the turn, [[mult.exponentiation]], [[C.polar-form]] |
 | `([(([J] [T]))]^{n})` | [[schema.power]] | the power is the n-fold product |
-| `(([J] [T])^{n})` | [[mult.involution]] | the unit on each `[(([J] [T]))]`, directly inside the instance — absorbing (content iπt: a seam step for |t| > 1) |
+| `(([J] [T])^{n})` | [[mult.involution]] | the unit on each `[(([J] [T]))]`, directly inside the instance — absorbing (content iπt: a seam step for t ∉ (−1, 1]) |
 | `(([([J] [T])] [o^{n}]))` | [[schema.cardinality]] | n copies are one copy with the count n |
-| `(([J] [T] [o^{n}]))` | [[mult.involution]] | the unit, directly inside the inner instance — absorbing: the turn by nt |
+| `(([J] [T] [o^{n}]))` | [[mult.involution]] | the unit on `[([J] [T])]`, directly inside the inner instance — absorbing (content ln π + ln t + iπ/2, off the strip for t < 0: a second seam step): the turn by nt |
 
 ## Confirms
 
@@ -90,4 +90,4 @@ none
 
 ## Notes
 
-Guarded by position (Amendment A2): the units on `[(([J] [T]))]` have content iπt, off the strip for |t| > 1; they sit directly inside the instance. Checked for n = 1…6; the card draws n = 3.
+Guarded by position (Amendment A2): the units on `[(([J] [T]))]` in row 3 have content iπt, off the strip for t ∉ (−1, 1], and the unit on `[([J] [T])]` in row 5 has content ln π + ln t + iπ/2, off the strip for t < 0; all sit directly inside an instance. Checked for n = 1 … 6; the card draws n = 3.

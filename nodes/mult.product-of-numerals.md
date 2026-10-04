@@ -3,7 +3,7 @@ id: mult.product-of-numerals
 title: The product of piles is a pile
 type: theorem
 level: object
-kind: schema
+kind: instance
 rung: mult
 order: 350
 setting: classical

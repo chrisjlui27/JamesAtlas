@@ -3,7 +3,7 @@ id: Q.fraction
 title: Fractions are quotients of piles
 type: definition
 level: object
-kind: schema
+kind: instance
 rung: Q
 order: 540
 setting: classical

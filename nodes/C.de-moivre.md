@@ -60,11 +60,11 @@ Cube a turn and you have turned three times as far. The page proves it by turnin
 | `(([[(([J] [T]))]] [o]) ([[(([J] [T]))]] [o]) ([[(([J] [T]))]] [o]))` | [[mult.distribution]] | distribute over the three units of the pile, twice |
 | `(([[(([J] [T]))]]) ([[(([J] [T]))]]) ([[(([J] [T]))]]))` | [[mult.unit-law]] | `[o] ≐ void`, three times |
 | `([(([J] [T]))] [(([J] [T]))] [(([J] [T]))])` | [[mult.involution]] | the counit `([Y]) ≐ Y` with Y = `[X]`, three times: the cube is the triple product |
-| `(([J] [T]) ([J] [T]) ([J] [T]))` | [[mult.involution]] | the unit on each `[(([J] [T]))]`, directly inside the instance — absorbing; for |t| > 1 the content is off the strip (guarded by position) |
+| `(([J] [T]) ([J] [T]) ([J] [T]))` | [[mult.involution]] | the unit on each `[(([J] [T]))]`, directly inside the instance — absorbing; for t ∉ (−1, 1] the content iπt is off the strip (guarded by position) |
 | `(([([J] [T])] [oo]) ([J] [T]))` | [[mult.cardinality]] | two copies become the count 2 |
 | `(([([J] [T])] [oo]) ([([J] [T])] [o]))` | [[mult.unit-law]] | the third gets the count 1, right to left |
 | `(([([J] [T])] [ooo]))` | [[mult.distribution]] | collect: the count 3 |
-| `(([J] [T] [ooo]))` | [[mult.involution]] | the unit, directly inside the inner instance — absorbing: the turn by 3t |
+| `(([J] [T] [ooo]))` | [[mult.involution]] | the unit on `[([J] [T])]`, directly inside the inner instance — absorbing (content ln π + ln t + iπ/2, off the strip for t < 0: a second seam step): the turn by 3t |
 
 ## Confirms
 
@@ -92,4 +92,4 @@ none
 
 ## Notes
 
-Guarded by position (Amendment A2): the units on `[(([J] [T]))]` have content iπt, off the strip for |t| > 1; they sit directly inside the instance — a seam step, admitted by the decree's position clause, so the law carries the decree in its price while its statement is exact in ℂ.
+Guarded by position (Amendment A2): the units on `[(([J] [T]))]` in row 5 have content iπt, off the strip for t ∉ (−1, 1], and the unit on `[([J] [T])]` in row 9 has content ln π + ln t + iπ/2, off the strip for t < 0; all sit directly inside an instance — seam steps admitted by the decree's position clause, so the law carries the decree in its price while its statement is exact in ℂ.

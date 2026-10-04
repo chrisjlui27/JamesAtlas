@@ -3,7 +3,7 @@ id: Z.negative-numeral
 title: Negative numbers are mirrored piles
 type: definition
 level: object
-kind: schema
+kind: instance
 rung: Z
 order: 230
 setting: classical

@@ -32,7 +32,7 @@ known_since: "the cyclotomic relation: Gauss 1801 (Disquisitiones, §§ 335–36
 entered: 2026-10-03
 guide: need-led
 band: "9–12"
-uses: [C.phase, schema.roots-of-unity, mult.unit-law, Q.self-division, mult.involution, mult.distribution, mult.inverse-promotion, Z.collection, Z.inversion, schema.cardinality, mult.cardinality, C.period-absorption, mult.black-hole, mult.zero-annihilates]
+uses: [C.phase, schema.roots-of-unity, mult.unit-law, Q.self-division, mult.involution, mult.distribution, mult.inverse-promotion, Z.collection, Z.inversion, mult.cardinality, C.period-absorption, mult.black-hole, mult.zero-annihilates]
 guarded_by: [mult.seam-decree]
 see_also: [C.omega-sum, schema.roots-of-unity, Q.self-division, C.period-absorption]
 aliases: [cyclotomic relation, sum of the roots of unity, "1 + ω + … + ω^{n−1} = 0"]
@@ -59,20 +59,20 @@ Points spaced evenly round a circle pull against each other to nothing. Multiply
 | form | rule | note |
 |---|---|---|
 | `Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}` | given | the sum of the n-th roots of unity ω, ω², …, ωⁿ, each a fractional count of J ([[C.phase]], [[schema.roots-of-unity]]) |
-| `([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [o])` | [[mult.unit-law]] | `A ≐ ([A] [o])`, right to left |
+| `([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [o])` | [[mult.unit-law]] [[mult.zero-annihilates]] | `A ≐ ([A] [o])`, right to left — and since S is void, `[S]` is the hole and `(□ [o]) ≐ void` by the hole rules, so the row holds outside the unit law's domain too (as in `C.omega-sum`, row 2) |
 | `([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [([(([J] [oo] <[o^{n}]>)) <o>] <[(([J] [oo] <[o^{n}]>)) <o>]>)])` | [[Q.self-division]] | `o ≐ ([B] <[B]>)` with B = ω − 1, which is not void for n ≥ 2 — right to left, inside the square |
 | `([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [(([J] [oo] <[o^{n}]>)) <o>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.involution]] | the unit, directly inside the instance — absorbing (and its content is void) |
 | `([([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [(([J] [oo] <[o^{n}]>)) <o>])] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.involution]] | the unit right to left on `[S] [ω − 1]` — absorbing; the content is the hole, since S is void |
 | `([([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [(([J] [oo] <[o^{n}]>))]) ([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [<o>])] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.distribution]] | distribute S over `ω <o>` |
 | `([([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [(([J] [oo] <[o^{n}]>))]) <([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [o])>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.inverse-promotion]] | — |
-| `([([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [(([J] [oo] <[o^{n}]>))]) <Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.unit-law]] | `([S] [o]) ≐ S` |
+| `([([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}] [(([J] [oo] <[o^{n}]>))]) <Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.unit-law]] [[mult.zero-annihilates]] | `([S] [o]) ≐ S` — by the hole rules at S void, as in row 2 |
 | `([Σ{j=1..n: ([(([J] [o^{2j}] <[o^{n}]>))] [(([J] [oo] <[o^{n}]>))])} <Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.distribution]] | distribute ω over the n summands of S — Distribution n − 1 times |
 | `([Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>) ([J] [oo] <[o^{n}]>))} <Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.involution]] | the unit on each abstract, directly inside its instance — absorbing (2n applications) |
 | `([Σ{j=2..n+1: (([J] [o^{2j}] <[o^{n}]>))} <Σ{j=1..n: (([J] [o^{2j}] <[o^{n}]>))}>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.distribution]] | in each product, collect the two counts over the shared `[J] <[n]>`, right to left: ω^j · ω is ω^{j+1} — the sum is re-indexed |
 | `([Σ{j=2..n+1: (([J] [o^{2j}] <[o^{n}]>))} Σ{j=1..n: <(([J] [o^{2j}] <[o^{n}]>))>}] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[Z.collection]] | the mirror of the sum is the sum of the mirrors, right to left (n − 1 applications) |
 | `([(([J] [o^{2n+2}] <[o^{n}]>)) <(([J] [oo] <[o^{n}]>))>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[Z.inversion]] | ω² … ωⁿ cancel against their mirrors (n − 1 pairs): what is left is ω^{n+1} − ω |
 | `([(([J] [o^{2n}] <[o^{n}]>) ([J] [oo] <[o^{n}]>)) <(([J] [oo] <[o^{n}]>))>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.distribution]] | ω^{n+1} = ωⁿ · ω: distribute the counts 2n and 2 over the shared `[J] <[n]>` |
-| `([(([J] [([o^{n}] [oo])] <[o^{n}]>) ([J] [oo] <[o^{n}]>)) <(([J] [oo] <[o^{n}]>))>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[schema.cardinality]] | the pile 2n is two copies of the pile n: `o^{n} o^{n} ≐ ([o^{n}] [oo])` |
+| `([(([J] [([o^{n}] [oo])] <[o^{n}]>) ([J] [oo] <[o^{n}]>)) <(([J] [oo] <[o^{n}]>))>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.cardinality]] | the pile 2n is two copies of the pile n: `o^{n} o^{n} ≐ ([o^{n}] [oo])` |
 | `([(([J] [o^{n}] [oo] <[o^{n}]>) ([J] [oo] <[o^{n}]>)) <(([J] [oo] <[o^{n}]>))>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.involution]] | the unit, directly inside its instance — absorbing (content real) |
 | `([(([J] [oo]) ([J] [oo] <[o^{n}]>)) <(([J] [oo] <[o^{n}]>))>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[Z.inversion]] | the count n and its mirror cancel: ωⁿ is `(J J)` |
 | `([(J J ([J] [oo] <[o^{n}]>)) <(([J] [oo] <[o^{n}]>))>] <[(([J] [oo] <[o^{n}]>)) <o>]>)` | [[mult.cardinality]] | right to left: `([J] [oo]) ≐ J J` |
@@ -82,7 +82,7 @@ Points spaced evenly round a circle pull against each other to nothing. Multiply
 
 ## Confirms
 
-Σ ω^j = 0 for n ≥ 2, the sum of all n-th roots of unity, proved by telescoping: (ω − 1)·Σ_{j=1}^{n} ω^j = ω^{n+1} − ω = 0 since ω^{n+1} = ω by a whole turn ([[C.period-absorption]]), and dividing nothing by ω − 1 ≠ 0 is nothing. The rows with Σ are templates: "Distribution n − 1 times", "Inversion, n − 1 pairs"; the engine instantiates them for n = 2 … 6 and checks each. It is **not** a statement about the *proper* n-th roots alone (the primitive ones sum to the Möbius value μ(n)), and it is **not** Gauss's theory of periods — only its first identity. Every row has the value 0, so, as for [[C.omega-sum]], the engine certifies 0 = 0 and the seam check; the licensing is the referee's.
+Σ ω^j = 0 for n ≥ 2, the sum of all n-th roots of unity, proved by telescoping: (ω − 1)·Σ_{j=1}^{n} ω^j = ω^{n+1} − ω = 0 since ω^{n+1} = ω by a whole turn ([[C.period-absorption]]), and dividing nothing by ω − 1 ≠ 0 is nothing. That ω − 1 is not void for n ≥ 2 — ω ≠ 1 — is a fact about the reading, of the same kind as [[alg.irrationality]]: the calculus cannot derive it, [[Q.self-division]] needs it, and the schema is exactly as good as it. (At n = 1 the "sum" is `o` and the law is false, which is why the range starts at 2.) The rows with Σ are templates: "Distribution n − 1 times", "Inversion, n − 1 pairs"; the engine instantiates them for n = 2 … 6 and checks each. It is **not** a statement about the *proper* n-th roots alone (the primitive ones sum to the Möbius value μ(n)), and it is **not** Gauss's theory of periods — only its first identity. Every row has the value 0, so, as for [[C.omega-sum]], the engine certifies 0 = 0 and the seam check; the licensing is the referee's.
 
 ## Settings and readings
 

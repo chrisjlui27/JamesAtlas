@@ -22,17 +22,17 @@ holds:
   JP: holds
 readings:
   C: EXACT
-  finset: ABSENT
+  finset: EXACT
   lambda: untested
   CC: untested
-  logic: ABSENT
+  logic: untested
 status: NATIVE-BY-SCHEMA
 verified: engine
 known_since: "1993 (James, Ch. 4 §4.4.2, p. 28: 'cardinality of multiplication translates to exponentiation')"
 entered: 2026-10-03
 guide: need-led
 band: "9–12"
-uses: [mult.exponentiation, mult.unit-law, mult.involution, mult.distribution, N.induction]
+uses: [mult.exponentiation, mult.unit-law, mult.involution, mult.distribution, N.induction, N.numeral]
 guarded_by: [mult.seam-decree]
 see_also: [mult.exponentiation, mult.square-is-product, schema.cardinality, schema.de-moivre]
 aliases: [power schema, "xⁿ = x ⋯ x"]
@@ -65,13 +65,13 @@ A to the n is a times a, n times over. The page proves it by peeling one factor 
 | form | rule | note |
 |---|---|---|
 | `(([[A]] [o^{n}]))` | given | a to the n, [[mult.exponentiation]] |
-| `(([[A]] [o^{n-1} o]))` | definition | the pile n is the pile n − 1 beside a unit — the same multiset |
+| `(([[A]] [o^{n-1} o]))` | definition | the pile n is the pile n − 1 beside a unit ([[N.numeral]]) — the same multiset |
 | `(([[A]] [o^{n-1}]) ([[A]] [o]))` | [[mult.distribution]] | distribute over the two counts |
 | `(([[A]] [o^{n-1}]) ([[A]]))` | [[mult.unit-law]] | `[o] ≐ void` |
 | `(([[A]] [o^{n-1}]) [A])` | [[mult.involution]] | the counit `([[A]]) ≐ [A]` |
-| `([(([[A]] [o^{n-1}]))] [A])` | [[mult.involution]] | the unit right to left on the first factor, directly inside the instance — absorbing (content (n − 1) ln a, off the strip for complex a: a seam step) |
+| `([(([[A]] [o^{n-1}]))] [A])` | [[mult.involution]] | the unit right to left on the first factor, directly inside the instance — absorbing (content (n − 1) ln a: on the strip at n = 2, off it for n ≥ 3 when |arg a| > π/(n − 1) — a seam step) |
 | `([([A]^{n-1})] [A])` | hypothesis | the schema at n − 1: a^{n−1} is the product of n − 1 copies of `[A]` ([[N.induction]]) |
-| `([A]^{n-1} [A])` | [[mult.involution]] | the unit, directly inside the instance — absorbing: n factors |
+| `([A]^{n-1} [A])` | [[mult.involution]] | the unit on `[([A]^{n−1})]`, directly inside the instance — absorbing, with the same content (n − 1) ln a as row 6: the second seam step; n factors |
 
 ## Confirms
 
@@ -89,8 +89,8 @@ x ⋯ x = xⁿ as James states it (p. 28: `([x]…[x]) = (([[x]][o…o]))`), pro
 | reading | cell | why |
 |---|---|---|
 | C | EXACT | — |
-| finset | ABSENT | — |
-| logic | ABSENT | — |
+| finset | EXACT | aⁿ = a × … × a, the n-fold product of sets, as for [[mult.square-is-product]] |
+| logic | untested | — |
 | lambda, CC | untested | — |
 
 ## Refuted readings
@@ -99,4 +99,4 @@ none
 
 ## Notes
 
-Guarded by position (Amendment A2): the unit right to left on `([[A]] [o^{n−1}])` has content (n − 1) ln a, off the strip for complex a with |arg a| > π/(n − 1); it sits directly inside the instance.
+Guarded by position (Amendment A2): rows 6 and 8 are unit steps on the content (n − 1) ln a — the unit right to left on `([[A]] [o^{n−1}])` and then the unit on `[([A]^{n−1})]` — off the strip for complex a with |arg a| > π/(n − 1) once n ≥ 3 (at n = 2 the content is ln a itself, on the strip, so the instance n = 2 is free of the decree); both sit directly inside the instance. Checked for n = 1 … 7; the card draws n = 3.

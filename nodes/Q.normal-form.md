@@ -3,7 +3,7 @@ id: Q.normal-form
 title: Fraction arithmetic closes — a worked reduction
 type: theorem
 level: object
-kind: schema
+kind: instance
 rung: Q
 order: 657
 setting: classical

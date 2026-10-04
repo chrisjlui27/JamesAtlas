@@ -3,7 +3,7 @@ id: Q.fractional-cardinality
 title: Fractional cardinality — half of a form, twice, is the form
 type: theorem
 level: object
-kind: schema
+kind: instance
 rung: Q
 order: 570
 setting: classical

@@ -3,7 +3,7 @@ id: Q.rational
 title: The rational numbers
 type: definition
 level: object
-kind: schema
+kind: instance
 rung: Q
 order: 630
 setting: classical

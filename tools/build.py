@@ -535,7 +535,7 @@ a {{ color:var(--accent); }}
 #dag .gt {{ font-size:9.5px; fill:var(--fg2) !important; font-family:var(--sans); }}
 #dag .glab {{ font-size:9px; fill:var(--fg2); text-transform:uppercase; letter-spacing:0.08em; }}
 #dag .t-primitive rect {{ stroke:var(--t-primitive); }} #dag .t-axiom rect {{ stroke:var(--t-axiom); }} #dag .t-definition rect {{ stroke:var(--t-definition); }}
-#dag .t-theorem rect {{ stroke:var(--t-theorem); }} #dag .t-decree rect {{ stroke:var(--t-decree); }} #dag .t-import rect {{ stroke:var(--t-import); }} #dag .t-gap rect {{ stroke:var(--t-gap); }} #dag .t-schema rect {{ stroke:var(--t-schema); stroke-dasharray:6 3; }}
+#dag .t-theorem rect {{ stroke:var(--t-theorem); }} #dag .t-decree rect {{ stroke:var(--t-decree); }} #dag .t-import rect {{ stroke:var(--t-import); }} #dag .t-gap rect {{ stroke:var(--t-gap); }} #dag .t-schema rect {{ stroke:var(--t-schema); stroke-width:2.5; }}
 .hint {{ font-size:0.75rem; color:var(--fg2); margin:6px 0 0; }}
 article.node {{ background:var(--bg2); border:1px solid var(--line); border-left:4px solid var(--mute); border-radius:6px; padding:14px 16px 10px; margin:12px 0; scroll-margin-top:70px; }}
 article.node.hidden-by-search {{ display:none; }}
@@ -547,7 +547,8 @@ article.node.hidden-by-search {{ display:none; }}
 .bd.type {{ color:#fff; border-color:transparent; font-weight:500; }}
 .bd.type.t-primitive {{ background:var(--t-primitive); }} .bd.type.t-axiom {{ background:var(--t-axiom); }} .bd.type.t-definition {{ background:var(--t-definition); }} .bd.type.t-theorem {{ background:var(--t-theorem); }} .bd.type.t-decree {{ background:var(--t-decree); }} .bd.type.t-import {{ background:var(--t-import); }} .bd.type.t-gap {{ background:var(--t-gap); }} .bd.type.t-schema {{ background:var(--t-schema); }}
 .bd.status {{ font-weight:500; }}
-.bd.s-native, .bd.s-nativebydecree {{ color:var(--ok); border-color:var(--ok); }}
+.bd.s-native, .bd.s-nativebydecree, .bd.s-nativebyschema {{ color:var(--ok); border-color:var(--ok); }}
+.bd.s-nativebyschema {{ border-style:double; }}
 .bd.s-imported, .bd.s-analogy, .bd.s-conjecture {{ color:var(--warn); border-color:var(--warn); }}
 .bd.s-refuted {{ color:var(--bad); border-color:var(--bad); text-decoration:line-through; }}
 .bd.s-absent {{ color:var(--mute); border-style:dashed; }}
@@ -567,7 +568,7 @@ article.node.hidden-by-search {{ display:none; }}
 .lawrow .units {{ color:var(--fg2); font-family:var(--serif); font-style:italic; }}
 .law.gap {{ border:1px dashed var(--t-gap); background:transparent; }}
 .law.decree {{ border:1px solid var(--t-decree); }}
-.law.schema {{ border:1px dashed var(--accent); }}
+.law.schema {{ border:3px double var(--accent); }}
 .law .lawtext {{ font-size:0.95rem; }}
 svg.form {{ overflow:visible; vertical-align:middle; flex:none; }}
 .law .drawing svg.form {{ max-width:100%; height:auto; }}
@@ -654,7 +655,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 <section id="chart">
   <h2>The chart<span class="rmeta">columns = derivation depth · click a law to jump · hover to light its edges · drag to pan</span></h2>
   {render_dag(nodes, depth)}
-  <p class="hint">Edges run from a law to the laws derived from it. Dashed boxes are gaps. The one re-entry edge (F₁ → void) is not yet in the pilot.</p>
+  <p class="hint">Edges run from a law to the laws derived from it. Dashed boxes are gaps; heavy boxes are schemas (one law for every n). The one re-entry edge (F₁ → void) is not yet in the pilot.</p>
 </section>
 {"".join(chapters)}
 <section id="concepts"><h2>Concept index<span class="rmeta">a concept resolves to the laws that express it</span></h2><div class="concepts">{render_concepts(nodes, concepts)}</div></section>

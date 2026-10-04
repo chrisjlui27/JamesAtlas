@@ -3,7 +3,7 @@ id: mult.cardinality
 title: Cardinality — repetition is a form
 type: theorem
 level: object
-kind: schema
+kind: instance
 rung: mult
 order: 360
 setting: classical

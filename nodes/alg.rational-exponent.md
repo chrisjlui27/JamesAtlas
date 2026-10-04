@@ -3,7 +3,7 @@ id: alg.rational-exponent
 title: A rational exponent is a root raised to a power
 type: theorem
 level: object
-kind: schema
+kind: instance
 rung: alg
 order: 810
 setting: classical

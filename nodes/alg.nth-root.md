@@ -3,7 +3,7 @@ id: alg.nth-root
 title: Roots of every order
 type: definition
 level: object
-kind: schema
+kind: instance
 rung: alg
 order: 800
 setting: classical

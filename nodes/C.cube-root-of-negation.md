@@ -67,7 +67,7 @@ Cut the half-turn into three. Three of the pieces make the half-turn again: minu
 
 ## Confirms
 
-(e^{iπ/3})³ = −1. The rows that take two copies to the count 2 and then to the count 3 are [[schema.cardinality]] at n = 3, written out; the odd roots of −1 for every n are [[schema.roots-of-negation]], which pays the induction gap ([[N.induction]]) once. It is **not** "the" cube root of −1: the three cube roots are the counts ⅓, 1 and ⁵⁄₃ of J, instanced — `(([J] <[ooo]>))`, `(J)` = `<o>` and `(([J] [ooooo] <[ooo]>))` — and the calculus names each one separately; [[alg.nth-root]] names the real one when the radicand is positive.
+(e^{iπ/3})³ = −1. The rows that take two copies to the count 2 and then to the count 3 are [[schema.cardinality]] at n = 3, written out; the n-th roots of −1 for every n are [[schema.roots-of-negation]], which pays the induction gap ([[N.induction]]) once. It is **not** "the" cube root of −1: the three cube roots are the counts ⅓, 1 and ⁵⁄₃ of J, instanced — `(([J] <[ooo]>))`, `(J)` = `<o>` and `(([J] [ooooo] <[ooo]>))` — and the calculus names each one separately; [[alg.nth-root]] names the real one when the radicand is positive.
 
 ## Settings and readings
 

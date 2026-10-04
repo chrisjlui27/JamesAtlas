@@ -3,7 +3,7 @@ id: Q.quotient-of-numerals
 title: A quotient of piles that divides evenly is a pile
 type: theorem
 level: object
-kind: schema
+kind: instance
 rung: Q
 order: 585
 setting: classical

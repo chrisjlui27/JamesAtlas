@@ -79,9 +79,6 @@ That James's "crack" is deeper than the phase element: it is the absence, in an 
 
 LEGISLATION 27: this gap is scheduled to close at rung `J1`, where Λ is a native object and the strip test becomes a receipt test; until then the ℂ import stands, marked provisional.
 
-
-—
-
 ## Plan
 
 | field | content |

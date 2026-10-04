@@ -28,11 +28,11 @@ readings:
   logic: ABSENT
 status: NATIVE-BY-SCHEMA
 verified: engine
-known_since: "1993 (James: roots as fractional counts of J); the n-th roots of −1 as e^{(2k+1)πi/n}: De Moivre 1707–22, Euler 1748"
+known_since: "1993 (James, Ch. 6 §6.2.3 p. 46: 'other cardinalities of J' as roots of unity — the odd case is the chart's); the n-th roots of −1 as e^{(2k+1)πi/n}: De Moivre 1707–22, Euler 1748"
 entered: 2026-10-03
 guide: need-led
 band: "9–12"
-uses: [mult.multiplication, C.phase, mult.involution, schema.cardinality, Z.inversion, C.phase-under-instance, schema.period-multiple]
+uses: [mult.multiplication, C.phase, mult.involution, schema.cardinality, Z.inversion, void.space, C.phase-under-instance, schema.period-multiple]
 guarded_by: [mult.seam-decree]
 see_also: [C.cube-root-of-negation, C.i-squared, schema.roots-of-unity, C.phase-under-instance]
 aliases: [roots of negation, roots of −1, "ρⁿ = −1"]
@@ -59,18 +59,18 @@ Cut a half-turn into n equal parts, take an odd number of parts, and do it n tim
 | form | rule | note |
 |---|---|---|
 | `([(([J] [o^{2k+1}] <[o^{n}]>))]^{n})` | given | the n-th power of `(([J] [2k+1] <[n]>))`, J with an odd count over n ([[mult.multiplication]], [[C.phase]]) |
-| `(([J] [o^{2k+1}] <[o^{n}]>)^{n})` | [[mult.involution]] | the unit on each abstract, directly inside the instance — absorbing |
+| `(([J] [o^{2k+1}] <[o^{n}]>)^{n})` | [[mult.involution]] | the unit on each abstract, directly inside the instance — absorbing (content (2k + 1)πi/n, off the strip for 2k + 1 > n: a seam step) |
 | `(([([J] [o^{2k+1}] <[o^{n}]>)] [o^{n}]))` | [[schema.cardinality]] | n copies are one copy with the count n |
 | `(([J] [o^{2k+1}] <[o^{n}]> [o^{n}]))` | [[mult.involution]] | the unit, directly inside the inner instance — absorbing |
 | `(([J] [o^{2k+1}]))` | [[Z.inversion]] | the count n and its mirror cancel |
 | `(J^{2k+1})` | [[schema.cardinality]] | right to left, with A = J |
-| `(J^{2k} J)` | medium | one J set apart |
+| `(J^{2k} J)` | medium | one J set apart — the same multiset ([[void.space]]) |
 | `<(J^{2k})>` | [[C.phase-under-instance]] | `(A J) ≐ <(A)>` with A = `J^{2k}`: the odd J is a sign |
-| `<o>` | [[schema.period-multiple]] | k whole turns inside an empty instance are `o`; the n-th power of an odd fraction of J is minus one |
+| `<o>` | [[schema.period-multiple]] | k whole turns inside an empty instance are `o` (k ≥ 1; at k = 0 the form `<()>` already is `<o>` and the row is the same form): the n-th power of an odd fraction of J is minus one |
 
 ## Confirms
 
-The n-th roots of −1 as fractional counts of J: `(([J] [2k+1] <[n]>))` for k = 0, …, n − 1. The derivation differs from [[schema.roots-of-unity]] in one row: the odd J left over after the whole turns are forgotten becomes a sign by [[C.phase-under-instance]]. Together the two schemas say that μ_{2n} = μ_n ⊔ (the roots of negation) — the unity/negation split that J1 reads as group and torsor. It is **not** a proof that the real cube root of −1, which is `<o>` itself, is among these for odd n: it is (k = (n − 1)/2 gives the count 1), but "which of the n forms is real" is a question for the reading.
+The n-th roots of −1 as fractional counts of J: `(([J] [2k+1] <[n]>))` for k = 0, …, n − 1. The derivation differs from [[schema.roots-of-unity]] in one row: the odd J left over after the whole turns are forgotten becomes a sign by [[C.phase-under-instance]]. Together the two schemas say that μ_{2n} = μ_n ⊔ (the roots of negation) — the unity/negation split that J1 reads as group and torsor. It does **not** say which of the n forms is real: for odd n the count 1 (k = (n − 1)/2) gives `(J)`, which is `<o>` itself, the real n-th root of −1 — but "real" is a question for the reading, like [[alg.irrationality]].
 
 ## Settings and readings
 
@@ -94,4 +94,4 @@ none
 
 ## Notes
 
-Guarded by position (Amendment A2): as [[schema.roots-of-unity]]. Checked for n = 1…6 and k = 0…n − 1 (21 instances); the card draws n = 3, k = 1.
+Guarded by position (Amendment A2): the unit on each abstract in row 2 has content (2k + 1)πi/n, off the strip when 2k + 1 > n (for [[schema.roots-of-unity]] the condition is 2k > n); it sits directly inside the instance. Checked for n = 1 … 6 and k = 0 … n − 1 (21 instances); the card draws n = 3, k = 1.

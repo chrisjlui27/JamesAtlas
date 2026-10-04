@@ -3,7 +3,7 @@ id: N.numeral
 title: Numerals are piles
 type: definition
 level: object
-kind: schema
+kind: instance
 rung: N
 order: 120
 setting: classical

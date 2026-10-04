@@ -32,7 +32,7 @@ known_since: "1993 (James, Ch. 6 §6.3 p. 46: 'ambiguous cardinality, void = JJ 
 entered: 2026-10-03
 guide: need-led
 band: "9–12"
-uses: [C.period-absorption, N.induction]
+uses: [C.period-absorption, N.induction, void.space]
 see_also: [C.period-absorption, C.double-phase, schema.roots-of-unity]
 aliases: [period multiple, "e^{2πin} = 1"]
 concepts: [phase, period, induction]
@@ -63,13 +63,13 @@ Inside a circle, one whole turn is nothing — so any number of whole turns is n
 | form | rule | note |
 |---|---|---|
 | `(A J^{2n})` | given | n whole turns inside the instance |
-| `(A J^{2n-2} J J)` | medium | one pair set apart — the same multiset |
+| `(A J^{2n-2} J J)` | medium | one pair set apart — the same multiset ([[void.space]]) |
 | `(A J^{2n-2})` | [[C.period-absorption]] | with A := `A J^{2n−2}`: one pair cancels |
 | `(A)` | hypothesis | the schema at n − 1 ([[N.induction]]) |
 
 ## Confirms
 
-e^{a + 2πin} = e^a for every integer n: the kernel of the exponential is all of 2πiℤ, not just its generator — which in J1 is A5′ for the whole lattice Λ = ℤω (the chart's `(λ A) ≐ (A)`). James's "ambiguous cardinality" `void = JJ = JJJJ = …` (p. 46) is exactly this schema *with the instance removed*, which is the crack; with the instance kept it is a theorem. It is **not** a statement about odd counts of J: an odd number of J inside an instance is a sign ([[C.phase-under-instance]], [[schema.roots-of-negation]]).
+e^{a + 2πin} = e^a for every n ≥ 1 (the negative multiples need one Inversion more, `<J J>` beside `J J`, and are not stated here): the kernel of the exponential is all of 2πiℤ, not just its generator — which in J1 is A5′ for the whole lattice Λ = ℤω (the chart's `(λ A) ≐ (A)`). James's "ambiguous cardinality" `void = JJ = JJJJ = …` (p. 46) is exactly this schema *with the instance removed*, which is the crack; with the instance kept it is a theorem. It is **not** a statement about odd counts of J: an odd number of J inside an instance is a sign ([[C.phase-under-instance]], [[schema.roots-of-negation]]).
 
 ## Settings and readings
 
@@ -93,4 +93,4 @@ none
 
 ## Notes
 
-—
+Checked for n = 1 … 6 (the base n = 1 is [[C.period-absorption]] itself); the card draws n = 3. No unit step occurs, so the schema is not guarded.

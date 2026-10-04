@@ -3,7 +3,7 @@ id: Z.normal-form
 title: Every additive form is an integer
 type: theorem
 level: object
-kind: schema
+kind: instance
 rung: Z
 order: 270
 setting: classical

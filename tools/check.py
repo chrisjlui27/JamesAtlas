@@ -45,7 +45,9 @@ class Report:
         self.fails, self.warns, self.oks = [], [], 0
 
     def fail(self, nid, msg):
-        self.fails.append(f"{nid}: {msg}")
+        line = f"{nid}: {msg}"
+        if line not in self.fails:
+            self.fails.append(line)
 
     def warn(self, nid, msg):
         self.warns.append(f"{nid}: {msg}")
@@ -103,6 +105,30 @@ def check_schema(node: N.Node, nodes, rep: Report):
         uses = m.get("uses") or []
         if "N.induction" not in uses and not any(u in nodes and nodes[u].get("type") == "schema" for u in uses):
             rep.fail(nid, "a schema cites [[N.induction]] in its hypothesis row, or rests on another schema (the price of the meta-move)")
+        text = node.sections.get("Derivation", "")
+        has_hyp = any(len(r) > 1 and "hypothesis" in rule_tokens(r[1]) for t in N.parse_tables(text) for r in t[1:])
+        try:
+            envs = S.parse_range(m.get("schema_range", ""))
+            bases = S.base_values(text)
+        except ValueError as ex:
+            rep.fail(nid, f"schema_range: {ex}")
+            envs, bases = [], {}
+        if has_hyp and not bases:
+            rep.fail(nid, "an induction (a `hypothesis` row) needs a base-case table headed `| form (n = 1) | rule | note |`")
+        if has_hyp and "N.induction" not in uses:
+            rep.fail(nid, "a `hypothesis` row cites [[N.induction]]: the passage to all n is the gap, and it is priced")
+        if len(bases) > 1:
+            rep.fail(nid, f"base cases in more than one parameter: {sorted(bases)}")
+        for var, vals in bases.items():
+            if envs and var not in envs[0]:
+                rep.fail(nid, f"base case in {var}, which schema_range does not bind")
+                continue
+            seen = sorted({e[var] for e in envs})
+            for v in vals:
+                if v not in seen:
+                    rep.fail(nid, f"base case {var} = {v} lies outside schema_range, so it is never checked")
+            if seen and has_hyp and seen[0] not in vals:
+                rep.fail(nid, f"the induction starts at {var} = {seen[0]} but the base case is {var} = {vals[0]}")
     if m.get("type") == "gap":
         if m.get("status") != "ABSENT":
             rep.fail(nid, "gap nodes have status ABSENT")
@@ -211,6 +237,11 @@ def parse_or_none(s: str):
         return None
 
 
+def rule_tokens(rule: str):
+    """The rule words of a derivation row's rule cell, lower-cased, with the [[links]] removed."""
+    return [r.lower() for r in re.split(r"[,;]\s*|\s+", N.LINK.sub("", rule).strip()) if r]
+
+
 def check_equal_forms(f1, f2, node: N.Node, rng, trials: int):
     """Return (ok, message) comparing two forms on random instantiations."""
     names = F.variables(f1) | F.variables(f2)
@@ -313,10 +344,10 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
                 rep.fail(nid, f"derivation row {i+1} does not parse: {cell!r}")
                 prev = None
                 continue
-            rules_named = [r for r in re.split(r"[,;]\s*|\s+", N.LINK.sub("", rule).strip()) if r]
-            for r in rules_named:
-                if r.lower() not in ALLOWED_RULES and r not in ("—", "-", ""):
-                    rep.fail(nid, f"derivation row {i+1} uses unknown rule {r!r}")
+            rules_named = rule_tokens(rule)
+            for rn in rules_named:
+                if rn not in ALLOWED_RULES and rn not in ("—", "-", ""):
+                    rep.fail(nid, f"derivation row {i+1} uses unknown rule {rn!r}")
             if rule.strip().lower() == "given" or prev is None:
                 prev = f
                 firsts.append(f)
@@ -326,6 +357,18 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
                 rep.fail(nid, f"derivation step {i+1} is not an equality: {msg}")
             else:
                 rep.ok()
+            if "hypothesis" in rules_named:
+                note = r[2] if len(r) > 2 else ""
+                if node.get("type") != "schema":
+                    rep.fail(nid, f"derivation row {i+1}: the rule `hypothesis` belongs to schema nodes")
+                elif "[[N.induction]]" not in note + rule:
+                    rep.fail(nid, f"derivation row {i+1}: a hypothesis row cites [[N.induction]]")
+                else:
+                    hok, hmsg = hypothesis_ok(prev, f, node)
+                    if not hok:
+                        rep.fail(nid, f"derivation row {i+1}: {hmsg}")
+                    else:
+                        rep.ok()
             if node.get("type") != "decree":
                 seam = check_seam(prev, f, node, rep, i + 1, rng, trials)
                 if seam:
@@ -338,12 +381,12 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
     if node.get("type") in ("theorem", "schema") and node.get("level") == "object" and "≐" in law and firsts and lasts:
         lhs, rhs = (parse_or_none(x.strip()) for x in law.split("≐", 1))
         if lhs is not None and rhs is not None:
-            def hits(cands, target):
-                return any(check_equal_forms(c, target, node, rng, max(5, trials // 4))[0] for c in cands)
+            def hits(cands, target):  # syntactic: the same canonical form, not merely the same value
+                return any(c == target for c in cands)
             forward = hits(firsts, lhs) and hits(lasts, rhs)
             backward = hits(firsts, rhs) and hits(lasts, lhs)
             if not (forward or backward):
-                rep.fail(nid, "derivation tables do not start at one side of the law and end at the other")
+                rep.fail(nid, f"derivation tables do not start at one side of the law and end at the other (as forms): law {F.to_string(lhs, True)} ≐ {F.to_string(rhs, True)}; first rows {[F.to_string(x, True) for x in firsts]}; last rows {[F.to_string(x, True) for x in lasts]}")
             else:
                 rep.ok()
 
@@ -399,42 +442,57 @@ def find_unit_steps(f1, f2, path=()):
         return rest, list(dst_c.elements())
     r1, r2 = take_units(r1, r2)
     r2, r1 = take_units(r2, r1)
-    # 2. pair remaining same-kind boundaries and recurse
-    best_unexplained = None
-    best_steps = []
+    # 2. pair remaining same-kind boundaries and recurse. The cost of pairing a with b is structural — the number
+    # of children the recursive match leaves unexplained — never a string similarity, so a decoy sibling whose
+    # content merely resembles the result of a unit step does not steal the pairing. Each kind is independent
+    # (costs add), so the best assignment is chosen kind by kind: exactly, by enumerating the injections of the
+    # smaller side into the larger when there are at most 20 000 of them, and greedily by cost beyond that.
     by_kind1, by_kind2 = {}, {}
     for e in r1:
         by_kind1.setdefault(e[0], []).append(e)
     for e in r2:
         by_kind2.setdefault(e[0], []).append(e)
     kinds = [k for k in (F.ROUND, F.SQUARE, F.ANGLE) if k in by_kind1 and k in by_kind2]
-    # enumerate pairings kind by kind (small sets only)
-    options_per_kind = []
+    best_steps, used_total, sub_unexplained_total = [], 0, 0
     for k in kinds:
         a, b = by_kind1[k], by_kind2[k]
-        n = min(len(a), len(b))
-        if n == 0 or len(a) > 4 or len(b) > 4:
-            options_per_kind.append([[]])
-            continue
-        opts = []
-        for perm_a in itertools.permutations(range(len(a)), n):
-            for perm_b in itertools.permutations(range(len(b)), n):
-                opts.append(list(zip(perm_a, perm_b)))
-        options_per_kind.append(opts)
-    unexplained_base = len(r1) + len(r2)
-    for combo in itertools.product(*options_per_kind) if kinds else [()]:
-        sub_steps, sub_unexplained, used = [], 0, 0
-        for k, pairs in zip(kinds, combo):
-            for ia, ib in pairs:
-                st, un = find_unit_steps(by_kind1[k][ia][1], by_kind2[k][ib][1], path + (k,))
-                sub_steps += st
-                sub_unexplained += un
-                used += 2
-        total = unexplained_base - used + sub_unexplained
-        if best_unexplained is None or total < best_unexplained or (total == best_unexplained and len(sub_steps) > len(best_steps)):
-            best_unexplained, best_steps = total, sub_steps
-    if best_unexplained is None:
-        best_unexplained = unexplained_base
+        if len(a) > len(b):
+            a, b, swapped = b, a, True
+        else:
+            swapped = False
+        n, m = len(a), len(b)
+        cost, stepsof = {}, {}
+        for i in range(n):
+            for j in range(m):
+                x, y = (b[j][1], a[i][1]) if swapped else (a[i][1], b[j][1])
+                st, un = find_unit_steps(x, y, path + (k,))
+                cost[i, j], stepsof[i, j] = un, st
+        count = 1
+        for t in range(n):
+            count *= (m - t)
+        best = None
+        if count <= 20000:
+            for perm in itertools.permutations(range(m), n):
+                pairs = list(zip(range(n), perm))
+                tot = sum(cost[p] for p in pairs)
+                nst = sum(len(stepsof[p]) for p in pairs)
+                if best is None or tot < best[0] or (tot == best[0] and nst > best[1]):
+                    best = (tot, nst, pairs)
+        else:
+            order = sorted(cost, key=lambda p: (cost[p], -len(stepsof[p])))
+            ua, ub, pairs = set(), set(), []
+            for i, j in order:
+                if i in ua or j in ub:
+                    continue
+                ua.add(i); ub.add(j); pairs.append((i, j))
+                if len(pairs) == n:
+                    break
+            best = (sum(cost[p] for p in pairs), sum(len(stepsof[p]) for p in pairs), pairs)
+        for p in best[2]:
+            best_steps += stepsof[p]
+        sub_unexplained_total += best[0]
+        used_total += 2 * len(best[2])
+    best_unexplained = len(r1) + len(r2) - used_total + sub_unexplained_total
     return steps + best_steps, best_unexplained
 
 
@@ -553,15 +611,65 @@ def seam_reliance(node: N.Node, rng=None, trials: int = 60):
 
 def schema_instances(node: N.Node):
     """The engine-checked instances of a schema node: one Node copy per parameter environment in schema_range,
-    with the law and the Derivation expanded (base-case tables kept only at their own parameter value)."""
+    with the law and the Derivation expanded. At a base-case value the instance's derivation is the base table
+    alone; at every other value it is the step tables alone (SPEC §2.7), so a `hypothesis` row always refers to
+    a value at or above the base. The instance carries the template and its environment for the hypothesis check."""
     out = []
+    text = node.sections.get("Derivation", "")
     for env in S.parse_range(node.get("schema_range", "n=2..6")):
         meta = dict(node.meta)
         meta["law"] = S.expand(str(node.get("law", "")), env)
+        meta["schema_env"] = env
+        meta["schema_template"] = str(node.get("law", ""))
         secs = dict(node.sections)
-        secs["Derivation"] = S.expand_derivation(node.sections.get("Derivation", ""), env, keep_fixed="match")
+        secs["Derivation"] = S.expand_derivation(text, env, keep_fixed="match")
         out.append(N.Node(id=f"{node.id}@{S.describe(env)}", path=node.path, meta=meta, sections=secs, body=node.body))
     return out
+
+
+def _subtract(counter, sub):
+    """Multiset difference, or None when sub is not contained in counter."""
+    if any(counter[k] < v for k, v in sub.items()):
+        return None
+    return counter - sub
+
+
+def rewrites_by(prev, cur, lhs, rhs) -> bool:
+    """Is `cur` obtained from `prev` by replacing one occurrence of the multiset `lhs` by `rhs` (variables kept
+    as literal atoms), at the root or inside exactly one boundary? A purely syntactic check."""
+    from collections import Counter
+    cp, cc = Counter(prev), Counter(cur)
+    rest = _subtract(cp, Counter(lhs))
+    if rest is not None and rest + Counter(rhs) == cc:
+        return True
+    # otherwise prev and cur must differ in exactly one child of the same kind; recurse into it
+    only_p = list((cp - cc).elements())
+    only_c = list((cc - cp).elements())
+    if len(only_p) == 1 and len(only_c) == 1 and only_p[0][0] == only_c[0][0] and only_p[0][0] != F.VAR:
+        return rewrites_by(only_p[0][1], only_c[0][1], lhs, rhs)
+    return False
+
+
+def hypothesis_ok(prev, cur, node: N.Node):
+    """A `hypothesis` row of a schema instance must be the schema's own law at a smaller parameter in range,
+    applied once in either direction. Returns (ok, message)."""
+    env = node.get("schema_env")
+    template = node.get("schema_template", "")
+    if env is None or "≐" not in template:
+        return False, "hypothesis rows belong to schema nodes"
+    tl, tr = (x.strip() for x in template.split("≐", 1))
+    tried = []
+    for e2 in S.parse_range(node.get("schema_range", "")):
+        if e2 == env or any(e2[k] > env[k] for k in env) or any(k not in e2 for k in env):
+            continue
+        try:
+            lhs, rhs = F.parse(S.expand(tl, e2)), F.parse(S.expand(tr, e2))
+        except Exception:
+            continue
+        tried.append(S.describe(e2))
+        if rewrites_by(prev, cur, lhs, rhs) or rewrites_by(prev, cur, rhs, lhs):
+            return True, S.describe(e2)
+    return False, f"not the schema's law at any smaller parameter in range (tried {', '.join(tried) or 'none'})"
 
 
 def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 60):
@@ -571,7 +679,12 @@ def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 6
     nid = node.id
     if node.get("type") == "schema":
         rel = set()
-        for inst in schema_instances(node):
+        try:
+            insts = schema_instances(node)
+        except ValueError as ex:
+            rep.fail(nid, f"schema does not expand: {ex}")
+            return
+        for inst in insts:
             rel |= seam_reliance(inst, rng, trials)
     else:
         rel = seam_reliance(node, rng, trials)
