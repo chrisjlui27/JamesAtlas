@@ -17,7 +17,7 @@ holds:
   J1: holds-mod-Λ
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: holds-mod-Λ
 readings:
   C: PARTIAL
   finset: ABSENT
@@ -78,7 +78,7 @@ ln(−e^a) = a + iπ for real a — the principal branch's rule for the exponent
 | classical | holds | on real content, by the seam decree's content clause |
 | J1 | holds-mod-Λ | the bare depth-0 unit: `[<(A)>] ≃ A J` with a receipt — J1's reading of James's theorem, and the reason J1 exists |
 | JH, JO | replaced | the phase operator in ℍ moves the content out beside the J of the content's own slice (JH's O6) |
-| JP | untested | — |
+| JP | holds-mod-Λ | exact as an equation for the samples of the page; the receipt posted at p is the torsion's (`place.torsion`): J = ω_p/2 at every place |
 
 | reading | cell | why |
 |---|---|---|

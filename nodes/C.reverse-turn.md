@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: holds
 readings:
   C: EXACT
   finset: ABSENT
@@ -73,7 +73,7 @@ Undoing a turn is turning the other way: one over e to the iπt is e to the minu
 | classical | holds | — |
 | J1 | holds | every Λ-step sits directly under an instance: the log-of-negative substitution happens inside `(( … ))` |
 | JH, JO | replaced | per slice, as [[C.cosine-even]] |
-| JP | untested | — |
+| JP | holds | for turns of integer count at the place |
 
 | reading | cell | why |
 |---|---|---|

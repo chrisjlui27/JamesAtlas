@@ -15,15 +15,16 @@ No dependencies beyond the standard library.
 from __future__ import annotations
 import re
 
-_EXPR_OK = re.compile(r"^[0-9nkj+\-*/ ()]+$")
+_EXPR_OK = re.compile(r"^[0-9nkjp+\-*/ ()]+$")
 
 
 def eval_expr(expr: str, env: dict) -> int:
+    """digits, the parameters n, k, j, p, and + - * / ** with parentheses (p is the place, rung `place`)."""
     expr = expr.strip()
     if not expr or not _EXPR_OK.match(expr):
-        raise ValueError(f"bad schema expression {expr!r} (digits, n, k, j and + - * / only)")
-    expr = re.sub(r"(\d)\s*([nkj])", r"\1*\2", expr)  # 2k, 3n → 2*k, 3*n
-    expr = re.sub(r"([nkj])\s+([nkj0-9])", r"\1*\2", expr)  # n k → n*k
+        raise ValueError(f"bad schema expression {expr!r} (digits, n, k, j, p and + - * / ** only)")
+    expr = re.sub(r"(\d)\s*([nkjp])", r"\1*\2", expr)  # 2k, 3n → 2*k, 3*n
+    expr = re.sub(r"([nkjp])\s+([nkjp0-9])", r"\1*\2", expr)  # n k → n*k
     try:
         v = eval(expr, {"__builtins__": {}}, dict(env))  # noqa: S307 — digits, n, k, j and arithmetic only
     except NameError as ex:
@@ -141,13 +142,19 @@ def parse_range(spec: str):
     envs = [{}]
     for c in clauses:
         m = re.match(r"^(\w)\s*=\s*([^.]+)\.\.(.+)$", c)
-        if not m:
+        ml = re.match(r"^(\w)\s*=\s*([0-9]+(?:\s*,\s*[0-9]+)+)$", c)   # an explicit list: p=2,3,5,7,13
+        if not m and not ml:
             raise ValueError(f"bad schema_range clause {c!r}")
-        var, a, b = m.group(1), m.group(2), m.group(3)
         new = []
         for env in envs:
-            lo, hi = eval_expr(a, env), eval_expr(b, env)
-            for v in range(lo, hi + 1):
+            if ml:
+                var = ml.group(1)
+                values = [int(x) for x in ml.group(2).split(",")]
+            else:
+                var, a, b = m.group(1), m.group(2), m.group(3)
+                lo, hi = eval_expr(a, env), eval_expr(b, env)
+                values = range(lo, hi + 1)
+            for v in values:
                 e2 = dict(env)
                 e2[var] = v
                 new.append(e2)

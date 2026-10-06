@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: guarded
   JO: guarded
-  JP: untested
+  JP: holds
 readings:
   C: EXACT
   finset: ABSENT
@@ -71,7 +71,7 @@ e^{iθ}e^{iφ} = e^{i(θ+φ)}, as one Distribution. On the page the law is as sh
 | classical | holds | — |
 | J1 | holds | both unit steps directly under the instance (depth-1 criterion) |
 | JH, JO | guarded | within a slice: two turns about the same axis u compose by adding angles; about different axes they do not, and the product leaves both slices (JH Ch. 14) |
-| JP | untested | — |
+| JP | holds | for turns of integer count at the place, which are torsion powers |
 
 | reading | cell | why |
 |---|---|---|

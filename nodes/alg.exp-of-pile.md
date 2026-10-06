@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: holds
   JO: holds
-  JP: holds
+  JP: replaced
 readings:
   C: EXACT
   finset: ABSENT
@@ -64,7 +64,8 @@ eⁿ as the instance of the pile n — the census's size-3 constant `(o o)` read
 
 | setting | holds | why |
 |---|---|---|
-| all | holds | real content |
+| classical, J1, JH, JO | holds | real content |
+| JP | replaced | `(o^{n})` is a form at p only when p divides n (4 | n at p = 2) — the radius (`place.radius`): e^p is p-adic, e is not |
 
 | reading | cell | why |
 |---|---|---|

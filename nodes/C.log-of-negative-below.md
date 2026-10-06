@@ -17,7 +17,7 @@ holds:
   J1: holds-mod-Λ
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: holds-mod-Λ
 readings:
   C: PARTIAL
   finset: ABSENT
@@ -71,7 +71,7 @@ ln(−a) = ln a − iπ for negative a: with ln a = ln|a| + iπ on the principal
 | classical | holds | — |
 | J1 | holds-mod-Λ | inherits the bare depth-0 unit of [[C.log-of-negative]]: `[<A>] ≃ [A] <J>` with a receipt |
 | JH, JO | replaced | as [[C.log-of-negative]]: in ℍ the half-turn removed must be the one in A's own slice |
-| JP | untested | as [[C.log-of-negative]] |
+| JP | holds-mod-Λ | as [[C.log-of-negative]]: J = ω_p/2 at every place, the receipt posted |
 
 | reading | cell | why |
 |---|---|---|

@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -85,7 +85,7 @@ sin(s+t) = sin s cos t + cos s sin t. Compared with the cosine formula, the i² 
 | classical | holds | — |
 | J1 | holds | every unit step directly under an instance, through an angle at most |
 | JH, JO | replaced | per slice |
-| JP | untested | — |
+| JP | guarded | needs i (p ≡ 1 mod 4, `place.i`) |
 
 | reading | cell | why |
 |---|---|---|

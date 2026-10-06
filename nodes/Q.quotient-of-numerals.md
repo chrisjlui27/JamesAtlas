@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: holds
   JO: holds
-  JP: guarded
+  JP: holds
 readings:
   C: EXACT
   finset: ABSENT
@@ -70,7 +70,7 @@ Exact division of naturals. What happens when the division is *not* exact — `7
 | setting | holds | why |
 |---|---|---|
 | classical, J1, JH, JO | holds | real content; the Involution-down step is on the strip |
-| JP | guarded | `<[oo]>` is not a form at p = 2; the law holds where the divisor is a unit |
+| JP | holds | a quotient that divides evenly is a pile at every place; a reciprocal on its own needs a unit denominator (`place.no-inverse-of-the-prime`) |
 
 | reading | cell | why |
 |---|---|---|

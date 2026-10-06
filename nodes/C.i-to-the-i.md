@@ -17,7 +17,7 @@ holds:
   J1: guarded
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: replaced
 readings:
   C: EXACT
   finset: ABSENT
@@ -78,7 +78,7 @@ Euler's i^i = e^{−π/2}, the principal value, with every step on the page. The
 | classical | holds | — |
 | J1 | guarded | the step under the square is a unit on `i` = `(<[oo]> [J])`, receipt 0; ≃ does not pass through `[ ]`, so the step is sound by the reading alone — an import; every other unit step is absorbed |
 | JH, JO | replaced | u^u per slice, the same real number e^{−π/2} for every unit direction u — a slice-independent value reached through slice-dependent forms |
-| JP | untested | p-adic i^i needs the p-adic logarithm of i, which exists only where i does (p ≡ 1 mod 4) and converges only if i is a 1-unit; untested |
+| JP | replaced | i·[i] is not a count of a formal element at any place: i^i has no value at a finite place — where i exists at all (p ≡ 1 mod 4, `place.i`) |
 
 | reading | cell | why |
 |---|---|---|

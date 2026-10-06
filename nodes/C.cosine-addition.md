@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -89,7 +89,7 @@ cos(s+t) = cos s cos t − sin s sin t, with the usual exponential proof made in
 | classical | holds | — |
 | J1 | holds | every unit step directly under an instance |
 | JH, JO | replaced | per slice |
-| JP | untested | — |
+| JP | guarded | needs i (p ≡ 1 mod 4, `place.i`) |
 
 | reading | cell | why |
 |---|---|---|

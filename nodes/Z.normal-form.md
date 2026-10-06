@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: holds
   JO: holds
-  JP: untested
+  JP: holds
 readings:
   C: EXACT
   finset: ABSENT
@@ -72,7 +72,7 @@ The general case: split every mirror down to single units by [[Z.collection]] (t
 | setting | holds | why |
 |---|---|---|
 | classical, J1, JH, JO | holds | the additive, mirror-only fragment is identical in all of them |
-| JP | untested | at a finite place a pile of p^N units is declared void, so the normal form becomes a residue: the chart will record that as a *replaced* law when the `place` rung is laid |
+| JP | holds | the identity holds at every place; the integer it names is a residue mod p^N there — integers that agree mod p^N are one form at depth N (`place.void-pile`) |
 
 | reading | cell | why |
 |---|---|---|

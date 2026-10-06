@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -89,7 +89,7 @@ The quadratic formula as a factorization identity, exact for every complex x and
 | classical | holds | — |
 | J1 | holds | every unit step directly under an instance, through an angle at most |
 | JH, JO | replaced | quadratics over ℍ have infinitely many roots when the discriminant is negative (every unit imaginary direction gives one); the factorization is slice-local |
-| JP | untested | the p-adic quadratic formula needs √ at p, i.e. the wall criterion for f |
+| JP | guarded | a form at p where the root is: the discriminant's root needs an even torsion count and a whole count of [p] (`place.selection`, `place.no-inverse-of-the-prime`); where it is a form the formula holds |
 
 | reading | cell | why |
 |---|---|---|

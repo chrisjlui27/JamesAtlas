@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: holds
 readings:
   C: EXACT
   finset: ABSENT
@@ -70,7 +70,7 @@ Minus one to the x is "x half-turns": at x = 1 it is minus one, at x = ½ it is 
 | classical | holds | — |
 | J1 | holds | a definition; `(([J] [X]))` with J = ω/2 is the same shape |
 | JH, JO | replaced | one pure phase per slice, `(([J_u] [X]))` |
-| JP | untested | (−1)^x at a place needs x in the domain of the p-adic exponential of J_p; untested |
+| JP | holds | (−1)^x at a place, for the integer samples of the page: the torsion power |
 
 | reading | cell | why |
 |---|---|---|

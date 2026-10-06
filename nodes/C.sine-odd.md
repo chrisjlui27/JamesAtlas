@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -75,7 +75,7 @@ sin(−θ) = −sin θ, from the definition. The derivation runs from −sin t t
 | classical | holds | — |
 | J1 | holds | all unit steps absorbing; inherits [[C.reverse-turn]] |
 | JH, JO | replaced | per slice |
-| JP | untested | — |
+| JP | guarded | needs i (p ≡ 1 mod 4, `place.i`) |
 
 | reading | cell | why |
 |---|---|---|

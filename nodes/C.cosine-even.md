@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: holds
 readings:
   C: EXACT
   finset: ABSENT
@@ -73,7 +73,7 @@ cos(−θ) = cos θ, from the definition: the cosine is (X + X̄)/2 and replacin
 | classical | holds | — |
 | J1 | holds | all unit steps absorbing; inherits [[C.reverse-turn]] |
 | JH, JO | replaced | per slice |
-| JP | untested | — |
+| JP | holds | for integer turns |
 
 | reading | cell | why |
 |---|---|---|

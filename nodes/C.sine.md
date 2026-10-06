@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -69,7 +69,7 @@ Euler's sin θ = (e^{iθ} − e^{−iθ})/2i as the definition. Together with [[
 | classical | holds | — |
 | J1 | holds | a definition with no Λ-step |
 | JH, JO | replaced | as [[C.cosine]]: the imaginary part of a turn is in the slice's direction u, so `sin` divided by u is slice-independent as a value |
-| JP | untested | as [[C.cosine]] |
+| JP | guarded | needs i: a form at p ≡ 1 mod 4 only (`place.i`); there, for integer turns, it is 0 or ±i |
 
 | reading | cell | why |
 |---|---|---|

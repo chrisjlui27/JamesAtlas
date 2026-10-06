@@ -17,7 +17,7 @@ holds:
   J1: holds-mod-Λ
   JH: replaced
   JO: replaced
-  JP: untested
+  JP: holds-mod-Λ
 readings:
   C: PARTIAL
   finset: ABSENT
@@ -71,7 +71,7 @@ ln(−a) = ln a + iπ for positive a, which is the principal branch's choice. It
 | classical | holds | under the seam decree, for content on the strip |
 | J1 | holds-mod-Λ | a bare unit step at depth 0: the receipt is not absorbed — `[<A>] ≃ [A] J` with receipt, which is J1's phase-independence statement |
 | JH, JO | replaced | unsound in ℍ as stated: the log of −w is the log of w plus π·(the direction of w's own slice), not plus the fixed J (JH's O6 warning); the central sign `< >` is the portable carrier |
-| JP | untested | the JP ledger records the Phase rule and `J J ≐ ω_p` at a place, not the log of a negative; which content the rule covers there is untested |
+| JP | holds-mod-Λ | `[<A>] ≃ [A] J` with J = ω_p/2 at every place; posted, as at 𝕁₁ (the place ledger) |
 
 | reading | cell | why |
 |---|---|---|

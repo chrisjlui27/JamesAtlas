@@ -17,7 +17,7 @@ holds:
   J1: guarded
   JH: holds
   JO: holds
-  JP: guarded
+  JP: fails
 readings:
   C: EXACT
   finset: ABSENT
@@ -75,7 +75,7 @@ That the root of a perfect square is its base, by the mechanism itself (not by a
 |---|---|---|
 | classical, JH, JO | holds | real content |
 | J1 | guarded | one unit step sits under a square before any instance — row 3, on `[oo][oo]`, content 2 ln 2, receipt 0 — and ≃ does not pass through `[ ]`, so that step is sound only by the reading's receipt check: an import. The other receipts are absorbed: the log of one inserted inside the instance of row 2 (k = −1: a period added, paid by that instance), the inherited cardinality step of row 4 (k = 0), and the unit of row 5. Read the card's 𝕁₁ tape, which is computed |
-| JP | guarded | needs the count 2 to be a unit (odd p) and the p-adic log of 2 to converge |
+| JP | fails | **fails at p = 3**: the root form reads the root in the principal-unit sector, and at 3 that root of 4 is −2 (4 ≡ 1 mod 3, 2 ≢ 1): `(([[oooo]] <[oo]>)) ≐ <oo>` there. At p = 5, 7, 13 it reads 2 (an import, as at 𝕁₁); at p = 2 halving is not a form (`place.no-inverse-of-the-prime`). The reading's choice of root is `place.reading`'s |
 
 | reading | cell | why |
 |---|---|---|

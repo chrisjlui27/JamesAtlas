@@ -17,7 +17,7 @@ holds:
   J1: holds-mod-Λ
   JH: holds
   JO: holds
-  JP: holds
+  JP: holds-mod-Λ
 readings:
   C: EXACT
   finset: untested
@@ -70,7 +70,7 @@ ln 1 = 0 — the log of the multiplicative unit is the additive unit. Every use 
 | classical | holds | — |
 | J1 | holds-mod-Λ | `[()]` is ω, the generator of Λ, not void: the law holds mod Λ with receipt ω and fails strictly — the first law to change in 𝕁₁ |
 | JH, JO | holds | the log of the unit is void in every slice |
-| JP | holds | at every place, the log of the unit is void |
+| JP | holds-mod-Λ | `[o]` reads ω_p = (p−1)·J_p at a finite place, the generator of the kernel of the instance there (`place.period`): the law holds mod Λ_p with receipt ω_p, exactly as in 𝕁₁ — the place ledger |
 
 | reading | cell | why |
 |---|---|---|

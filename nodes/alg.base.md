@@ -18,7 +18,7 @@ holds:
   J1: holds
   JH: holds
   JO: holds
-  JP: holds
+  JP: replaced
 readings:
   C: EXACT
   finset: PARTIAL
@@ -67,7 +67,8 @@ e as e^1, the value the exponential takes at the unit. What this does **not** do
 
 | setting | holds | why |
 |---|---|---|
-| all | holds | — |
+| classical, J1, JH, JO | holds | — |
+| JP | replaced | `(o)` = e is not a form at any finite place: the instance has a radius there, p·ℤ_p (4ℤ_2 at p = 2), and 1 lies outside it (`place.radius`) |
 
 | reading | cell | why |
 |---|---|---|

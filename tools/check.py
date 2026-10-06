@@ -33,6 +33,8 @@ import schema as S  # noqa: E402
 import licences as LC  # noqa: E402
 import j1 as J1  # noqa: E402
 import census as C  # noqa: E402
+import place as PL  # noqa: E402
+import placeledger as PLG  # noqa: E402
 
 ROOT = os.path.dirname(HERE)
 BANDS = {"K", "1–2", "3–5", "6–8", "9–12", "beyond"}
@@ -41,6 +43,49 @@ REQUIRED = ["id", "title", "type", "level", "kind", "rung", "order", "setting", 
             "aliases", "concepts", "understood", "reentry"]
 NAMING_RULES = {"name"}
 ALLOWED_RULES = {"given", "medium", "substitution", "congruence", "definition", "name", "lemma", "hypothesis"}
+
+
+# The reading in force: None reads in ℂ (classical, or 𝕁₁ with F.OMEGA set); a place.Reading reads at a prime
+# (nodes in `setting: JP`, rung `place`), chosen per node from its `place:` / `depth:` front matter or a schema
+# instance's parameter p (and n for the depth).
+PLACE_READING: PL.Reading | None = None
+
+
+def set_reading(node: N.Node):
+    """Select the reading for a node (or a schema instance): ℂ, 𝕁₁'s ℂ, or the place the node declares."""
+    global PLACE_READING
+    F.OMEGA = (2j * math.pi) if node.get("setting") == "J1" else None  # LEGISLATION 30b: ω = [()] reads as 2πi in 𝕁₁
+    PLACE_READING = None
+    if node.get("setting") != "JP":
+        return
+    env = node.get("schema_env") or {}
+    p = env.get("p", node.get("place"))
+    n = env.get("n", node.get("depth"))
+    if p is None:
+        return  # a JP node that names no place (a meta node): checked in ℂ like any other
+    try:
+        PLACE_READING = PL.Reading(PL.Place(int(p), int(n) if n else None))
+    except ValueError:
+        PLACE_READING = None
+
+
+def _eval(form, env):
+    return PLACE_READING.evaluate(form, env) if PLACE_READING else F.evaluate(form, env)
+
+
+def _equal(v1, v2, eq):
+    return PLACE_READING.equal(v1, v2, eq) if PLACE_READING else F.equal(v1, v2, eq)
+
+
+def _env(names, domain, rng):
+    return PLACE_READING.random_env(names, domain, rng) if PLACE_READING else F.random_env(names, domain, rng)
+
+
+def _fmt(v):
+    return PLACE_READING.fmt(v) if PLACE_READING else F.fmt(v)
+
+
+NO_VALUE = (F.Undefined, F.Excluded, PL.NotAForm)
 
 
 class Report:
@@ -251,16 +296,16 @@ def check_equal_forms(f1, f2, node: N.Node, rng, trials: int):
     eq = node.get("equality", "≐")
     domain = node.get("domain", "positive")
     for _ in range(trials if names else 1):
-        env = F.random_env(names, domain, rng)
+        env = _env(names, domain, rng)
         try:
-            v1 = F.evaluate(f1, env)
-            v2 = F.evaluate(f2, env)
-        except (F.Undefined, F.Excluded) as ex:
-            return False, f"{type(ex).__name__} evaluating {F.to_string(f1)} / {F.to_string(f2)}"
+            v1 = _eval(f1, env)
+            v2 = _eval(f2, env)
+        except NO_VALUE as ex:
+            return False, f"{type(ex).__name__} evaluating {F.to_string(f1)} / {F.to_string(f2)}: {ex}"
         except OverflowError:
             continue
-        if not F.equal(v1, v2, eq):
-            return False, f"{F.to_string(f1, True)} = {F.fmt(v1)} but {F.to_string(f2, True)} = {F.fmt(v2)} at {{{', '.join(f'{k}={F.fmt(v)}' for k, v in env.items())}}}"
+        if not _equal(v1, v2, eq):
+            return False, f"{F.to_string(f1, True)} = {_fmt(v1)} but {F.to_string(f2, True)} = {_fmt(v2)} at {{{', '.join(f'{k}={_fmt(v) if PLACE_READING is None else v}' for k, v in env.items())}}}"
     return True, ""
 
 
@@ -300,7 +345,7 @@ def check_law(node: N.Node, rep: Report, rng, trials):
     else:
         rep.warn(nid, f"law not checked (unrecognized shape): {law}")
         return
-    if gloss and form is not None:
+    if gloss and form is not None and PLACE_READING is None:   # a gloss is a ℂ expression; at a place the law itself is the check
         names = F.variables(form)
         domain = node.get("domain", "positive")
         for _ in range(trials if names else 1):
@@ -375,7 +420,7 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
                         rep.fail(nid, f"derivation row {i+1}: {hmsg}")
                     else:
                         rep.ok()
-            if node.get("type") != "decree" and node.get("setting") != "J1":  # 𝕁₁ has receipts, not the decree
+            if node.get("type") != "decree" and node.get("setting") not in ("J1", "JP"):  # 𝕁₁ (and the places) have receipts, not the decree
                 seam = check_seam(prev, f, node, rep, i + 1, rng, trials)
                 if seam:
                     rep.ok()
@@ -699,9 +744,9 @@ def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 6
             rep.fail(nid, f"guarded_by {g} does not precede this node")
     if node.get("type") == "decree":
         return
-    if node.get("setting") == "J1":
+    if node.get("setting") in ("J1", "JP"):
         if declared:
-            rep.fail(nid, "a 𝕁₁ node does not declare guarded_by: its unit steps post receipts (SPEC §5.5)")
+            rep.fail(nid, "a 𝕁₁ node (or a node of a place) does not declare guarded_by: its unit steps post receipts (SPEC §5.5)")
         else:
             rep.ok()
         return
@@ -715,6 +760,7 @@ def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 6
 
 J1_GRADES: dict = {}     # node id -> j1.Tape, filled in walk order (cited theorems are graded before their users)
 J1_ROWS: list = []       # (node id, tape, hand cell) for census/j1-ledger.md
+LIC_STEPS: dict = {}     # node (or schema instance) id -> the licensed steps of its derivation, from the ℂ search
 GRADED_TYPES = {"theorem", "schema"}
 
 
@@ -736,15 +782,17 @@ def check_licences(node: N.Node, nodes, rep: Report, cache: dict, rng, parent=No
                 t.worse("absent")
                 t.absent.append(f"row {i+1} unlicensed")
                 continue
-            t.merge(J1.grade_steps(steps, node, local, rng))
+            t.merge(J1.grade_steps(steps, node, local, rng, PLACE_READING))
         local[f"lemma#{ti}"] = t
 
-    lic, unl, skip, details = LC.check_node(node, nodes, cache, phases=J1.phases(local, node, rng),
+    lic, unl, skip, details = LC.check_node(node, nodes, cache, phases=J1.phases(local, node, rng, PLACE_READING),
                                             on_table=on_table if graded else None)
     for ti, i, status, msg, _steps in details:
         if status == "UNLICENSED":
             rep.fail(node.id, f"derivation table {ti+1} row {i+1} is not licensed by the rule it cites: {msg}")
     rep.oks += lic
+    if graded:
+        LIC_STEPS[node.id] = details   # the licensed path, re-graded at every place by the place ledger
     if not graded:
         return None
     tape = J1.Tape()
@@ -765,6 +813,22 @@ J1_ACCEPT = {
 
 def record_j1(node: N.Node, tape, rep: Report):
     """Store the computed grade and compare it with the node's hand-written J1 cell."""
+    if node.get("setting") == "JP":
+        # a node of rung `place`: its tape was computed at its own place; the JP cell and the equality follow it
+        PLG.PLACE_RUNG_ROWS.append((node.id, tape, (node.get("holds") or {}).get("JP", ""), PLACE_READING.name if PLACE_READING else "C"))
+        hand = (node.get("holds") or {}).get("JP", "")
+        eq = str(node.get("equality", ""))
+        want = "≡" if tape.grade == "strict" else ("≃" if tape.grade in ("absorbed", "posted") else None)
+        d = J1.describe(tape, PLACE_READING)[:200]
+        if want is None:
+            rep.fail(node.id, f"a law of the place whose derivation needs an import or fails: {d}")
+        elif eq != want:
+            rep.fail(node.id, f"equality is {eq} but the tape at the place says {want}: {d}")
+        elif hand != tape.cell:
+            rep.fail(node.id, f"JP cell says {hand} but the tape at the place earns {tape.cell}: {d}")
+        else:
+            rep.ok()
+        return
     J1_GRADES[node.id] = tape
     hand = (node.get("holds") or {}).get("J1", "")
     J1_ROWS.append((node.id, tape, hand))
@@ -858,7 +922,9 @@ def main(argv=None):
     ap.add_argument("--trials", type=int, default=40)
     ap.add_argument("--no-census", action="store_true")
     ap.add_argument("--no-licences", action="store_true", help="skip the derivation checker (tools/prover.py)")
+    ap.add_argument("--no-places", action="store_true", help="skip the place ledger (tools/placeledger.py)")
     args = ap.parse_args(argv)
+    global PLACE_READING
     rng = random.Random(args.seed)
     nodes = N.load_nodes(os.path.join(ROOT, "nodes"))
     rep = Report()
@@ -866,7 +932,7 @@ def main(argv=None):
     witnesses = []
     check_orders(nodes, rep)
     for node in sorted(nodes.values(), key=lambda n: n.get("order", 0) if isinstance(n.get("order"), int) else 0):
-        F.OMEGA = (2j * math.pi) if node.get("setting") == "J1" else None  # LEGISLATION 30b: ω = [()] reads as 2πi in 𝕁₁
+        set_reading(node)
         check_schema(node, nodes, rep)
         check_links(node, nodes, rep)
         check_tables_agree(node, rep)
@@ -880,6 +946,7 @@ def main(argv=None):
                 insts = []
             tape = J1.Tape() if insts else None
             for inst in insts:
+                set_reading(inst)   # a schema over the place p reads each instance at its own place
                 check_law(inst, rep, rng, max(10, args.trials // 2))
                 check_derivations(inst, rep, rng, max(10, args.trials // 2))
                 if not args.no_licences:
@@ -899,8 +966,11 @@ def main(argv=None):
                     record_j1(node, tape, rep)
         witnesses.append(node)
     F.OMEGA = None
+    PLACE_READING = None
     if not args.no_licences:
         write_j1_ledger()  # before the witnesses: J1.classical-floor reads it
+        if not args.no_places:
+            PLG.compute(nodes, rep, rng, LIC_STEPS, schema_instances)   # census/place-ledger.md: the trunk at every place
     for node in witnesses:
         check_witness(node, rep)
     if not args.no_census:
