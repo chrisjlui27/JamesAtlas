@@ -290,10 +290,12 @@ def grade_steps(steps: list, node, grades: dict, rng) -> Tape:
         if _unit_shape(s) is None and s.rule not in ABSORB_J1 and grades.get(s.rule) is not None and grades[s.rule].grade in ("absorbed", "import"):
             where = "inherited"  # the grade comes from the theorem's own tape, whatever this position
         exceptional = {}
-        if g == "import":
+        if g == "import" and position_class(s.path) == "under-square":
             # under a square the step is sound only where its receipt is void: decide at the generic points of this
             # node's domain (a posted theorem is judged here, at its use site, not on its own domain) and record
-            # the exceptional points — lattice values of the content, where the log of exactly one reads ω
+            # the exceptional points — lattice values of the content, where the log of exactly one reads ω.
+            # (An import theorem reused elsewhere keeps its grade: the import sits inside it, and its posted
+            # receipts post again at the use site — no use-site test there.)
             ks, exceptional = receipt_values(s.redex, s.result, domain, rng, with_probes=True)
             if ks != {0}:
                 g = "absent"

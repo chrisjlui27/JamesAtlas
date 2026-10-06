@@ -91,7 +91,7 @@ Then the modulus of that rectangular number:
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | guarded | the log-law step ([[alg.log-law]], a law with a posted receipt) is used under a square, where ≃ does not pass — an import of the reading's receipt check; every other unit step is absorbed by an instance (the prover lists them, with the receipts paid on the spot, on the card's 𝕁₁ tape) |
+| J1 | guarded | the log-law step ([[alg.log-law]], a law with a posted receipt) is used under a square, where ≃ does not pass — an import of the reading's receipt check, void at the generic points and −ω at R = 1 (the tape names it: there `[R]` reads ω and the law is false in the reading, √1 = −1, [[J1.classical-floor]]); every other unit step is absorbed by an instance (the prover lists them, with the receipts paid on the spot, on the card's 𝕁₁ tape) |
 | JH, JO | replaced | per slice; the quaternionic modulus has four parts |
 | JP | untested | — |
 

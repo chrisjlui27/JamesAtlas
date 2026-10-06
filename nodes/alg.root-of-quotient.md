@@ -71,7 +71,7 @@ The last form is `(([[([A] <[B]>)]] <[oo]>))`, the square root of a ÷ b.
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | guarded | the last unit step, on `<[B]> [A]`, sits under a square inside the instance; sound because its receipt is void on the positive domain (k = 0), which only the reading sees: an import, as at [[alg.root-of-product]] |
+| J1 | guarded | the last unit step, on `<[B]> [A]`, sits under a square inside the instance; sound because its receipt is void at the generic points of the positive domain (k = 0), which only the reading sees: an import, as at [[alg.root-of-product]] — and false in the reading at the exceptional points the tape names, A = B = 1 (k = −1) and A = 1, B = 2 (k = 1), where a content is exactly one and √1 = −1 ([[J1.classical-floor]]) |
 | JH, JO | replaced | ordered quotients |
 | JP | guarded | needs 2 a unit and the p-adic logs to converge |
 

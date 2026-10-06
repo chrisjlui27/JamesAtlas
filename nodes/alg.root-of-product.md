@@ -68,7 +68,7 @@ The root of a product is the product of the roots: halving a sum of logs is halv
 | setting | holds | why |
 |---|---|---|
 | classical | holds | on positive content, by the seam decree |
-| J1 | guarded | the second row uses [[alg.log-law]] — a law with a posted receipt — under a square; ≃ does not pass through `[ ]`, so the step is sound only by the reading (the receipt is void for positive A, B): an import |
+| J1 | guarded | the second row uses [[alg.log-law]] — a law with a posted receipt — under a square; ≃ does not pass through `[ ]`, so the step is sound only by the reading: an import, void at the generic points of the domain — except where a content is exactly one: at A = B = 1 (k = −1) and at AB = 1 (k = 1 at A = ½, B = 2) the square reads ω and the law is false in the reading, √1 = −1 ([[J1.classical-floor]]) |
 | JH, JO | replaced | within one slice |
 | JP | guarded | where the roots are forms at p |
 

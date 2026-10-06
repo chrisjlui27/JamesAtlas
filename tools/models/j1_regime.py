@@ -97,10 +97,11 @@ for _ in range(20000):
     if any(w != 0 for w in ws):
         bad.append((s, ws, env))
 
-# the exceptional points: a variable at exactly one makes its square read ω — the count-of-one door, by value
+# the exceptional points: a square whose content is exactly one reads ω — the count-of-one door, by value: a
+# variable at one, a product AB = 1 (`[([A] [B])]`), a sum B + C = 1 — swept at a few such points
 exceptional = []
 for s, f in forms:
-    for env in ({"A": 1.0, "B": 2.0}, {"A": 2.0, "B": 1.0}, {"A": 1.0, "B": 1.0}):
+    for env in ({"A": 1.0, "B": 2.0}, {"A": 2.0, "B": 1.0}, {"A": 1.0, "B": 1.0}, {"A": 2.0, "B": 0.5}, {"A": 0.5, "B": 2.0}):
         try:
             ws = windings(f, env)
         except Exception:
@@ -109,14 +110,18 @@ for s, f in forms:
             exceptional.append((s, ws, env))
             break
 door_by_value = windings(F.parse("[(A [B])]"), {"A": 2.0, "B": 1.0})
+door_by_product = windings(F.parse("[([A] [B])]"), {"A": 2.0, "B": 0.5})      # AB = 1: receipt ω
+door_by_sum = windings(F.parse("[(A [B C])]"), {"A": 1.0, "B": 0.3, "C": 0.7})  # B + C = 1: receipt −ω
 
 doors = {"angle": windings(F.parse("[(J J J)]"), {}), "count of one": windings(F.parse("[(ω ω)]"), {}),
          "square in square": windings(F.parse("[([[[oo]]] [[[oo]]])]"), {})}
 expected = {"angle": [-1], "count of one": [-1, 1, 1], "square in square": [-1]}
-if bad or seen < 1000 or malformed or doors != expected or door_by_value != [-1] or not exceptional:
-    print("FAIL", bad[:3], seen, malformed, doors, door_by_value, exceptional[:2])
+if (bad or seen < 1000 or malformed or doors != expected or door_by_value != [-1] or door_by_product != [1]
+        or door_by_sum != [-1] or not exceptional):
+    print("FAIL", bad[:3], seen, malformed, doors, door_by_value, door_by_product, door_by_sum, exceptional[:2])
     sys.exit(1)
 print(f"ok: {seen} unit redexes in {len(forms)} forms of the class, all with void receipts at generic points; "
       f"the three doors: {doors} (outer receipt first, then the two [()] inside); "
-      f"the door by value: [(A [B])] at B = 1 has receipt {door_by_value}, and {len(exceptional)} of the {len(forms)} "
-      f"forms have a non-void receipt at an exceptional point (A = 1 or B = 1)")
+      f"the door by value: [(A [B])] at B = 1 has receipt {door_by_value}, [([A] [B])] at AB = 1 has {door_by_product}, "
+      f"[(A [B C])] at B + C = 1 has {door_by_sum}; {len(exceptional)} of the {len(forms)} forms have a non-void receipt "
+      f"at one of the swept exceptional points")

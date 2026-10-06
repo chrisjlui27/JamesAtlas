@@ -68,7 +68,7 @@ The power rule, as three unit steps; its second row is the law ln aᵇ = b ln a 
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | guarded | the second unit step sits under a square: its content `([B][[A]])` has receipt k = 0 on the positive domain, and that fact — not the position — is what makes the step sound; ≃ does not pass through `[ ]`, so the guard is an import of the reading, as at [[alg.power-of-base]] |
+| J1 | guarded | the second unit step sits under a square: its content `([B][[A]])` has receipt k = 0 at the generic points of the positive domain, and that fact — not the position — is what makes the step sound; at A = 1 the square `[A]` reads ω and the receipt is −ω at B = 2 (the tape names the point): there 1^B is a root of unity and the law is false in the reading ([[J1.classical-floor]]); ≃ does not pass through `[ ]`, so the guard is an import of the reading, as at [[alg.power-of-base]] |
 | JH, JO | replaced | within one slice |
 | JP | holds | — |
 

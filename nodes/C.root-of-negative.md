@@ -69,7 +69,7 @@ Take the square root of minus a number: it is the square root of the number, tim
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | guarded | inherits the posted receipt of [[C.log-of-negative]], here under two squares, where ≃ does not pass: sound only by the reading (the receipt is void for the domain) — an import |
+| J1 | guarded | inherits the posted receipt of [[C.log-of-negative]], here under two squares, where ≃ does not pass: sound only by the reading (the receipt is void at the generic points of the domain) — an import; at A = 1 the step's right side `[A] J` has `[A]` reading ω, so the receipt is −ω (the tape names the point): there √(−1) = i√1 is false in the reading, where √1 = −1 ([[J1.classical-floor]]) |
 | JH, JO | replaced | one square root of −1 per slice: `(([[<A>]] <[oo]>))` picks the slice of the seed J_u |
 | JP | guarded | as [[alg.root]] and [[C.imaginary-unit]]: 2 a unit at p, and i a value at p (p ≡ 1 mod 4) |
 
