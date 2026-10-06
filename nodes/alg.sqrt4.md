@@ -57,7 +57,7 @@ The square root of four is two: four is two twos, the double log collects the tw
 | form | rule | note |
 |---|---|---|
 | `(([[oooo]] <[oo]>))` | given | √4, [[alg.root]] |
-| `(([[([oo] [oo])]] <[oo]>))` | [[mult.distribution]] [[mult.log-of-one]] [[mult.involution]] | 4 = 2 × 2, right to left: the counit twice, the log of one twice, and Distribution collects the two units — `mult.product-of-numerals` computed for 2 × 2 |
+| `(([[([oo] [oo])]] <[oo]>))` | [[mult.distribution]] [[mult.log-of-one]] [[mult.involution]] | 4 = 2 × 2, right to left, inside the inner square: the pile is split into two counted copies (the counit on each `([oo])`, the log of one inserted beside each count — inside the instance, where in 𝕁₁ it is absorbed), and Distribution collects them under one `[oo]` — `mult.product-of-numerals` computed for 2 × 2 |
 | `(([[oo] [oo]] <[oo]>))` | [[mult.involution]] | the unit; content 2 ln 2, real |
 | `(([([[oo]] [oo])] <[oo]>))` | [[mult.cardinality]] | two copies of `[oo]` are one copy with count 2 |
 | `(([[oo]] [oo] <[oo]>))` | [[mult.involution]] | the unit; content ln ln 2 + ln 2 = ln(2 ln 2), real |
@@ -74,7 +74,7 @@ That the root of a perfect square is its base, by the mechanism itself (not by a
 | setting | holds | why |
 |---|---|---|
 | classical, JH, JO | holds | real content |
-| J1 | guarded | three unit steps sit under a square (on void, on `[oooo][o]`, on `[oo][oo]`), each with receipt 0 in the reading; ≃ does not pass through `[ ]`, so each is an import of that fact — including the log of one, `[()] → void`, which in 𝕁₁ is the receipt ω itself and under a square cannot be absorbed |
+| J1 | guarded | one unit step sits under a square before any instance — row 3, on `[oo][oo]`, content 2 ln 2, receipt 0 — and ≃ does not pass through `[ ]`, so that step is sound only by the reading's receipt check: an import. The other receipts are absorbed (the log of one inside the instance of row 2, which in 𝕁₁ is the period ω paid by that instance; the unit of row 5). Read the card's 𝕁₁ tape, which is computed |
 | JP | guarded | needs the count 2 to be a unit (odd p) and the p-adic log of 2 to converge |
 
 | reading | cell | why |

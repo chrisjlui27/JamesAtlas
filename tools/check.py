@@ -328,7 +328,7 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
     nid = node.id
     text = node.sections.get("Derivation", "")
     tables = N.parse_tables(text)
-    firsts, lasts = [], []
+    spans = []  # (first form, last form) of each table — the endpoints a table connects
     for t in tables:
         if not t:
             continue
@@ -337,6 +337,7 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
             continue  # prose/meta derivation: not shadow-checked
         rows = t[1:] if header and header[0] == "form" else t
         prev = None
+        first = None
         for i, r in enumerate(rows):
             cell = r[0].strip().strip("`").strip() if r else ""
             rule = r[1] if len(r) > 1 else ""
@@ -352,8 +353,10 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
                 if rn not in ALLOWED_RULES and rn not in ("—", "-", ""):
                     rep.fail(nid, f"derivation row {i+1} uses unknown rule {rn!r}")
             if rule.strip().lower() == "given" or prev is None:
+                if first is not None:
+                    rep.fail(nid, f"derivation row {i+1}: `given` may only open a table — a chain cannot restart (start a new table, or a lemma)")
                 prev = f
-                firsts.append(f)
+                first = f
                 continue
             ok, msg = check_equal_forms(prev, f, node, rng, trials)
             if not ok:
@@ -377,19 +380,16 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
                 if seam:
                     rep.ok()
             prev = f
-        if prev is not None:
-            lasts.append(prev)
-    # endpoints: for an object-level theorem the tables must start at one side of the law and end at the other
+        if first is not None and prev is not None:
+            spans.append((first, prev))
+    # endpoints: for an object-level theorem ONE table must start at one side of the law and end at the other
+    # (a lemma table proves an equation an later table uses; it does not contribute an endpoint)
     law = str(node.get("law", ""))
-    if node.get("type") in ("theorem", "schema") and node.get("level") == "object" and F.split_law(law)[1] is not None and firsts and lasts:
+    if node.get("type") in ("theorem", "schema") and node.get("level") == "object" and F.split_law(law)[1] is not None and spans:
         lhs, rhs = (parse_or_none(x) for x in F.split_law(law)[:2])
         if lhs is not None and rhs is not None:
-            def hits(cands, target):  # syntactic: the same canonical form, not merely the same value
-                return any(c == target for c in cands)
-            forward = hits(firsts, lhs) and hits(lasts, rhs)
-            backward = hits(firsts, rhs) and hits(lasts, lhs)
-            if not (forward or backward):
-                rep.fail(nid, f"derivation tables do not start at one side of the law and end at the other (as forms): law {F.to_string(lhs, True)} ≐ {F.to_string(rhs, True)}; first rows {[F.to_string(x, True) for x in firsts]}; last rows {[F.to_string(x, True) for x in lasts]}")
+            if not any((a == lhs and b == rhs) or (a == rhs and b == lhs) for a, b in spans):  # as forms, one table
+                rep.fail(nid, f"no derivation table runs from one side of the law to the other (as forms): law {F.to_string(lhs, True)} ≐ {F.to_string(rhs, True)}; tables span {[(F.to_string(a, True), F.to_string(b, True)) for a, b in spans]}")
             else:
                 rep.ok()
 
@@ -724,7 +724,7 @@ def check_licences(node: N.Node, nodes, rep: Report, cache: dict, rng, parent=No
     absorbed steps, then posted, then anything), and the steps it finds grade the node in 𝕁₁ (tools/j1.py)."""
     if node.get("level") != "object":
         return None
-    lic, unl, skip, details = LC.check_node(node, nodes, cache, phases=J1.phases(J1_GRADES))
+    lic, unl, skip, details = LC.check_node(node, nodes, cache, phases=J1.phases(J1_GRADES, node, rng))
     for ti, i, status, msg, _steps in details:
         if status == "UNLICENSED":
             rep.fail(node.id, f"derivation table {ti+1} row {i+1} is not licensed by the rule it cites: {msg}")
@@ -732,15 +732,18 @@ def check_licences(node: N.Node, nodes, rep: Report, cache: dict, rng, parent=No
     if (parent or node).get("type") not in GRADED_TYPES:
         return None
     tape = J1.Tape()
+    local = dict(J1_GRADES)
+    by_table = {}
     for ti, i, status, msg, steps in details:
+        t = by_table.setdefault(ti, J1.Tape())
         if status == "UNLICENSED":
-            tape.worse("absent")
-            tape.absent.append(f"row {i+1} unlicensed")
+            t.worse("absent")
+            t.absent.append(f"row {i+1} unlicensed")
             continue
-        row = J1.grade_steps(steps, node, J1_GRADES, rng)
-        tape.receipts += row.receipts
-        tape.absent += row.absent
-        tape.worse(row.grade)
+        t.merge(J1.grade_steps(steps, node, local, rng))
+        local[f"lemma#{ti}"] = t  # a later table citing this one as a lemma inherits its tape
+    for ti in sorted(by_table):
+        tape.merge(by_table[ti])
     return tape
 
 
@@ -766,6 +769,8 @@ def record_j1(node: N.Node, tape, rep: Report):
             rep.fail(node.id, f"a 𝕁₁ law whose derivation needs an import or fails: {J1.describe(tape)[:200]}")
         elif eq != want:
             rep.fail(node.id, f"equality is {eq} but the tape says {want}: {J1.describe(tape)[:200]}")
+        elif hand != tape.cell:
+            rep.fail(node.id, f"J1 cell says {hand} but the tape earns {tape.cell}: {J1.describe(tape)[:200]}")
         else:
             rep.ok()
         return
@@ -852,6 +857,7 @@ def main(argv=None):
     nodes = N.load_nodes(os.path.join(ROOT, "nodes"))
     rep = Report()
     lic_cache = {}
+    witnesses = []
     check_orders(nodes, rep)
     for node in sorted(nodes.values(), key=lambda n: n.get("order", 0) if isinstance(n.get("order"), int) else 0):
         F.OMEGA = (2j * math.pi) if node.get("setting") == "J1" else None  # LEGISLATION 30b: ω = [()] reads as 2πi in 𝕁₁
@@ -873,13 +879,7 @@ def main(argv=None):
                 if not args.no_licences:
                     t = check_licences(inst, nodes, rep, lic_cache, rng, parent=node)
                     if t is not None:
-                        tape.worse(t.grade)
-                        seen = {(r.rule, r.where, r.grade, r.content) for r in tape.receipts}
-                        for r in t.receipts:
-                            if (r.rule, r.where, r.grade, r.content) not in seen:
-                                tape.receipts.append(r)
-                                seen.add((r.rule, r.where, r.grade, r.content))
-                        tape.absent += [a for a in t.absent if a not in tape.absent]
+                        tape.merge(t)
             if tape is not None and not args.no_licences:
                 record_j1(node, tape, rep)
         else:
@@ -889,10 +889,12 @@ def main(argv=None):
                 tape = check_licences(node, nodes, rep, lic_cache, rng)
                 if tape is not None:
                     record_j1(node, tape, rep)
-        check_witness(node, rep)
+        witnesses.append(node)
     F.OMEGA = None
     if not args.no_licences:
-        write_j1_ledger()
+        write_j1_ledger()  # before the witnesses: J1.classical-floor reads it
+    for node in witnesses:
+        check_witness(node, rep)
     if not args.no_census:
         check_census(rep)
     print(f"{len(nodes)} nodes · {rep.oks} checks passed · {len(rep.warns)} warnings · {len(rep.fails)} failures")

@@ -59,14 +59,14 @@ Multiplying by one changes nothing, because the box around one circle is empty.
 
 ## Confirms
 
-That 1 is the unit for multiplication *and* that ln 1 = 0, in one law — the two facts are the same step. In J1 this theorem is exactly what forces the completion A5′: James proves `([()][A]) ≐ A` using the strict unit `[()] ≐ void`; enriched, `[()] → ω`, and preserving `1·A = A` *forces* `(ωA) → (A)` — exp kills the whole kernel Λ (james-algebra, O3 completion). The humblest theorem of the rung is the one that legislates the enriched calculus.
+That 1 is the unit for multiplication, in one step from the log of one ([[mult.log-of-one]]) and the counit. In 𝕁₁ this theorem is where absorption first shows: James proves `([()][A]) ≐ A` using the strict `[()] ≐ void`; enriched, `[()]` is ω, and the step `([A] ω) → ([A])` is the unit at void content directly inside the instance — absorbed, with the receipt ω paid by the instance ([[J1.absorption]] is this step as a law). In the July presentation preserving `1·A = A` was what *forced* A5′; with receipts it is a theorem. The humblest theorem of the rung is the one where the enriched calculus first pays.
 
 ## Settings and readings
 
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | holds | preserved **exactly** by A5′ — and it is the theorem that forced A5′ |
+| J1 | holds | the log of one inside the instance is absorbed: the receipt ω is paid by the instance (the card's 𝕁₁ tape); exact in value |
 | JH, JO | holds | the Unit rule `[x⃗ ; o ; z⃗] ≐ [x⃗ ; z⃗]` |
 | JP | holds | — |
 

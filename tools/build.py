@@ -227,6 +227,21 @@ def compute(nodes):
 
     for nid in nodes:
         dep(nid); anc(nid)
+    # the price of a 𝕁₁ law is stated in 𝕁₁'s own axioms (SPEC §5.4): Involution is the split pair — the counit, and
+    # the unit when the tape has a receipt — and the seam decree is not in force there (replaced by receipts)
+    ledger = j1_ledger()
+    for nid, n in nodes.items():
+        if n.get("setting") != "J1":
+            continue
+        p = set(price[nid])
+        if "mult.involution" in p:
+            p.discard("mult.involution")
+            p.add("J1.counit")
+            tape = ledger.get(nid, ("", ""))[1]
+            if "absorbed" in tape or "posted" in tape or "import" in tape:
+                p.add("J1.unit")  # the tape has a receipt: the unit is in the price
+        p.discard("mult.seam-decree")
+        price[nid] = p
     return used_by, depth, price
 
 

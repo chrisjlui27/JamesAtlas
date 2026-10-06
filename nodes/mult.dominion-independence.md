@@ -69,7 +69,7 @@ That James's three axioms are not redundant *for this theorem*: the additive-inv
 | setting | holds | why |
 |---|---|---|
 | classical | holds | a meta-theorem about the classical axioms |
-| J1 | untested | the J1 axiom set differs (weakened unit, period axiom); the independence question must be re-posed |
+| J1 | untested | the 𝕁₁ axiom set differs (the unit witnessed, the period form kept); the independence question must be re-posed with the three-element model under the split Involution — owed |
 | JH, JO | untested | Involution is guarded and Distribution replaced there; the question must be re-posed in the same way |
 | JP | holds | keeps the classical axioms; the derivation stands |
 

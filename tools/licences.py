@@ -97,6 +97,9 @@ def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14, phases=N
                 first = f
             last = f
             if prev is None or "given" in tokens:
+                if "given" in tokens and first is not None and first is not f:
+                    unl += 1
+                    details.append((ti, i, "UNLICENSED", "`given` may only open a table — a chain cannot restart", []))
                 prev = f
                 continue
             if not cited and set(tokens) <= IDENTITY_RULES:

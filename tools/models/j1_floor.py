@@ -31,4 +31,4 @@ for nid, computed, hand in rows:
 if bad or not rows:
     print("FAIL", bad or "empty ledger")
     sys.exit(1)
-print(f"ok: {len(rows)} trunk derivations graded in 𝕁₁ — {counts}; the only law that fails is replaced: {sorted(REPLACED)}")
+print(f"ok: {sum(counts.values())} trunk derivations graded in 𝕁₁ — {counts}; the only law that fails is replaced: {sorted(REPLACED)}")

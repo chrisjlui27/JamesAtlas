@@ -1,29 +1,30 @@
-"""j1.py — the receipt tape: what each licensed step costs in 𝕁₁ (LEGISLATION 30).
+"""j1.py — the receipt tape: what each licensed step costs in 𝕁₁ (LEGISLATION 30; SPEC §5.5).
 
 The derivation checker (prover.py) tells us which rule took a row to the next, in which orientation, at which
 position. This module grades every such step for the enriched calculus 𝕁₁:
 
-  strict     a strict rule — the counit ([A]) ≡ A, Distribution, Inversion, the medium, the hole rules, and any
-             theorem whose own tape is empty or wholly absorbed
-  absorbed   the unit [(A)] ↔ A (or a theorem with a posted receipt) applied directly inside an instance, through
-             angles at most: the instance pays the receipt on the spot — value-exact, tape unchanged
-  posted     the same at depth 0 (through angles and juxtaposition only): the receipt stays on the tape; the
-             two forms agree mod Λ
-  import     the same under a square before any instance: ≃ is not a congruence through [ ], so the step is
-             sound only when the receipt is void — a fact of the reading (the classical decree's by-content
-             clause), which 𝕁₁ cannot see
-  absent     a cited rule that 𝕁₁ does not have
+  strict     a strict rule — the counit ([A]) ≡ A, Distribution, Inversion, the medium, the hole rules — or a
+             theorem whose own tape is empty; the unit on pole-valued content (the pole has no winding to record)
+  absorbed   the unit [(A)] ↔ A, absorption (ω A) ↔ (A), or a theorem with receipts, applied directly inside an
+             instance (through angles at most): the instance pays the receipt on the spot — value-exact; or a
+             theorem whose own receipts were all absorbed (its reuse replays the paid moves)
+  posted     a unit step or a posted theorem at depth 0 (through angles and juxtaposition only): the receipt
+             stays on the tape; the two forms agree mod Λ
+  import     a unit step or a posted theorem under a square before any instance, whose receipt is void on the
+             whole domain: ≃ is not a congruence through [ ], so the step is sound only by that fact of the
+             reading (the classical decree's by-content clause), which 𝕁₁ cannot see
+  absent     under a square with a non-void receipt (the step is false in 𝕁₁), or a rule 𝕁₁ does not have
 
-A node's 𝕁₁ grade is the worst grade among its steps: ≡ (all strict), ≃₀ (absorbed), ≃ (posted), import,
-absent. The `holds` cell reads: ≡ and ≃₀ → holds; ≃ → holds-mod-Λ; import → guarded; absent → fails.
+A node's 𝕁₁ grade is the worst grade among its steps. The `holds` cell it implies: strict or absorbed → holds;
+posted → holds-mod-Λ; import → guarded; absent → fails.
 
-Receipt values are the reading's business: for a unit step on content A the receipt is kω with
-k = (a − Ln e^a)/2πi, the winding of a, sampled over the node's domain.
+Receipts are read in the 𝕁₁ reading (forms.OMEGA = 2πi: the log of exactly one is the chosen lift, every other
+log principal — LEGISLATION 30b as amended). The receipt of a step is the lattice element the step forgets:
+value(redex) − value(result) in units of ω, sampled over the node's domain; `?` when the content is the pole or
+the difference is not a lattice element.
 """
 from __future__ import annotations
-import cmath
 import math
-from collections import Counter
 from dataclasses import dataclass, field
 
 import forms as F
@@ -31,54 +32,19 @@ import prover as P
 
 GRADE_ORDER = ["strict", "absorbed", "posted", "import", "absent"]
 CELL_OF = {"strict": "holds", "absorbed": "holds", "posted": "holds-mod-Λ", "import": "guarded", "absent": "fails"}
-
+BY_POSITION = {"absorbing": "absorbed", "depth-0": "posted", "under-square": "import"}
 
 UNIT_RULES = {"mult.involution", "mult.log-of-one", "J1.unit"}     # rules whose unit-shaped steps post receipts
 STRICT_J1 = {"J1.counit", "J1.closure", "J1.period-form"}            # strict rules of the J1 rung itself
 ABSORB_J1 = {"J1.absorption", "J1.absorption-mirror"}                 # witnessed moves inside an instance
-
-
-def step_grade(step, grades: dict) -> str:
-    """The 𝕁₁ grade of one licensed step, from its rule and position alone (no reading)."""
-    x = _unit_shape(step)
-    if x is not None and (step.rule in UNIT_RULES or step.rule.startswith("lemma")):
-        if _is_hole_content(x):
-            return "strict"
-        return {"absorbing": "absorbed", "depth-0": "posted", "under-square": "import"}[position_class(step.path)]
-    if step.rule == "mult.involution" and _counit_shape(step):
-        return "strict"
-    if step.rule in STRICT_J1:
-        return "strict"
-    if step.rule in ABSORB_J1:
-        return "absorbed"
-    if step.rule in STRICT_NODES or step.rule == "hypothesis" or step.rule.startswith("lemma"):
-        return "strict"
-    if step.rule in ABSENT_NODES:
-        return "absent"
-    g = grades.get(step.rule)
-    if g is None or g.grade in ("strict", "absorbed"):
-        return "strict"
-    if g.grade in ("absent",):
-        return "absent"
-    if g.grade == "import":
-        return "import"
-    return {"absorbing": "absorbed", "depth-0": "posted", "under-square": "import"}[position_class(step.path)]
-
-
-def phases(grades: dict):
-    """Search phases for the prover: cheapest tape first."""
-    return [lambda s: GRADE_ORDER.index(step_grade(s, grades)) <= 1,
-            lambda s: GRADE_ORDER.index(step_grade(s, grades)) <= 2,
-            None]
-
-# The strict rules of 𝕁₁ among the trunk's axioms and primitives (everything else is graded from its derivation).
+# The strict rules of 𝕁₁ among the trunk's axioms and primitives (theorems are graded from their derivations).
+# Dominion is strict by LEGISLATION 30(f): the pole has no winding, so a unit step on pole-valued content posts
+# nothing — see pole_valued().
 STRICT_NODES = {"void.page", "void.space", "Z.inversion", "mult.distribution", "mult.hole-instance",
                 "mult.zero-annihilates", "mult.dominion", "mult.black-hole"}
-# Nodes 𝕁₁ does not have as rules at all.
-ABSENT_NODES = set()
+ABSENT_NODES: set = set()
 
-UNIT_L = F.parse("[(A)]")
-COUNIT_L = F.parse("([A])")
+OMEGA = 2j * math.pi
 
 
 def _unit_shape(step: P.Step):
@@ -112,45 +78,73 @@ def position_class(path: tuple) -> str:
     return "depth-0"
 
 
-def _is_hole_content(x: F.Form) -> bool:
-    """void or the black hole: the unit on such content is a theorem of the hole rules (SPEC §5.4) — except that in
-    𝕁₁ the unit on *void* content is the receipt ω itself, so only the hole is exempt here."""
-    return len(x) == 1 and x[0][0] == F.SQUARE and len(x[0][1]) == 0
+def _in_j1_reading(fn, *args):
+    old = F.OMEGA
+    F.OMEGA = OMEGA
+    try:
+        return fn(*args)
+    finally:
+        F.OMEGA = old
 
 
-def winding(x: F.Form, domain: str, rng, trials: int = 24):
-    """The receipt of the unit on content x, in units of ω, over sampled values: a set of integers. The unit on
-    void content is the generator itself — `[()]` is ω, not void (LEGISLATION 30b) — so its receipt is 1."""
+def _sample(names, domain, rng, trials):
+    return [F.random_env(names, domain, rng) for _ in range(trials if names else 1)]
+
+
+def pole_valued(x: F.Form, domain: str, rng, trials: int = 12) -> bool:
+    """Does the content x evaluate to the pole on every sampled value (the hole, or a form dominion makes it)?"""
     if not x:
-        return {1}
+        return False
     names = F.variables(x)
-    ks = set()
-    for _ in range(trials if names else 1):
-        env = F.random_env(names, domain, rng)
+    seen = False
+    for env in _sample(names, domain, rng, trials):
         try:
-            a = F.evaluate(x, env)
+            v = _in_j1_reading(F.evaluate, x, env)
         except (F.Undefined, F.Excluded, OverflowError):
             continue
-        if a is F.BH:
-            continue
+        seen = True
+        if v is not F.BH:
+            return False
+    return seen
+
+
+def _single_instance(form: F.Form):
+    return len(form) == 1 and form[0][0] == F.ROUND
+
+
+def receipt_values(redex: F.Form, result: F.Form, domain: str, rng, trials: int = 24) -> set:
+    """The receipt of a step, in units of ω: value(redex) − value(result) in the 𝕁₁ reading, over sampled values.
+    When both sides are a single instance the contents are compared instead (an absorbed period is invisible
+    at the instance level and is exactly what the receipt records). An entry of None stands for `?` — the pole,
+    or a difference that is not a lattice element."""
+    if _single_instance(redex) and _single_instance(result):
+        redex, result = redex[0][1], result[0][1]
+    names = F.variables(redex) | F.variables(result)
+    ks = set()
+    for env in _sample(names, domain, rng, trials):
         try:
-            w = cmath.exp(a)
-        except OverflowError:
+            a = _in_j1_reading(F.evaluate, redex, env)
+            b = _in_j1_reading(F.evaluate, result, env)
+        except (F.Undefined, F.Excluded, OverflowError):
             continue
-        if w == 0:
+        if a is F.BH or b is F.BH:
+            ks.add(None)
             continue
-        k = (a - cmath.log(w)) / (2j * math.pi)
-        ks.add(int(round(k.real)))
+        k = (a - b) / OMEGA
+        if abs(k.imag) > 1e-6 * (1 + abs(k)) or abs(k.real - round(k.real)) > 1e-6 * (1 + abs(k)):
+            ks.add(None)
+        else:
+            ks.add(int(round(k.real)))
     return ks
 
 
 @dataclass
 class Receipt:
     rule: str
-    content: str        # the content of the unit step, as a string
-    where: str          # absorbing | depth-0 | under-square
-    grade: str          # absorbed | posted | import
-    k: set = field(default_factory=set)   # winding values sampled (units of ω)
+    content: str        # what the step rewrote, as a string
+    where: str          # absorbing | depth-0 | under-square | inherited (a theorem's own tape)
+    grade: str          # absorbed | posted | import | absent
+    k: set = field(default_factory=set)   # sampled receipt values in units of ω (None = ?)
 
 
 @dataclass
@@ -163,88 +157,123 @@ class Tape:
         if GRADE_ORDER.index(g) > GRADE_ORDER.index(self.grade):
             self.grade = g
 
+    def merge(self, other: "Tape"):
+        self.worse(other.grade)
+        seen = {(r.rule, r.where, r.grade, r.content) for r in self.receipts}
+        for r in other.receipts:
+            if (r.rule, r.where, r.grade, r.content) not in seen:
+                self.receipts.append(r)
+                seen.add((r.rule, r.where, r.grade, r.content))
+        self.absent += [a for a in other.absent if a not in self.absent]
+
     @property
     def cell(self) -> str:
         return CELL_OF[self.grade]
 
+    @property
+    def posted_void(self) -> bool:
+        """Are all the tape's posted receipts void on the node's domain? (What a use under a square needs.)"""
+        return all(r.k and r.k == {0} for r in self.receipts if r.grade == "posted")
+
+
+def _theorem_grade(step: P.Step, grades: dict):
+    """The grade a theorem (or lemma table) contributes when used as a rule at this step's position."""
+    g = grades.get(step.rule)
+    if g is None:
+        return "strict"  # an axiom of the setting, a definition, or a node without a derivation grade
+    if g.grade in ("strict", "absorbed"):
+        return g.grade
+    if g.grade == "absent":
+        return "absent"
+    if g.grade == "import":
+        return "import"  # the import sits inside the theorem; no position of use heals it
+    where = position_class(step.path)
+    if where == "under-square":
+        return "import" if g.posted_void else "absent"
+    return BY_POSITION[where]
+
+
+def step_grade(step: P.Step, grades: dict, node=None, rng=None) -> str:
+    """The 𝕁₁ grade of one licensed step, from its rule and position (the reading decides only pole-valued
+    content, and whether an under-square receipt is void)."""
+    x = _unit_shape(step)
+    if x is not None and (step.rule in UNIT_RULES or step.rule.startswith("lemma") or step.rule == "hypothesis"):
+        if node is not None and rng is not None and pole_valued(x, node.get("domain", "positive"), rng):
+            return "strict"
+        where = position_class(step.path)
+        if where == "under-square" and node is not None and rng is not None:
+            ks = receipt_values(step.redex, step.result, node.get("domain", "positive"), rng)
+            return "import" if ks == {0} else "absent"
+        return BY_POSITION[where]
+    if step.rule == "mult.involution" and _counit_shape(step):
+        return "strict"
+    if step.rule in STRICT_J1 or step.rule in STRICT_NODES:
+        return "strict"
+    if step.rule in ABSORB_J1:
+        return "absorbed"
+    if step.rule in ABSENT_NODES:
+        return "absent"
+    return _theorem_grade(step, grades)
+
+
+def phases(grades: dict, node=None, rng=None):
+    """Search phases for the prover, cheapest tape first: strict only; then absorbed; then posted; then anything.
+    The search is heuristic (SPEC §5.5): a path the search misses can make a grade worse, never better."""
+    def at_most(level):
+        return lambda s: GRADE_ORDER.index(step_grade(s, grades, node, rng)) <= level
+    return [at_most(0), at_most(1), at_most(2), None]
+
 
 def grade_steps(steps: list, node, grades: dict, rng) -> Tape:
-    """Grade the licensed steps of one derivation row."""
+    """Grade the licensed steps of one derivation row and record their receipts."""
     tape = Tape()
     domain = node.get("domain", "positive")
     for s in steps:
-        x = _unit_shape(s)
-        if s.rule in ABSORB_J1:
-            tape.receipts.append(Receipt(s.rule, F.to_string(s.redex, True), "absorbing", "absorbed", {1}))
-            tape.worse("absorbed")
+        g = step_grade(s, grades, node, rng)
+        if g == "strict":
             continue
-        if s.rule in STRICT_J1:
-            continue
-        if x is not None and (s.rule in UNIT_RULES or s.rule.startswith("lemma")):
-            if _is_hole_content(x):
-                continue  # the unit on the hole: a theorem of the hole rules, strict
-            where = position_class(s.path)
-            g = {"absorbing": "absorbed", "depth-0": "posted", "under-square": "import"}[where]
-            ks = winding(x, domain, rng)
-            if g == "import" and ks and ks != {0}:
-                g = "absent"  # under a square with a non-void receipt: the step is false in 𝕁₁ (the import fails)
-            tape.receipts.append(Receipt(s.rule, F.to_string(x, True) or "void", where, g, ks))
-            tape.worse(g)
-            continue
-        if s.rule == "mult.involution" and _counit_shape(s):
-            continue  # the counit is strict
-        if s.rule in STRICT_NODES or s.rule in ("hypothesis",) or s.rule.startswith("lemma"):
-            continue
-        if s.rule in ABSENT_NODES:
+        where = position_class(s.path) if s.rule not in ABSORB_J1 else "absorbing"
+        if _unit_shape(s) is None and s.rule not in ABSORB_J1 and grades.get(s.rule) is not None and grades[s.rule].grade in ("absorbed", "import"):
+            where = "inherited"  # the grade comes from the theorem's own tape, whatever this position
+        ks = receipt_values(s.redex, s.result, domain, rng)
+        content = F.to_string(_unit_shape(s), True) if _unit_shape(s) is not None else F.to_string(s.redex, True)
+        if _unit_shape(s) is not None and not _unit_shape(s):
+            content = "void"
+        tape.receipts.append(Receipt(s.rule, content or "void", where, g, ks))
+        if g == "absent":
             tape.absent.append(s.rule)
-            tape.worse("absent")
-            continue
-        # a theorem used as a rule: inherits its own grade, re-positioned
-        g = grades.get(s.rule)
-        if g is None:
-            continue  # definitions, instances with no grade: strict by default
-        if g.grade in ("strict", "absorbed"):
-            continue
-        if g.grade == "absent":
-            tape.absent.append(s.rule)
-            tape.worse("absent")
-            continue
-        # posted or import receipts of the theorem, used here at this position
-        where = position_class(s.path)
-        if g.grade == "import":
-            tape.receipts.append(Receipt(s.rule, f"(the import inside {s.rule})", where, "import"))
-            tape.worse("import")
-            continue
-        gg = {"absorbing": "absorbed", "depth-0": "posted", "under-square": "import"}[where]
-        tape.receipts.append(Receipt(s.rule, f"(the receipt of {s.rule})", where, gg))
-        tape.worse(gg)
+        tape.worse(g)
     return tape
 
 
 def grade_node(node, nodes, cache: dict, grades: dict, rng, check_node_fn) -> Tape:
-    """Grade a whole node from its licensed derivation; theorems it cites must already be graded. The prover is
-    asked for the cheapest tape (strict and absorbed steps first, then posted, then anything)."""
-    lic, unl, skip, details = check_node_fn(node, nodes, cache, phases=phases(grades))
+    """Grade a whole node from its licensed derivation; theorems it cites must already be graded. Lemma tables
+    are graded first and their tapes used where a later table cites them."""
+    lic, unl, skip, details = check_node_fn(node, nodes, cache, phases=phases(grades, node, rng))
     tape = Tape()
+    local = dict(grades)
+    by_table: dict = {}
     for ti, i, status, msg, steps in details:
+        t = by_table.setdefault(ti, Tape())
         if status == "UNLICENSED":
-            tape.worse("absent")
-            tape.absent.append(f"row {i+1} unlicensed")
+            t.worse("absent")
+            t.absent.append(f"row {i+1} unlicensed")
             continue
-        row = grade_steps(steps, node, grades, rng)
-        tape.receipts += row.receipts
-        tape.absent += row.absent
-        tape.worse(row.grade)
+        row = grade_steps(steps, node, local, rng)
+        t.merge(row)
+        local[f"lemma#{ti}"] = t
+    for ti in sorted(by_table):
+        tape.merge(by_table[ti])
     return tape
 
 
 def describe(tape: Tape) -> str:
-    if tape.grade == "strict":
+    if tape.grade == "strict" and not tape.receipts:
         return "≡ — no unit step: strict in 𝕁₁"
     parts = []
     for r in tape.receipts:
-        ks = ",".join(str(k) for k in sorted(r.k)) if r.k else "?"
+        ks = ",".join("?" if k is None else str(k) for k in sorted(r.k, key=lambda v: (v is None, v))) if r.k else "?"
         parts.append(f"{r.grade} [{r.where}] on `{r.content}` (k = {ks})")
     if tape.absent:
-        parts.append("absent: " + ", ".join(tape.absent))
+        parts.append("absent: " + ", ".join(sorted(set(tape.absent))))
     return f"{tape.cell}: " + "; ".join(parts)

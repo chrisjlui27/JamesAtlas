@@ -30,7 +30,7 @@ known_since: "1993 (James, Ch. 6 §6.2, p. 44: J 'uses all three boundaries exac
 entered: 2026-10-03
 guide: shape-led
 band: beyond
-uses: [C.phase, Z.void-inverse, mult.hole-instance, mult.unit-law, mult.hole-exclusion, mult.dominion, mult.consistency]
+uses: [C.phase, Z.void-inverse, mult.hole-instance, mult.log-of-one, mult.hole-exclusion, mult.dominion, mult.consistency]
 see_also: [C.phase]
 aliases: [uniqueness of J, the six nestings]
 concepts: [phase, census]
@@ -54,11 +54,11 @@ Use each kind of boundary once: there are sixteen ways to arrange them. Fifteen 
 | statement | rule | note |
 |---|---|---|
 | `([<>])`: the mirror of nothing is nothing, so this is `([])`, the instance of the hole, which is void | [[Z.void-inverse]] [[mult.hole-instance]] | — |
-| `[(<>)]`: `(<>)` is `()`, whose abstract is void | [[Z.void-inverse]] [[mult.unit-law]] | — |
+| `[(<>)]`: `(<>)` is `()`, whose abstract is void | [[Z.void-inverse]] [[mult.log-of-one]] | — |
 | `<([])>`: the mirror of `([]) ≐ void` is void | [[mult.hole-instance]] [[Z.void-inverse]] | — |
-| `<[()]>`: the mirror of `[o] ≐ void` is void | [[mult.unit-law]] [[Z.void-inverse]] | — |
+| `<[()]>`: the mirror of `[o] ≐ void` is void | [[mult.log-of-one]] [[Z.void-inverse]] | — |
 | `(<[]>)` contains `<□>` and is excluded | [[mult.hole-exclusion]] | — |
-| the ten shapes with juxtaposition: two (`() <[]>`, `<() []>`) contain `<□>` and are excluded; four (`() [] <>`, `() [<>]`, `(<>) []`, `<()> []`) are the black hole, each a unit or a nothing beside the hole; four (`(<> [])`, `([]) <>`, `<> [()]`, `[() <>]`) are void | [[mult.hole-exclusion]] [[mult.dominion]] [[mult.hole-instance]] [[mult.unit-law]] [[Z.void-inverse]] | `□ A ≐ □` swallows the unit; `(□) ≐ void` and `[o] ≐ void` empty the rest |
+| the ten shapes with juxtaposition: two (`() <[]>`, `<() []>`) contain `<□>` and are excluded; four (`() [] <>`, `() [<>]`, `(<>) []`, `<()> []`) are the black hole, each a unit or a nothing beside the hole; four (`(<> [])`, `([]) <>`, `<> [()]`, `[() <>]`) are void | [[mult.hole-exclusion]] [[mult.dominion]] [[mult.hole-instance]] [[mult.log-of-one]] [[Z.void-inverse]] | `□ A ≐ □` swallows the unit; `(□) ≐ void` and `[o] ≐ void` empty the rest |
 | `[<()>]` is J, value iπ, reducible to nothing by any admissible derivation | [[C.phase]] [[mult.consistency]] | a sound reading sends it to iπ ≠ 0, so no admissible derivation empties it; the witness `tools/models/phase_unique.py` enumerates all sixteen |
 
 ## Confirms
@@ -70,7 +70,7 @@ James's observation that J is *found* by the calculus rather than posited — hi
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | fails | in J1 `[()]` is ω, not void ([[mult.unit-law]]), and `<> ≐ void` is only guarded ([[Z.void-inverse]]): the nestings that reduce through `[()]` — `[(<>)]`, `<[()]>`, `<> [()]` — are ±ω there, so J = ω/2 is one of several survivors; the census of this shape is different in the enriched calculus, which is the group/torsor split in miniature |
+| J1 | fails | in J1 `[()]` is ω, not void ([[mult.log-of-one]]), and `<> ≐ void` is only guarded ([[Z.void-inverse]]): the nestings that reduce through `[()]` — `[(<>)]`, `<[()]>`, `<> [()]` — are ±ω there, so J = ω/2 is one of several survivors; the census of this shape is different in the enriched calculus, which is the group/torsor split in miniature |
 | JH, JO | holds | the hole rules, the unit law and `<> ≐ void` survive verbatim (JH rule cards), and the seam guard admits the unit at void content |
 | JP | holds | the unit law and the hole rules hold at every tested place |
 

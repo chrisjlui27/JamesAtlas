@@ -216,7 +216,9 @@ def split_law(law: str):
 Value = Union[complex, BlackHole]
 TINY = 1e-12
 OMEGA_FORM = (SQUARE, ((ROUND, ()),))
-OMEGA: complex | None = None   # set to 2πi while reading a `setting: J1` node (LEGISLATION 30b); None = classical
+OMEGA: complex | None = None   # 2πi while reading in 𝕁₁ (LEGISLATION 30b as amended 2026-10-06): the log of
+                               # exactly one is the chosen lift of the generator, every other log principal — a
+                               # compositional reading, so the strict rules stay exact inside any context; None = classical
 
 
 def evaluate(form: Form, env: dict | None = None) -> Value:
@@ -241,8 +243,6 @@ def _eval_child(ch, env) -> Value:
         if ch[1] not in env:
             raise KeyError(f"unbound variable {ch[1]}")
         return complex(env[ch[1]])
-    if OMEGA is not None and ch == OMEGA_FORM:
-        return OMEGA  # the period form ω = [()] is the generator 2πi, not void, in 𝕁₁
     inner = evaluate(ch[1], env)
     if ch[0] == ROUND:
         if inner is BH:
@@ -259,6 +259,8 @@ def _eval_child(ch, env) -> Value:
         # negative real is +iπ consistently and the branch cut is not decided by floating-point noise
         if abs(inner.imag) <= 1e-9 * abs(inner):  # relative: a tiny value keeps its argument
             inner = complex(inner.real, 0.0)
+        if OMEGA is not None and abs(inner - 1) <= 1e-9:
+            return OMEGA  # 𝕁₁: the log of one is the period ω = 2πi — so [()], [(ω)], [(J J)] all read 2πi
         return cmath.log(inner)
     if ch[0] == ANGLE:
         if inner is BH:

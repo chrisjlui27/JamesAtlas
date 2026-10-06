@@ -61,7 +61,7 @@ Take the log of 1 and you get 0. On the page: a box around an empty circle is th
 
 ## Confirms
 
-ln 1 = 0 — the log of the multiplicative unit is the additive unit. Every use of "`[o] ≐ void`" on the chart (the unit law `([A][o]) ≐ A`, every removal of a count of one, every `[o] → void` inside a power) is this law and nothing else, so it is a node of its own rather than a line in [[mult.unit-law]]. It is **not** a free fact: it is one unit step, at void content — and in `J1` that step is exactly the one that is weakened. There `[()]` is not void but the period form ω, and `[()] ≃ void` holds only with the receipt ω: this law is the classical shadow of the lattice. (The engine's seam check exempts the unit at void content from the decree because this law is a theorem of the hole rules in the classical reading — SPEC §5.4.)
+ln 1 = 0 — the log of the multiplicative unit is the additive unit. Every use of "`[o] ≐ void`" on the chart (the unit law `([A][o]) ≐ A`, every removal of a count of one, every `[o] → void` inside a power) is this law and nothing else, so it is a node of its own rather than a line in [[mult.unit-law]]. It is **not** a free fact: it is one unit step, at void content — and in `J1` that step is exactly the one that is weakened. There `[()]` is not void but the period form ω, and `[()] ≃ void` holds only with the receipt ω: this law is the classical shadow of the lattice. (The engine's seam check exempts the unit at void content from the decree because the classical reading makes it exact, ln 1 = 0 — SPEC §5.4; it is not a theorem of the hole rules, and the 𝕁₁ reading, in which the log of exactly one is ω, keeps every hole rule and falsifies it.)
 
 ## Settings and readings
 

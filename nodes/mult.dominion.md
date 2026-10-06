@@ -14,7 +14,7 @@ units: "−∞ + a = −∞"
 gloss_check: "BH"
 holds:
   classical: holds
-  J1: holds-mod-Λ
+  J1: holds
   JH: holds
   JO: holds
   JP: holds
@@ -70,7 +70,7 @@ Nothing you add to the bottomless pit fills it.
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | holds-mod-Λ | the one unit step is at depth 0 on hole content `A □`, and its receipt reaches the pole, where it is indeterminate — the daimon's grade (LEGISLATION 30f). Dominion holds in 𝕁₁ as an identification of Ω-classes: the pole is already the whole coset −∞ + Λ, so nothing determinate is forgotten and L0 needs no exemption; that is what "pole = Λ" means |
+| J1 | holds | strict: the one unit step is on hole-valued content `A □`, and the pole has no winding to record — from inside an instance it is ✠, from outside it is already the whole coset −∞ + Λ, so nothing determinate is forgotten and no receipt arises (LEGISLATION 30f, refined 2026-10-06; [[J1.pole]]). Dominion is ≡ in 𝕁₁ at every depth; the receipt prover grades it strict |
 | JH, JO | holds | "black hole: □A ≐ □, (□) ≐ void, <□> undefined" survive verbatim (JH rule card) |
 | JP | holds | — |
 
