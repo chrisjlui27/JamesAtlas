@@ -67,7 +67,7 @@ That −∞ is a legitimate point of the *additive* layer: the calculus's log sp
 | setting | holds | why |
 |---|---|---|
 | classical | holds | — |
-| J1 | holds | the same definition, the same three laws, the same two exclusions ([[J1.pole]]: "not a change of law"); what changes is the reading of the empty square from outside — □ is the **pole**, read by polarity (LEGISLATION 30f): inside an instance it is ✠, concession — `(A □) ≡ void` strictly; outside it is Ω, the Λ-indeterminate log of nothing (ln 0 has every branch: "pole = Λ"). A receipt that reaches the pole is an opaque token that never cancels. The same form, the same three laws; a different reading of the empty square from outside |
+| J1 | holds | the same definition, the same three laws, the same two exclusions ([[J1.pole]]: "not a change of law"); what changes is the reading of the empty square from outside — □ is the **pole**, read by polarity (LEGISLATION 30f): inside an instance it is ✠, concession — `(A □) ≡ void` strictly; outside it is Ω, the log of nothing, already the whole coset −∞ + Λ (ln 0 has every branch: "pole = Λ"), so a unit step on pole-valued content has no winding to record and is strict — Dominion is ≡ |
 | JH, JO | holds | the black hole "knows about singular matrices" (JH-20) |
 | JP | holds | at a place □ sits at the end of the rung-count axis: −∞ at ∞, +∞·[p] at p — a consequence of the rung's size, not a choice (p-adic-wall) |
 

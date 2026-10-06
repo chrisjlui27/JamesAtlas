@@ -69,9 +69,11 @@ def table_rows(text: str):
         yield t[1:] if hdr and hdr[0] == "form" else t
 
 
-def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14, phases=None):
+def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14, phases=None, on_table=None):
     """Returns (licensed, unlicensed, skipped, details). `phases` is an optional list of step predicates tried in
-    order; the first phase whose steps suffice licenses the row (the receipt prover asks for the cheapest tape)."""
+    order; the first phase whose steps suffice licenses the row (the receipt prover asks for the cheapest tape).
+    `on_table(ti, details_of_table)` is called as each table closes, so that a caller grading tables can price a
+    lemma before a later table's search cites it."""
     text = node.sections.get("Derivation", "")
     lic = unl = skip = 0
     details = []
@@ -80,19 +82,22 @@ def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14, phases=N
     for ti, rows in enumerate(tables):
         prev = None
         first = last = None
+        start = len(details)
         for i, r in enumerate(rows):
             cell = r[0].strip().strip("`").strip() if r else ""
             rule_cell = r[1] if len(r) > 1 else ""
             note = r[2] if len(r) > 2 else ""
-            try:
-                f = F.parse(cell)
-            except Exception:
-                prev = None
-                continue
             tokens = [x.lower() for x in re.split(r"[,;]\s*|\s+", N.LINK.sub("", rule_cell).strip()) if x]
             cited = N.LINK.findall(rule_cell) + [c for c in N.LINK.findall(note) if c not in N.LINK.findall(rule_cell)]
             if "name" in tokens:
-                continue  # a naming row: standard notation, not a form
+                continue  # a naming row: standard notation, not a form; the chain continues past it
+            try:
+                f = F.parse(cell)
+            except Exception:
+                unl += 1
+                details.append((ti, i, "UNLICENSED", f"row does not parse: {cell!r}", []))
+                prev = None
+                continue
             if first is None:
                 first = f
             last = f
@@ -142,6 +147,8 @@ def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14, phases=N
             prev = f
         if first is not None and last is not None and first != last:
             lemma_rules.append(P.Rule(f"lemma#{ti}", first, last))
+        if on_table is not None:
+            on_table(ti, details[start:])
     return lic, unl, skip, details
 
 

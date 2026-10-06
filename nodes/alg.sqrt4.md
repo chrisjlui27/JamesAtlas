@@ -57,7 +57,7 @@ The square root of four is two: four is two twos, the double log collects the tw
 | form | rule | note |
 |---|---|---|
 | `(([[oooo]] <[oo]>))` | given | √4, [[alg.root]] |
-| `(([[([oo] [oo])]] <[oo]>))` | [[mult.distribution]] [[mult.log-of-one]] [[mult.involution]] | 4 = 2 × 2, right to left, inside the inner square: the pile is split into two counted copies (the counit on each `([oo])`, the log of one inserted beside each count — inside the instance, where in 𝕁₁ it is absorbed), and Distribution collects them under one `[oo]` — `mult.product-of-numerals` computed for 2 × 2 |
+| `(([[([oo] [oo])]] <[oo]>))` | [[mult.distribution]] [[mult.log-of-one]] [[mult.involution]] | 4 = 2 × 2, right to left, inside the inner square: the counit wraps the pile, `oooo` → `([oooo])`; a log of one is inserted inside that instance, `([oooo] [o])` — where in 𝕁₁ it is absorbed, the one receipt of this row; Distribution splits it into `([oo] [o]) ([oo] [o])` and recollects the two copies under one `[oo]`: `([oo] [oo])` — `mult.product-of-numerals` computed for 2 × 2 (the path the prover licenses and the tape shows) |
 | `(([[oo] [oo]] <[oo]>))` | [[mult.involution]] | the unit; content 2 ln 2, real |
 | `(([([[oo]] [oo])] <[oo]>))` | [[mult.cardinality]] | two copies of `[oo]` are one copy with count 2 |
 | `(([[oo]] [oo] <[oo]>))` | [[mult.involution]] | the unit; content ln ln 2 + ln 2 = ln(2 ln 2), real |

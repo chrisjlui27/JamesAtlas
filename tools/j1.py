@@ -87,8 +87,48 @@ def _in_j1_reading(fn, *args):
         F.OMEGA = old
 
 
+PROBES = [1.0, -1.0, 0.5, 2.0, 1j]   # the exceptional points of the reading: where a content can be exactly one
+GENERIC = 2.0                        # the other variables' value in a probe, so the tape names a readable point
+
+
 def _sample(names, domain, rng, trials):
+    """Random values of the node's domain — the generic points."""
     return [F.random_env(names, domain, rng) for _ in range(trials if names else 1)]
+
+
+def _in_domain(p, domain: str) -> bool:
+    if isinstance(p, complex):
+        return domain == "complex"
+    if domain == "natural":
+        return p == int(p) and p >= 1
+    if domain == "positive":
+        return p > 0
+    if domain == "negative":
+        return p < 0
+    return True  # real, complex
+
+
+def _probes(names, domain, rng):
+    """Probe environments: every variable at each probe value of the domain — the others at a generic value first,
+    then random — and all variables equal to the same probe: the lattice points a random sampler never hits, where
+    the log of exactly one reads ω."""
+    names = sorted(names)
+    if not names:
+        return []
+    out = []
+    generic = -GENERIC if domain == "negative" else GENERIC
+    for p in PROBES:
+        if not _in_domain(p, domain):
+            continue
+        out.append({n: complex(p) for n in names})
+        for n in names:
+            fixed = {m: complex(generic) for m in names}
+            fixed[n] = complex(p)
+            out.append(fixed)
+            env = F.random_env(names, domain, rng)
+            env[n] = complex(p)
+            out.append(env)
+    return out
 
 
 def pole_valued(x: F.Form, domain: str, rng, trials: int = 12) -> bool:
@@ -112,39 +152,52 @@ def _single_instance(form: F.Form):
     return len(form) == 1 and form[0][0] == F.ROUND
 
 
-def receipt_values(redex: F.Form, result: F.Form, domain: str, rng, trials: int = 24) -> set:
-    """The receipt of a step, in units of ω: value(redex) − value(result) in the 𝕁₁ reading, over sampled values.
-    When both sides are a single instance the contents are compared instead (an absorbed period is invisible
-    at the instance level and is exactly what the receipt records). An entry of None stands for `?` — the pole,
-    or a difference that is not a lattice element."""
+def _k_at(redex, result, env):
+    try:
+        a = _in_j1_reading(F.evaluate, redex, env)
+        b = _in_j1_reading(F.evaluate, result, env)
+    except (F.Undefined, F.Excluded, OverflowError):
+        return "skip"
+    if a is F.BH or b is F.BH:
+        return None
+    k = (a - b) / OMEGA
+    if abs(k.imag) > 1e-6 * (1 + abs(k)) or abs(k.real - round(k.real)) > 1e-6 * (1 + abs(k)):
+        return None
+    return int(round(k.real))
+
+
+def receipt_values(redex: F.Form, result: F.Form, domain: str, rng, trials: int = 24, with_probes: bool = False):
+    """The receipt of a step, in units of ω: value(redex) − value(result) in the 𝕁₁ reading, over the generic
+    points of the domain. When both sides are a single instance the contents are compared instead (an absorbed
+    period is invisible at the instance level and is exactly what the receipt records). An entry of None stands
+    for `?` — the pole, or a difference that is not a lattice element. With with_probes=True the exceptional
+    points (PROBES) are sampled as well and returned separately as {k: [env, …]} for the non-void ones."""
     if _single_instance(redex) and _single_instance(result):
         redex, result = redex[0][1], result[0][1]
     names = F.variables(redex) | F.variables(result)
     ks = set()
     for env in _sample(names, domain, rng, trials):
-        try:
-            a = _in_j1_reading(F.evaluate, redex, env)
-            b = _in_j1_reading(F.evaluate, result, env)
-        except (F.Undefined, F.Excluded, OverflowError):
-            continue
-        if a is F.BH or b is F.BH:
-            ks.add(None)
-            continue
-        k = (a - b) / OMEGA
-        if abs(k.imag) > 1e-6 * (1 + abs(k)) or abs(k.real - round(k.real)) > 1e-6 * (1 + abs(k)):
-            ks.add(None)
-        else:
-            ks.add(int(round(k.real)))
-    return ks
+        k = _k_at(redex, result, env)
+        if k != "skip":
+            ks.add(k)
+    if not with_probes:
+        return ks
+    exceptional = {}
+    for env in _probes(names, domain, rng):
+        k = _k_at(redex, result, env)
+        if k != "skip" and k != 0:
+            exceptional.setdefault(k, []).append(env)
+    return ks, exceptional
 
 
 @dataclass
 class Receipt:
     rule: str
     content: str        # what the step rewrote, as a string
-    where: str          # absorbing | depth-0 | under-square | inherited (a theorem's own tape)
-    grade: str          # absorbed | posted | import | absent
+    where: str          # absorbing | depth-0 | under-square | inherited (a theorem's own tape) | pole (strict, 30f)
+    grade: str          # strict (pole only) | absorbed | posted | import | absent
     k: set = field(default_factory=set)   # sampled receipt values in units of ω (None = ?)
+    exceptional: dict = field(default_factory=dict)   # under a square: non-void receipts at probe points {k: [env…]}
 
 
 @dataclass
@@ -157,24 +210,21 @@ class Tape:
         if GRADE_ORDER.index(g) > GRADE_ORDER.index(self.grade):
             self.grade = g
 
-    def merge(self, other: "Tape"):
+    def merge(self, other: "Tape", dedupe: bool = False):
+        """Combine tapes. Within one derivation every receipt is kept (no contraction on the tape, L0); across a
+        schema's instances the same step at the same position is one entry (dedupe=True)."""
         self.worse(other.grade)
-        seen = {(r.rule, r.where, r.grade, r.content) for r in self.receipts}
+        seen = {(r.rule, r.where, r.grade, r.content) for r in self.receipts} if dedupe else set()
         for r in other.receipts:
-            if (r.rule, r.where, r.grade, r.content) not in seen:
-                self.receipts.append(r)
-                seen.add((r.rule, r.where, r.grade, r.content))
+            if dedupe and (r.rule, r.where, r.grade, r.content) in seen:
+                continue
+            self.receipts.append(r)
+            seen.add((r.rule, r.where, r.grade, r.content))
         self.absent += [a for a in other.absent if a not in self.absent]
 
     @property
     def cell(self) -> str:
         return CELL_OF[self.grade]
-
-    @property
-    def posted_void(self) -> bool:
-        """Are all the tape's posted receipts void on the node's domain? (What a use under a square needs.)"""
-        return all(r.k and r.k == {0} for r in self.receipts if r.grade == "posted")
-
 
 def _theorem_grade(step: P.Step, grades: dict):
     """The grade a theorem (or lemma table) contributes when used as a rule at this step's position."""
@@ -189,7 +239,7 @@ def _theorem_grade(step: P.Step, grades: dict):
         return "import"  # the import sits inside the theorem; no position of use heals it
     where = position_class(step.path)
     if where == "under-square":
-        return "import" if g.posted_void else "absent"
+        return "import"  # refined at the use site by grade_steps: void receipt there → import, else fails
     return BY_POSITION[where]
 
 
@@ -203,7 +253,7 @@ def step_grade(step: P.Step, grades: dict, node=None, rng=None) -> str:
         where = position_class(step.path)
         if where == "under-square" and node is not None and rng is not None:
             ks = receipt_values(step.redex, step.result, node.get("domain", "positive"), rng)
-            return "import" if ks == {0} else "absent"
+            return "import" if ks == {0} else "absent"  # void at the generic points: an import (exceptional points are recorded by grade_steps)
         return BY_POSITION[where]
     if step.rule == "mult.involution" and _counit_shape(step):
         return "strict"
@@ -231,15 +281,28 @@ def grade_steps(steps: list, node, grades: dict, rng) -> Tape:
     for s in steps:
         g = step_grade(s, grades, node, rng)
         if g == "strict":
+            x = _unit_shape(s)
+            if x is not None and (s.rule in UNIT_RULES or s.rule.startswith("lemma") or s.rule == "hypothesis"):
+                # a unit step graded strict is one on pole-valued content (LEGISLATION 30f): on the tape, no receipt
+                tape.receipts.append(Receipt(s.rule, F.to_string(x, True) or "void", "pole", "strict", set()))
             continue
         where = position_class(s.path) if s.rule not in ABSORB_J1 else "absorbing"
         if _unit_shape(s) is None and s.rule not in ABSORB_J1 and grades.get(s.rule) is not None and grades[s.rule].grade in ("absorbed", "import"):
             where = "inherited"  # the grade comes from the theorem's own tape, whatever this position
-        ks = receipt_values(s.redex, s.result, domain, rng)
+        exceptional = {}
+        if g == "import":
+            # under a square the step is sound only where its receipt is void: decide at the generic points of this
+            # node's domain (a posted theorem is judged here, at its use site, not on its own domain) and record
+            # the exceptional points — lattice values of the content, where the log of exactly one reads ω
+            ks, exceptional = receipt_values(s.redex, s.result, domain, rng, with_probes=True)
+            if ks != {0}:
+                g = "absent"
+        else:
+            ks = receipt_values(s.redex, s.result, domain, rng)
         content = F.to_string(_unit_shape(s), True) if _unit_shape(s) is not None else F.to_string(s.redex, True)
         if _unit_shape(s) is not None and not _unit_shape(s):
             content = "void"
-        tape.receipts.append(Receipt(s.rule, content or "void", where, g, ks))
+        tape.receipts.append(Receipt(s.rule, content or "void", where, g, ks, exceptional))
         if g == "absent":
             tape.absent.append(s.rule)
         tape.worse(g)
@@ -249,19 +312,21 @@ def grade_steps(steps: list, node, grades: dict, rng) -> Tape:
 def grade_node(node, nodes, cache: dict, grades: dict, rng, check_node_fn) -> Tape:
     """Grade a whole node from its licensed derivation; theorems it cites must already be graded. Lemma tables
     are graded first and their tapes used where a later table cites them."""
-    lic, unl, skip, details = check_node_fn(node, nodes, cache, phases=phases(grades, node, rng))
-    tape = Tape()
     local = dict(grades)
     by_table: dict = {}
-    for ti, i, status, msg, steps in details:
+
+    def on_table(ti, rows):
         t = by_table.setdefault(ti, Tape())
-        if status == "UNLICENSED":
-            t.worse("absent")
-            t.absent.append(f"row {i+1} unlicensed")
-            continue
-        row = grade_steps(steps, node, local, rng)
-        t.merge(row)
-        local[f"lemma#{ti}"] = t
+        for _ti, i, status, msg, steps in rows:
+            if status == "UNLICENSED":
+                t.worse("absent")
+                t.absent.append(f"row {i+1} unlicensed")
+                continue
+            t.merge(grade_steps(steps, node, local, rng))
+        local[f"lemma#{ti}"] = t  # priced before a later table's search cites it
+
+    check_node_fn(node, nodes, cache, phases=phases(local, node, rng), on_table=on_table)
+    tape = Tape()
     for ti in sorted(by_table):
         tape.merge(by_table[ti])
     return tape
@@ -272,8 +337,21 @@ def describe(tape: Tape) -> str:
         return "≡ — no unit step: strict in 𝕁₁"
     parts = []
     for r in tape.receipts:
+        where = f"{r.where} {r.rule}" if r.where == "inherited" else r.where
+        if r.grade == "strict":
+            parts.append(f"strict [{r.where}] on `{r.content}` (the pole has no winding: no receipt, LEGISLATION 30f)")
+            continue
         ks = ",".join("?" if k is None else str(k) for k in sorted(r.k, key=lambda v: (v is None, v))) if r.k else "?"
-        parts.append(f"{r.grade} [{r.where}] on `{r.content}` (k = {ks})")
+        exc = ""
+        if r.exceptional:
+            pts = []
+            for k, envs in list(r.exceptional.items())[:3]:   # in order of discovery: the simplest points first
+                e = envs[0]
+                pts.append(f"k = {'?' if k is None else k} at " + ", ".join(f"{n}={F.fmt(v)}" for n, v in sorted(e.items())))
+            more = "" if len(r.exceptional) <= 3 else f" / … {len(r.exceptional) - 3} more"
+            exc = "; except " + " / ".join(pts) + more
+        parts.append(f"{r.grade} [{where}] on `{r.content}` (k = {ks}{exc})")
     if tape.absent:
         parts.append("absent: " + ", ".join(sorted(set(tape.absent))))
-    return f"{tape.cell}: " + "; ".join(parts)
+    head = "≡" if tape.grade == "strict" else tape.cell
+    return f"{head}: " + "; ".join(parts)

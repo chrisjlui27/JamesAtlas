@@ -238,8 +238,8 @@ def compute(nodes):
             p.discard("mult.involution")
             p.add("J1.counit")
             tape = ledger.get(nid, ("", ""))[1]
-            if "absorbed" in tape or "posted" in tape or "import" in tape:
-                p.add("J1.unit")  # the tape has a receipt: the unit is in the price
+            if any(w in tape for w in ("absorbed", "posted", "import", "pole")):
+                p.add("J1.unit")  # the tape took a unit step (with a receipt, or on the pole): the unit is in the price
         p.discard("mult.seam-decree")
         price[nid] = p
     return used_by, depth, price
@@ -301,6 +301,8 @@ def inline_tape(tape: str) -> str:
     out = html.escape(tape, quote=False)
     out = re.sub(r"`([^`]*)`", r"<code>\1</code>", out)
     out = out.replace("absorbed [absorbing]", "<b>absorbed</b>").replace("posted [depth-0]", "<b>posted</b>").replace("import [under-square]", "<b>import</b>").replace("absent [under-square]", "<b>false</b>")
+    out = out.replace("strict [pole]", "<b>strict</b> [pole]").replace("; except ", "; <b>except</b> ")
+    out = re.sub(r"absorbed \[inherited ([^\]]*)\]", r"<b>absorbed</b> [inherited \1]", out)
     return out
 
 

@@ -724,24 +724,30 @@ def check_licences(node: N.Node, nodes, rep: Report, cache: dict, rng, parent=No
     absorbed steps, then posted, then anything), and the steps it finds grade the node in 𝕁₁ (tools/j1.py)."""
     if node.get("level") != "object":
         return None
-    lic, unl, skip, details = LC.check_node(node, nodes, cache, phases=J1.phases(J1_GRADES, node, rng))
+    graded = (parent or node).get("type") in GRADED_TYPES
+    local = dict(J1_GRADES)   # this node's view of the grades: the chart's, plus its own lemma tables as they close
+    by_table = {}
+
+    def on_table(ti, rows):
+        """Grade a table as soon as it closes, so a later table's search prices a `lemma` step at its true grade."""
+        t = by_table.setdefault(ti, J1.Tape())
+        for _ti, i, status, msg, steps in rows:
+            if status == "UNLICENSED":
+                t.worse("absent")
+                t.absent.append(f"row {i+1} unlicensed")
+                continue
+            t.merge(J1.grade_steps(steps, node, local, rng))
+        local[f"lemma#{ti}"] = t
+
+    lic, unl, skip, details = LC.check_node(node, nodes, cache, phases=J1.phases(local, node, rng),
+                                            on_table=on_table if graded else None)
     for ti, i, status, msg, _steps in details:
         if status == "UNLICENSED":
             rep.fail(node.id, f"derivation table {ti+1} row {i+1} is not licensed by the rule it cites: {msg}")
     rep.oks += lic
-    if (parent or node).get("type") not in GRADED_TYPES:
+    if not graded:
         return None
     tape = J1.Tape()
-    local = dict(J1_GRADES)
-    by_table = {}
-    for ti, i, status, msg, steps in details:
-        t = by_table.setdefault(ti, J1.Tape())
-        if status == "UNLICENSED":
-            t.worse("absent")
-            t.absent.append(f"row {i+1} unlicensed")
-            continue
-        t.merge(J1.grade_steps(steps, node, local, rng))
-        local[f"lemma#{ti}"] = t  # a later table citing this one as a lemma inherits its tape
     for ti in sorted(by_table):
         tape.merge(by_table[ti])
     return tape
@@ -877,9 +883,11 @@ def main(argv=None):
                 check_law(inst, rep, rng, max(10, args.trials // 2))
                 check_derivations(inst, rep, rng, max(10, args.trials // 2))
                 if not args.no_licences:
+                    J1_GRADES["hypothesis"] = tape  # a hypothesis step inherits the schema's tape so far (the smaller instances)
                     t = check_licences(inst, nodes, rep, lic_cache, rng, parent=node)
+                    J1_GRADES.pop("hypothesis", None)
                     if t is not None:
-                        tape.merge(t)
+                        tape.merge(t, dedupe=True)
             if tape is not None and not args.no_licences:
                 record_j1(node, tape, rep)
         else:
