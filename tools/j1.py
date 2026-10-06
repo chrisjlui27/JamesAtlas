@@ -374,7 +374,7 @@ def grade_node(node, nodes, cache: dict, grades: dict, rng, check_node_fn, readi
 def describe(tape: Tape, reading=None) -> str:
     R = reading or READING
     if tape.grade == "strict" and not tape.receipts:
-        return "≡ — no unit step: strict in 𝕁₁"
+        return "≡ — no unit step: strict in 𝕁₁" if R is READING else f"≡ — no unit step: strict at {R.name}"
     parts = []
     for r in tape.receipts:
         where = f"{r.where} {r.rule}" if r.where == "inherited" else r.where

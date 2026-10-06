@@ -19,7 +19,7 @@ GUIDE = {"shape-led", "need-led"}
 HOLDS = {"holds", "holds-mod-Λ", "guarded", "replaced", "fails", "untested"}
 READING_CELLS = {"EXACT", "PARTIAL", "ANALOGY", "ABSENT", "CONVERSE", "untested"}
 EQUALITIES = {"≐", "≡", "≃", "≈"}
-DOMAINS = {"natural", "positive", "negative", "real", "complex"}
+DOMAINS = {"natural", "positive", "negative", "real", "complex", "unit"}   # unit: a unit of the place (rung `place`; at ∞, a nonzero real)
 SECTIONS = ["Law", "Plain", "Derivation", "Confirms", "Settings and readings", "Refuted readings", "Notes", "Plan"]
 RUNGS = ["void", "N", "Z", "mult", "Q", "alg", "C", "schema", "J1", "place", "H", "analysis", "J2", "logic", "struct", "F1", "O", "S", "field"]
 

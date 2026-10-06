@@ -68,7 +68,7 @@ ln e = 1, the companion of [[mult.unit-law]]'s ln 1 = 0: the two facts that pin 
 | classical | holds | — |
 | J1 | holds-mod-Λ | a bare unit step: the law's sides are not under an instance, so the receipt is not absorbed — `[(o)] ≃ o` with receipt |
 | JH, JO | holds | — |
-| JP | replaced | `(o)` is not a form at a finite place (`place.radius`); there is no base to take the log of |
+| JP | replaced | `(o)` is not a form at a finite place ([[place.radius]]); there is no base to take the log of |
 
 | reading | cell | why |
 |---|---|---|

@@ -70,7 +70,7 @@ Exact division of naturals. What happens when the division is *not* exact — `7
 | setting | holds | why |
 |---|---|---|
 | classical, J1, JH, JO | holds | real content; the Involution-down step is on the strip |
-| JP | holds | a quotient that divides evenly is a pile at every place; a reciprocal on its own needs a unit denominator (`place.no-inverse-of-the-prime`) |
+| JP | holds | a quotient that divides evenly is a pile at every place; a reciprocal on its own needs a unit denominator ([[place.no-inverse-of-the-prime]]) |
 
 | reading | cell | why |
 |---|---|---|

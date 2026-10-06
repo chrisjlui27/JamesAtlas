@@ -66,7 +66,7 @@ The most basic fact of division, as one Inversion. It is **not** `0 ÷ 0`: with 
 | setting | holds | why |
 |---|---|---|
 | classical, J1, JH, JO | holds | Inversion only; it survives verbatim in JH (the inverse cluster) |
-| JP | holds | the form cancels before any reciprocal is taken: `[A] <[A]>` is void for every A, the prime included; `(<[A]>)` alone is a form only for a unit (`place.no-inverse-of-the-prime`) |
+| JP | holds | the form cancels before any reciprocal is taken: `[A] <[A]>` is void for every A, the prime included; `(<[A]>)` alone is a form only for a unit ([[place.no-inverse-of-the-prime]]) |
 
 | reading | cell | why |
 |---|---|---|

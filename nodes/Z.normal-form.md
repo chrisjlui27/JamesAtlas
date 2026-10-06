@@ -72,7 +72,7 @@ The general case: split every mirror down to single units by [[Z.collection]] (t
 | setting | holds | why |
 |---|---|---|
 | classical, J1, JH, JO | holds | the additive, mirror-only fragment is identical in all of them |
-| JP | holds | the identity holds at every place; the integer it names is a residue mod p^N there — integers that agree mod p^N are one form at depth N (`place.void-pile`) |
+| JP | holds | the identity holds at every place; the integer it names is a residue mod p^N there — integers that agree mod p^N are one form at depth N ([[place.void-pile]]) |
 
 | reading | cell | why |
 |---|---|---|

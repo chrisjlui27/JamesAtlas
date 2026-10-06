@@ -295,6 +295,8 @@ def random_env(names, domain: str, rng: random.Random) -> dict:
             env[n] = complex(x)
         elif domain == "negative":
             env[n] = complex(-math.exp(rng.uniform(math.log(0.05), math.log(20.0))))
+        elif domain == "unit":   # a unit of a place; at ∞ every nonzero real is one
+            env[n] = complex(math.exp(rng.uniform(math.log(0.05), math.log(20.0))) * rng.choice((-1, 1)))
         elif domain == "complex":
             env[n] = complex(math.exp(rng.uniform(-2, 2)) * rng.choice((-1, 1)), math.exp(rng.uniform(-2, 2)) * rng.choice((-1, 1)))
         else:

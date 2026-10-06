@@ -64,7 +64,7 @@ def set_reading(node: N.Node):
     if p is None:
         return  # a JP node that names no place (a meta node): checked in ℂ like any other
     try:
-        PLACE_READING = PL.Reading(PL.Place(int(p), int(n) if n else None))
+        PLACE_READING = PL.Reading(PL.Place(int(p), depth=int(n) if n else None))
     except ValueError:
         PLACE_READING = None
 
@@ -151,8 +151,8 @@ def check_schema(node: N.Node, nodes, rep: Report):
         if not N.parse_tables(node.sections.get("Derivation", "")):
             rep.fail(nid, "schema nodes need a derivation table (the induction step)")
         uses = m.get("uses") or []
-        if "N.induction" not in uses and not any(u in nodes and nodes[u].get("type") == "schema" for u in uses):
-            rep.fail(nid, "a schema cites [[N.induction]] in its hypothesis row, or rests on another schema (the price of the meta-move)")
+        if "N.induction" not in uses and "place.ostrowski" not in uses and not any(u in nodes and nodes[u].get("type") == "schema" for u in uses):
+            rep.fail(nid, "a schema cites [[N.induction]] in its hypothesis row, or rests on another schema (the price of the meta-move); a schema over the place p cites [[place.ostrowski]] (rung `place`)")
         text = node.sections.get("Derivation", "")
         has_hyp = any(len(r) > 1 and "hypothesis" in rule_tokens(r[1]) for t in N.parse_tables(text) for r in t[1:])
         try:
@@ -340,6 +340,16 @@ def check_law(node: N.Node, rep: Report, rng, trials):
         if form is None:
             rep.fail(nid, f"primitive law does not parse: {law}")
             return
+        if PLACE_READING is not None:   # at a place, "is a form" is a claim the reading can refuse: check it
+            names = F.variables(form)
+            for _ in range(trials if names else 1):
+                env = _env(names, node.get("domain", "positive"), rng)
+                try:
+                    _eval(form, env)
+                except NO_VALUE as ex:
+                    rep.fail(nid, f"not a form at the place: {F.to_string(form, True)} — {ex}")
+                    return
+            rep.ok()
     elif re.search(r"is not a form", law):
         return  # exclusion decree
     else:
@@ -554,7 +564,7 @@ def seam_env(names, domain, rng):
             env[n] = complex(rng.randint(1, 12))
         elif domain == "positive":
             env[n] = complex(math.exp(rng.uniform(math.log(0.01), math.log(100.0))))
-        elif domain == "real":
+        elif domain in ("real", "unit"):
             env[n] = complex(math.exp(rng.uniform(math.log(0.01), math.log(100.0))) * rng.choice((-1, 1)))
         elif domain == "negative":
             env[n] = complex(-math.exp(rng.uniform(math.log(0.01), math.log(100.0))))
@@ -567,7 +577,8 @@ def seam_env(names, domain, rng):
 
 PROBES = {"natural": [1, 2, 3, 7, 12], "positive": [0.01, 0.5, 0.999, 1.0, 1.001, 2.0, 10.0, 100.0],
           "negative": [-100.0, -2.0, -1.001, -1.0, -0.999, -0.5, -0.01],
-          "real": [-100.0, -2.0, -1.0, -0.5, 0.5, 1.0, 2.0, 100.0], "complex": [1j, -1j, -1 + 0j, 2 + 3j]}
+          "real": [-100.0, -2.0, -1.0, -0.5, 0.5, 1.0, 2.0, 100.0], "complex": [1j, -1j, -1 + 0j, 2 + 3j],
+          "unit": [-2.0, -1.0, 0.5, 1.0, 2.0, 7.0]}
 
 
 def off_strip(x, node: N.Node, rng, trials: int):
@@ -815,7 +826,9 @@ def record_j1(node: N.Node, tape, rep: Report):
     """Store the computed grade and compare it with the node's hand-written J1 cell."""
     if node.get("setting") == "JP":
         # a node of rung `place`: its tape was computed at its own place; the JP cell and the equality follow it
-        PLG.PLACE_RUNG_ROWS.append((node.id, tape, (node.get("holds") or {}).get("JP", ""), PLACE_READING.name if PLACE_READING else "C"))
+        where = ("p = " + ", ".join(str(e["p"]) for e in S.parse_range(node.get("schema_range")) if "p" in e) if node.get("schema_range") else (PLACE_READING.name if PLACE_READING else "C"))
+        where = ", ".join(dict.fromkeys(where.replace("p = ", "").split(", "))) if where.startswith("p = ") else where
+        PLG.PLACE_RUNG_ROWS.append((node.id, tape, (node.get("holds") or {}).get("JP", ""), ("p = " + where) if node.get("schema_range") else where))
         hand = (node.get("holds") or {}).get("JP", "")
         eq = str(node.get("equality", ""))
         want = "≡" if tape.grade == "strict" else ("≃" if tape.grade in ("absorbed", "posted") else None)
@@ -923,6 +936,7 @@ def main(argv=None):
     ap.add_argument("--no-census", action="store_true")
     ap.add_argument("--no-licences", action="store_true", help="skip the derivation checker (tools/prover.py)")
     ap.add_argument("--no-places", action="store_true", help="skip the place ledger (tools/placeledger.py)")
+    ap.add_argument("--only", help="check only the nodes whose id starts with this prefix (no ledgers, no census)")
     args = ap.parse_args(argv)
     global PLACE_READING
     rng = random.Random(args.seed)
@@ -932,6 +946,8 @@ def main(argv=None):
     witnesses = []
     check_orders(nodes, rep)
     for node in sorted(nodes.values(), key=lambda n: n.get("order", 0) if isinstance(n.get("order"), int) else 0):
+        if args.only and not node.id.startswith(args.only):
+            continue
         set_reading(node)
         check_schema(node, nodes, rep)
         check_links(node, nodes, rep)
@@ -967,6 +983,15 @@ def main(argv=None):
         witnesses.append(node)
     F.OMEGA = None
     PLACE_READING = None
+    if args.only:
+        for node in witnesses:
+            check_witness(node, rep)
+        print(f"{len(witnesses)} nodes · {rep.oks} checks passed · {len(rep.warns)} warnings · {len(rep.fails)} failures")
+        for w in rep.warns:
+            print("  warn:", w)
+        for f in rep.fails:
+            print("  FAIL:", f)
+        return 0 if not rep.fails else 1
     if not args.no_licences:
         write_j1_ledger()  # before the witnesses: J1.classical-floor reads it
         if not args.no_places:

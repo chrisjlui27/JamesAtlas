@@ -114,11 +114,14 @@ class Place:
     """A prime p read to depth N. `enriched` = the log of exactly one is the period ω_p (the 𝕁₁ convention at p);
     False gives the classical page, where it is void."""
 
-    def __init__(self, p: int, N: int | None = None, enriched: bool = True):
+    def __init__(self, p: int, depth: int | None = None, enriched: bool = True, N: int | None = None):
+        """p the prime; depth the page's depth n (the void pile p^n ≐ void: equality is mod p^n); N the working
+        precision of the engine's arithmetic, at least the depth and enough shells for the series and the counts."""
         if p not in PRIMITIVE_ROOT:
             raise ValueError(f"no primitive root tabled for {p}")
         self.p = p
-        self.N = N or default_depth(p)
+        self.depth = depth or N or default_depth(p)
+        self.N = max(N or default_depth(p), self.depth)
         self.M = p ** self.N
         self.g = PRIMITIVE_ROOT[p]
         self.radius = 2 if p == 2 else 1            # exp converges on p^radius ℤ_p
@@ -240,7 +243,7 @@ class Place:
 
     # ---- the pole
     def is_pole(self, x: PV) -> bool:
-        return x.pole or (x.grade == 0 and x.v >= self.N)
+        return x.pole or (x.grade == 0 and x.v >= self.depth)
 
     # ---- the three operations
     def add(self, x: PV, y: PV) -> PV:
@@ -275,11 +278,25 @@ class Place:
         if x.grade:
             raise NotAForm("the log of a formal log has no value at a finite place (weight 2)")
         if x.formal:
-            return PV(0, x.prec, lcoef=Fraction(1), base=x, logof=Fraction(1))   # ℓ(x) beside nothing: the log of one
+            # the formal log ℓ(x), written canonically: x = r · x₀ with x₀ the primitive element of its direction (its
+            # first nonzero count equal to one), so that ℓ(x) = ℓ(x₀) + log r — and log(ω/(p−1)) = log ω − log(p−1)
+            r = x.v if x.v != 0 else x.k
+            num, den = r.numerator, r.denominator
+            t = v_p(abs(num), self.p, x.prec)
+            prec = x.prec - t
+            if prec <= 0 or x.a % (self.p ** t):
+                raise NotAForm("a formal element whose number part does not divide by its count has no log at this depth")
+            M = self.p ** prec
+            a0 = (x.a // self.p ** t) * den * pow(num // self.p ** t, -1, M) % M
+            x0 = PV(a0, prec, x.v / r, x.k / r)
+            if r == 1:
+                return PV(0, prec, lcoef=Fraction(1), base=x0, logof=Fraction(1))   # ℓ(x) beside nothing: the log of one
+            rest = self.log(self.number(r, prec))
+            return PV(rest.a, prec, rest.v, rest.k, lcoef=Fraction(1), base=x0, logof=rest.logof)
         M = self.p ** x.prec
         a = x.a % M
-        if a == 0:
-            return PV(pole=True, prec=self.N)
+        if a % (self.p ** min(x.prec, self.depth)) == 0:
+            return PV(pole=True, prec=self.N)   # void at this depth: the log of the void pile
         w = v_p(a, self.p, x.prec)
         prec = x.prec - w
         Mw = self.p ** prec
@@ -346,7 +363,7 @@ class Place:
             t = self.teich(pow(self.g, int(x.k) % (self.p - 1), self.p))
         u = e * t % M
         v = int(x.v)
-        if v >= self.N:
+        if v >= self.depth:
             return self.zero()
         prec = min(x.prec + v, self.N)
         return PV(u * self.p ** v % (self.p ** prec), prec)
@@ -360,7 +377,7 @@ class Place:
         if x.grade:
             if x.lcoef != y.lcoef or not self.equal(x.base, y.base):
                 return False
-        prec = min(x.prec, y.prec)
+        prec = min(x.prec, y.prec, self.depth)
         if (x.a - y.a) % (self.p ** prec) != 0 or x.v != y.v:
             return False
         if x.k == y.k:
@@ -376,7 +393,7 @@ class Place:
             return None
         if x.grade or y.grade:
             return None
-        prec = min(x.prec, y.prec)
+        prec = min(x.prec, y.prec, self.depth)
         if (x.a - y.a) % (self.p ** prec) != 0 or x.v != y.v:
             return None
         d = x.k - y.k
@@ -393,7 +410,8 @@ class Place:
         if x.number and x.exact is not None:
             return str(x.exact)
         if x.a or not (x.formal or x.grade):
-            parts.append(f"{x.a} (mod {self.p}^{x.prec})")
+            d = min(x.prec, self.depth)
+            parts.append(f"{x.a % self.p ** d} (mod {self.p}^{d})")
         if x.v:
             parts.append(f"{x.v}·[p]")
         if x.k:

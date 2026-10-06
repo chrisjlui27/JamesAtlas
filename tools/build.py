@@ -29,7 +29,7 @@ PRICED_TYPES = {"primitive", "axiom", "decree", "import", "gap"}
 RUNG_TITLES = {
     "void": "The page", "N": "ℕ — piles", "Z": "ℤ — the angle boundary", "mult": "× — the square boundary",
     "Q": "ℚ — division and fractional counts", "alg": "Radicals and the base", "C": "ℂ and J", "schema": "Schemas — one law for every n", "J1": "𝕁₁ — the receipt", "H": "ℍ (JH)", "O": "𝕆 (JO)", "S": "𝕊 (JS)", "J2": "𝕁₂ — the moduli of lattices",
-    "analysis": "Analysis", "place": "Places (JP)", "logic": "Logic", "struct": "Structure", "F1": "F₁", "field": "The Field",
+    "analysis": "Analysis", "place": "Places — the same wall at p", "logic": "Logic", "struct": "Structure", "F1": "F₁", "field": "The Field",
 }
 
 # ----------------------------------------------------------------------------- form drawing
@@ -230,14 +230,15 @@ def compute(nodes):
     # the price of a 𝕁₁ law is stated in 𝕁₁'s own axioms (SPEC §5.4): Involution is the split pair — the counit, and
     # the unit when the tape has a receipt — and the seam decree is not in force there (replaced by receipts)
     ledger = j1_ledger()
+    pledger = place_ledger()
     for nid, n in nodes.items():
-        if n.get("setting") != "J1":
+        if n.get("setting") not in ("J1", "JP"):
             continue
         p = set(price[nid])
         if "mult.involution" in p:
             p.discard("mult.involution")
             p.add("J1.counit")
-            tape = ledger.get(nid, ("", ""))[1]
+            tape = ledger.get(nid, ("", ""))[1] if n.get("setting") == "J1" else pledger.get("rung", {}).get(nid, ("", "", ""))[2]
             if any(w in tape for w in ("absorbed", "posted", "import", "pole")):
                 p.add("J1.unit")  # the tape took a unit step (with a receipt, or on the pole): the unit is in the price
         p.discard("mult.seam-decree")
@@ -288,13 +289,51 @@ def j1_ledger():
     return _J1_LEDGER
 
 
+_PLACE_LEDGER = None
+
+
+def place_ledger():
+    """census/place-ledger.md as {"trunk": {node id: (per-place cells, computed JP, hand JP)},
+    "rung": {node id: (place, computed JP, tape)}} — written by check.py."""
+    global _PLACE_LEDGER
+    if _PLACE_LEDGER is None:
+        _PLACE_LEDGER = {"trunk": {}, "rung": {}, "places": []}
+        path = os.path.join(ROOT, "census", "place-ledger.md")
+        if os.path.exists(path):
+            section = "trunk"
+            for line in open(path):
+                if line.startswith("## Rung"):
+                    section = "rung"
+                if line.startswith("| node |") and section == "trunk":
+                    _PLACE_LEDGER["places"] = [c.strip() for c in line.strip().strip("|").split("|")][1:-2]
+                if line.startswith("| `"):
+                    cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                    nid = cells[0].strip("`")
+                    if section == "trunk" and len(cells) >= 8:
+                        _PLACE_LEDGER["trunk"][nid] = (cells[1:6], cells[6], cells[7])
+                    elif section == "rung" and len(cells) >= 5:
+                        _PLACE_LEDGER["rung"][nid] = (cells[1], cells[2], cells[4])
+    return _PLACE_LEDGER
+
+
 def tape_html(nid: str) -> str:
-    """The 𝕁₁ tape of a derivation, as the receipt prover computed it (LEGISLATION 30c)."""
+    """The 𝕁₁ tape of a derivation, as the receipt prover computed it (LEGISLATION 30c), and the law at the places
+    (the place ledger, rung `place`)."""
+    out = ""
     entry = j1_ledger().get(nid)
-    if not entry:
-        return ""
-    cell, tape = entry
-    return f'<div class="kv"><span class="k">𝕁₁ tape</span><span class="v tape">{inline_tape(tape)}</span></div>'
+    if entry:
+        cell, tape = entry
+        out += f'<div class="kv"><span class="k">𝕁₁ tape</span><span class="v tape">{inline_tape(tape)}</span></div>'
+    pl = place_ledger()
+    if nid in pl["trunk"]:
+        cells, computed, hand = pl["trunk"][nid]
+        places = pl["places"] or [f"p = {q}" for q in (2, 3, 5, 7, 13)]
+        items = " · ".join(f"<b>{html.escape(pq)}</b> {html.escape(c)}" for pq, c in zip(places, cells))
+        out += f'<div class="kv"><span class="k">at the places</span><span class="v tape">{items} — JP <b>{html.escape(computed)}</b></span></div>'
+    elif nid in pl["rung"]:
+        place, computed, tape = pl["rung"][nid]
+        out += f'<div class="kv"><span class="k">tape at {html.escape(place)}</span><span class="v tape">{inline_tape(tape)}</span></div>'
+    return out
 
 
 def inline_tape(tape: str) -> str:
@@ -346,7 +385,7 @@ def law_block(node, nodes):
     try:
         if F.split_law(law)[1] is not None:
             l, r, sym = F.split_law(law)
-            sugar = f" {sym} ".join(F.to_string(F.parse(x), True, omega=node.get("setting") == "J1") for x in (l, r))
+            sugar = f" {sym} ".join(F.to_string(F.parse(x), True, omega=node.get("setting") in ("J1", "JP")) for x in (l, r))
     except Exception:
         pass
     return (f'<div class="law"><div class="drawing">{drawing}</div>'
@@ -681,7 +720,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 <div class="wrap">
 <header>
   <h1>The Boundary Chart</h1>
-  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 4–6 and Appendix B, checked against the text) with the standard complex-number toolkit — <code>schema</code>, the laws over every n (cardinality, powers, the n-th roots of unity, De Moivre) stated once as templates, checked at every n in a range, and priced with the induction gap they lean on; and <code>J1</code>, the enriched calculus 𝕁₁ — Involution split into a strict counit and a witnessed unit, the log of one kept as the period form ω rather than erased, every step graded by the receipt it posts (strict, absorbed, posted) by the receipt prover, James's two theorems of Chapter 6 re-read as true mod Λ, and the ψ-wall counting 24, 240, 504.</p>
+  <p class="lede">Mathematics in James boundary arithmetic, one law per step, from the void toward F₁. Every law is drawn, glossed, derived from the laws before it, and checked by the engine. Built so far: rungs <code>void</code>, <code>N</code>, <code>Z</code>, <code>mult</code>, <code>Q</code>, <code>alg</code> and <code>C</code> — the classical James algebra of the 1993 thesis (Chapters 4–6 and Appendix B, checked against the text) with the standard complex-number toolkit — <code>schema</code>, the laws over every n (cardinality, powers, the n-th roots of unity, De Moivre) stated once as templates, checked at every n in a range, and priced with the induction gap they lean on; and <code>J1</code>, the enriched calculus 𝕁₁ — Involution split into a strict counit and a witnessed unit, the log of one kept as the period form ω rather than erased, every step graded by the receipt it posts (strict, absorbed, posted) by the receipt prover, James's two theorems of Chapter 6 re-read as true mod Λ, and the ψ-wall counting 24, 240, 504; and <code>place</code>, the finite places — a place is a pile declared void, the page at p read in its log space (a number part, a count of the prime's log, a count of the torsion log), the same wall <code>(ω A) ≃ (A)</code> with the place's own period, every trunk law read at p = 2, 3, 5, 7, 13 and every derivation re-graded there, Fermat and Hensel and the doll of 1/(1 − p) as laws, and the ψ-wall split into its local factors.</p>
   <div class="stats">
     <div class="stat"><b>{len(nodes)}</b><span>laws</span></div>
     <div class="stat"><b>{counts.get("theorem",0)}</b><span>theorems</span></div>

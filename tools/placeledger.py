@@ -248,6 +248,6 @@ def write(rows, readings):
         out.append(f"| `{nid}` | " + " | ".join(cells) + f" | {cell} | {hand} |")
     out += ["", "## Rung `place`", "", "| node | place | computed JP | hand JP | tape |", "|---|---|---|---|---|"]
     for nid, tape, hand, rname in PLACE_RUNG_ROWS:
-        out.append(f"| `{nid}` | {rname} | {tape.cell} | {hand} | {J1.describe(tape).replace('|', '/')} |")
+        out.append(f"| `{nid}` | {rname} | {tape.cell} | {hand} | {J1.describe(tape).replace('≡ — no unit step: strict in 𝕁₁', '≡ — no unit step: strict at the place').replace('|', '/')} |")
     open(path, "w").write("\n".join(out) + "\n")
     return path
