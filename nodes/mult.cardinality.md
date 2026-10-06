@@ -73,7 +73,7 @@ n·a as a form, and with it the possibility of *fractional* and *negative* count
 | classical | holds | — |
 | J1 | holds | survival ledger: cardinality unchanged; `([A][n])` read as the graded exponential `!ₙ` (the notes write it `(n[A])`) |
 | JH, JO | holds | per slice |
-| JP | holds | counts that are piles are forms at every place; a *fractional* count `<[o^n]>` needs n to be a unit at p (rung Q), and the selection `d | p−1` of which `ω/d` exist at p is rung C's |
+| JP | holds | counts that are piles are forms at every place; a *fractional* count of a number's log, `([A] <[o^n]>)`, is A/n and needs n to be a unit at p ([[place.division-by-unit]], [[place.no-inverse-of-the-prime]]); a fractional count of a *formal* log (ω/d, [p]/d) is a form only when d divides the count — the selection rule ([[place.selection]]) |
 
 | reading | cell | why |
 |---|---|---|

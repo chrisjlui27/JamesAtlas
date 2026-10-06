@@ -19,7 +19,7 @@ holds:
   J1: holds
   JH: guarded
   JO: guarded
-  JP: holds
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -75,7 +75,7 @@ De Moivre's formula as a schema over n, with no principal-branch condition on t:
 | classical | holds | — |
 | J1 | holds | every unit step directly under an instance |
 | JH, JO | guarded | within a slice, as [[C.turn-of-sum]] |
-| JP | holds | for integer turns, at every tested place |
+| JP | guarded | for integer turns, at every tested place; a fractional turn is a form only by the selection rule ([[place.selection]]) |
 
 | reading | cell | why |
 |---|---|---|

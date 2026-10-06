@@ -75,7 +75,7 @@ sin(−θ) = −sin θ, from the definition. The derivation runs from −sin t t
 | classical | holds | — |
 | J1 | holds | all unit steps absorbing; inherits [[C.reverse-turn]] |
 | JH, JO | replaced | per slice |
-| JP | guarded | needs i (p ≡ 1 mod 4, `place.i`) |
+| JP | guarded | needs i (p ≡ 1 mod 4, [[place.selection]]) |
 
 | reading | cell | why |
 |---|---|---|

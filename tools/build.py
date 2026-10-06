@@ -341,6 +341,9 @@ def inline_tape(tape: str) -> str:
     out = re.sub(r"`([^`]*)`", r"<code>\1</code>", out)
     out = out.replace("absorbed [absorbing]", "<b>absorbed</b>").replace("posted [depth-0]", "<b>posted</b>").replace("import [under-square]", "<b>import</b>").replace("absent [under-square]", "<b>false</b>")
     out = out.replace("strict [pole]", "<b>strict</b> [pole]").replace("; except ", "; <b>except</b> ")
+    out = re.sub(r"page \[([^\]]*)\]", r"<b>page</b> [\1]", out)
+    out = out.replace("formless [under-square]", "<b>formless</b> [under-square]")
+    out = re.sub(r"(absorbed|posted|import|absent) \[page step under a square, measured at the square: ([^\]]*)\]", r"<b>\1</b> [page step, measured at the square above it: \2]", out)
     out = re.sub(r"absorbed \[inherited ([^\]]*)\]", r"<b>absorbed</b> [inherited \1]", out)
     return out
 
@@ -348,7 +351,7 @@ def inline_tape(tape: str) -> str:
 def law_block(node, nodes):
     law = str(node.get("law", ""))
     units = str(node.get("units", ""))
-    if node.get("type") == "schema":
+    if node.get("schema_range"):   # a schema, or a decree/import written over the place and the depth (rung `place`)
         env = draw_env(node)
         try:
             inst = SCH.expand(law, env)
@@ -441,7 +444,7 @@ def render_node(node, nodes, used_by, depth, price):
   <div class="settings">{chips(m.get("holds") or {}, "h")}<span class="sep"></span>{chips(m.get("readings") or {}, "r")}</div>
   <details class="deriv" open>
     <summary>Derivation</summary>
-    {md(SCH.expand_derivation(secs.get("Derivation", ""), draw_env(node), keep_fixed="all", captions=True) if m.get("type") == "schema" else secs.get("Derivation", ""), nodes, draw_first_col=True)}
+    {md(SCH.expand_derivation(secs.get("Derivation", ""), draw_env(node), keep_fixed="all", captions=True) if m.get("schema_range") else secs.get("Derivation", ""), nodes, draw_first_col=True)}
   </details>
   <details class="more">
     <summary>Confirms · settings · notes</summary>

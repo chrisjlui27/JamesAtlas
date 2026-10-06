@@ -15,7 +15,20 @@ position. This module grades every such step for the enriched calculus 𝕁₁:
              reading (the classical decree's by-content clause), which 𝕁₁ cannot see
   absent     under a square with a non-void receipt (the step is false in 𝕁₁), or a rule 𝕁₁ does not have
 
-A node's 𝕁₁ grade is the worst grade among its steps. The `holds` cell it implies: strict or absorbed → holds;
+At a finite place one more grade sits between strict and absorbed:
+
+  page       a law of the page (PAGE_RULES: the void pile and what follows from it by the page's equality alone)
+             applied at depth 0, through angles and juxtaposition, or inside an instance: the two forms agree
+             mod p^n — which IS the page's equality — but that equality is not a congruence through a square
+             (the log of p^n is n·[p], the log of the void is the pole; the log of a non-unit loses shells), so a
+             page law under a square is measured at the first square above it (page_under_square): where the
+             square's value does not change at the generic points of the domain the step is an import (sound
+             by content, as a unit step under a square is); where it changes by a lattice element the square
+             posts that receipt and the square's position grades the step (absorbed directly inside an
+             instance, posted at depth 0); otherwise absent. A theorem whose tape has a page step is itself a
+             page law: its reuse under a square is measured in the same way.
+
+A node's grade is the worst grade among its steps. The `holds` cell it implies: strict, page or absorbed → holds;
 posted → holds-mod-Λ; import → guarded; absent → fails.
 
 Receipts are read in the 𝕁₁ reading (forms.OMEGA = 2πi: the log of exactly one is the chosen lift, every other
@@ -30,9 +43,13 @@ from dataclasses import dataclass, field
 import forms as F
 import prover as P
 
-GRADE_ORDER = ["strict", "absorbed", "posted", "import", "absent"]
-CELL_OF = {"strict": "holds", "absorbed": "holds", "posted": "holds-mod-Λ", "import": "guarded", "absent": "fails"}
+GRADE_ORDER = ["strict", "page", "absorbed", "posted", "import", "absent"]
+CELL_OF = {"strict": "holds", "page": "holds", "absorbed": "holds", "posted": "holds-mod-Λ", "import": "guarded", "absent": "fails"}
 BY_POSITION = {"absorbing": "absorbed", "depth-0": "posted", "under-square": "import"}
+# The laws of the page at a finite place (rung `place`): equalities mod p^n that are not congruences through a
+# square. Graded by position — see the module docstring. A theorem derived from one inherits the grade `page`.
+PAGE_RULES = {"place.void-pile", "place.residue", "place.negation-is-a-pile", "place.fermat", "place.division-by-unit",
+              "place.prime-power", "place.geometric-doll"}
 
 UNIT_RULES = {"mult.involution", "mult.log-of-one", "J1.unit"}     # rules whose unit-shaped steps post receipts
 STRICT_J1 = {"J1.counit", "J1.closure", "J1.period-form"}            # strict rules of the J1 rung itself
@@ -280,6 +297,47 @@ def _theorem_grade(step: P.Step, grades: dict):
     return BY_POSITION[where]
 
 
+def is_page(step: P.Step, grades: dict) -> bool:
+    """A step by a law of the page: one of PAGE_RULES, or a theorem whose own tape is graded `page`."""
+    g = grades.get(step.rule)
+    return step.rule in PAGE_RULES or (g is not None and g.grade == "page")
+
+
+def _square_above(path: tuple) -> int:
+    """Index in the path of the first square above the redex (through angles only); −1 when there is none."""
+    for i in range(len(path) - 1, -1, -1):
+        if path[i] == F.ANGLE:
+            continue
+        return i if path[i] == F.SQUARE else -1
+    return -1
+
+
+def page_under_square(step: P.Step, node, rng, reading=None, with_probes: bool = False):
+    """A page step under a square, measured at that square: the step changes the square's content by an element
+    the page calls void, and the square's VALUE by nothing (the logs agree: an import, by-content), by a lattice
+    element (the square posts a receipt, and the square's own position decides — absorbed directly inside an
+    instance, posted at depth 0), or by something else (absent). Returns (grade, receipts, exceptional, where):
+    `where` is the position of the measuring square, `square:absorbing` / `square:depth-0` / `square:under-square`."""
+    domain = node.get("domain", "positive")
+    if step.square is None:
+        a, b, sq_where = step.redex, step.result, "under-square"
+    else:
+        a, b = ((F.SQUARE, step.square[0]),), ((F.SQUARE, step.square[1]),)
+        sq_where = "square:" + position_class(step.path[:_square_above(step.path)])
+    if with_probes:
+        ks, exc = receipt_values(a, b, domain, rng, with_probes=True, reading=reading)
+    else:
+        ks, exc = receipt_values(a, b, domain, rng, reading=reading), {}
+    if ks == {0}:
+        return "import", ks, exc, sq_where
+    if step.square is not None and len(ks) == 1 and None not in ks:
+        if sq_where == "square:absorbing":
+            return "absorbed", ks, exc, sq_where
+        if sq_where == "square:depth-0":
+            return "posted", ks, exc, sq_where
+    return "absent", ks, exc, sq_where
+
+
 def step_grade(step: P.Step, grades: dict, node=None, rng=None, reading=None) -> str:
     """The 𝕁₁ grade of one licensed step, from its rule and position (the reading decides only pole-valued
     content, and whether an under-square receipt is void)."""
@@ -294,6 +352,13 @@ def step_grade(step: P.Step, grades: dict, node=None, rng=None, reading=None) ->
         return BY_POSITION[where]
     if step.rule == "mult.involution" and _counit_shape(step):
         return "strict"
+    if is_page(step, grades):
+        where = position_class(step.path)
+        if where != "under-square":
+            return "page"    # at depth 0 or inside an instance the page's equality passes through
+        if node is not None and rng is not None:
+            return page_under_square(step, node, rng, reading)[0]
+        return "import"
     if step.rule in STRICT_J1 or step.rule in STRICT_NODES:
         return "strict"
     if step.rule in ABSORB_J1:
@@ -308,7 +373,8 @@ def phases(grades: dict, node=None, rng=None, reading=None):
     The search is heuristic (SPEC §5.5): a path the search misses can make a grade worse, never better."""
     def at_most(level):
         return lambda s: GRADE_ORDER.index(step_grade(s, grades, node, rng, reading)) <= level
-    return [at_most(0), at_most(1), at_most(2), None]
+    levels = [0, 1, 2, 3] if (reading is not None and reading is not READING) else [0, 2, 3]   # `page` only at a place
+    return [at_most(l) for l in levels] + [None]
 
 
 def grade_steps(steps: list, node, grades: dict, rng, reading=None) -> Tape:
@@ -324,8 +390,24 @@ def grade_steps(steps: list, node, grades: dict, rng, reading=None) -> Tape:
                 tape.receipts.append(Receipt(s.rule, F.to_string(x, True) or "void", "pole", "strict", set()))
             continue
         where = position_class(s.path) if s.rule not in ABSORB_J1 else "absorbing"
-        if _unit_shape(s) is None and s.rule not in ABSORB_J1 and grades.get(s.rule) is not None and grades[s.rule].grade in ("absorbed", "import"):
+        if _unit_shape(s) is None and s.rule not in ABSORB_J1 and grades.get(s.rule) is not None and (
+                grades[s.rule].grade in ("absorbed", "import") or (grades[s.rule].grade == "page" and g == "page")):
             where = "inherited"  # the grade comes from the theorem's own tape, whatever this position
+        if g == "page":
+            # a law of the page at depth 0 or inside an instance: no lattice receipt — the forms agree mod p^n, the
+            # page's own equality; recorded so that the tape shows the law is the page's and not the calculus's
+            tape.receipts.append(Receipt(s.rule, F.to_string(s.redex, True) or "void", where, "page", set()))
+            tape.worse(g)
+            continue
+        if is_page(s, grades) and position_class(s.path) == "under-square":
+            # a page step under a square, measured at the square above it (page_under_square), with its exceptional
+            # points: the step's content is recorded, the receipt is the square's
+            g, ks, exceptional, where = page_under_square(s, node, rng, reading, with_probes=True)
+            tape.receipts.append(Receipt(s.rule, F.to_string(s.redex, True) or "void", where, g, ks, exceptional))
+            if g == "absent":
+                tape.absent.append(s.rule)
+            tape.worse(g)
+            continue
         exceptional = {}
         if g == "import" and position_class(s.path) == "under-square":
             # under a square the step is sound only where its receipt is void: decide at the generic points of this
@@ -381,6 +463,13 @@ def describe(tape: Tape, reading=None) -> str:
         if r.grade == "strict":
             parts.append(f"strict [{r.where}] on `{r.content}` (the pole has no winding: no receipt, LEGISLATION 30f)")
             continue
+        if r.grade == "page":
+            parts.append(f"page [{where}] on `{r.content}` (the page's equality, mod p^n: not through a square)")
+            continue
+        if r.where.startswith("square:"):
+            ks = ",".join("?" if k is None else str(k) for k in sorted(r.k, key=lambda v: (v is None, v))) if r.k else "?"
+            parts.append(f"{r.grade} [page step under a square, measured at the square: {r.where[7:]}] on `{r.content}` (the square's receipt k = {ks})")
+            continue
         ks = ",".join("?" if k is None else str(k) for k in sorted(r.k, key=lambda v: (v is None, v))) if r.k else "?"
         exc = ""
         if r.exceptional:
@@ -390,6 +479,11 @@ def describe(tape: Tape, reading=None) -> str:
                 pts.append(f"k = {'?' if k is None else k} at " + ", ".join(f"{n}={R.fmt(v)}" for n, v in sorted(e.items())))
             more = "" if len(r.exceptional) <= 3 else f" / … {len(r.exceptional) - 3} more"
             exc = "; except " + " / ".join(pts) + more
+        if r.grade == "absent" and r.k and all(k is None for k in r.k) and R is not READING:
+            # at a place: the step's content has no value there (the base e, a root the place refuses) — the step is
+            # formless, not false; the law's cell says `replaced` or `guarded` where its forms exist
+            parts.append(f"formless [{where}] on `{r.content}` (no value at {R.name}: k = ?)")
+            continue
         parts.append(f"{r.grade} [{where}] on `{r.content}` (k = {ks}{exc})")
     if tape.absent:
         parts.append("absent: " + ", ".join(sorted(set(tape.absent))))

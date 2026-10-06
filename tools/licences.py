@@ -41,7 +41,7 @@ def rules_for(nid: str, nodes, cache: dict) -> list:
     node = nodes.get(nid)
     if node is not None:
         law = str(node.get("law", ""))
-        if node.get("type") == "schema":
+        if node.get("schema_range"):   # a schema, or a decree written over the place and the depth (the void pile)
             tl, tr, _sym = F.split_law(law)
             try:
                 for env in S.parse_range(node.get("schema_range", "")):

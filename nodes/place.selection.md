@@ -84,4 +84,4 @@ none
 
 ## Notes
 
-Rung `Q`'s and `C`'s earlier JP guards said "when n is a unit at p": too weak — 3 is a unit at 5 and ω/3 is still not a form there. The ledger replaced those cells with this rule (2026-10-06).
+Rung `Q`'s and `C`'s earlier JP guards said "when n is a unit at p": too weak — 3 is a unit at 5 and ω/3 is still not a form there. Those cells now cite this rule (2026-10-06): a fraction of the period is a form at p iff its denominator divides p − 1.

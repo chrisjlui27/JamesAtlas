@@ -17,7 +17,7 @@ holds:
   J1: holds-mod-Λ
   JH: replaced
   JO: replaced
-  JP: holds-mod-Λ
+  JP: guarded
 readings:
   C: PARTIAL
   finset: ABSENT
@@ -70,7 +70,7 @@ Napier's power rule, as a single unit step at depth 0 — admitted by the seam d
 | classical | holds | — |
 | J1 | holds-mod-Λ | a bare unit step; the receipt is not absorbed |
 | JH, JO | replaced | powers with non-commuting bases live in the ordered bracket |
-| JP | holds-mod-Λ | exact as an equation in the log space at every place; the unit step posts the torsion receipt — holds mod Λ_p |
+| JP | guarded | exact as an equation in the log space where the power is a form; the unit step posts at depth 0 as at ∞ (mod Λ_p), and a fractional count B makes the power a form at p only when the torsion count's fraction has a denominator dividing p − 1 ([[place.selection]]) — the place ledger: guarded |
 
 | reading | cell | why |
 |---|---|---|

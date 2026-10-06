@@ -69,7 +69,7 @@ i = e^{iπ/2}, which is how i is *found* once J is: James's reading of i as "hal
 | classical | holds | — |
 | J1 | holds | `([J] <[oo]>)` is the quarter-period ω/4; the definition takes no Λ-step |
 | JH, JO | replaced | one i per slice: `(([J_u] <[oo]>))` = u, so "i" is the 2-sphere of unit imaginary directions, not a point (JH Ch. 14) |
-| JP | guarded | the count 2 must be a unit at p (odd p), and whether `(([J_p] <[oo]>))` is a value at p is the wall criterion; the classical fact to check it against is that ℚ_p contains i exactly when p ≡ 1 (mod 4) |
+| JP | guarded | i = ω/4 is a form at p exactly when 4 divides p − 1 ([[place.selection]]): at 5, 13, 17, …, where it is the Teichmüller lift of a square root of −1 (…31212₅ under the reading's generator); not at 2, 3, 7, 11, whatever the status of the count 2 as a unit |
 
 | reading | cell | why |
 |---|---|---|

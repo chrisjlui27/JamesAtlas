@@ -27,13 +27,13 @@ readings:
   logic: untested
 status: NATIVE
 verified: engine
-known_since: "2026-09-15 (JP v0.4: the fixed-point count on ℤ/p^n is p^{min(v_p(R−1), n)}, locking in at n = e_p(k); ∏_p p^{e_p} = M(2k) for k = 1 … 8); von Staudt–Clausen 1840, Adams 1965"
+known_since: "2026-09-15 (JP v0.4: the fixed-point count on ℤ/p^n is p^{min(v_p(R−1), n)}, locking in at n = e_p(k); ∏_p p^{e_p} = M(2k) for k = 1 … 8); von Staudt–Clausen 1840 (the primes dividing the denominator of B_{2k}); J. C. Adams 1878 (the exact power of p: p^{1+v_p(k)} when (p−1) | 2k, and p ∤ numerator otherwise); J. F. Adams 1965 (the image of J)"
 entered: 2026-10-06
 guide: need-led
 band: "beyond"
 uses: [J1.psi-wall, J1.wall-census, place.selection, place.teichmuller]
 see_also: [J1.psi-wall, J1.wall-census, J1.von-staudt-clausen, place.selection, place.wall]
-aliases: [the local wall, e_p(k), the adelic page, the product formula for the wall, M(2k) = ∏ p^{e_p}]
+aliases: [the local wall, e_p(k), the local factors of the wall, M(2k) = ∏ p^{e_p}, the wall one place at a time]
 concepts: [place, period, induction, prime]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
@@ -46,7 +46,7 @@ reentry: false
 |---|---|---|
 | the count of the ψ-wall at level k is a product over the finite places: at each p the largest power p^e whose Carmichael value λ(p^e) divides 2k, and nothing at ∞ | — | 24 = 2³·3, 240 = 2⁴·3·5, 504 = 2³·3²·7, 480 = 2⁵·3·5, 264 = 2³·3·11, 65520 = 2⁴·3²·5·7·13 |
 
-The ψ-wall ([[J1.psi-wall]]) selects the fractions ω/n well formed at level k by one condition on the whole of n: λ(n) | 2k, with λ Carmichael's function; the census ([[J1.wall-census]]) counts 24, 240, 504. Read at the places, the condition splits: λ(n) is the least common multiple of the λ(p^e) over the prime powers in n, so n passes the wall iff each of its prime-power parts does, and the largest n that passes is the product of the largest prime powers that do. The wall is **local**: at each place p it is a number e_p(k), the depth at which the fixed points of the re-entry x ≐ ([R][x]) with R = r^{2k} lock in (JP v0.4) — and e_p(k) = 1 + v_p(k) when the torsion of the place, p − 1, divides 2k ([[place.selection]]: the (p−1)-th roots of unity are the forms at p that ψ^r can see), 0 when it does not; at 2, where the torsion is ±1 and the principal units start at 5, it is 3 + v_2(k). The product over the places is M(2k) — and nothing is contributed at ∞, which has no generator and no lock-in. This is the *adelic page* of the JP ledger: one re-entry counted on every place's clock.
+The ψ-wall ([[J1.psi-wall]]) selects the fractions ω/n well formed at level k by one condition on the whole of n: λ(n) | 2k, with λ Carmichael's function; the census ([[J1.wall-census]]) counts 24, 240, 504. Read at the places, the condition splits: λ(n) is the least common multiple of the λ(p^e) over the prime powers in n, so n passes the wall iff each of its prime-power parts does, and the largest n that passes is the product of the largest prime powers that do. The wall is **local**: at each place p it is a number e_p(k), the depth at which the fixed points of the re-entry x ≐ ([R][x]) with R = r^{2k} lock in (JP v0.4) — and e_p(k) = 1 + v_p(k) when the torsion of the place, p − 1, divides 2k ([[place.selection]]: the (p−1)-th roots of unity are the forms at p that ψ^r can see), 0 when it does not; at 2, where the torsion is ±1 and the principal units start at 5, it is 3 + v_2(k). The product over the places is M(2k) — and nothing is contributed at ∞, which has no generator and no lock-in. The places are read one at a time and the integer M(2k) is factored place by place; the *adelic page* of the JP ledger — one re-entry counted on every place's clock at once, with ∞'s share — is not this node, and is owed (LEGISLATION 31(f), ROADMAP §4).
 
 ## Plain
 
@@ -62,7 +62,7 @@ The number 24 is 8 times 3 because the wall at level 1 is 8 at the place 2 and 3
 
 ## Confirms
 
-Von Staudt–Clausen's theorem read locally: a prime p divides the denominator of B_{2k} iff (p−1) | 2k, with the exact power given by Adams — the e_p(k) above; the "universal 24" of the J-tower (every im-J order is divisible by 8·3, because (2−1)... the place 2 contributes 2³ at every level and the place 3 contributes 3 at every level, since 2 | 2k always). It is **not** a derivation of the labelling M(2k) = |im J|, which stays the rung's import ([[J1.von-staudt-clausen]]). It is **not** the adelic form on one page: the places are read one at a time.
+Von Staudt–Clausen's theorem (1840) read locally: a prime p divides the denominator of B_{2k} iff (p−1) | 2k, with the exact power of p in the denominator of B_{2k}/4k given by J. C. Adams (1878) — the e_p(k) above; and the "universal 24" of the J-tower: every im-J order is divisible by 8·3, because the place 2 contributes 2³ at every level (e_2 = 3 + v_2(k) ≥ 3) and the place 3 contributes 3 at every level (2 | 2k always, so e_3 ≥ 1). It is **not** a derivation of the labelling M(2k) = |im J| (J. F. Adams, 1965), which stays the rung's import ([[J1.von-staudt-clausen]]). It is **not** the adelic form on one page: the places are read one at a time, and an integer is factored, not a product formula proved.
 
 ## Settings and readings
 

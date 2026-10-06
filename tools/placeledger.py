@@ -7,7 +7,9 @@ Written by check.py as census/place-ledger.md (rung `place`, SPEC §4.4). For a 
     the place's period), `guarded` (holds where its forms exist; some sample is not a form at p), `none` (no
     sample is a form at p), `fails` (a sample where both sides are forms and differ);
   * per place, the **tape**: the derivation's licensed steps (found once, in ℂ) graded again with the receipts
-    read at p — strict / absorbed / posted / import / absent — the same wall, with the place's own receipts;
+    read at p — strict / absorbed / posted / import / absent — the same wall, with the place's own receipts
+    (the trunk's derivations cite no law of the page, so the grade `page` of tools/j1.py occurs only on the
+    tapes of rung `place` itself, graded at their own place as they are checked);
   * the **JP cell** these imply, compared with the hand-written cell: `replaced` when the law is a form at no
     tested place (the place names the law that takes over: the radius, the void pile); `fails` when it fails
     somewhere it is a form; `guarded` when some instance, somewhere, is not a form, or the tape imports; else
@@ -86,12 +88,16 @@ def law_at_place(node, forms, R: PL.Reading, rng, trials: int = TRIALS):
         try:
             v1 = R.evaluate(f1, env)
             v2 = R.evaluate(f2, env) if f2 is not None else None
+        except PL.BeyondPrecision:
+            return "radius"   # a count of [p] past the working precision: dropped — a limit of the engine, not of the place
         except PL.OutsideRadius:
             # the radius is the standing proviso of the instance at a finite place (place.radius): try the same
-            # sample on the radius — every variable times p (4 at p = 2) — before calling the law formless there
+            # sample on the radius — every variable times p (4 at p = 2) — before calling the law formless there;
+            # a sample outside the radius even then has no value at p (a unit ≡ 5 mod 8 has no root at 2), and
+            # counts as formless, like a selection failure
             if retry and env:
                 return verdict({n: v * scale for n, v in env.items()}, retry=False)
-            return "radius"
+            return "none"
         except (PL.NotAForm, F.Undefined, F.Excluded, OverflowError):
             return "none"
         if f2 is None or R.equal(v1, v2, eq):
@@ -103,7 +109,10 @@ def law_at_place(node, forms, R: PL.Reading, rng, trials: int = TRIALS):
     counts = {"exact": 0, "mod-Λ": 0, "fails": 0, "none": 0, "radius": 0}
     for _ in range(trials if names else 1):
         counts[verdict(R.random_env(names, domain, rng))] += 1
-    exceptional = any(verdict(env) == "fails" for env in R.probes(names, domain, rng)) if names else False
+    # the probes sit on the lattice points exactly: no retry on the radius (that would move them off the point)
+    exceptional = any(verdict(env, retry=False) == "fails" for env in R.probes(names, domain, rng)) if names else False
+    # samples past the working precision are dropped, not judged (`radius`): a law all of whose samples are
+    # dropped has no status here — it is `none` (a form at no sampled point), as its JP cell then says
     if counts["fails"]:
         status = "fails"
     elif not counts["exact"] and not counts["mod-Λ"]:
@@ -144,8 +153,12 @@ def jp_cell(laws: dict, tapes: dict) -> str:
         return "fails"
     worst = "strict"
     for t in tapes.values():
-        if J1.GRADE_ORDER.index(t.grade) > J1.GRADE_ORDER.index(worst):
-            worst = t.grade
+        g = t.grade
+        if g == "absent" and not any("unlicensed" in a for a in t.absent) and all(
+                r.k and all(k is None for k in r.k) for r in t.receipts if r.grade == "absent"):
+            g = "import"   # every absent step is formless at p (no value, not a false step): the law is guarded there
+        if J1.GRADE_ORDER.index(g) > J1.GRADE_ORDER.index(worst):
+            worst = g
     if worst == "absent":
         return "fails"
     if any(x in ("none", "guarded") for x in ls) or worst == "import":
@@ -233,8 +246,9 @@ def write(rows, readings):
     path = os.path.join(ROOT, "census", "place-ledger.md")
     ps = sorted(readings)
     out = ["# The chart at every place — computed by the place reading (tools/place.py) and the receipt prover (tools/j1.py)", "",
-           "Each law read at p = " + ", ".join(str(p) for p in ps) + " (depths " + ", ".join(f"{p}: {readings[p].P.N}" for p in ps) +
-           "): the law's status at the generic points of the place (exact · mod-Λ · guarded · none · fails; ·exc when it fails at a lattice point, a variable exactly one, where the log reads ω_p) and the grade of its derivation re-graded there "
+           "Each law read at p = " + ", ".join(str(p) for p in ps) + " (page depth = working precision " + ", ".join(f"{p}: {readings[p].P.N}" for p in ps) +
+           " shells): the law's status at the generic points of the place (exact · mod-Λ · guarded · none · fails; ·exc when it fails at a lattice point, a variable exactly one, where the log reads ω_p; "
+           "a sample outside the radius of the instance is retried on the radius and, if still outside, counts as formless; a sample past the working precision is dropped) and the grade of its derivation re-graded there "
            "(strict · absorbed · posted · import · absent), with the JP cell they imply beside the hand-written one. "
            "Written by `tools/check.py`; do not edit. The place rung's own nodes are graded at their own place and listed last.", "",
            "| node | " + " | ".join(f"p = {p}" for p in ps) + " | computed JP | hand JP |",

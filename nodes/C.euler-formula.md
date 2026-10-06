@@ -79,7 +79,7 @@ e^{iθ} = cos θ + i sin θ, with θ = πt, as a theorem of the three axioms —
 | classical | holds | — |
 | J1 | holds | the two unit steps are directly under instances (depth-1 criterion); every other step is exact |
 | JH, JO | replaced | per slice, with i replaced by the slice's direction u: e^{uθ} = cos θ + u sin θ — the quaternionic Euler formula, one per slice (JH Ch. 14) |
-| JP | guarded | needs i (p ≡ 1 mod 4, `place.i`); exact there for integer turns |
+| JP | guarded | needs i (p ≡ 1 mod 4, [[place.selection]]); exact there for integer turns |
 
 | reading | cell | why |
 |---|---|---|

@@ -89,7 +89,7 @@ cos² + sin² = 1 from the exponential definitions: (X + X̄)²/4 − (X − X̄
 | classical | holds | — |
 | J1 | holds | every unit step directly under an instance, through an angle at most |
 | JH, JO | replaced | per slice |
-| JP | guarded | needs i (p ≡ 1 mod 4, `place.i`); exact there for integer turns |
+| JP | guarded | needs i (p ≡ 1 mod 4, [[place.selection]]); exact there for integer turns |
 
 | reading | cell | why |
 |---|---|---|

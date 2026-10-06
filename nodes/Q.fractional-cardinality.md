@@ -70,7 +70,7 @@ That counts need not be piles: a mirrored pile is a count too, and the same two 
 | setting | holds | why |
 |---|---|---|
 | classical, J1, JH, JO | holds | in J1 the Involution-down step sits at depth 1 under the instance (depth-1 criterion, [[mult.involution]] Notes) |
-| JP | guarded | `([A]<[o^n]>)` is a form at p iff n is a unit at p (Division-by-unit, Part II Ch. 10); the separate selection `d | p−1` (and `d | 2` at p = 2) concerns fractional counts of ω — which roots of unity exist at p — and belongs to rung C |
+| JP | guarded | `([A]<[o^n]>)` is a form at p iff n is a unit at p: division by a unit is a power ([[place.division-by-unit]]), and the prime has no reciprocal ([[place.no-inverse-of-the-prime]]); the separate selection d | p−1 (d | 2 at p = 2) concerns fractional counts of ω — which roots of unity exist at p — and is [[place.selection]]'s |
 
 | reading | cell | why |
 |---|---|---|

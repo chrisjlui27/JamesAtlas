@@ -32,7 +32,7 @@ entered: 2026-10-06
 guide: need-led
 band: "beyond"
 uses: [Q.reciprocal, place.void-pile, place.prime-log, place.reading]
-see_also: [Q.no-division-by-zero, mult.hole-exclusion, place.division-by-unit, place.pole, place.two-ends]
+see_also: [Q.no-division-by-zero, mult.hole-exclusion, place.division-by-unit, place.prime-power, place.two-ends]
 aliases: [no inverse of the prime, 1/p is not a form, zero divisor, the page is ℤ_p]
 concepts: [place, division, zero, prime]
 understood: "no"
@@ -62,7 +62,7 @@ On a clock with p^n hours you cannot divide by p: p times something is never 1 o
 
 ## Confirms
 
-ℤ_p against ℚ_p: the page is the ring of integers of the place. The numbers with a negative count of `[p]` — the fractions with p in the denominator — are the other end of the page ([[place.two-ends]]): where the pole is a positive count of `[p]` past the depth, these are negative counts, and the page admits neither. It is **not** a limitation of the reading: 1/p has no residue mod p^n for any n.
+ℤ_p against ℚ_p: the page is the ring of integers of the place. The numbers with a negative count of `[p]` — the fractions with p in the denominator — are the other end of the page ([[place.two-ends]]): where the pole lies beyond every positive count of `[p]`, these are negative counts, legitimate as logs, and the page admits the instance of neither. It is **not** a limitation of the reading: 1/p has no residue mod p^n for any n.
 
 ## Settings and readings
 

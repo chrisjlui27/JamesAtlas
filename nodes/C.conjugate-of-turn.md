@@ -71,7 +71,7 @@ cos θ − i sin θ = e^{−iθ}: Euler's formula at −θ, with the evenness of
 | classical | holds | — |
 | J1 | holds | inherits [[C.euler-formula]], [[C.cosine-even]] and [[C.sine-odd]], all exact |
 | JH, JO | replaced | per slice, with u for i |
-| JP | guarded | needs i (p ≡ 1 mod 4, `place.i`) |
+| JP | guarded | needs i (p ≡ 1 mod 4, [[place.selection]]) |
 
 | reading | cell | why |
 |---|---|---|

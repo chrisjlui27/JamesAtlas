@@ -143,10 +143,21 @@ def parse_range(spec: str):
     for c in clauses:
         m = re.match(r"^(\w)\s*=\s*([^.]+)\.\.(.+)$", c)
         ml = re.match(r"^(\w)\s*=\s*([0-9]+(?:\s*,\s*[0-9]+)+)$", c)   # an explicit list: p=2,3,5,7,13
-        if not m and not ml:
+        mt = re.match(r"^\((\w(?:\s*,\s*\w)+)\)\s*=\s*(\([0-9,\s]+\)(?:\s*,\s*\([0-9,\s]+\))*)$", c)   # tuples: (p,n)=(2,2),(3,1)
+        if not m and not ml and not mt:
             raise ValueError(f"bad schema_range clause {c!r}")
         new = []
         for env in envs:
+            if mt:
+                names = [x.strip() for x in mt.group(1).split(",")]
+                for tup in re.findall(r"\(([0-9,\s]+)\)", mt.group(2)):
+                    vals = [int(x) for x in tup.split(",")]
+                    if len(vals) != len(names):
+                        raise ValueError(f"bad schema_range tuple {tup!r} for {names}")
+                    e2 = dict(env)
+                    e2.update(zip(names, vals))
+                    new.append(e2)
+                continue
             if ml:
                 var = ml.group(1)
                 values = [int(x) for x in ml.group(2).split(",")]

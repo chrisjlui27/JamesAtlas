@@ -76,7 +76,7 @@ Two thirds of a half-turn, three times over, is two half-turns — a whole turn,
 | classical | holds | — |
 | J1 | holds | every unit step directly under an instance; the final step is the period, which A5′ absorbs |
 | JH, JO | holds | per slice |
-| JP | guarded | the count 3 must be a unit at p (p ≠ 3); ℚ_p contains ω exactly when p ≡ 1 (mod 3), which is what the wall criterion must reproduce |
+| JP | guarded | ζ₃ = ω/3 is a form at p exactly when 3 divides p − 1 ([[place.selection]]): at 7, 13, 19, …; not at 2, 3, 5, 11 |
 
 | reading | cell | why |
 |---|---|---|

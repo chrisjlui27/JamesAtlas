@@ -7,9 +7,9 @@ kind: law
 rung: place
 order: 1420
 setting: JP
-equality: "≡"
+equality: "≃"
 domain: natural
-law: "<o> ≐ o^{p**n - 1}"
+law: "<o> ≃ o^{p**n - 1}"
 units: "−1 ≡ p^n − 1 (mod p^n): …111 in base 2, …444 in base 5 — the angle boundary is eliminable on a finite page"
 gloss_check: ""
 schema_range: "p=2,3,5; n=1..3"
@@ -28,11 +28,11 @@ readings:
   logic: untested
 status: NATIVE-BY-SCHEMA
 verified: engine
-known_since: "2026-09-19 (the doll of −1: x ≐ o ([oo][x]) converges to <o> at p = 2); Part II Ch. 10 (Floor, Predecessor); as p-adic −1, Hensel 1908"
+known_since: "2026-09-19 (the doll of −1: x ≐ o ([oo][x]) converges to <o> at p = 2); Part II Ch. 10 (Floor, Predecessor); as the p-adic −1 = …(p−1)(p−1)(p−1), Hensel 1897"
 entered: 2026-10-06
 guide: need-led
 band: "beyond"
-uses: [place.void-pile, Z.inversion, void.space]
+uses: [place.void-pile, Z.inversion, void.space, place.ostrowski]
 see_also: [Z.negative-numeral, Z.angle, place.residue, place.doll, place.geometric-doll]
 aliases: [−1 = …111, the mirror is a pile, negation at a place, Floor, Predecessor]
 concepts: [place, negation, zero]
@@ -45,9 +45,9 @@ reentry: false
 
 | form | units | standard |
 |---|---|---|
-| `<o> ≐ o^{p**n - 1}` | the mirror of one is a pile of p^n − 1 marks at depth n | −1 = p^n − 1 mod p^n: …1111₂, …2222₃ |
+| `<o> ≃ o^{p**n - 1}` | the mirror of one is a pile of p^n − 1 marks at depth n | −1 = p^n − 1 mod p^n: …1111₂, …2222₃ |
 
-At ∞ the angle boundary is irreducible: no pile is a negative number ([[Z.negative-numeral]]). At a finite place it reduces: minus one is the pile one short of the void pile, and so every negative integer is a pile. The angle boundary is still *drawn* — the law says what it equals, not that it is absent — but its arithmetic at a finite depth is the arithmetic of piles. Chapter 10 of the JP ledger calls the two faces of this *Floor* and *Predecessor*: the pile just below the void pile is the predecessor of nothing.
+At ∞ the angle boundary is irreducible: no pile is a negative number ([[Z.negative-numeral]]). At a finite place it reduces: minus one is the pile one short of the void pile, and so every negative integer is a pile. The angle boundary is still *drawn* — the law says what it equals, not that it is absent — but its arithmetic at a finite depth is the arithmetic of piles. A page law (≃): the two sides agree at depth n, and — both being units — so do their logs at the depth: `[<o>]` is J, and `[o^{p**n - 1}]` is J beside a principal part that vanishes at the depth; what the page's equality does not survive in general is a square around a non-unit ([[place.void-pile]]). Chapter 10 of the JP ledger calls the two faces of this *Floor* and *Predecessor*: the pile just below the void pile is the predecessor of nothing.
 
 ## Plain
 
@@ -57,8 +57,8 @@ On a clock with p^n hours, going back one hour from midnight lands on the last h
 
 | form | rule | note |
 |---|---|---|
-| `<o>` | given | minus one |
-| `<o> o^{p**n}` | [[place.void-pile]] | the void pile adjoined, right to left: it is nothing at depth n |
+| `<o>` | given | minus one; at every place ([[place.ostrowski]]) |
+| `<o> o^{p**n}` | [[place.void-pile]] | the void pile adjoined, right to left: it is nothing at depth n — a page step at depth 0 |
 | `<o> o o^{p**n - 1}` | medium | one mark set apart from the pile: the same form, [[void.space]] |
 | `o^{p**n - 1}` | [[Z.inversion]] | `<o> o` cancels |
 
@@ -73,7 +73,7 @@ On a clock with p^n hours, going back one hour from midnight lands on the last h
 | classical | fails | at ∞ no pile is negative ([[Z.negative-numeral]], [[N.freeness]]) |
 | J1 | fails | as classical |
 | JH, JO | untested | owed to rung `H` |
-| JP | holds | strict at every instance |
+| JP | holds | a page step at depth 0 at every instance: the page's equality, ≃ |
 
 | reading | cell | why |
 |---|---|---|

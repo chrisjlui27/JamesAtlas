@@ -10,7 +10,7 @@ setting: JP
 equality: "≡"
 domain: natural
 law: "IMPORT — every nontrivial absolute value on ℚ is equivalent to |·|_∞ or to one |·|_p (Ostrowski 1916): the chart's places are exactly the pages this rung draws, and no other"
-units: "the Berkovich spectrum of ℤ: the trivial point, the archimedean point, and one point for each prime"
+units: "the Berkovich spectrum of ℤ: the trivial point at the centre, an archimedean branch, and one branch for each prime — each branch the powers |·|^ε of one absolute value"
 gloss_check: ""
 holds:
   classical: holds
@@ -22,7 +22,7 @@ readings:
   C: EXACT
   finset: untested
   lambda: untested
-  CC: EXACT
+  CC: PARTIAL
   logic: untested
 status: IMPORTED
 verified: hand
@@ -70,7 +70,7 @@ The completeness of the rung's list of pages. It is **not** the product formula 
 | reading | cell | why |
 |---|---|---|
 | C | EXACT | ∞ |
-| CC | EXACT | the arithmetic site's points over Spec ℤ; owed in detail |
+| CC | PARTIAL | the points of the Berkovich spectrum of ℤ as the arithmetic site's places: a branch per prime, one archimedean branch, the trivial point at the centre; the reading in detail is owed |
 | finset, lambda, logic | untested | — |
 
 ## Refuted readings
@@ -79,4 +79,4 @@ none
 
 ## Notes
 
-The trivial absolute value — the centre of the Berkovich spectrum, where F₁ sits in every published road — is the place of rung `F1` (ROADMAP §4).
+The trivial absolute value — the centre of the Berkovich spectrum, from which one branch runs out to each prime and one to ∞, and where F₁ sits in every published road — is the place of rung `F1` (ROADMAP §4). Ostrowski names the places; it does not license the passage from the five primes the engine reads at to all of them — that passage is the import's price, as the passage from a schema's range to all n is the induction gap's.

@@ -153,6 +153,13 @@ def check_schema(node: N.Node, nodes, rep: Report):
         uses = m.get("uses") or []
         if "N.induction" not in uses and "place.ostrowski" not in uses and not any(u in nodes and nodes[u].get("type") == "schema" for u in uses):
             rep.fail(nid, "a schema cites [[N.induction]] in its hypothesis row, or rests on another schema (the price of the meta-move); a schema over the place p cites [[place.ostrowski]] (rung `place`)")
+    if m.get("schema_range"):
+        try:
+            over_p = any("p" in e for e in S.parse_range(m.get("schema_range")))
+        except ValueError:
+            over_p = False
+        if over_p and "place.ostrowski" not in (m.get("uses") or []):
+            rep.fail(nid, "a law over the place p cites [[place.ostrowski]] in uses: the places are what the import names, and 'at every place' is priced by it (SPEC §2.7)")
         text = node.sections.get("Derivation", "")
         has_hyp = any(len(r) > 1 and "hypothesis" in rule_tokens(r[1]) for t in N.parse_tables(text) for r in t[1:])
         try:
@@ -316,8 +323,10 @@ def check_law(node: N.Node, rep: Report, rng, trials):
     law = str(node.get("law", ""))
     gloss = node.get("gloss_check")
     form = None
-    if law.startswith(("GAP", "DISCIPLINE")) or node.get("kind") in ("discipline", "declaration", "guard"):
+    if law.startswith(("GAP", "DISCIPLINE", "DECLARATION")) or node.get("kind") in ("discipline", "guard"):
         return  # a rule about derivations, not an equation between forms
+    if node.get("kind") == "declaration" and F.split_law(law)[1] is None:
+        return  # a declaration in prose; a declared equation (the void pile, `o^{p**n} ≃ void`) is checked like any law
     if F.split_law(law)[1] is not None:
         lhs, rhs, _sym = F.split_law(law)
         f1, f2 = parse_or_none(lhs), parse_or_none(rhs)
@@ -770,6 +779,7 @@ def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 6
 
 
 J1_GRADES: dict = {}     # node id -> j1.Tape, filled in walk order (cited theorems are graded before their users)
+PLACE_GRADES: dict = {}   # the tapes of rung `place`'s nodes, at their own place (tools/j1.py grade `page` among them)
 J1_ROWS: list = []       # (node id, tape, hand cell) for census/j1-ledger.md
 LIC_STEPS: dict = {}     # node (or schema instance) id -> the licensed steps of its derivation, from the ℂ search
 GRADED_TYPES = {"theorem", "schema"}
@@ -783,6 +793,8 @@ def check_licences(node: N.Node, nodes, rep: Report, cache: dict, rng, parent=No
         return None
     graded = (parent or node).get("type") in GRADED_TYPES
     local = dict(J1_GRADES)   # this node's view of the grades: the chart's, plus its own lemma tables as they close
+    if PLACE_READING is not None:
+        local.update(PLACE_GRADES)   # at a place, the rung's own laws at their grades there (page laws included)
     by_table = {}
 
     def on_table(ti, rows):
@@ -826,12 +838,15 @@ def record_j1(node: N.Node, tape, rep: Report):
     """Store the computed grade and compare it with the node's hand-written J1 cell."""
     if node.get("setting") == "JP":
         # a node of rung `place`: its tape was computed at its own place; the JP cell and the equality follow it
+        PLACE_GRADES[node.id] = tape   # for the rung's later nodes: a page law cited under a square is measured there
         where = ("p = " + ", ".join(str(e["p"]) for e in S.parse_range(node.get("schema_range")) if "p" in e) if node.get("schema_range") else (PLACE_READING.name if PLACE_READING else "C"))
         where = ", ".join(dict.fromkeys(where.replace("p = ", "").split(", "))) if where.startswith("p = ") else where
         PLG.PLACE_RUNG_ROWS.append((node.id, tape, (node.get("holds") or {}).get("JP", ""), ("p = " + where) if node.get("schema_range") else where))
         hand = (node.get("holds") or {}).get("JP", "")
         eq = str(node.get("equality", ""))
-        want = "≡" if tape.grade == "strict" else ("≃" if tape.grade in ("absorbed", "posted") else None)
+        # a law of the page (grade `page`: the void pile's equality, mod p^n, not through a square) is ≃ like an
+        # absorbed or posted law: it marks what may not be used under a square
+        want = "≡" if tape.grade == "strict" else ("≃" if tape.grade in ("page", "absorbed", "posted") else None)
         d = J1.describe(tape, PLACE_READING)[:200]
         if want is None:
             rep.fail(node.id, f"a law of the place whose derivation needs an import or fails: {d}")
@@ -945,7 +960,37 @@ def main(argv=None):
     lic_cache = {}
     witnesses = []
     check_orders(nodes, rep)
-    for node in sorted(nodes.values(), key=lambda n: n.get("order", 0) if isinstance(n.get("order"), int) else 0):
+    order = sorted(nodes.values(), key=lambda n: n.get("order", 0) if isinstance(n.get("order"), int) else 0)
+    if args.only and not args.no_licences:
+        # the selected nodes cite theorems outside the prefix, whose grades their tapes need (a theorem reused is
+        # priced at its own grade): grade the cited closure first, quietly, so that --only agrees with the full run
+        want, todo = set(), [n.id for n in order if n.id.startswith(args.only)]
+        while todo:
+            nid = todo.pop()
+            for u in (nodes[nid].get("uses") or []) if nid in nodes else []:
+                if u not in want and not u.startswith(args.only):
+                    want.add(u)
+                    todo.append(u)
+        quiet = Report()
+        for node in order:
+            if node.id not in want or node.get("type") not in GRADED_TYPES or node.get("level") != "object":
+                continue
+            set_reading(node)
+            if node.get("schema_range"):
+                tape = J1.Tape()
+                for inst in schema_instances(node):
+                    set_reading(inst)
+                    J1_GRADES["hypothesis"] = tape
+                    t = check_licences(inst, nodes, quiet, lic_cache, rng, parent=node)
+                    J1_GRADES.pop("hypothesis", None)
+                    if t is not None:
+                        tape.merge(t, dedupe=True)
+            else:
+                tape = check_licences(node, nodes, quiet, lic_cache, rng)
+            if tape is not None and node.get("setting") != "JP":
+                J1_GRADES[node.id] = tape
+        print(f"--only {args.only}: graded {len([n for n in want if n in J1_GRADES])} cited theorems outside the prefix first")
+    for node in order:
         if args.only and not node.id.startswith(args.only):
             continue
         set_reading(node)
@@ -954,13 +999,13 @@ def main(argv=None):
         check_tables_agree(node, rep)
         check_dag(node, nodes, rep)
         check_guarded_by(node, nodes, rep, rng, max(60, args.trials))
-        if node.get("type") == "schema":
+        if node.get("schema_range"):   # a schema — or a decree written over the place and the depth (the void pile)
             try:
                 insts = schema_instances(node)
             except ValueError as ex:
                 rep.fail(node.id, f"schema does not expand: {ex}")
                 insts = []
-            tape = J1.Tape() if insts else None
+            tape = J1.Tape() if insts and node.get("type") in GRADED_TYPES else None
             for inst in insts:
                 set_reading(inst)   # a schema over the place p reads each instance at its own place
                 check_law(inst, rep, rng, max(10, args.trials // 2))
@@ -969,7 +1014,7 @@ def main(argv=None):
                     J1_GRADES["hypothesis"] = tape  # a hypothesis step inherits the schema's tape so far (the smaller instances)
                     t = check_licences(inst, nodes, rep, lic_cache, rng, parent=node)
                     J1_GRADES.pop("hypothesis", None)
-                    if t is not None:
+                    if t is not None and tape is not None:
                         tape.merge(t, dedupe=True)
             if tape is not None and not args.no_licences:
                 record_j1(node, tape, rep)

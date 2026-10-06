@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: holds
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -69,7 +69,7 @@ Euler's cos θ = (e^{iθ} + e^{−iθ})/2 taken as the definition, with θ = πt
 | classical | holds | — |
 | J1 | holds | a definition with no Λ-step |
 | JH, JO | replaced | per slice, cos is slice-independent as a *value* (the real part of a turn is the same in every slice) but the form carries the slice's J_u |
-| JP | holds | for integer turns, where the turn is a torsion power ±1 and the cosine ±1; the analytic p-adic cosine on the radius is another object, owed to rung `analysis` |
+| JP | guarded | for integer turns, where the turn is a torsion power ±1 and the cosine ±1; a fractional turn is a form only by the selection rule ([[place.selection]]); the analytic p-adic cosine on the radius is another object, owed to rung `analysis` |
 
 | reading | cell | why |
 |---|---|---|

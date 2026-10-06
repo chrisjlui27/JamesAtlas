@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: guarded
   JO: guarded
-  JP: holds
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -77,7 +77,7 @@ Cube a turn and you have turned three times as far. The page proves it by turnin
 | classical | holds | — |
 | J1 | holds | every unit step directly under an instance |
 | JH, JO | guarded | within a slice, as [[C.turn-of-sum]] |
-| JP | holds | for integer turns, where the turn is a torsion power |
+| JP | guarded | for integer turns, where the turn is a torsion power; a fractional turn is a form only by the selection rule ([[place.selection]]) |
 
 | reading | cell | why |
 |---|---|---|

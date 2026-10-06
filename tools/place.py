@@ -24,13 +24,14 @@ A formal element (one with a count of `[p]` or J_p) has a log of its own only as
 second grade — whose instance is defined when it is scaled by a number: `([[A]] [B])` is B·[A], a fractional
 count; the product of two formal elements (weight 2, `([J][J])`) has no value at a finite place. Exact rationals
 are carried alongside the residues (a pile is exactly its count; the log of an exact number remembers it; a
-product of exact numbers is exact), so that counts scale formal elements exactly; a count that is not exact is
-recovered by rational reconstruction when it is a fraction of small height at this depth, and is otherwise not
-a form.
+product of exact numbers is exact, while it stays below EXACT_BITS), so that counts scale formal elements
+exactly; a count that is not exact (a residue only) does not scale a formal element: the form has no value.
 
-The pole: `[]` is log 0; at depth N it is also every element whose count of `[p]` reaches N (`[p]^{N}` ≐ □: the
-void pile's log) — the black hole is reached by a finite count of the prime's log at a finite place, where at ∞
-it is −∞. Its mirror is excluded, its square undefined, exactly as at ∞ (mult.hole-exclusion).
+The pole: `[]` is log 0 — the log of the exact void (`o <o>`, the empty form). The page's equality is mod p^n
+(the void pile), but the log of a number is read at the engine's working precision, which exceeds the depth: the
+pile of p^n marks is a number ≡ 0 at depth n whose log is n copies of `[p]`, NOT the pole. So the page's equality
+does not pass through a square (as ≃ does not at ∞): n·[p] is a finite element of the log space, and only the
+exact void has the pole for its log. Its mirror is excluded, its square undefined, exactly as at ∞.
 
 No dependencies beyond the standard library.
 """
@@ -63,6 +64,11 @@ class NotAForm(ArithmeticError):
 class OutsideRadius(NotAForm):
     """An instance whose content lies outside the radius of exp at p — the standing proviso of every instance at a
     finite place (place.radius), not a selection: the ledger retries such a sample on the radius."""
+
+
+class BeyondPrecision(OutsideRadius):
+    """A number void at the engine's working precision (a count of [p] past N): its log cannot be read at this
+    precision — deepen the page. Skipped by the ledger like a sample outside the radius."""
 
 
 def default_depth(p: int) -> int:
@@ -227,23 +233,9 @@ class Place:
                 break
         return total
 
-    def rational(self, a: int, prec: int) -> Fraction | None:
-        """Rational reconstruction: the fraction n/d of least height with n ≡ a·d (mod p^prec), |n|, |d| ≤ √(p^prec/2)."""
-        M = self.p ** prec
-        bound = math.isqrt(M // 2)
-        r0, r1 = M, a % M
-        t0, t1 = 0, 1
-        while r1 > bound:
-            q = r0 // r1
-            r0, r1 = r1, r0 - q * r1
-            t0, t1 = t1, t0 - q * t1
-        if abs(t1) > bound or t1 == 0 or math.gcd(r1, t1) != 1 or t1 % self.p == 0:
-            return None
-        return Fraction(r1, t1)
-
     # ---- the pole
     def is_pole(self, x: PV) -> bool:
-        return x.pole or (x.grade == 0 and x.v >= self.depth)
+        return x.pole
 
     # ---- the three operations
     def add(self, x: PV, y: PV) -> PV:
@@ -295,8 +287,19 @@ class Place:
             return PV(rest.a, prec, rest.v, rest.k, lcoef=Fraction(1), base=x0, logof=rest.logof)
         M = self.p ** x.prec
         a = x.a % M
-        if a % (self.p ** min(x.prec, self.depth)) == 0:
-            return PV(pole=True, prec=self.N)   # void at this depth: the log of the void pile
+        if x.exact == 0:
+            return PV(pole=True, prec=self.N)   # the exact void: log 0
+        if x.exact is not None:
+            # a number known exactly: its count of [p] is exact, and the unit that is left is read to the full
+            # precision — so the void pile p^n (≡ 0 at the depth) has the log n·[p], not the pole (two-ends)
+            num, den = x.exact.numerator, x.exact.denominator
+            w = v_p(abs(num), self.p, 10 ** 6)
+            if w:
+                rest = self.log(self.number(Fraction(num // self.p ** w, den), x.prec))
+                k = Fraction(0) if (rest.a == 0 and rest.k == self.torsion) else rest.k   # p^w · 1 is not exactly one
+                return PV(rest.a, rest.prec, Fraction(w), k, logof=x.exact)
+        if a == 0:
+            raise BeyondPrecision("a number void at the working precision has no readable log: deepen the page")
         w = v_p(a, self.p, x.prec)
         prec = x.prec - w
         Mw = self.p ** prec
@@ -323,10 +326,11 @@ class Place:
         prec = min(c.prec, X.prec)
         a = c.a * X.a % (self.p ** prec)
         def power(base, r):
-            """base^r for an exact rational base and a whole count r, while it stays small."""
-            if base is None or r is None or r.denominator != 1 or r.numerator < 0:
+            """base^r for an exact rational base and a whole count r (negative counts included: the reciprocal of a
+            unit is exact), while it stays small."""
+            if base is None or r is None or r.denominator != 1 or base == 0:
                 return None
-            if base != 1 and r.numerator * max(base.numerator.bit_length(), base.denominator.bit_length()) > EXACT_BITS:
+            if base != 1 and abs(r.numerator) * max(base.numerator.bit_length(), base.denominator.bit_length()) > EXACT_BITS:
                 return None
             return _cap(base ** r.numerator)
         if not X.formal:
@@ -354,6 +358,14 @@ class Place:
             return self.number(x.logof)   # known exactly: full depth
         M = self.p ** x.prec
         a = x.a % M
+        if a == 0 and x.v == 0:
+            # a pure torsion count: the Teichmüller element τ^k, which is a rational number — exactly ±1 — when k is
+            # a multiple of half the torsion (so (J T) for a whole T is exactly (−1)^T, and (J T) <(J T)> is void)
+            kk = int(x.k) % self.torsion
+            if kk == 0:
+                return self.number(1)
+            if 2 * kk == self.torsion:
+                return self.number(-1)
         if a != 0 and v_p(a, self.p, x.prec) < self.radius:
             raise OutsideRadius("outside the radius of the instance at p: exp converges only on p·ℤ_p (4ℤ_2)")
         e = self.exp(a, x.prec) if a else 1
@@ -363,10 +375,8 @@ class Place:
             t = self.teich(pow(self.g, int(x.k) % (self.p - 1), self.p))
         u = e * t % M
         v = int(x.v)
-        if v >= self.depth:
-            return self.zero()
         prec = min(x.prec + v, self.N)
-        return PV(u * self.p ** v % (self.p ** prec), prec)
+        return PV(u * self.p ** v % (self.p ** prec), prec)   # ≡ 0 at the depth when v ≥ depth: the void pile
 
     # ---- comparison and receipts
     def equal(self, x: PV, y: PV, equality: str = "≐") -> bool:
@@ -436,12 +446,20 @@ class Place:
             if domain == "natural":
                 x = rng.randint(1, 8)
             elif domain in ("positive", "negative", "real"):
-                x = self.one_unit(rng)
+                x = Fraction(self.one_unit(rng))
                 r = rng.random()
                 if r < 0.15:
                     x *= self.p
                 elif r < 0.22:
                     x *= self.p * self.p
+                elif r < 0.45:
+                    # a rational principal unit a/b, a ≡ b mod p^radius with b a unit: the positive reals' image
+                    # includes the fractions, and their logs are not the logs of integers (the turn laws for
+                    # integer turns are told apart from the laws that hold for every turn by these samples)
+                    b = rng.randint(2, 12)
+                    while b % self.p == 0:
+                        b = rng.randint(2, 12)
+                    x = Fraction(b + self.p ** self.radius * rng.randint(1, 200), b)
                 if domain == "negative" or (domain == "real" and rng.random() < 0.5):
                     x = -x
             elif domain == "unit":
@@ -496,16 +514,25 @@ class Reading:
         return self.P.random_env(names, domain, rng)
 
     def probes(self, names, domain, rng):
-        """At a finite place every value is exact: the lattice points are sampled like any other (a variable at one
-        is drawn with the small counts); no separate probe set."""
+        """The exceptional points of the reading at a place, by domain, as at ∞ (j1._probes): every variable at a
+        probe value — exactly one (where the log reads the period), and minus one for a negative or real variable —
+        the others at the same probe, then at random values of the domain. A probe sits on the lattice point
+        exactly; it is not moved onto the radius (a probe outside the radius is formless there, and skipped)."""
         names = sorted(names)
         if not names:
             return []
-        out = [{n: Fraction(1) for n in names}]
-        for n in names:
-            e = self.P.random_env(names, domain, rng)
-            e[n] = Fraction(1)
-            out.append(e)
+        values = [Fraction(1)]
+        if domain in ("negative", "real", "complex", "unit"):
+            values.append(Fraction(-1))
+        if domain == "negative":
+            values = [Fraction(-1)]
+        out = []
+        for v in values:
+            out.append({n: v for n in names})
+            for n in names:
+                e = self.P.random_env(names, domain, rng)
+                e[n] = v
+                out.append(e)
         return out
 
     def is_pole(self, v):

@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: holds
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -73,7 +73,7 @@ cos(−θ) = cos θ, from the definition: the cosine is (X + X̄)/2 and replacin
 | classical | holds | — |
 | J1 | holds | all unit steps absorbing; inherits [[C.reverse-turn]] |
 | JH, JO | replaced | per slice |
-| JP | holds | for integer turns |
+| JP | guarded | for integer turns; a fractional turn is a form only by the selection rule ([[place.selection]]) |
 
 | reading | cell | why |
 |---|---|---|

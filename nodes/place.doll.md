@@ -32,7 +32,7 @@ known_since: "2026-09-13 (the doll: nesting read as shrinking — closeness is s
 entered: 2026-10-06
 guide: need-led
 band: "beyond"
-uses: [schema.cardinality, void.space]
+uses: [schema.cardinality, void.space, place.ostrowski]
 see_also: [N.numeral, place.residue, place.geometric-doll, place.prime-log, place.completion]
 aliases: [the doll, base-p digits, place value at p, shells, Horner form, number formats]
 concepts: [place, numeral, one]
@@ -57,13 +57,13 @@ Write a number in base p: the last digit, then p times the rest. Keep going and 
 
 | form | rule | note |
 |---|---|---|
-| `o^{k + p*j}` | given | k + pj marks |
+| `o^{k + p*j}` | given | k + pj marks; at every place ([[place.ostrowski]]) |
 | `o^{k} o^{p*j}` | medium | the digit set apart: the same pile, [[void.space]] |
 | `o^{k} ([o^{p}] [o^{j}])` | [[schema.cardinality]] | the pj marks are j copies of the pile of p marks: cardinality, right to left, at count j |
 
 ## Confirms
 
-Base-p positional notation, James's own number formats (Appendix B of the thesis: a numeral in any base is a nest of products), and the p-adic digits of Hensel. It is **not** yet the infinite doll: a finite form has finitely many shells, and the limit — the doll with a shell at every depth, ℤ_p — is the gap [[place.completion]]. It is **not** canonical either: the law allows k ≥ p, and the carry (p marks in one shell are one mark in the next) is the law read at k = p.
+Base-p positional notation, James's own number formats (the thesis's Appendix A.3, p. 70: a numeral in any base is a nest of products), and the p-adic digits of Hensel. It is **not** yet the infinite doll: a finite form has finitely many shells, and the limit — the doll with a shell at every depth, ℤ_p — is the gap [[place.completion]]. It is **not** canonical either: the law allows k ≥ p, and the carry (p marks in one shell are one mark in the next) is the law read at k = p.
 
 ## Settings and readings
 
@@ -72,7 +72,7 @@ Base-p positional notation, James's own number formats (Appendix B of the thesis
 | classical | holds | arithmetic: k + pm is k + pm at every place |
 | J1 | holds | as classical; the cardinality step's receipts are absorbed |
 | JH, JO | untested | — |
-| JP | holds | strict at every instance; at p this is the normal form |
+| JP | holds | the cardinality step's receipts are absorbed, as at ∞ (the tape inherits [[schema.cardinality]]'s); at p this is the normal form |
 
 | reading | cell | why |
 |---|---|---|

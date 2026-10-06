@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: holds
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -68,7 +68,7 @@ The product rule for exponents is **Distribution** — the ring law a(b + c) = a
 | classical | holds | — |
 | J1 | holds | the unit steps sit directly under an instance: depth-1 criterion ([[mult.involution]], Notes) |
 | JH, JO | replaced | powers of a non-real quaternion need the ordered bracket; the law holds within one slice |
-| JP | holds | — |
+| JP | guarded | for whole counts A, B the law is exact at every place; a count that is a fraction of principal units (a positive variable at a place is one a fifth of the time) makes `(([[X]] [A]))` a fractional count of the torsion log, which is a form at p only when its denominator divides p − 1 ([[place.selection]]) — the place ledger: guarded at p = 5 among the tested places, exact at the others |
 
 | reading | cell | why |
 |---|---|---|

@@ -67,7 +67,7 @@ The square root of two: box two twice, add a mirrored two, circle twice. The pag
 | setting | holds | why |
 |---|---|---|
 | classical, J1, JH, JO | holds | real content |
-| JP | guarded | √2 exists in ℤ_p iff 2 is a square mod p (p = 7 yes, p = 3 no); whether *this form* evaluates at p is the separate question of the p-adic logarithm of 2 converging — the wall parameterization's criterion (p-adic-wall) |
+| JP | guarded | √2 is a form at p exactly when 2 is a square mod p — p ≡ ±1 mod 8: 7, 17, 23, 31 …; not 3, 5, 11, 13 ([[place.lift]]); the log of 2 converges at every odd place once its torsion is split off, so whether *this form* evaluates is the root's parity question, not the log's |
 
 | reading | cell | why |
 |---|---|---|

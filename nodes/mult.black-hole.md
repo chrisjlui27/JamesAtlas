@@ -69,7 +69,7 @@ That −∞ is a legitimate point of the *additive* layer: the calculus's log sp
 | classical | holds | — |
 | J1 | holds | the same definition, the same three laws, the same two exclusions ([[J1.pole]]: "not a change of law"); what changes is the reading of the empty square from outside — □ is the **pole**, read by polarity (LEGISLATION 30f): inside an instance it is ✠, concession — `(A □) ≡ void` strictly; outside it is Ω, the log of nothing, already the whole coset −∞ + Λ (ln 0 has every branch: "pole = Λ"), so a unit step on pole-valued content has no winding to record and is strict — Dominion is ≡ |
 | JH, JO | holds | the black hole "knows about singular matrices" (JH-20) |
-| JP | holds | at a place □ sits at the end of the rung-count axis: −∞ at ∞, +∞·[p] at p — a consequence of the rung's size, not a choice (p-adic-wall) |
+| JP | holds | at a place □ is the upper end of the count of `[p]`, beyond every depth — −∞ at ∞, +∞·[p] at p — and no finite count of `[p]` is it: the instance of n·[p] is the void pile at depth n ([[place.prime-power]], [[place.two-ends]]); the hole rules hold at every tested place (the place ledger) |
 
 | reading | cell | why |
 |---|---|---|

@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: replaced
   JO: replaced
-  JP: holds
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -71,7 +71,7 @@ The polar form r e^{iθ} with θ = πt. Multiplication of complex numbers in pol
 | classical | holds | — |
 | J1 | holds | the unit step is directly under an instance |
 | JH, JO | replaced | `([r] ([J_u][t]))` per slice — the polar form of a quaternion needs the direction u as a third datum, and products across slices do not stay in polar form (JH Ch. 14) |
-| JP | holds | for the integer turns of the page: `(([T][J]))` is the torsion power (−1)^T at p. The place's own polar form — a power of p, a torsion element, a principal unit — is [[place.polar-form]] |
+| JP | guarded | for the integer turns of the page: `(([T][J]))` is the torsion power (−1)^T at p; a turn that is a fraction of principal units is a fractional count of J_p, a form only when its denominator divides p − 1 ([[place.selection]]). The place's own polar form — a power of p, a torsion element, a principal unit — is [[place.polar-form]] |
 
 | reading | cell | why |
 |---|---|---|

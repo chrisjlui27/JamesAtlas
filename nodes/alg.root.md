@@ -70,7 +70,7 @@ A square root is "half of" done one box deeper: box the number twice, add a mirr
 | classical | holds | — |
 | J1 | holds | the unit step is directly under an instance: depth-1 criterion ([[mult.involution]], Notes) |
 | JH, JO | replaced | roots of non-real quaternions: the polar form `([r] ([J_u][t]))` with t halved; two-valued on each slice |
-| JP | guarded | two things must hold at p: the count 2 must be a unit (odd p) and the p-adic logarithm of a must converge so that `[[A]]` is a form there — the wall parameterization's criterion (p-adic-wall), not merely 'a has a square root in ℤ_p' |
+| JP | guarded | the root form `(([[A]] <[oo]>))` halves the three counts of [A] ([[place.reading]]) and is a form at p when the halves are whole — A's count of [p] even and its torsion count even, i.e. A a square mod p at odd p ([[place.lift]]; at 2, A ≡ 1 mod 8 beside an even count of [p]: the radius); the log of a unit always converges once its torsion is split off, so the old worry about the log of a was the wrong one; the root it reads is the principal root — canonical on a principal unit, the generator's choice otherwise (LEGISLATION 31(h)) |
 
 | reading | cell | why |
 |---|---|---|

@@ -17,7 +17,7 @@ holds:
   J1: holds
   JH: guarded
   JO: guarded
-  JP: holds
+  JP: guarded
 readings:
   C: EXACT
   finset: ABSENT
@@ -72,7 +72,7 @@ The polar product rule, which is why the polar form exists: multiplication, awkw
 | classical | holds | — |
 | J1 | holds | every unit step directly under the instance |
 | JH, JO | guarded | within a slice, as [[C.turn-of-sum]]: moduli multiply in any case, turns add only about a common axis |
-| JP | holds | for turns of integer count at the place, which are torsion powers |
+| JP | guarded | for turns of integer count at the place, which are torsion powers; a fractional turn is a form only by the selection rule ([[place.selection]]) |
 
 | reading | cell | why |
 |---|---|---|

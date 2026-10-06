@@ -31,8 +31,8 @@ known_since: "2026-09-13 (Forms at Every Place: 'the irreducible [p] — valuati
 entered: 2026-10-06
 guide: need-led
 band: "beyond"
-uses: [mult.square, N.numeral, place.reading]
-see_also: [place.reading, place.radius, place.no-inverse-of-the-prime, place.pole, place.polar-form, J1.period-form]
+uses: [mult.square, N.numeral, place.reading, place.void-pile]
+see_also: [place.reading, place.radius, place.no-inverse-of-the-prime, place.prime-power, place.polar-form, J1.period-form]
 aliases: ["[p]", the log of the prime, the valuation, v_p, the uniformizer's log, "the irreducible [p]"]
 concepts: [place, logarithm, prime]
 understood: "no"
@@ -44,9 +44,9 @@ reentry: false
 
 | statement | units | standard |
 |---|---|---|
-| `[p] := [o^{p}]`, the log of the pile of p marks: at the place p it has no number part — it is a *count*, and the count of `[p]` in `[A]` is how many times p divides A | — | log p is not a p-adic number; v_p(a) = the exponent of p in a |
+| `[p] := [o^{p}]`, the log of the pile of p marks: at the place p it has no number part — it is a *count*, and the count of `[p]` in `[A]` is how many times p divides A | — | the p-adic log of p is not defined by the series (Iwasawa extends log to ℚ_p^× by the convention log_p p = 0; the chart keeps the count instead); v_p(a) = the exponent of p in a |
 
-At ∞, `[oo]` is ln 2 = 0.693…, a number like any other. At the place 2 the same form is not a number at all: the log of the prime has no value on the page, because no instance reaches 2 from the radius — e^x is a principal unit for every x in the radius, and 2 is not a unit. So `[p]` stays as it is written, a formal count, and the log of any number carries some whole number of copies of it: the **valuation**. The log space at p is three counts ([[place.reading]]), and this is the second of them. `[p]` is the only log that is irreducible for *size* (the torsion log [[place.torsion]] is irreducible for phase): at p = 2 it is the uniformizer's log, where at odd p the uniformizer is p itself.
+At ∞, `[oo]` is ln 2 = 0.693…, a number like any other. At the place 2 the same form is not a number at all: the log of the prime has no value on the page, because no instance reaches 2 from the radius — e^x is a principal unit for every x in the radius, and 2 is not a unit. So `[p]` stays as it is written, a formal count, and the log of any number carries some whole number of copies of it: the **valuation**. The log space at p is three counts ([[place.reading]]), and this is the second of them. `[p]` is the only log that is irreducible for *size* (the torsion log [[place.torsion]] is irreducible for phase): it is the log of the uniformizer p — `[oo]` at the place 2 — at every place.
 
 ## Plain
 
@@ -57,7 +57,7 @@ How many times does p go into a number? At the place p that count is part of the
 | statement | rule | note |
 |---|---|---|
 | `[o^{p}]` is a form: the square ([[mult.square]]) around the pile of p marks ([[N.numeral]]) | [[mult.square]] | — |
-| at the place p it has no number part: no instance reaches p from the radius — every instance there is a principal unit times a power of p that the content's count of `[p]` supplies — so the log of p is a count, not a number | [[place.reading]] | the second of the three counts; the radius is `place.radius`, further down the rung |
+| at the place p it has no number part: no instance reaches p from the radius — every instance there is a principal unit times a power of p that the content's count of `[p]` supplies — so the log of p is a count, not a number | [[place.reading]] | the second of the three counts; the radius is `place.radius`, further down the rung. The decree this rests on is the page's: the void pile ([[place.void-pile]]) makes p a zero divisor at every depth, which is why no instance reaches it |
 | the count of `[p]` in `[A]` is v_p(A): the log law `[([A][B])] ≐ [A] [B]` adds counts, and `[o^{p}]` has count one | [[place.reading]] | witness: at p = 2, 3, 5, 7, 13, the count of `[p]` in `[A]` is v_p(A) for random A; `[o^{p}]` has no number part and no torsion count; `[o^{p}]^{k}` is the log of p^k |
 
 ## Confirms
@@ -84,4 +84,4 @@ The p-adic valuation as a count on the page, and its three axioms for free: v(ab
 
 ## Notes
 
-The chart writes the prime as the pile `o^{p}` and its log as `[o^{p}]`; `[p]` is the name. At depth n, n copies of `[p]` are the pole ([[place.pole]]).
+The chart writes the prime as the pile `o^{p}` and its log as `[o^{p}]`; `[p]` is the name. At depth n the instance of n copies of `[p]` is the void pile ([[place.prime-power]]); the count itself is a finite log, and the pole is beyond every depth ([[place.two-ends]]).

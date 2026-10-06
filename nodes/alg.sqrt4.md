@@ -75,7 +75,7 @@ That the root of a perfect square is its base, by the mechanism itself (not by a
 |---|---|---|
 | classical, JH, JO | holds | real content |
 | J1 | guarded | one unit step sits under a square before any instance — row 3, on `[oo][oo]`, content 2 ln 2, receipt 0 — and ≃ does not pass through `[ ]`, so that step is sound only by the reading's receipt check: an import. The other receipts are absorbed: the log of one inserted inside the instance of row 2 (k = −1: a period added, paid by that instance), the inherited cardinality step of row 4 (k = 0), and the unit of row 5. Read the card's 𝕁₁ tape, which is computed |
-| JP | fails | **fails at p = 3**: the root form reads the root in the principal-unit sector, and at 3 that root of 4 is −2 (4 ≡ 1 mod 3, 2 ≢ 1): `(([[oooo]] <[oo]>)) ≐ <oo>` there. At p = 5, 7, 13 it reads 2 (an import, as at 𝕁₁); at p = 2 halving is not a form ([[place.no-inverse-of-the-prime]]). The reading's choice of root is [[place.reading]]'s |
+| JP | fails | **fails at p = 3**: the root form reads the *principal* root, and 4 is a principal unit at 3 (4 ≡ 1 mod 3) whose principal root — the principal unit with square 4 — is −2: `(([[oooo]] <[oo]>)) ≐ <oo>` there, canonically ([[place.reading]], convention (5)). At p = 5, 7, 13 the form reads 2 under the reading's generator table — the torsion count of 4 is halved, and which half is the generator's choice (LEGISLATION 31(h)); at p = 2, 4 is the uniformizer squared, halving its count of [p] is a form, and the root reads 2 (the ledger: exact at 2, with the derivation's import) |
 
 | reading | cell | why |
 |---|---|---|

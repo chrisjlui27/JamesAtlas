@@ -9,10 +9,10 @@ order: 1460
 setting: JP
 equality: "≃"
 domain: unit
-law: "(<[U]>) ≐ (([[U]] [o^{(p-1)*p**(n-1) - 1}]))"
+law: "(<[U]>) ≃ (([[U]] [o^{(p-1)*p**(n-1) - 1}]))"
 units: "U^{−1} ≡ U^{φ(p^n) − 1} (mod p^n): division by a unit is a multiplication on the finite page"
 gloss_check: ""
-schema_range: "p=3,5,7; n=1..2"
+schema_range: "(p,n)=(2,2),(3,1),(3,2),(5,1),(5,2),(7,1),(7,2)"
 schema_draw: "p=3; n=1"
 holds:
   classical: fails
@@ -32,7 +32,7 @@ known_since: "Part II Ch. 10 (Division-by-unit); the inverse by Euler's theorem,
 entered: 2026-10-06
 guide: need-led
 band: "beyond"
-uses: [Q.reciprocal, place.fermat, mult.log-of-one, mult.distribution, J1.unit, J1.counit, Z.inversion]
+uses: [Q.reciprocal, place.fermat, mult.log-of-one, mult.distribution, J1.unit, J1.counit, Z.inversion, place.ostrowski]
 see_also: [Q.reciprocal, Q.reciprocal-law, place.no-inverse-of-the-prime, place.fermat, place.geometric-doll]
 aliases: [division by a unit, the reciprocal as a power, U^{−1} = U^{φ−1}, Division-by-unit]
 concepts: [place, division, power]
@@ -45,9 +45,9 @@ reentry: false
 
 | form | units | standard |
 |---|---|---|
-| `(<[U]>) ≐ (([[U]] [o^{(p-1)*p**(n-1) - 1}]))` | the reciprocal of a unit is its (φ(p^n) − 1)-th power at depth n | U^{−1} = U^{φ−1} since U^φ = 1 |
+| `(<[U]>) ≃ (([[U]] [o^{(p-1)*p**(n-1) - 1}]))` | the reciprocal of a unit is its (φ(p^n) − 1)-th power at depth n | U^{−1} = U^{φ−1} since U^φ = 1 |
 
-What [[place.no-inverse-of-the-prime]] refuses for the prime, this grants for every unit, and more: the reciprocal is not a new number but a power of the old one. The derivation inserts U^φ = 1 ([[place.fermat]]) beside the reciprocal, splits off one factor of U by Distribution, and cancels it against the mirror — Inversion, the chart's division ([[Q.reciprocal-law]]), doing the work.
+What [[place.no-inverse-of-the-prime]] refuses for the prime, this grants for every unit, and more: the reciprocal is not a new number but a power of the old one. The derivation inserts U^φ = 1 ([[place.fermat]]) beside the reciprocal, splits off one factor of U by Distribution, and cancels it against the mirror — Inversion, the chart's division ([[Q.reciprocal-law]]), doing the work. The Fermat step is a page step under a square, and the prover measures it at that square: `[o]` is the period, `[U^{φ}]` a principal part that vanishes at the depth — the square's value changes by ω_p, and the instance around it pays that receipt (absorbed). So the law is ≃: the page's equality, and a period absorbed.
 
 ## Plain
 
@@ -57,9 +57,9 @@ On a finite clock, dividing by a number coprime to p is the same as multiplying 
 
 | form | rule | note |
 |---|---|---|
-| `(<[U]>)` | given | the reciprocal of the unit U ([[Q.reciprocal]]) |
+| `(<[U]>)` | given | the reciprocal of the unit U ([[Q.reciprocal]]); at every place ([[place.ostrowski]]) |
 | `(<[U]> [o])` | [[mult.log-of-one]] | the log of one inserted inside the instance (absorbed at the place as at 𝕁₁) |
-| `(<[U]> [(([[U]] [o^{(p-1)*p**(n-1)}]))])` | [[place.fermat]] | one is U^φ, right to left, inside the square |
+| `(<[U]> [(([[U]] [o^{(p-1)*p**(n-1)}]))])` | [[place.fermat]] | one is U^φ, right to left, inside the square: a page step, measured at the square — its value changes by the period, which the instance absorbs |
 | `(<[U]> ([[U]] [o^{(p-1)*p**(n-1)}]))` | [[J1.unit]] | the unit, directly inside the instance: absorbed |
 | `(<[U]> ([[U]] [o^{(p-1)*p**(n-1) - 1}]) ([[U]] [o]))` | [[mult.distribution]] | the count φ split as (φ − 1) + 1: `[o^{φ-1} o]` is the pile `[o^{φ}]` regrouped |
 | `(<[U]> ([[U]] [o^{(p-1)*p**(n-1) - 1}]) ([[U]]))` | [[mult.log-of-one]] | the count one erased, inside the instance |
@@ -77,7 +77,7 @@ Modular inverses by Euler's theorem, and that the finite page is a ring in which
 | classical | fails | at ∞ a reciprocal is not a power of the number ([[place.fermat]] fails there) |
 | J1 | fails | as classical |
 | JH, JO | untested | owed |
-| JP | holds | engine-checked at p = 3, 5, 7 and depths 1, 2; absorbed receipts (the inserted log of one, the unit inside the instance) |
+| JP | holds | engine-checked at p = 3, 5, 7, depths 1, 2, and at p = 2, depth 2; absorbed receipts (the inserted log of one, the page step measured at its square, the unit inside the instance) |
 
 | reading | cell | why |
 |---|---|---|
@@ -91,4 +91,4 @@ none
 
 ## Notes
 
-The schema runs at the odd places: at p = 2, depth 1, φ − 1 = 0, and a count of zero copies is not a pile of zero marks but the void, whose log is the pole — the law degenerates there (every odd number is its own reciprocal mod 2, but the form says `(□)`). The schema is drawn at p = 3, depth 1: the reciprocal of a unit mod 3 is the unit itself (φ − 1 = 1).
+At p = 2, depth 1, φ − 1 = 0 and the right side reads through the hole rules: `[o^{0}]` is the empty square, `([[U]] □)` is □ by Dominion and `((□))` is `(void)` = o — every odd number is its own reciprocal mod 2, and the form says so; the law is true there and its rows are licensed, but the Fermat step's square, `[o]` → `[U]`, changes by J₂ — half the period — for U ≡ 3 mod 4 (the torsion −1 is invisible on the page mod 2 and visible in the log), which no instance absorbs, so the prover grades that instance absent and it is left out of the range. The schema is drawn at p = 3, depth 1: the reciprocal of a unit mod 3 is the unit itself (φ − 1 = 1).

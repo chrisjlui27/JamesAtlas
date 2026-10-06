@@ -70,7 +70,7 @@ All radicals, by one mechanism. With [[alg.rational-exponent]] the calculus writ
 | classical | holds | — |
 | J1 | holds | the unit step is directly under an instance |
 | JH, JO | replaced | within one slice |
-| JP | guarded | n must be a unit at p and the p-adic logarithm of a must converge (the wall parameterization's criterion, p-adic-wall) |
+| JP | guarded | the n-th root form is a form at p when A's count of [p] and its torsion count are multiples of n ([[place.reading]]; the torsion count mod p − 1, so the n-th roots of unity enter by the selection rule, [[place.selection]]) — not a condition on n being a unit at p |
 
 | reading | cell | why |
 |---|---|---|

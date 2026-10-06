@@ -160,6 +160,8 @@ class Step:
     env: tuple              # the substitution, as sorted (name, Form) pairs
     redex: Form             # the matched sub-multiset (instantiated lhs)
     result: Form            # the instantiated rhs
+    square: tuple = None    # (content before, content after) of the first square above the redex, when the redex
+                            # sits under it through angles only — what a step under a square does to that square
 
 
 def rewrite_all(form: Form, rule: Rule, limit: int = 4000) -> list:
@@ -252,7 +254,8 @@ def distance(a: Form, b: Form) -> int:
 def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000, allow=None) -> list:
     """One-step rewrites of `form` by `rules`, tried at this level and inside every child that differs from
     `target` (a rewrite inside a child both forms share would not bring them closer). Each differing child is
-    guided toward the most similar differing child of the target."""
+    guided toward the most similar differing child of the target. `allow` is applied by the caller at the root
+    (see _greedy), once the step's path and square are known."""
     out = []
     for r in rules:
         for direction, frm, to in r.oriented():
@@ -264,8 +267,6 @@ def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000, al
                     continue  # a redex that is nothing (every variable void) rewrites nothing into something: noise
                 res = F.substitute(to, env)
                 step = Step(r.id, direction, (), tuple(sorted(env.items())), red, res)
-                if allow is not None and not allow(step):
-                    continue
                 out.append((F.canon(rest + res), step))
                 if len(out) >= limit:
                     return out
@@ -282,20 +283,16 @@ def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000, al
         # with no counterpart of the same kind in the target the child must still be rewritten (it may be about
         # to disappear, e.g. by a counit or a cancellation): descend unguided
         y_sub = min(cands, key=lambda y: distance(x[1], y[1]))[1] if cands else ()
-        for new_sub, step in rewrites_toward(x[1], y_sub, rules, limit, allow=_shift_allow(allow, x[0])):
+        for new_sub, step in rewrites_toward(x[1], y_sub, rules, limit):
             lst = list(form)
             lst[lst.index(x)] = (x[0], new_sub)
-            out.append((F.canon(tuple(lst)), Step(step.rule, step.direction, (x[0],) + step.path, step.env, step.redex, step.result)))
+            square = step.square
+            if x[0] == F.SQUARE and square is None and all(k == F.ANGLE for k in step.path):
+                square = (x[1], new_sub)   # the first square above the redex: its content before and after
+            out.append((F.canon(tuple(lst)), Step(step.rule, step.direction, (x[0],) + step.path, step.env, step.redex, step.result, square)))
             if len(out) >= limit:
                 return out
     return out
-
-
-def _shift_allow(allow, kind):
-    """The predicate sees paths from the root: prepend this level's boundary kind for the recursive call."""
-    if allow is None:
-        return None
-    return lambda step: allow(Step(step.rule, step.direction, (kind,) + step.path, step.env, step.redex, step.result))
 
 
 def licence(prev: Form, cur: Form, rules: list, max_steps: int = 14, beam: int = 8, allow=None) -> Licence:
@@ -314,11 +311,18 @@ def licence(prev: Form, cur: Form, rules: list, max_steps: int = 14, beam: int =
     return Licence(False, [], f"not reached in {max_steps} step(s) by {', '.join(sorted({r.id for r in rules}))}")
 
 
+def _flipped(s: Step) -> Step:
+    """The same step read in the other direction: the opposite orientation, redex and result swapped, the square's
+    before and after swapped."""
+    sq = None if s.square is None else (s.square[1], s.square[0])
+    return Step(s.rule, "←" if s.direction == "→" else "→", s.path, s.env, s.result, s.redex, sq)
+
+
 def _flip_allow(allow):
     """Searching backwards, a step is the forward step with the opposite orientation (and redex/result swapped)."""
     if allow is None:
         return None
-    return lambda s: allow(Step(s.rule, "←" if s.direction == "→" else "→", s.path, s.env, s.result, s.redex))
+    return lambda s: allow(_flipped(s))
 
 
 def _greedy(a: Form, b: Form, rules: list, max_steps: int, beam: int, allow=None):
@@ -327,7 +331,9 @@ def _greedy(a: Form, b: Form, rules: list, max_steps: int, beam: int, allow=None
     for _ in range(max_steps):
         scored = []
         for f, steps in frontier:
-            for g, step in rewrites_toward(f, b, rules, allow=allow):
+            for g, step in rewrites_toward(f, b, rules):
+                if allow is not None and not allow(step):
+                    continue
                 if g == b:
                     return steps + [step]
                 if g in seen:
@@ -343,10 +349,7 @@ def _greedy(a: Form, b: Form, rules: list, max_steps: int, beam: int, allow=None
 
 def _reverse_steps(steps: list) -> list:
     """Steps found from cur toward prev, read forwards: the same rules in the opposite orientation, reversed."""
-    out = []
-    for s in reversed(steps):
-        out.append(Step(s.rule, "←" if s.direction == "→" else "→", s.path, s.env, s.result, s.redex))
-    return out
+    return [_flipped(s) for s in reversed(steps)]
 
 
 # ----------------------------------------------------------------------------- rules from node laws

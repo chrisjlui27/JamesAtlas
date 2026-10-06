@@ -68,7 +68,7 @@ The one law of this rung whose two sides are bare abstracts: it is exactly the u
 | classical | holds | on positive content, by the seam decree |
 | J1 | holds-mod-Λ | the sides are bare abstracts; nothing absorbs the receipt |
 | JH, JO | replaced | `[x ; y]` is the log of the *ordered* product; there is no sum of logs for non-commuting x, y |
-| JP | holds-mod-Λ | exact as an equation in the log space at every place (the counts of [p] and of J_p add); the derivation's unit step posts a receipt there, because the log at p forgets the torsion count beyond p − 1 — holds mod Λ_p (the place ledger: posted) |
+| JP | holds-mod-Λ | exact as an equation in the log space at every place (the counts of [p] and of J_p add); the derivation's unit step posts at depth 0 at p exactly as it posts at ∞ — the same tape by position, holds mod Λ_p (the place ledger: posted) |
 
 | reading | cell | why |
 |---|---|---|

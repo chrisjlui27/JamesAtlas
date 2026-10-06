@@ -7,9 +7,9 @@ kind: law
 rung: place
 order: 1410
 setting: JP
-equality: "≡"
+equality: "≃"
 domain: natural
-law: "o^{p**n + k} ≐ o^{k}"
+law: "o^{p**n + k} ≃ o^{k}"
 units: "m ≡ k (mod p^n) ⟹ the piles are equal at depth n: a pile is its residue"
 gloss_check: ""
 schema_range: "p=2,3,5; n=1..2; k=1..3"
@@ -32,7 +32,7 @@ known_since: "2026-09-13 (Forms at Every Place: at depth N the number p^{N−1}�
 entered: 2026-10-06
 guide: need-led
 band: "beyond"
-uses: [place.void-pile, void.space]
+uses: [place.void-pile, void.space, place.ostrowski]
 see_also: [N.freeness, Z.normal-form, place.void-pile, place.negation-is-a-pile]
 aliases: [residues, a pile is its residue, freeness fails at p, mod p^n]
 concepts: [place, zero, induction]
@@ -45,9 +45,9 @@ reentry: false
 
 | form | units | standard |
 |---|---|---|
-| `o^{p**n + k} ≐ o^{k}` | a pile of p^n + k marks is a pile of k marks at depth n: the void pile is subtracted | m ≡ k mod p^n |
+| `o^{p**n + k} ≃ o^{k}` | a pile of p^n + k marks is a pile of k marks at depth n: the void pile is subtracted | m ≡ k mod p^n |
 
-What [[N.freeness]] forbids at ∞ — two different piles equal — is the first theorem at a finite place: a pile is its residue. The derivation is two steps, and the second is the void pile.
+What [[N.freeness]] forbids at ∞ — two different piles equal — is the first theorem at a finite place: a pile is its residue. The derivation is two steps, and the second is the void pile, at depth 0: a **page step** (the page's equality, ≃ — it does not pass through a square: `[o^{p**n + k}]` and `[o^{k}]` differ when k is not a unit, by as many shells as p divides k; [[place.void-pile]]).
 
 ## Plain
 
@@ -57,9 +57,9 @@ On a clock with p^n hours, p^n + k o'clock is k o'clock.
 
 | form | rule | note |
 |---|---|---|
-| `o^{p**n + k}` | given | p^n + k marks |
+| `o^{p**n + k}` | given | p^n + k marks; at every place ([[place.ostrowski]]) |
 | `o^{p**n} o^{k}` | medium | the pile regrouped: p^n marks beside k marks — the same form, [[void.space]] |
-| `o^{k}` | [[place.void-pile]] | the p^n marks are void at depth n |
+| `o^{k}` | [[place.void-pile]] | the p^n marks are void at depth n: a page step at depth 0 |
 
 ## Confirms
 
@@ -72,7 +72,7 @@ The residue classes mod p^n, and that the chart's piles wrap: the normal form of
 | classical | fails | [[N.freeness]]: at ∞ distinct piles are distinct |
 | J1 | fails | as classical |
 | JH, JO | untested | owed to rung `H` |
-| JP | holds | strict at every instance (p = 2, 3, 5; depths 1, 2; k = 1 … 3) |
+| JP | holds | a page step at depth 0 at every instance (p = 2, 3, 5; depths 1, 2; k = 1 … 3): the page's equality, ≃ |
 
 | reading | cell | why |
 |---|---|---|
