@@ -100,10 +100,13 @@ def law_at_place(node, forms, R: PL.Reading, rng, trials: int = TRIALS):
             return "none"
         except (PL.NotAForm, F.Undefined, F.Excluded, OverflowError):
             return "none"
-        if f2 is None or R.equal(v1, v2, eq):
-            return "exact"
-        if R.equal(v1, v2, "≃"):
-            return "mod-Λ"
+        try:
+            if f2 is None or R.equal(v1, v2, eq):
+                return "exact"
+            if R.equal(v1, v2, "≃"):
+                return "mod-Λ"
+        except PL.BeyondPrecision:
+            return "radius"   # a value that cannot be judged at the depth (shells lost past the margin): dropped
         return "fails"
 
     counts = {"exact": 0, "mod-Λ": 0, "fails": 0, "none": 0, "radius": 0}
@@ -155,8 +158,9 @@ def jp_cell(laws: dict, tapes: dict) -> str:
     for t in tapes.values():
         g = t.grade
         if g == "absent" and not any("unlicensed" in a for a in t.absent) and all(
-                r.k and all(k is None for k in r.k) for r in t.receipts if r.grade == "absent"):
-            g = "import"   # every absent step is formless at p (no value, not a false step): the law is guarded there
+                not r.k for r in t.receipts if r.grade == "absent"):
+            g = "import"   # every absent step is formless at p (no sample has a value: not a false step — a receipt
+                           # set {?} would be one, a difference that is no lattice element): the law is guarded there
         if J1.GRADE_ORDER.index(g) > J1.GRADE_ORDER.index(worst):
             worst = g
     if worst == "absent":

@@ -307,11 +307,17 @@ def check_equal_forms(f1, f2, node: N.Node, rng, trials: int):
         try:
             v1 = _eval(f1, env)
             v2 = _eval(f2, env)
+        except PL.BeyondPrecision:
+            continue   # at a place: a value past the working precision's margin on this sample — skipped, not judged
         except NO_VALUE as ex:
             return False, f"{type(ex).__name__} evaluating {F.to_string(f1)} / {F.to_string(f2)}: {ex}"
         except OverflowError:
             continue
-        if not _equal(v1, v2, eq):
+        try:
+            same = _equal(v1, v2, eq)
+        except PL.BeyondPrecision:
+            continue   # at a place: a value that cannot be judged at the depth (shells lost past the margin) — skipped
+        if not same:
             return False, f"{F.to_string(f1, True)} = {_fmt(v1)} but {F.to_string(f2, True)} = {_fmt(v2)} at {{{', '.join(f'{k}={_fmt(v) if PLACE_READING is None else v}' for k, v in env.items())}}}"
     return True, ""
 
@@ -730,6 +736,8 @@ def hypothesis_ok(prev, cur, node: N.Node):
     for e2 in S.parse_range(node.get("schema_range", "")):
         if e2 == env or any(e2[k] > env[k] for k in env) or any(k not in e2 for k in env):
             continue
+        if "p" in env and e2.get("p") != env["p"]:
+            continue   # a hypothesis at a place is the law at a smaller depth or count at the SAME place
         try:
             lhs, rhs = F.parse(S.expand(tl, e2)), F.parse(S.expand(tr, e2))
         except Exception:

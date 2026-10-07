@@ -34,17 +34,26 @@ EXTRA_RULES = {
 IDENTITY_RULES = {"medium", "definition", "name", "substitution", "congruence", "given"}
 
 
-def rules_for(nid: str, nodes, cache: dict) -> list:
-    if nid in cache:
-        return cache[nid]
+def rules_for(nid: str, nodes, cache: dict, at: dict | None = None) -> list:
+    """The rewrite rules a cited node offers. `at` is the citing instance's own place and depth ({p, n}, when it has
+    one): a law written over the place is a different law at each (p, n), and only the instances at the citing
+    instance's own place (and, when both bind it, its own depth) license a step there — the void pile of p = 2 does
+    not act at p = 5, nor Fermat at depth 1 at depth 2."""
+    key = (nid, tuple(sorted(at.items())) if at else None)
+    if key in cache:
+        return cache[key]
     out = []
     node = nodes.get(nid)
     if node is not None:
         law = str(node.get("law", ""))
-        if node.get("schema_range"):   # a schema, or a decree written over the place and the depth (the void pile)
+        if node.get("schema_range"):   # a schema, or a decree/import written over the place and the depth
             tl, tr, _sym = F.split_law(law)
             try:
                 for env in S.parse_range(node.get("schema_range", "")):
+                    if at and "p" in env and env["p"] != at.get("p"):
+                        continue
+                    if at and "n" in env and "n" in at and "p" in env and env["n"] != at["n"]:
+                        continue
                     out.append(P.Rule(nid, F.parse(S.expand(tl, env)), F.parse(S.expand(tr, env))))
             except Exception:
                 pass
@@ -55,7 +64,7 @@ def rules_for(nid: str, nodes, cache: dict) -> list:
             r = P.rule_from_law(nid, extra, NONEMPTY.get(nid, ()))
             if r is not None:
                 out.append(r)
-    cache[nid] = out
+    cache[key] = out
     return out
 
 
@@ -117,15 +126,20 @@ def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14, phases=N
                 prev = f
                 continue
             rules = []
+            here = node.get("schema_env") if isinstance(node.get("schema_env"), dict) and "p" in node.get("schema_env") else None
+            if here is None and node.get("place") is not None:   # a node of the rung read at one place (place:/depth:)
+                here = {"p": int(node.get("place"))}
+                if node.get("depth") is not None:
+                    here["n"] = int(node.get("depth"))
             for c in cited:
-                rules += rules_for(c, nodes, cache)
+                rules += rules_for(c, nodes, cache, here)
             if "lemma" in tokens:
                 rules += lemma_rules
             if "hypothesis" in tokens and node.get("schema_env") is not None:
                 env = node.get("schema_env")
                 tl, tr, _sym = F.split_law(str(node.get("schema_template")))
                 for e2 in S.parse_range(node.get("schema_range", "")):
-                    if e2 != env and all(e2[k] <= env[k] for k in env):
+                    if e2 != env and all(e2[k] <= env[k] for k in env) and e2.get("p", env.get("p")) == env.get("p"):
                         try:
                             rules.append(P.Rule("hypothesis", F.parse(S.expand(tl, e2)), F.parse(S.expand(tr, e2))))
                         except Exception:

@@ -122,12 +122,14 @@ class Place:
 
     def __init__(self, p: int, depth: int | None = None, enriched: bool = True, N: int | None = None):
         """p the prime; depth the page's depth n (the void pile p^n ≐ void: equality is mod p^n); N the working
-        precision of the engine's arithmetic, at least the depth and enough shells for the series and the counts."""
+        precision of the engine's arithmetic — the depth plus a margin of default_depth(p) shells, so that a log
+        that loses shells (the log of a non-unit loses its count of [p]) is still read to the depth; a value that
+        has lost more than the margin cannot be judged at the depth (equal/receipt raise BeyondPrecision)."""
         if p not in PRIMITIVE_ROOT:
             raise ValueError(f"no primitive root tabled for {p}")
         self.p = p
-        self.depth = depth or N or default_depth(p)
-        self.N = max(N or default_depth(p), self.depth)
+        self.depth = depth or default_depth(p)
+        self.N = max(N or 0, self.depth + default_depth(p))
         self.M = p ** self.N
         self.g = PRIMITIVE_ROOT[p]
         self.radius = 2 if p == 2 else 1            # exp converges on p^radius ℤ_p
@@ -358,9 +360,11 @@ class Place:
             return self.number(x.logof)   # known exactly: full depth
         M = self.p ** x.prec
         a = x.a % M
-        if a == 0 and x.v == 0:
-            # a pure torsion count: the Teichmüller element τ^k, which is a rational number — exactly ±1 — when k is
-            # a multiple of half the torsion (so (J T) for a whole T is exactly (−1)^T, and (J T) <(J T)> is void)
+        if a == 0 and x.v == 0 and x.prec >= self.N:
+            # a pure torsion count — the number part void at the full working precision, as "exactly one" is decided
+            # there: the Teichmüller element τ^k, which is a rational number, exactly ±1, when k is a multiple of
+            # half the torsion (so (J T) for a whole T is exactly (−1)^T, and (J T) <(J T)> is void); a number part
+            # void only at a reduced precision is not known to be void, and the result keeps that precision
             kk = int(x.k) % self.torsion
             if kk == 0:
                 return self.number(1)
@@ -376,9 +380,18 @@ class Place:
         u = e * t % M
         v = int(x.v)
         prec = min(x.prec + v, self.N)
+        if v >= prec:
+            return PV(0, prec)   # p^v with v past the working precision: void there (its log is BeyondPrecision)
         return PV(u * self.p ** v % (self.p ** prec), prec)   # ≡ 0 at the depth when v ≥ depth: the void pile
 
     # ---- comparison and receipts
+    def _judge(self, x: PV, y: PV) -> int:
+        """The precision two values are compared at: the depth. A value that has lost shells below the depth (a log
+        of a non-unit read from a residue, past the margin) cannot be judged there."""
+        if min(x.prec, y.prec) < self.depth:
+            raise BeyondPrecision(f"a value read to {min(x.prec, y.prec)} shells cannot be judged at depth {self.depth}: deepen the page")
+        return self.depth
+
     def equal(self, x: PV, y: PV, equality: str = "≐") -> bool:
         if self.is_pole(x) or self.is_pole(y):
             return self.is_pole(x) and self.is_pole(y)
@@ -387,7 +400,7 @@ class Place:
         if x.grade:
             if x.lcoef != y.lcoef or not self.equal(x.base, y.base):
                 return False
-        prec = min(x.prec, y.prec, self.depth)
+        prec = self._judge(x, y)
         if (x.a - y.a) % (self.p ** prec) != 0 or x.v != y.v:
             return False
         if x.k == y.k:
@@ -403,7 +416,7 @@ class Place:
             return None
         if x.grade or y.grade:
             return None
-        prec = min(x.prec, y.prec, self.depth)
+        prec = self._judge(x, y)
         if (x.a - y.a) % (self.p ** prec) != 0 or x.v != y.v:
             return None
         d = x.k - y.k
@@ -411,7 +424,9 @@ class Place:
             return None
         return d.numerator // self.torsion
 
-    def fmt(self, x: PV) -> str:
+    def fmt(self, x) -> str:
+        if not isinstance(x, PV):
+            return str(x)   # a sample value (an exact rational), as the tape names an exceptional point
         if self.is_pole(x):
             return "□"
         parts = []

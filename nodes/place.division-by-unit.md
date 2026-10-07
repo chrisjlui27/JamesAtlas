@@ -47,7 +47,7 @@ reentry: false
 |---|---|---|
 | `(<[U]>) ≃ (([[U]] [o^{(p-1)*p**(n-1) - 1}]))` | the reciprocal of a unit is its (φ(p^n) − 1)-th power at depth n | U^{−1} = U^{φ−1} since U^φ = 1 |
 
-What [[place.no-inverse-of-the-prime]] refuses for the prime, this grants for every unit, and more: the reciprocal is not a new number but a power of the old one. The derivation inserts U^φ = 1 ([[place.fermat]]) beside the reciprocal, splits off one factor of U by Distribution, and cancels it against the mirror — Inversion, the chart's division ([[Q.reciprocal-law]]), doing the work. The Fermat step is a page step under a square, and the prover measures it at that square: `[o]` is the period, `[U^{φ}]` a principal part that vanishes at the depth — the square's value changes by ω_p, and the instance around it pays that receipt (absorbed). So the law is ≃: the page's equality, and a period absorbed.
+What [[place.no-inverse-of-the-prime]] refuses for the prime, this grants for every unit, and more: the reciprocal is not a new number but a power of the old one. The derivation inserts U^φ = 1 ([[place.fermat]]) beside the reciprocal, splits off one factor of U by Distribution, and cancels it against the mirror — Inversion, the chart's division ([[Q.reciprocal-law]]), doing the work. The Fermat step is a page step under a square, and the prover measures it at the squares above it — here one: `[o]` is the period, `[U^{φ}]` a principal part that vanishes at the depth — the square's value changes by ω_p, and the instance directly around it pays that receipt (absorbed), with nothing above the instance to read the page difference again. So the law is ≃: the page's equality, and a period absorbed.
 
 ## Plain
 
@@ -59,7 +59,7 @@ On a finite clock, dividing by a number coprime to p is the same as multiplying 
 |---|---|---|
 | `(<[U]>)` | given | the reciprocal of the unit U ([[Q.reciprocal]]); at every place ([[place.ostrowski]]) |
 | `(<[U]> [o])` | [[mult.log-of-one]] | the log of one inserted inside the instance (absorbed at the place as at 𝕁₁) |
-| `(<[U]> [(([[U]] [o^{(p-1)*p**(n-1)}]))])` | [[place.fermat]] | one is U^φ, right to left, inside the square: a page step, measured at the square — its value changes by the period, which the instance absorbs |
+| `(<[U]> [(([[U]] [o^{(p-1)*p**(n-1)}]))])` | [[place.fermat]] | one is U^φ, right to left, inside the square: a page step, measured at the square above it — its value changes by the period, which the instance directly outside absorbs |
 | `(<[U]> ([[U]] [o^{(p-1)*p**(n-1)}]))` | [[J1.unit]] | the unit, directly inside the instance: absorbed |
 | `(<[U]> ([[U]] [o^{(p-1)*p**(n-1) - 1}]) ([[U]] [o]))` | [[mult.distribution]] | the count φ split as (φ − 1) + 1: `[o^{φ-1} o]` is the pile `[o^{φ}]` regrouped |
 | `(<[U]> ([[U]] [o^{(p-1)*p**(n-1) - 1}]) ([[U]]))` | [[mult.log-of-one]] | the count one erased, inside the instance |

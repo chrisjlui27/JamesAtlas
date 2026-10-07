@@ -9,7 +9,7 @@ order: 1470
 setting: JP
 equality: "≃"
 domain: natural
-law: "o^{k + p*j} ≐ o^{k} ([o^{p}] [o^{j}])"
+law: "o^{k + p*j} ≃ o^{k} ([o^{p}] [o^{j}])"
 units: "k + p·m: the base-p expansion begins — the digit k outside, the rest m one shell in; iterated, the doll a₀ + p(a₁ + p(a₂ + ⋯))"
 gloss_check: ""
 schema_range: "p=2,3,5; k=0..p-1; j=1..3"
@@ -45,7 +45,7 @@ reentry: false
 
 | form | units | standard |
 |---|---|---|
-| `o^{k + p*j} ≐ o^{k} ([o^{p}] [o^{j}])` | a pile of k + pj marks is k marks beside the product p·j — the first shell of the doll | k + p·j, the start of the base-p expansion |
+| `o^{k + p*j} ≃ o^{k} ([o^{p}] [o^{j}])` | a pile of k + pj marks is k marks beside the product p·j — the first shell of the doll (≃: the cardinality step's receipts are absorbed, as at ∞) | k + p·j, the start of the base-p expansion |
 
 The place-value form of a number at p: a digit k (fewer than p marks) outside, and the rest, j, one shell deeper, multiplied by the prime. Iterate on j and the number becomes a **doll** — `a₀ ([p][a₁ ([p][a₂ ([p][⋯])])])` — nested shells each holding a digit, the innermost the most significant. The doll is the chart's picture of what the place *means*: nesting read as shrinking. Two numbers are close at p when their dolls share their outer shells; the void pile is a doll whose first n shells are empty ([[place.void-pile]]); the valuation is the number of empty shells outside ([[place.prime-log]]). The law is true at every place including ∞ — it is only arithmetic — but it is at a finite place that it is the *normal form* ([[N.numeral]]'s pile of marks is a doll of one shell).
 

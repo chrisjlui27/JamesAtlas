@@ -47,7 +47,7 @@ reentry: false
 |---|---|---|
 | `o^{p**n + k} ≃ o^{k}` | a pile of p^n + k marks is a pile of k marks at depth n: the void pile is subtracted | m ≡ k mod p^n |
 
-What [[N.freeness]] forbids at ∞ — two different piles equal — is the first theorem at a finite place: a pile is its residue. The derivation is two steps, and the second is the void pile, at depth 0: a **page step** (the page's equality, ≃ — it does not pass through a square: `[o^{p**n + k}]` and `[o^{k}]` differ when k is not a unit, by as many shells as p divides k; [[place.void-pile]]).
+What [[N.freeness]] forbids at ∞ — two different piles equal — is the first theorem at a finite place: a pile is its residue. The derivation is two steps, and the second is the void pile, at depth 0: a **page step** (the page's equality, ≃ — it does not pass through a square: `[o^{p**n + k}]` and `[o^{k}]` differ when k is not a unit, by as many shells as p divides k, and at p = 2, depth 1 even for a unit k — `[ooo]` is J₂ where `[o]` is the period, the torsion invisible mod 2 and visible in the log; [[place.void-pile]]).
 
 ## Plain
 

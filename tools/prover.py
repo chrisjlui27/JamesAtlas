@@ -160,8 +160,9 @@ class Step:
     env: tuple              # the substitution, as sorted (name, Form) pairs
     redex: Form             # the matched sub-multiset (instantiated lhs)
     result: Form            # the instantiated rhs
-    square: tuple = None    # (content before, content after) of the first square above the redex, when the redex
-                            # sits under it through angles only — what a step under a square does to that square
+    squares: tuple = ()     # every square above the redex, innermost first, through instances and angles alike:
+                            # (content before, content after, distance) with distance the number of boundaries
+                            # between that square and the redex's multiset — what a step does to each square above it
 
 
 def rewrite_all(form: Form, rule: Rule, limit: int = 4000) -> list:
@@ -286,10 +287,10 @@ def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000, al
         for new_sub, step in rewrites_toward(x[1], y_sub, rules, limit):
             lst = list(form)
             lst[lst.index(x)] = (x[0], new_sub)
-            square = step.square
-            if x[0] == F.SQUARE and square is None and all(k == F.ANGLE for k in step.path):
-                square = (x[1], new_sub)   # the first square above the redex: its content before and after
-            out.append((F.canon(tuple(lst)), Step(step.rule, step.direction, (x[0],) + step.path, step.env, step.redex, step.result, square)))
+            squares = step.squares
+            if x[0] == F.SQUARE:
+                squares = squares + ((x[1], new_sub, len(step.path)),)   # a square above the redex: before, after
+            out.append((F.canon(tuple(lst)), Step(step.rule, step.direction, (x[0],) + step.path, step.env, step.redex, step.result, squares)))
             if len(out) >= limit:
                 return out
     return out
@@ -312,9 +313,9 @@ def licence(prev: Form, cur: Form, rules: list, max_steps: int = 14, beam: int =
 
 
 def _flipped(s: Step) -> Step:
-    """The same step read in the other direction: the opposite orientation, redex and result swapped, the square's
+    """The same step read in the other direction: the opposite orientation, redex and result swapped, each square's
     before and after swapped."""
-    sq = None if s.square is None else (s.square[1], s.square[0])
+    sq = tuple((b, a, d) for a, b, d in s.squares)
     return Step(s.rule, "←" if s.direction == "→" else "→", s.path, s.env, s.result, s.redex, sq)
 
 
