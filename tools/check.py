@@ -736,8 +736,9 @@ def hypothesis_ok(prev, cur, node: N.Node):
     for e2 in S.parse_range(node.get("schema_range", "")):
         if e2 == env or any(e2[k] > env[k] for k in env) or any(k not in e2 for k in env):
             continue
-        if "p" in env and e2.get("p") != env["p"]:
-            continue   # a hypothesis at a place is the law at a smaller depth or count at the SAME place
+        if "p" in env and (e2.get("p") != env["p"] or e2.get("n") != env.get("n")):
+            continue   # a hypothesis at a place is the law at a smaller count at the SAME place and depth (the page at
+                       # depth n − 1 is not a sub-page of the page at depth n)
         try:
             lhs, rhs = F.parse(S.expand(tl, e2)), F.parse(S.expand(tr, e2))
         except Exception:

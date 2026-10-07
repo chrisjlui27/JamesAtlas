@@ -139,7 +139,7 @@ def check_node(node: N.Node, nodes, cache, verbose=False, max_steps=14, phases=N
                 env = node.get("schema_env")
                 tl, tr, _sym = F.split_law(str(node.get("schema_template")))
                 for e2 in S.parse_range(node.get("schema_range", "")):
-                    if e2 != env and all(e2[k] <= env[k] for k in env) and e2.get("p", env.get("p")) == env.get("p"):
+                    if e2 != env and all(e2[k] <= env[k] for k in env) and e2.get("p", env.get("p")) == env.get("p") and ("p" not in env or e2.get("n") == env.get("n")):
                         try:
                             rules.append(P.Rule("hypothesis", F.parse(S.expand(tl, e2)), F.parse(S.expand(tr, e2))))
                         except Exception:

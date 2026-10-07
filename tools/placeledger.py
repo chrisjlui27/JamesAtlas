@@ -250,8 +250,8 @@ def write(rows, readings):
     path = os.path.join(ROOT, "census", "place-ledger.md")
     ps = sorted(readings)
     out = ["# The chart at every place — computed by the place reading (tools/place.py) and the receipt prover (tools/j1.py)", "",
-           "Each law read at p = " + ", ".join(str(p) for p in ps) + " (page depth = working precision " + ", ".join(f"{p}: {readings[p].P.N}" for p in ps) +
-           " shells): the law's status at the generic points of the place (exact · mod-Λ · guarded · none · fails; ·exc when it fails at a lattice point, a variable exactly one, where the log reads ω_p; "
+           "Each law read at p = " + ", ".join(str(p) for p in ps) + " (page depth " + ", ".join(f"{p}: {readings[p].P.depth}" for p in ps) +
+           " shells, with the working precision twice it): the law's status at the generic points of the place (exact · mod-Λ · guarded · none · fails; ·exc when it fails at a lattice point, a variable exactly one, where the log reads ω_p; "
            "a sample outside the radius of the instance is retried on the radius and, if still outside, counts as formless; a sample past the working precision is dropped) and the grade of its derivation re-graded there "
            "(strict · absorbed · posted · import · absent), with the JP cell they imply beside the hand-written one. "
            "Written by `tools/check.py`; do not edit. The place rung's own nodes are graded at their own place and listed last.", "",

@@ -381,7 +381,9 @@ class Place:
         v = int(x.v)
         prec = min(x.prec + v, self.N)
         if v >= prec:
-            return PV(0, prec)   # p^v with v past the working precision: void there (its log is BeyondPrecision)
+            # p^v with v past the working precision: void there, and not readable — a residue 0 would read as the
+            # exact one under a further instance; the sample is dropped instead
+            raise BeyondPrecision(f"a count {v} of [p] past the working precision {prec}: deepen the page")
         return PV(u * self.p ** v % (self.p ** prec), prec)   # ≡ 0 at the depth when v ≥ depth: the void pile
 
     # ---- comparison and receipts
@@ -459,7 +461,7 @@ class Place:
         env = {}
         for n in sorted(names):
             if domain == "natural":
-                x = rng.randint(1, 8)
+                x = rng.randint(1, 8) if rng.random() < 0.75 else self.p * rng.randint(1, 3)   # a count that meets the prime
             elif domain in ("positive", "negative", "real"):
                 x = Fraction(self.one_unit(rng))
                 r = rng.random()
@@ -530,17 +532,19 @@ class Reading:
 
     def probes(self, names, domain, rng):
         """The exceptional points of the reading at a place, by domain, as at ∞ (j1._probes): every variable at a
-        probe value — exactly one (where the log reads the period), and minus one for a negative or real variable —
-        the others at the same probe, then at random values of the domain. A probe sits on the lattice point
-        exactly; it is not moved onto the radius (a probe outside the radius is formless there, and skipped)."""
+        probe value — exactly one (where the log reads the period), the void pile p^n (where an instance is exactly
+        one: the page's own lattice point), and their negatives for a negative or real variable — the others at the
+        same probe, then at random values of the domain. A probe sits on the lattice point exactly; it is not moved
+        onto the radius (a probe outside the radius is formless there, and skipped)."""
         names = sorted(names)
         if not names:
             return []
-        values = [Fraction(1)]
+        pile = Fraction(self.P.p ** self.P.depth)   # the page's own lattice point: the void pile, where (X) is exactly one
+        values = [Fraction(1), pile]
         if domain in ("negative", "real", "complex", "unit"):
-            values.append(Fraction(-1))
+            values += [Fraction(-1), -pile]
         if domain == "negative":
-            values = [Fraction(-1)]
+            values = [Fraction(-1), -pile]
         out = []
         for v in values:
             out.append({n: v for n in names})

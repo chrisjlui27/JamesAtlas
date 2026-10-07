@@ -316,6 +316,23 @@ def is_page(step: P.Step, grades: dict) -> bool:
     return step.rule in PAGE_RULES or (g is not None and g.is_page)
 
 
+def _worse(a: str, b: str) -> str:
+    return a if GRADE_ORDER.index(a) >= GRADE_ORDER.index(b) else b
+
+
+def page_floor(step: P.Step, grades: dict) -> str:
+    """The least grade a page step can earn: `page` for a law of the page itself or a theorem whose own tape is
+    strict, page or absorbed; a posted page theorem keeps its posted receipt (posted at depth 0, absorbed directly
+    inside an instance, import under a square — as a posted theorem is reused anywhere); an import or absent one
+    stays so. The measurement at the squares above can only make this worse, never better."""
+    g = grades.get(step.rule)
+    if step.rule in PAGE_RULES or g is None or g.grade in ("strict", "page", "absorbed"):
+        return "page"
+    if g.grade == "posted":
+        return BY_POSITION[position_class(step.path)]
+    return g.grade   # import, absent
+
+
 def page_under_square(step: P.Step, node, rng, reading=None, with_probes: bool = False):
     """A page step with a square above it, measured at every square above the redex (innermost first — the prover
     records each square's content before and after on the step, through instances and angles alike, because an
@@ -381,11 +398,12 @@ def step_grade(step: P.Step, grades: dict, node=None, rng=None, reading=None) ->
     if step.rule == "mult.involution" and _counit_shape(step):
         return "strict"
     if is_page(step, grades):
+        floor = page_floor(step, grades)
         if F.SQUARE not in step.path:
-            return "page"    # no square above: the page's equality passes through instances, angles, juxtaposition
+            return floor     # no square above: the page's equality passes through instances, angles, juxtaposition
         if node is not None and rng is not None:
-            return page_under_square(step, node, rng, reading)[0]
-        return "import"
+            return _worse(page_under_square(step, node, rng, reading)[0], floor)
+        return _worse("import", floor)
     if step.rule in STRICT_J1 or step.rule in STRICT_NODES:
         return "strict"
     if step.rule in ABSORB_J1:
@@ -426,10 +444,18 @@ def grade_steps(steps: list, node, grades: dict, rng, reading=None) -> Tape:
             tape.receipts.append(Receipt(s.rule, F.to_string(s.redex, True) or "void", where, "page", set(), page=True))
             tape.worse(g)
             continue
-        if is_page(s, grades) and F.SQUARE in s.path:
-            # a page step with a square above it, measured at every square above (page_under_square), with the
-            # exceptional points: the step's content is recorded, the receipt is the squares'
-            g, ks, exceptional, where = page_under_square(s, node, rng, reading, with_probes=True)
+        if is_page(s, grades):
+            floor = page_floor(s, grades)
+            if F.SQUARE in s.path:
+                # a page step with a square above it, measured at every square above (page_under_square), with the
+                # exceptional points: the step's content is recorded, the receipt is the squares'; a page theorem's
+                # own standing (a posted receipt of its own) is the floor of what the measurement can earn
+                g, ks, exceptional, where = page_under_square(s, node, rng, reading, with_probes=True)
+                g = _worse(g, floor)
+            else:
+                # a posted (or import, absent) page theorem reused with no square above: its own receipt posts again
+                ks, exceptional = receipt_values(s.redex, s.result, domain, rng, reading=reading), {}
+                where = "inherited"
             tape.receipts.append(Receipt(s.rule, F.to_string(s.redex, True) or "void", where, g, ks, exceptional, page=True))
             if g == "absent":
                 tape.absent.append(s.rule)
