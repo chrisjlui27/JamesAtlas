@@ -1,0 +1,86 @@
+{
+  "name": "james-atlas",
+  "productName": "James Atlas",
+  "version": "0.1.0",
+  "description": "A desktop app for the Boundary Chart: walk the chart, run the engine, and try each law on a form of your own.",
+  "author": "Lui",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "npm run test:bridge && npm run test:e2e",
+    "test:bridge": "node scripts/run-python.js -m unittest discover -s bridge -p \"test_*.py\" -v",
+    "test:e2e": "node test/e2e.js",
+    "dist:win": "electron-builder --win",
+    "dist:dir": "electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "44.4.5",
+    "electron-builder": "26.16.1",
+    "playwright-core": "1.64.0"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-sans": "5.3.0",
+    "@fontsource/ibm-plex-serif": "5.3.0"
+  },
+  "build": {
+    "appId": "io.github.chrisjlui27.jamesatlas",
+    "productName": "James Atlas",
+    "copyright": "Lui",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "renderer/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "bridge",
+        "to": "bridge",
+        "filter": [
+          "*.py",
+          "!test_*.py"
+        ]
+      }
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "James Atlas",
+      "artifactName": "James-Atlas-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "James-Atlas-${version}-portable.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "build/icon.png",
+      "category": "Education"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "build/icon.png",
+      "category": "public.app-category.education"
+    }
+  }
+}

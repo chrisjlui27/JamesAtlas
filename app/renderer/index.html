@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>James Atlas</title>
+<link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-sans/400.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-sans/400-italic.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-sans/500.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-sans/600.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-serif/400-italic.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-serif/500.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-serif/600.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-mono/400.css">
+<link rel="stylesheet" href="../node_modules/@fontsource/ibm-plex-mono/500.css">
+<style id="chart-css"></style>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="app" class="app">
+  <header class="topbar">
+    <div class="brand" title="James Atlas — the Boundary Chart on your desk">
+      <svg class="logo" viewBox="0 0 40 24" aria-hidden="true"><rect class="lg-r" x="1" y="1" width="38" height="22" rx="11"/><rect class="lg-s" x="9" y="6" width="12" height="12"/><polygon class="lg-a" points="24,12 27,6 33,6 36,12 33,18 27,18"/></svg>
+      <span class="brand-name">James Atlas</span>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Views">
+      <button role="tab" data-view="walk" aria-selected="true">Walk <kbd>1</kbd></button>
+      <button role="tab" data-view="graph">Graph <kbd>2</kbd></button>
+      <button role="tab" data-view="lists">Lists <kbd>3</kbd></button>
+      <button role="tab" data-view="engine">Engine <kbd>4</kbd></button>
+      <button role="tab" data-view="instrument">Instrument <kbd>5</kbd></button>
+    </nav>
+    <div class="topright">
+      <span id="status-run" class="status-run" hidden></span>
+      <button id="theme-btn" class="icon-btn" title="Theme: follow the system"></button>
+      <button id="settings-btn" class="icon-btn" title="Chart folder and Python"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.3"/><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4"/></svg></button>
+    </div>
+  </header>
+
+  <main class="views">
+    <!-- the walk ------------------------------------------------------------------------------------------------ -->
+    <section class="view" id="view-walk" data-view="walk">
+      <aside class="sidebar">
+        <div class="side-head">
+          <input id="walk-q" class="search" type="search" placeholder="Search laws — id, title, alias, concept" aria-label="Search laws" autocomplete="off" spellcheck="false">
+          <div class="filters" role="group" aria-label="Show">
+            <button class="chip on" data-und="all">all</button>
+            <button class="chip" data-und="no" title="not yet understood" data-mark="no">not yet</button>
+            <button class="chip" data-und="partial" title="partly understood" data-mark="partial">partly</button>
+            <button class="chip" data-und="yes" title="understood" data-mark="yes">understood</button>
+          </div>
+          <div class="walk-progress" id="walk-progress"></div>
+        </div>
+        <ol class="walklist" id="walk-list" aria-label="The walk"></ol>
+      </aside>
+      <div class="pane walk-pane" id="walk-pane">
+        <div class="cardbar">
+          <button id="prev-btn" class="btn" title="Previous law in the walk (←)">← Previous</button>
+          <div class="where" id="walk-where"></div>
+          <button id="next-btn" class="btn" title="Next law in the walk (→)">Next →</button>
+        </div>
+        <div class="trackbar">
+          <span class="trk-label">How well do you know this one?</span>
+          <div class="seg" role="radiogroup" aria-label="Understood" id="und-seg">
+            <button role="radio" data-v="no" title="Not yet (press N)" data-mark="no">Not yet</button>
+            <button role="radio" data-v="partial" title="Partly (press P)" data-mark="partial">Partly</button>
+            <button role="radio" data-v="yes" title="Understood (press U)" data-mark="yes">Understood</button>
+          </div>
+          <span class="spacer"></span>
+          <button id="try-btn" class="btn ghost" title="Apply this law to a form of your own">Try it in the instrument</button>
+          <button id="file-btn" class="btn ghost" title="Open this node's Markdown file in your editor">Open file</button>
+        </div>
+        <div class="card-host" id="card-host"></div>
+      </div>
+    </section>
+
+    <!-- the graph ----------------------------------------------------------------------------------------------- -->
+    <section class="view" id="view-graph" data-view="graph" hidden>
+      <div class="graphbar">
+        <input id="graph-q" class="search" type="search" placeholder="Find in the graph" aria-label="Find in the graph" autocomplete="off" spellcheck="false">
+        <label class="check"><input type="checkbox" id="graph-und"> shade by understood</label>
+        <span class="spacer"></span>
+        <button class="btn" id="graph-center" title="Scroll to the law you are on">Where am I</button>
+        <button class="icon-btn" id="graph-out" title="Zoom out (Ctrl + wheel)">−</button>
+        <span class="zoomv" id="graph-zoom">100%</span>
+        <button class="icon-btn" id="graph-in" title="Zoom in (Ctrl + wheel)">+</button>
+      </div>
+      <p class="hint">Columns are depth — how many steps of <code>uses</code> lie below a law. Hover a law to see its edges; click it to open it in the walk. Drag to pan.</p>
+      <div class="graph-host" id="graph-host"></div>
+    </section>
+
+    <!-- lists --------------------------------------------------------------------------------------------------- -->
+    <section class="view" id="view-lists" data-view="lists" hidden>
+      <nav class="subtabs" id="lists-tabs">
+        <button data-list="gaps" class="on">Gaps</button>
+        <button data-list="owed">Owed</button>
+        <button data-list="refuted">Refuted</button>
+        <button data-list="concepts">Concepts</button>
+        <button data-list="openForms">Open forms</button>
+      </nav>
+      <div class="lists-host" id="lists-host"></div>
+    </section>
+
+    <!-- the engine ---------------------------------------------------------------------------------------------- -->
+    <section class="view" id="view-engine" data-view="engine" hidden>
+      <div class="engine-grid">
+        <div class="engine-controls">
+          <h2>Run the engine</h2>
+          <p class="lede">The chart's own tools, run on the chart folder. A full check reads every law, every derivation and every ledger; it takes several minutes.</p>
+          <div class="toolbox">
+            <div class="tool">
+              <h3>Check <code>tools/check.py</code></h3>
+              <label>Only the laws whose id starts with
+                <input id="chk-only" type="text" list="rung-prefixes" placeholder="everything — e.g. Z. or H." spellcheck="false" autocomplete="off">
+              </label>
+              <datalist id="rung-prefixes"></datalist>
+              <div class="opts">
+                <label class="check"><input type="checkbox" id="chk-nocensus"> skip the census</label>
+                <label class="check"><input type="checkbox" id="chk-nolic"> skip the derivation checker</label>
+                <label class="check"><input type="checkbox" id="chk-noplaces"> skip the place ledger</label>
+              </div>
+              <div class="opts">
+                <label>trials <input id="chk-trials" type="number" min="1" max="1000" placeholder="40"></label>
+                <label>seed <input id="chk-seed" type="number" placeholder="20261003"></label>
+              </div>
+              <button class="btn primary" id="run-check">Run check</button>
+            </div>
+            <div class="tool">
+              <h3>Build <code>tools/build.py</code></h3>
+              <p>Writes <code>site/index.html</code>, the chart as one page.</p>
+              <div class="row"><button class="btn primary" id="run-build">Run build</button><button class="btn ghost" id="open-site">Open the chart page</button></div>
+            </div>
+            <div class="tool">
+              <h3>Census <code>tools/census.py</code></h3>
+              <p>Lists every form up to three boundaries and who reads it.</p>
+              <button class="btn primary" id="run-census">Run census</button>
+            </div>
+          </div>
+          <h3 class="hist-h">This session</h3>
+          <ol class="history" id="run-history"><li class="empty">Nothing run yet.</li></ol>
+        </div>
+        <div class="engine-output">
+          <div class="outbar">
+            <span id="run-title" class="run-title">No run yet</span>
+            <span class="spacer"></span>
+            <button class="btn danger" id="run-stop" disabled>Stop</button>
+          </div>
+          <div class="summary" id="run-summary" hidden></div>
+          <div class="failures" id="run-failures" hidden></div>
+          <pre class="console" id="console" tabindex="0" aria-label="Output"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- the live instrument ------------------------------------------------------------------------------------- -->
+    <section class="view" id="view-instrument" data-view="instrument" hidden>
+      <aside class="sidebar">
+        <div class="side-head">
+          <input id="law-q" class="search" type="search" placeholder="Find a law to apply" aria-label="Find a law" autocomplete="off" spellcheck="false">
+          <label class="check small"><input type="checkbox" id="law-all"> show laws that are not rewrites</label>
+        </div>
+        <ol class="walklist lawlist" id="law-list" aria-label="Laws"></ol>
+      </aside>
+      <div class="pane inst-pane">
+        <div class="inst-law" id="inst-law"><p class="hint">Pick a law on the left — or press <b>Try it in the instrument</b> on any card in the walk.</p></div>
+        <div class="inst-editor">
+          <div class="editor-row">
+            <label for="form-in" class="lab">Form</label>
+            <input id="form-in" class="form-in" type="text" spellcheck="false" autocomplete="off" placeholder="e.g.  <o> <o o>   or   [(A)] B   — sugar: o □ J ω void i j k Jj" aria-describedby="form-err">
+            <select id="reading-sel" title="The reading the values are read in">
+              <option value="C">ℂ</option><option value="J1">𝕁₁</option><option value="H">ℍ</option>
+              <option value="p2">p = 2</option><option value="p3">p = 3</option><option value="p5">p = 5</option><option value="p7">p = 7</option><option value="p13">p = 13</option>
+            </select>
+            <button class="btn" id="resample" title="Read the variables at other values">New sample</button>
+          </div>
+          <div class="palette" id="palette" aria-label="Insert">
+            <button data-ins="()" title="instance: e to the power">( )</button>
+            <button data-ins="[]" title="abstract: the logarithm">[ ]</button>
+            <button data-ins="<>" title="inverse: the negative">&lt; &gt;</button>
+            <button data-ins="o" title="one: ( )">o</button>
+            <button data-ins="□" title="the empty square [ ]">□</button>
+            <button data-ins="J" title="J = [<o>]">J</button>
+            <button data-ins="ω" title="ω = [( )]">ω</button>
+            <button data-ins=" ; " title="ordered square entry separator">;</button>
+            <button data-ins="A">A</button><button data-ins="B">B</button><button data-ins="C">C</button>
+            <span class="spacer"></span>
+            <button class="btn ghost" id="use-lhs" disabled>Start from the left side</button>
+            <button class="btn ghost" id="use-rhs" disabled>Start from the right side</button>
+          </div>
+          <p class="form-err" id="form-err" role="status" aria-live="polite"></p>
+          <div class="form-view" id="form-view"></div>
+        </div>
+        <div class="inst-apply">
+          <div class="applybar">
+            <button class="btn primary" id="apply-btn" disabled>Apply the law</button>
+            <span class="apply-note" id="apply-note"></span>
+          </div>
+          <div class="results" id="results"></div>
+        </div>
+        <div class="inst-trail">
+          <div class="trailbar">
+            <h3>Your derivation</h3>
+            <span class="spacer"></span>
+            <button class="btn ghost" id="undo-btn" disabled>Undo step</button>
+            <button class="btn ghost" id="copy-btn" disabled title="Copy as a Given–Rule table for a node's Derivation">Copy as table</button>
+            <button class="btn ghost" id="clear-btn" disabled>Clear</button>
+          </div>
+          <table class="trail"><thead><tr><th>form</th><th>rule</th><th>value</th></tr></thead><tbody id="trail-body"></tbody></table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- first run / settings ------------------------------------------------------------------------------------- -->
+  <dialog id="settings-dlg" class="dlg">
+    <form method="dialog">
+      <h2>Chart folder and Python</h2>
+      <p class="lede">James Atlas reads the Boundary Chart from a folder on this computer and runs its Python tools.</p>
+      <div class="kvrow"><span class="k">Chart folder</span><span class="v" id="set-chart">—</span><button type="button" class="btn" id="set-choose">Choose…</button></div>
+      <div class="kvrow"><span class="k">Python</span><span class="v" id="set-python">—</span></div>
+      <label class="kvrow"><span class="k">Use this Python</span><input id="set-python-in" type="text" placeholder="found automatically — e.g. py -3, or C:\Python313\python.exe" spellcheck="false"><button type="button" class="btn" id="set-python-btn">Use it</button></label>
+      <p class="form-err" id="set-err" role="status"></p>
+      <div class="dlg-foot"><span class="muted" id="set-version"></span><button class="btn primary" value="close">Done</button></div>
+    </form>
+  </dialog>
+
+  <div class="blocker" id="blocker" hidden>
+    <div class="blocker-card">
+      <h2 id="blocker-title">Opening the chart…</h2>
+      <p id="blocker-msg"></p>
+      <div class="row" id="blocker-actions" hidden>
+        <button class="btn primary" id="blocker-choose">Choose the chart folder…</button>
+        <button class="btn" id="blocker-settings">Python settings…</button>
+        <button class="btn ghost" id="blocker-retry">Try again</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</div>
+<script src="util.js"></script>
+<script src="walk.js"></script>
+<script src="graph.js"></script>
+<script src="lists.js"></script>
+<script src="engine.js"></script>
+<script src="instrument.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

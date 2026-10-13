@@ -17,6 +17,7 @@ This repository is Lui's Boundary Chart: James boundary arithmetic built up one 
 - `census/*.md` — ledgers (the trunk read in 𝕁₁, at the places, in ℍ). **Computed, never hand-edited**; the ACCEPT rule is SPEC §8.
 - `concepts/`, `references/` — the concept nodes and the source texts (James 1993 and the reports).
 - `docs/plans/`, `docs/referee/` — one file per rung.
+- `app/` — James Atlas, the Windows desktop app over the chart (Electron + a Python bridge that imports `tools/`). It is not part of the SPEC; its own README says how it is built and tested (`npm test`, end-to-end on a scratch copy of the chart). If you change the signatures of `build.render_node`, `licences.rules_for`, `prover.rewrite_all` or `check.main`, run its tests too.
 
 Python 3, standard library only. No network needed.
 

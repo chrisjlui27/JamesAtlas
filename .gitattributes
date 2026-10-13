@@ -1,0 +1,9 @@
+# Every text file in the chart is UTF-8 with LF line endings, on every system — so a ledger the engine rewrites
+# on Windows is byte-identical to the one it rewrites on Linux, and git shows only real changes.
+* text=auto eol=lf
+
+*.pdf   binary
+*.png   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary

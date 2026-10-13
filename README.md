@@ -13,6 +13,7 @@ A step-by-step exposition of mathematics in James boundary arithmetic, from the 
 - `census/` — the small-form census (generated) and the hand-kept list of open forms.
 - `tools/` — `check.py` (the engine), `build.py` (the site), `census.py`, `forms.py` (parser + ℂ evaluator), `nodes.py` (file parser), `prover.py` and `licences.py` (the derivation checker), `j1.py` (the receipt prover), `place.py` and `placeledger.py` (the reading at a finite place and the place ledger), `quat.py`, `quatplace.py` and `hledger.py` (the ℍ reading at ∞ and at the places, and the quaternion ledgers), `models/` (witnesses for meta theorems).
 - `site/index.html` — generated; the pilot chart.
+- `app/` — **James Atlas**, the desktop app (Electron, for Windows): walk the chart card by card and mark what you understand, run the engine, and try any law on a form of your own. See `app/README.md`.
 
 ## Use
 
@@ -22,7 +23,11 @@ python3 tools/build.py      # regenerates site/index.html
 python3 tools/census.py     # regenerates census/size-le-3.md and lists unassigned forms
 ```
 
-No dependencies beyond Python 3.
+No dependencies beyond Python 3. The desktop app (`app/`) adds Node.js and Electron for itself; the chart and its engine still need nothing but Python 3:
+
+```
+cd app && npm install && npm start     # James Atlas on this chart
+```
 
 ## Adding a law
 
