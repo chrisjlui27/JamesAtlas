@@ -4,6 +4,7 @@ A step-by-step exposition of mathematics in James boundary arithmetic, from the 
 
 - `SPEC.md` — v2.0 (2026-10-13): the data model, the node format, the settings and readings, the engine and its ledgers, status and price, gaps, scope, the process (adding a law, a rung, a setting; iterating the spec) and the decisions register. Stated once, in force; the history is in this file's Status and in ROADMAP.
 - `LEGISLATION.md` — the binding decisions, numbered, with a register of what is decided and what is pending.
+- `CLAUDE.md` — what a Claude Code session reads first: where the rules, decisions and protocol live, the layout, the commands, and how to work with Lui.
 - `docs/plans/<rung>.md`, `docs/referee/<rung>.md` — a rung's plan as sent before building, and its referee report with the repairs (from rung `H` on).
 - `ROADMAP.md` — the path from the classical algebra to the F₁ / motivic / Berkovich pictures, the rung order (LEGISLATION 29) and the rungs as built.
 - `references/` — James 1993, the ground truth for the classical setting.
