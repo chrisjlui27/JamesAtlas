@@ -935,7 +935,7 @@ def write_j1_ledger():
            "| node | computed cell | hand cell | tape |", "|---|---|---|---|"]
     for nid, tape, hand in J1_ROWS:
         out.append(f"| `{nid}` | {tape.cell} | {hand} | {J1.describe(tape).replace('|', '/')} |")
-    open(path, "w").write("\n".join(out) + "\n")
+    open(path, "w", encoding="utf-8", newline="\n").write("\n".join(out) + "\n")
     return path
 
 

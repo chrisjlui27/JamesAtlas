@@ -38,11 +38,11 @@ path = os.path.join(ROOT, "census", "place-ledger.md")
 inf = os.path.join(ROOT, "census", "j1-ledger.md")
 ledger, at_inf = {}, {}
 if os.path.exists(path) and os.path.exists(inf):
-    for line in open(inf):
+    for line in open(inf, encoding="utf-8"):
         if line.startswith("| `J1."):
             cells = [c.strip() for c in line.strip().strip("|").split("|")]
             at_inf[cells[0].strip("`")] = cells[1]
-    for line in open(path):
+    for line in open(path, encoding="utf-8"):
         if line.startswith("| `J1."):
             cells = [c.strip() for c in line.strip().strip("|").split("|")]
             ledger[cells[0].strip("`")] = cells[1:6]

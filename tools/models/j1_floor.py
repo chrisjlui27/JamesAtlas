@@ -19,7 +19,7 @@ if not os.path.exists(path):
     print("no ledger yet (run tools/check.py first)")
     sys.exit(1)
 rows = []
-for line in open(path):
+for line in open(path, encoding="utf-8"):
     if line.startswith("| `"):
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
         rows.append((cells[0].strip("`"), cells[1], cells[2], cells[3] if len(cells) > 3 else ""))

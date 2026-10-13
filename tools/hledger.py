@@ -223,7 +223,7 @@ def write(rows):
     out += ["", "## Rung `H`", "", "| node | computed JH | hand JH | tape |", "|---|---|---|---|"]
     for nid, tape, hand in H_RUNG_ROWS:
         out.append(f"| `{nid}` | {tape.cell} | {hand} | {J1.describe(tape, READING).replace('|', '/')} |")
-    open(path, "w").write("\n".join(out) + "\n")
+    open(path, "w", encoding="utf-8", newline="\n").write("\n".join(out) + "\n")
     return path
 
 
@@ -397,5 +397,5 @@ def write_places(h_rows, p_rows, places):
             "| node | on the centre | on generic ℍ_p | computed JH | hand JH |", "|---|---|---|---|---|"]
     for nid, c, g, cell, hand in p_rows:
         out.append(f"| `{nid}` | {c} | {g} | {cell} | {hand} |")
-    open(path, "w").write("\n".join(out) + "\n")
+    open(path, "w", encoding="utf-8", newline="\n").write("\n".join(out) + "\n")
     return path

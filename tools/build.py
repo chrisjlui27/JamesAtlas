@@ -308,7 +308,7 @@ def j1_ledger():
         _J1_LEDGER = {}
         path = os.path.join(ROOT, "census", "j1-ledger.md")
         if os.path.exists(path):
-            for line in open(path):
+            for line in open(path, encoding="utf-8"):
                 if line.startswith("| `"):
                     cells = [c.strip() for c in line.strip().strip("|").split("|")]
                     if len(cells) >= 4:
@@ -328,7 +328,7 @@ def place_ledger():
         path = os.path.join(ROOT, "census", "place-ledger.md")
         if os.path.exists(path):
             section = "trunk"
-            for line in open(path):
+            for line in open(path, encoding="utf-8"):
                 if line.startswith("## Rung"):
                     section = "rung"
                 if line.startswith("| node |") and section == "trunk":
@@ -357,7 +357,7 @@ def h_ledger():
         path = os.path.join(ROOT, "census", "h-ledger.md")
         if os.path.exists(path):
             section = "trunk"
-            for line in open(path):
+            for line in open(path, encoding="utf-8"):
                 if line.startswith("## Rung"):
                     section = "rung"
                 if line.startswith("| `"):
@@ -370,7 +370,7 @@ def h_ledger():
         path = os.path.join(ROOT, "census", "h-place-ledger.md")
         if os.path.exists(path):
             section = "h"
-            for line in open(path):
+            for line in open(path, encoding="utf-8"):
                 if line.startswith("**Rung place in"):
                     section = "place"
                 if line.startswith("| node |") and section == "h":
@@ -885,7 +885,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 </script>
 '''
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    with open(OUT, "w", encoding="utf-8") as fh:
+    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(page)
     print(f"wrote {OUT} ({os.path.getsize(OUT)//1024} KB): {len(nodes)} nodes, {len(rungs)} rungs")
 
