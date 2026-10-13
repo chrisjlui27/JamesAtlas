@@ -96,4 +96,4 @@ none
 
 ## Notes
 
-The schema machinery (SPEC §2.7): `A^{n}` is n juxtaposed copies, `o^{n}` the pile n; the base table is the instance n = 1, the step table the instances n = 2 … 12 (so the hypothesis row always points at an instance already checked). The card draws the instance n = 3.
+The schema machinery (SPEC §3.7): `A^{n}` is n juxtaposed copies, `o^{n}` the pile n; the base table is the instance n = 1, the step table the instances n = 2 … 12 (so the hypothesis row always points at an instance already checked). The card draws the instance n = 3.

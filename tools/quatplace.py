@@ -1,5 +1,5 @@
 """quatplace.py — the quaternions at a finite place: the ℍ reading of tools/quat.py moved to a prime (rung `H`, read
-against the places; SPEC §4.5, LEGISLATION 32(e)).
+against the places; SPEC §6.4, LEGISLATION 32(e)).
 
 The page at p is the quaternion order over ℤ/pⁿ: Hamilton's quaternions with coordinates mod pⁿ at an odd p —
 where ℍ ⊗ ℚ_p SPLITS, ℍ_p ≅ M₂(ℚ_p), the norm is isotropic and there are zero divisors — and the Hurwitz order O

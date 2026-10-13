@@ -61,7 +61,7 @@ To find a square root at a finite place, find one on the clock with p hours; the
 
 ## Confirms
 
-Hensel's lemma in its first case and the quadratic residues: a unit is a square in ℤ_p iff it is a square mod p (odd p). It is **not** the general lemma (f'(x₀) a unit, for any polynomial): the chart has the square root as a form and the rest as the quadratic formula's JP guard ([[C.quadratic-formula]]). It is **not** p = 2, where a unit is a square iff it is ≡ 1 mod 8 and the root form's radius says so (SPEC §4.4; [[place.radius]]).
+Hensel's lemma in its first case and the quadratic residues: a unit is a square in ℤ_p iff it is a square mod p (odd p). It is **not** the general lemma (f'(x₀) a unit, for any polynomial): the chart has the square root as a form and the rest as the quadratic formula's JP guard ([[C.quadratic-formula]]). It is **not** p = 2, where a unit is a square iff it is ≡ 1 mod 8 and the root form's radius says so (SPEC §6.2; [[place.radius]]).
 
 ## Settings and readings
 

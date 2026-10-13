@@ -81,4 +81,4 @@ none
 
 ## Notes
 
-Conditional rules are new to the chart (SPEC §4.5, LEGISLATION 32): the premise is not a form, so it is checked by the reading at the use site, as the seam decree's by-content clause is — and recorded on the tape when it fails. The premise function (`tools/quat.py`, `premise("commute")`) evaluates the two entries and tests their commutator.
+Conditional rules are new to the chart (SPEC §6.4, LEGISLATION 32): the premise is not a form, so it is checked by the reading at the use site, as the seam decree's by-content clause is — and recorded on the tape when it fails. The premise function (`tools/quat.py`, `premise("commute")`) evaluates the two entries and tests their commutator.

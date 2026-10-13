@@ -60,7 +60,7 @@ At a finite place e^x only makes sense when x is a multiple of p (of 4 at the pl
 
 ## Confirms
 
-The domain of the p-adic exponential and the fact that ℚ_p is not ℝ: no number plays e's part. It is **not** the radius of the *log*: the log converges on every unit — on the principal units 1 + pℤ_p (1 + 4ℤ_2 at 2), which are exp's image, the two are inverse, and that sector is the one the chart's `positive` variables are read in at a place (SPEC §4.4).
+The domain of the p-adic exponential and the fact that ℚ_p is not ℝ: no number plays e's part. It is **not** the radius of the *log*: the log converges on every unit — on the principal units 1 + pℤ_p (1 + 4ℤ_2 at 2), which are exp's image, the two are inverse, and that sector is the one the chart's `positive` variables are read in at a place (SPEC §6.2).
 
 ## Settings and readings
 
@@ -83,4 +83,4 @@ none
 
 ## Notes
 
-A meta theorem of the reading, with a witness (`tools/models/place_radius.py`): the engine's instance refuses a content outside the radius at every tested place, and the radius is 4ℤ_2 at p = 2. The standing proviso for every instance at a finite place — its content on the radius — is what the place ledger retries a sample for, and otherwise drops rather than judges (SPEC §4.4).
+A meta theorem of the reading, with a witness (`tools/models/place_radius.py`): the engine's instance refuses a content outside the radius at every tested place, and the radius is 4ℤ_2 at p = 2. The standing proviso for every instance at a finite place — its content on the radius — is what the place ledger retries a sample for, and otherwise drops rather than judges (SPEC §6.2).

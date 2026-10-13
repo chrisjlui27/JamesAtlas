@@ -36,7 +36,7 @@ EXTRA_RULES = {
 
 # ----------------------------------------------------------------------------- rung H: families over the entries
 # A law of the ordered bracket written with vector entries (x⃗ ; … ; z⃗ in the JH report) is a FAMILY of rules, one
-# per shape of the list; the engine instantiates each family for lists of up to five entries (SPEC §4.5). The node's
+# per shape of the list; the engine instantiates each family for lists of up to five entries (SPEC §6.4). The node's
 # derivation proves the shape its `law:` states; the other shapes are the same law read at another position, and
 # the prose says so.
 

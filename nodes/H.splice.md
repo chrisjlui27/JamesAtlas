@@ -45,7 +45,7 @@ reentry: false
 |---|---|---|
 | `[A ; ([B ; C])] ≐ [A ; B ; C]` | an entry that is an ordered product is spliced into the list | log(A(BC)) = log(ABC) — associativity |
 
-An entry of an ordered square that is itself the instance of an ordered square is *spliced* in: `[A ; ([B ; C])]` is `[A ; B ; C]`. Read in ℍ, the entry `([B ; C])` is the product B·C ([[H.ordered-product]]), and log(A·(B·C)) = log(A·B·C) because the product is associative. The law is a family over the position of the spliced entry and the lengths of the lists (SPEC §4.5): the engine instantiates it for lists of up to five entries. A one-entry splice — `[([B ; C])] ≐ [B ; C]` — is not in the family: it is the unit `[(X)] ≃ X` of [[J1.unit]], with its receipt.
+An entry of an ordered square that is itself the instance of an ordered square is *spliced* in: `[A ; ([B ; C])]` is `[A ; B ; C]`. Read in ℍ, the entry `([B ; C])` is the product B·C ([[H.ordered-product]]), and log(A·(B·C)) = log(A·B·C) because the product is associative. The law is a family over the position of the spliced entry and the lengths of the lists (SPEC §6.4): the engine instantiates it for lists of up to five entries. A one-entry splice — `[([B ; C])] ≐ [B ; C]` — is not in the family: it is the unit `[(X)] ≃ X` of [[J1.unit]], with its receipt.
 
 ## Plain
 

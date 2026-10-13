@@ -1,4 +1,4 @@
-"""schema.py — template expansion for schema nodes (SPEC §2.7, LEGISLATION 29).
+"""schema.py — template expansion for schema nodes (SPEC §3.7, LEGISLATION 29).
 
 A schema law is written with count parameters:
     X^{e}            e juxtaposed copies of X, where X is ONE token: a variable (A, B2), o, J, □, or a bracketed
@@ -7,7 +7,7 @@ A schema law is written with count parameters:
 Instances are plain canonical strings, which the engine checks like any object law.
 
 Only canonical cells are expanded — the law and the form column of a derivation table; rule and note cells
-are prose and are kept as written (SPEC §2.7). Every malformed template raises ValueError, which the engine
+are prose and are kept as written (SPEC §3.7). Every malformed template raises ValueError, which the engine
 reports as a failure of the node rather than a crash.
 
 No dependencies beyond the standard library.

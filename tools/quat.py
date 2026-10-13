@@ -1,4 +1,4 @@
-"""quat.py — the ℍ reading at ∞: James forms valued in Hamilton's quaternions (rung `H`; SPEC §4.5, LEGISLATION 32).
+"""quat.py — the ℍ reading at ∞: James forms valued in Hamilton's quaternions (rung `H`; SPEC §6.4, LEGISLATION 32).
 
 The reading is the ℂ reading of tools/forms.py moved to ℍ:
 
@@ -268,7 +268,7 @@ def random_pure_unit(rng: random.Random) -> Q:
 
 
 def random_env(names, domain: str, rng: random.Random) -> dict:
-    """Values for the variables, by domain (SPEC §4.5): natural, positive, negative, real, unit — real numbers, as
+    """Values for the variables, by domain (SPEC §6.4): natural, positive, negative, real, unit — real numbers, as
     in ℂ (the centre of ℍ, where every law of the trunk holds as it holds in ℝ); complex — a generic quaternion, all
     four coordinates random (the JH analogue of 'any complex number'); slice — co-sliced quaternions: every
     variable in one random slice C_u = ℝ + ℝu (the Slice Principle's domain, where the classical calculus holds

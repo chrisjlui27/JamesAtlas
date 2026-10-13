@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""build.py — nodes/*.md → site/index.html (SPEC §11–12, v1).
+"""build.py — nodes/*.md → site/index.html (SPEC §12–13).
 
 Renders every law with its forms drawn as nested boundaries, the chart as a clickable
 layered DAG, computed price and used-by, the walk with its progress, the concept index,
@@ -254,7 +254,7 @@ def compute(nodes):
 
     for nid in nodes:
         dep(nid); anc(nid)
-    # the price of a 𝕁₁ law is stated in 𝕁₁'s own axioms (SPEC §5.4): Involution is the split pair — the counit, and
+    # the price of a 𝕁₁ law is stated in 𝕁₁'s own axioms (SPEC §4.3): Involution is the split pair — the counit, and
     # the unit when the tape has a receipt — and the seam decree is not in force there (replaced by receipts)
     ledger = j1_ledger()
     pledger = place_ledger()
@@ -350,7 +350,7 @@ def h_ledger():
     """census/h-ledger.md as {"trunk": {node id: (on its domain, on generic ℍ, tape, computed JH, hand JH)},
     "rung": {node id: (computed JH, hand JH, tape)}} and census/h-place-ledger.md as {"h": {node id: (per-place
     cells, computed JP, hand JP)}, "place": {node id: (centre, generic, computed JH, hand JH)}, "places": [...]} —
-    both written by check.py (SPEC §4.5)."""
+    both written by check.py (SPEC §7.4)."""
     global _H_LEDGER
     if _H_LEDGER is None:
         _H_LEDGER = {"trunk": {}, "rung": {}, "h": {}, "place": {}, "places": []}
@@ -522,7 +522,7 @@ def render_node(node, nodes, used_by, depth, price):
     return f'''
 <article class="node t-{t}" id="{nid}" data-search="{html.escape(nid + ' ' + str(m.get('title','')) + ' ' + ' '.join(map(str, m.get('aliases') or [])) + ' ' + ' '.join(map(str, m.get('concepts') or [])))}">
   <header>
-    <div class="idrow"><a class="id" href="#{nid}">{nid}</a>{badge("type t-" + str(t), t)}{badge("status s-" + status.lower().replace("-", "") + hollow, status, "status (SPEC §5.1)" + ("; hollow: Exact withheld until engine-verified" if hollow else ""))}{badge("ver v-" + verified, verified, "verification tier")}{"".join(meta_tags)}<span class="und" title="understood: {und}">{und_mark}</span></div>
+    <div class="idrow"><a class="id" href="#{nid}">{nid}</a>{badge("type t-" + str(t), t)}{badge("status s-" + status.lower().replace("-", "") + hollow, status, "status (SPEC §8.1)" + ("; hollow: Exact withheld until engine-verified" if hollow else ""))}{badge("ver v-" + verified, verified, "verification tier")}{"".join(meta_tags)}<span class="und" title="understood: {und}">{und_mark}</span></div>
     <h3>{html.escape(str(m.get("title", "")))}</h3>
   </header>
   {law_block(node, nodes)}

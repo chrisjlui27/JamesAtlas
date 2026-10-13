@@ -4,7 +4,7 @@ Canonical strings use ( ) [ ] < >.  Sugar: o = (), □ = [], J = [<o>], ω = [()
 Variables are single capital letters, optionally followed by one digit (A, B, X2).
 Whitespace is ignored.  Juxtaposition is an unordered multiset.
 
-Rung `H` adds two things to the syntax (SPEC §2.5, LEGISLATION 32). The ORDERED square `[x ; y ; …]` — a square
+Rung `H` adds two things to the syntax (SPEC §3.5, LEGISLATION 32). The ORDERED square `[x ; y ; …]` — a square
 whose contents are a sequence of forms (entries) rather than one multiset: the log of the ordered product of the
 entries' values; a one-entry list is the ordinary square. And the CONSTANT `Jj` — the second phase seed J_j, a
 leaf with no boundaries, whose value the ℍ reading supplies (ℂ has none). Sugar built on them: `i` = (([J] <[oo]>)),

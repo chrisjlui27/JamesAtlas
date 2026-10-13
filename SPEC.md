@@ -1,14 +1,14 @@
-# The Boundary Chart — Specification v1.0
+# The Boundary Chart — Specification v2.0
 
-*A step-by-step exposition of mathematics in James boundary arithmetic, from the void to F₁, as a searchable chart of laws; the data model behind a future visual encyclopedia.*
+*A step-by-step exposition of mathematics in James boundary arithmetic, from the void to F₁, as a searchable chart of laws; the data model, the engine and the process behind a future visual encyclopedia.*
 
-Status: **binding** where it records a decision from `LEGISLATION.md`; **proposed** elsewhere (marked). Written 2026-10-03 for Lui; meant to be picked up cold by a later session.
+Status: **binding** where it records a decision from `LEGISLATION.md`; **pending** where it records one the session proposed and Lui has not yet confirmed (marked; the register in §14 lists them); **proposed** elsewhere. Version 2.0, 2026-10-13, consolidates v1.0 (2026-10-03) and the increments of rungs `schema`, `J1`, `place` and `H`: the rules are stated once, in force as of this version, and the history of how they were reached lives in `README.md` (Status), `ROADMAP.md` (§5–§7) and `LEGISLATION.md`, not here. Written for Lui; meant to be picked up cold by a later session, and to be brought into a project as its reference. How it is iterated: §11.4.
 
 ---
 
 ## 0. What this is
 
-The chart is a directed graph of **laws**. Every node is one law of boundary arithmetic — a primitive that licenses forms, an axiom that adds an equation, a definition that abbreviates, a theorem that settles, a decree that legislates, an import that borrows, or a gap that names what cannot yet be written. Every node carries a derivation whose licensing rules are earlier nodes, so the back-links are mechanical, not editorial. The graph has one spine (the trunk from the void to F₁), branches (the extensions), and exactly one marked **re-entry edge** from the last node back to the first: F₁ arithmetic re-reads the natural numbers, so the exposition closes on itself.
+The chart is a directed graph of **laws**. Every node is one law of boundary arithmetic — a primitive that licenses forms, an axiom that adds an equation, a definition that abbreviates, a theorem that settles, a schema that settles up to a range, a decree that legislates, an import that borrows, or a gap that names what cannot yet be written. Every node carries a derivation whose licensing rules are earlier nodes, so the back-links are mechanical, not editorial. The graph has one spine (the trunk from the void to F₁), branches (the extensions), and exactly one marked **re-entry edge** from the last node back to the first: F₁ arithmetic re-reads the natural numbers, so the exposition closes on itself.
 
 Three uses, in order of priority (LEGISLATION 24):
 
@@ -21,12 +21,12 @@ The chart is **not** a book. It is the data a book, a game, or an encyclopedia i
 ### 0.1 The two ends
 
 - **Start: the void.** The first node is the empty page. The natural numbers are the first rung, not the first node, because a pile cannot be stated without void and `o` (LEGISLATION 1).
-- **End: F₁.** One target node, *F₁ arithmetic*, with three roads into it (LEGISLATION 2):
-  - **(a) finite sets / sphere spectrum** — `( )` and `[ ]` read as finite sets, `< >` as group completion (Barratt–Priddy–Quillen). *The trunk*, because here the boundaries are themselves the F₁ objects rather than a translation of them.
-  - **(b) Borger's λ-rings** — ψ-operations as the whole structure; the nearest relative of the ψ-wall. A planned road: each law on the trunk records whether it has a ψ-reading.
-  - **(c) Connes–Consani** — hyperrings, Witt vectors, the arithmetic site; the declared-void pile of the place calculus is the on-ramp. A planned road.
-  Roads (b) and (c) are built as *readings* (§4) first and as nodes only where a law is gained. "With an eye to expand the expressibility of the other ways" means: no trunk node is accepted as *settled* until its (b) and (c) reading cells are at least filled with `ABSENT` or `PARTIAL` rather than left blank.
+- **End: F₁.** One target node, *F₁ arithmetic*, with three roads into it (LEGISLATION 2): **(a) finite sets / sphere spectrum** — `( )` and `[ ]` read as finite sets, `< >` as group completion (Barratt–Priddy–Quillen); the trunk, because here the boundaries are themselves the F₁ objects rather than a translation of them. **(b) Borger's λ-rings** — ψ-operations as the whole structure; the nearest relative of the ψ-wall. **(c) Connes–Consani** — hyperrings, Witt vectors, the arithmetic site; the declared-void pile of the place calculus is the on-ramp. Roads (b) and (c) are built as *readings* (§6) first and as nodes only where a law is gained; no trunk node is accepted as *settled* until its (b) and (c) reading cells are at least `ABSENT` or `PARTIAL` rather than blank.
 - **The re-entry edge.** `F1.arithmetic → void.page` (one edge, flagged `reentry: true`). It is the chart's largest gap and is drawn differently. The DAG check exempts exactly this edge.
+
+### 0.2 Three target pictures
+
+The chart has the shape all three need; the rungs make it native (ROADMAP §1). **Motivic:** a node is a form, its `readings` row is its row of realizations, and a law that holds in every reading is the stable part. **F₁ (finset / BPQ):** the additive fragment is EXACT in finite sets today; the inverse boundary is where the sphere spectrum enters, and J's finset analogy (η) matches the 𝕁₁ J (2J = ω), so the F₁ road passes through `J1`. **A sheaf of formal groups over the Berkovich spectrum of ℤ:** the places are the base (rung `place`), the wall `(ω A) ≃ (A)` at a place is a formal group of height one with the ψ-wall as its torsion, and the stack of lattices (rung `J2`) is the moduli of formal groups with its height stratification.
 
 ---
 
@@ -35,417 +35,456 @@ The chart is **not** a book. It is the data a book, a game, or an encyclopedia i
 | term | meaning here |
 |---|---|
 | **form** | a finite multiset of boundaries, each containing a form; the void is the empty form |
-| **boundary** | one of `( )` round/instance, `[ ]` square/abstract, `< >` angle/inverse — and, from rung `H`, the **ordered square** `[ ; ]` (§2.5, §4.5); later primitives still to come: extrusion brace `{ }`, lens `{n }` |
+| **boundary** | `( )` round/instance, `[ ]` square/abstract, `< >` angle/inverse — and, from rung `H`, the **ordered square** `[ ; ]`; later primitives still to come: the extrusion brace `{ }`, the lens `{n }` |
 | **medium** | the page: juxtaposition is an unordered multiset with the void as unit. Medium facts are laws of type `primitive` with `kind: medium` |
-| **law** | one equation `lhs ≐ rhs` between forms (object level), or one statement about the calculus (meta level: freeness, independence, induction) |
+| **law** | one equation between forms (object level), or one statement about the calculus (meta level: freeness, independence, induction, a theorem of a reading) |
 | **node** | one law, one file, one id |
-| **rung** | a chapter of the walk — usually a number system (`N`, `Z`, `Q`, `C`…), sometimes the arrival of a boundary (`mult` = the square boundary) |
-| **setting** | a named set of nodes in force: `classical` (James 1993), `J1`, `JH`, `JO`, `JS`, `JP`, `extrusion`, `field` |
-| **reading** | an interpretation of forms: `C` (complex numbers, the default gloss), `finset` (finite sets / F₁), `lambda` (Borger), `CC` (Connes–Consani), `logic` (LoF / EG) |
-| **receipt** | in `J1` and later: the Λ-valued record of what a non-strict step dropped; in ℍ a receipt carries a *direction* (§4.5) |
-| **ordered square** | `[x₁ ; … ; xₙ]`, rung `H`: a square whose contents are a sequence of forms, read as the log of their ordered product; one entry is the ordinary square. `[A ; B]` and `[B ; A]` are different forms, where `[A][B]` and `[B][A]` are one |
+| **rung** | a chapter of the walk — usually a number system (`N`, `Z`, `Q`, `C`, `H`), sometimes the arrival of a boundary (`mult`) or of a piece of machinery (`schema`, `J1`, `place`) |
+| **setting** | a named set of nodes in force: `classical`, `J1`, `JP`, `JH`, `JO`, `JS`, `extrusion`, `field` (§5) |
+| **reading** | an interpretation of forms, as a model: `C` (the default gloss), `finset`, `lambda`, `CC`, `logic` (§6); and, for the engine, the readings it computes with — ℂ, 𝕁₁, the page at p, ℍ at ∞, ℍ at p |
+| **receipt** | in `J1` and later: the Λ-valued record of what a non-strict step dropped; at a place a count of the place's period; in ℍ a lattice element with a *direction* |
+| **tape** | the graded record of a derivation's non-strict steps (§7.3); a node's grade is its worst step |
+| **ledger** | a computed table comparing every law's hand cells with what a reading computes (§7.4); written by the engine, never edited |
+| **witness** | a script in `tools/models/` that checks a meta-level claim by computation; exits 0 iff the claim holds |
+| **price** | the set of non-derivable ancestors of a node (primitives, axioms, decrees, imports, gaps) and the guards along the way — computed, never typed (§4.3) |
+| **gap** | a node of type `gap`: a concept with no form, or a form with no reading, with a plan (§9) |
+| **owed** | a named obligation the chart has not met — a derivation, a reading, a cell — recorded where it falls due (§9.2) |
+| **walk** | the linear order in which the chart is read; a total order (`order`) refining the dependency DAG. Rung order (LEGISLATION 29): `void N Z mult Q alg C` · `schema` · `J1` · `place` · `H` · `analysis` · `J2` · `logic` `struct` · `F1`; `O`, `S` are a branch |
+| **schema** | a node whose law carries a count parameter (`n`, and optionally `k` or the place `p`); the engine instantiates it over a declared range and checks every instance; its derivation is an induction step (§3.7) |
+| **page** | the finite place p read to depth n: the residues mod pⁿ, declared by the void pile `o^{p**n} ≃ void` (§6.3) |
+| **ordered square** | `[x₁ ; … ; xₙ]`, rung `H`: a square whose contents are a sequence of forms, read as the log of their ordered product; one entry is the ordinary square; `[A ; B]` and `[B ; A]` are different forms where `[A][B]` and `[B][A]` are one (§6.4) |
 | **constant** | a form of a setting with no expansion into the three boundaries: `Jj`, the second seed of rung `H`, is one (`i`, `j`, `k` are sugar). A constant has a value in the readings that know it and none elsewhere |
-| **conditional law** | a law whose `units:` field opens with `PREMISE …`: the equation holds where the premise does, and the reading checks the premise at every use (rung `H`: `H.commutation`, `H.collapse`; `tools/j1.py`, `CONDITIONAL`) |
-| **slice** | in ℍ, a copy of ℂ: C_u = ℝ + ℝu for a pure unit u; `domain: slice` samples every variable in one random slice — where the classical calculus holds with J → J_u (the Slice Principle, JH-4), a substitution the forms do not make: J and ω are pinned to i, so a trunk law that mentions them holds verbatim on the **plane** C_i = ℂ ⊂ ℍ and is carried to the other slices by the symmetry of ℍ, not by the forms (§4.5) |
-| **price** | the set of non-derivable ancestors of a node (primitives, axioms, decrees, imports) — computed, never typed |
-| **gap** | a node of type `gap`: a concept with no form, or a form with no reading |
-| **walk** | the linear order in which the chart is read; a total order refining the dependency DAG. Rung order (LEGISLATION 29): `void N Z mult Q alg C` · `schema` · `J1` · `place` · `H` · `analysis` · `J2` · `logic` `struct` · `F1`; `O`, `S` are a branch |
-| **schema** | a node whose law carries a count parameter (`n`, and optionally `k`); the engine instantiates it over a declared range and checks every instance; its derivation is an induction step (LEGISLATION 29) |
+| **conditional law** | a law whose `units:` field opens with `PREMISE …`: the equation holds where the premise does, and the reading checks the premise at every use (§7.2) |
+| **slice** | in ℍ, a copy of ℂ: C_u = ℝ + ℝu for a pure unit u. The **plane** is the slice of the pinned J, C_i = ℂ ⊂ ℍ, where the trunk's laws hold verbatim (§6.4) |
+| **seam** | where the unit step `[(A)] ≐ A` is false by a displacement no period measures: the point θ = π of ℂ, the angle-π sphere of ℍ but the pinned ray, and on a quaternion page a positive-measure set (§6.4, §7.3) |
 
-Equality symbols, as used across the program: `≐` strict convertibility in the classical calculus; `≡` syntactic (strict) in `J1`; `≃` witnessed (receipt-bearing); `≈` evaluated. Each node declares which is in force (`equality:` field).
+House typographic notation in prose (and in the type verbs of §3.2): *italic* for a reduction (an emptying), ***bold-italic*** for an emergent operation, **bold** for a settled one, ~~strikethrough~~ for wrong, "scare-quotes" to hold a term at arm's length.
 
 ---
 
-## 2. The node
+## 2. Equalities and cells
 
-### 2.1 One file per node
+### 2.1 The four equalities
 
-Path: `nodes/<id>.md`, where `id = <rung>.<slug>`, e.g. `nodes/Z.collection.md`. Ids are stable; slugs are lowercase, hyphenated, never renamed once published (rename = new node + alias). Obsidian-style links `[[Z.collection]]` are the only link syntax, so an Obsidian vault opened on `nodes/` shows the chart as its graph view on day one.
+`≐` strict convertibility in the classical calculus; `≡` strict (syntactic) in 𝕁₁ and later settings; `≃` witnessed — the two sides agree mod the period, and a receipt records what was dropped; `≈` evaluated. Every node declares which is in force (`equality:`), and in the graded settings (`J1`, `JP`, `JH`) **the symbol is the one the tape earns** (§7.3): ≡ for a strict tape, ≃ for an absorbed or posted one; the `law:` string carries the same symbol. A classical node writes ≐.
 
-### 2.2 Types
+### 2.2 The `holds` cells (per setting)
 
-| type | verb | what the node adds | counts toward price |
+| cell | meaning |
+|---|---|
+| `holds` | the law holds in the setting as stated: its tape there is strict, page or absorbed, and its law reads exact on its domain |
+| `holds-mod-Λ` | the law holds mod the setting's period: its tape posts a receipt at depth 0, or its law reads mod-Λ |
+| `guarded` | the law holds under a named guard: where its forms have a value (some sample is formless), off the seam, or by a legislative guard; or its tape imports (a receipt void only by content) |
+| `replaced` | a more general law of the setting restricts back to it; the cell names that law. Legal where the law fails or is formless there |
+| `fails` | the law is false in the setting, or its derivation is absent there with a non-void receipt |
+| `untested` | not yet examined — legal only where no ledger computes the cell |
+
+**The ACCEPT rule.** Where a ledger computes a cell, the hand cell may say *more* and never less: hand `holds` needs computed `holds`; `holds-mod-Λ` needs `holds-mod-Λ`; `guarded` accepts `holds`, `holds-mod-Λ`, `guarded`; `replaced` accepts anything; `fails` needs `fails`; `untested` is illegal. The engine fails the node otherwise.
+
+### 2.3 The `readings` cells (per reading)
+
+`EXACT` · `PARTIAL` · `ANALOGY` · `ABSENT` · `CONVERSE` · `untested` — the five-word verdict vocabulary of the page-logic ledger, plus `untested`.
+
+### 2.4 The ledger words and the tape grades
+
+A ledger reads a *law* at the generic points of a domain and says `exact` (as stated on every judged sample) · `mod-Λ` (only mod the period) · `guarded` (holds where its forms have a value; some sample is formless) · `none` (no sample has a value) · `seam` (the two sides differ by a seam displacement on some sample) · `fails`. A tape grades a *step*: `strict` · `page` (at a place only) · `absorbed` · `posted` · `import` · `absent`, with its position class — `absorbing`, `depth-0`, `under-square`, `inherited`, `pole`, `seam`, `cross-slice`, `premise`, `formless`. A law no sample can judge is not a law that holds: an equality is certified by samples, never by their absence.
+
+---
+
+## 3. The node
+
+### 3.1 One file per node
+
+Path: `nodes/<id>.md`, where `id = <rung>.<slug>`. Ids are stable; slugs are lowercase, hyphenated, never renamed once published (rename = new node + alias). Obsidian-style links `[[Z.collection]]` are the only link syntax.
+
+### 3.2 Types, levels, kinds
+
+| type | verb | what the node adds | priced |
 |---|---|---|---|
 | `primitive` | *licenses* | a new way to form a form (a boundary) or a fact of the medium | yes |
 | `axiom` | ***adds*** | an equation the calculus did not have | yes |
-| `definition` | *reduces* | a name for a form built from existing ones (sugar; no new law of the calculus) | no |
+| `definition` | *reduces* | a name for a form built from existing ones (sugar; no new law) | no |
 | `theorem` | **settles** | an equation (or meta-statement) the calculus already contained | no |
-| `decree` | ***legislates*** | a rule imposed from outside the equational base: an exclusion (`<□>` is not a form), a discipline (J-cancellation only inside an instance, last), a declared-void pile, a guard | yes |
-| `import` | borrows | a fact used but not derived (a theorem of ordinary mathematics, a labelling, a count) | yes |
-| `gap` | *names* | a concept without a form, or a form without a reading, with a plan | no (it has no derivation) |
-| `schema` | **settles** up to the range | a theorem with a count parameter, stated as a template, checked at every value in a declared range and derived by an induction step (§2.7); the passage to all n is the gap | no — but its hypothesis row cites the gap `N.induction`, which is |
+| `schema` | **settles** up to the range | a theorem with a count parameter, stated as a template, checked at every value in a declared range and derived by an induction step; the passage to all n is the gap | no — but its hypothesis row cites `N.induction`, which is |
+| `decree` | ***legislates*** | a rule imposed from outside the equational base: an exclusion, a discipline, a declaration (a declared-void pile), a guard | yes |
+| `import` | borrows | a fact used but not derived (a theorem of ordinary mathematics, a reading, a count) | yes |
+| `gap` | *names* | a concept without a form, or a form without a reading, with a plan | yes (so a schema's price shows the induction gap) |
 
-Every type is a step of the walk (LEGISLATION 4). The type is the node's colour in every rendering.
+Every type is a step of the walk (LEGISLATION 4); the type is the node's colour in every rendering. **Level:** `object` (an equation between forms) or `meta` (a statement about the calculus or about a reading); meta nodes are where the meta-moves of LEGISLATION 17 live, and a meta node is at most `hand`-verified without a `witness:`. **Kind:** primitive `boundary | medium`; decree `exclusion | discipline | declaration | guard`; theorem/axiom/definition/import `law | instance` (one value of a family over n) | `declaration` (a definition or import stated in prose); gap `concept | form`.
 
-A node also has a **level**: `object` (an equation between forms) or `meta` (a statement about the calculus: consistency, freeness, independence, normalization, induction). Meta-level nodes are where the "meta-moves" of LEGISLATION 17 live; they are first-class so the chart can show where the calculus had to be looked at from outside.
-
-### 2.3 Front matter (required unless marked optional)
+### 3.3 Front matter
 
 ```yaml
 ---
 id: Z.collection
 title: Inverse collection
-type: theorem                 # primitive | axiom | definition | theorem | decree | import | gap | schema
+type: theorem                 # primitive | axiom | definition | theorem | schema | decree | import | gap
 level: object                 # object | meta
-kind: law                     # primitive: boundary | medium ; decree: exclusion | discipline | declaration | guard ; theorem/axiom/definition: law | instance (one value of a family over n) ; gap: concept | form
+kind: law                     # §3.2
 rung: Z
-order: 230                    # walk order; integers with gaps of 10 so nodes can be inserted
-setting: classical            # the setting the law is stated in
-equality: "≐"                 # ≐ | ≡ | ≃ | ≈
-domain: real                  # variables range over: natural | positive | negative | real | unit | complex | slice (for the shadow check; §4.4 at a place, §4.5 in ℍ)
-law: "<A><B> ≐ <A B>"         # canonical string; for definitions "name := form"; for gaps a one-line statement of what is missing
-units: "−a + −b = −(a + b)"   # the law in standard notation (the ℂ reading)
-gloss_check: "-A + -B == -(A+B)"   # optional: a Python expression the checker evaluates against the form's value
-schema_range: "n=2..8"        # schema nodes only: the instances the engine checks ("n=1..6; k=1..n" for two parameters)
-schema_draw: "n=3"            # schema nodes only, optional: the instance the card draws (default n=3; k=1)
-holds:                        # settings table: holds | holds-mod-Λ | guarded | replaced | fails | untested
+order: 230                    # walk order; integers spaced by 10
+setting: classical            # the setting the law is stated in: classical | J1 | JP | JH | …
+equality: "≐"                 # ≐ | ≡ | ≃ | ≈ (§2.1)
+domain: real                  # natural | positive | negative | real | unit | complex | slice (§3.6)
+law: "<A><B> ≐ <A B>"         # canonical string; definitions "name := form"; gaps/decrees/imports a one-line statement (GAP — / DISCIPLINE — / DECLARATION — / IMPORT — prefixes mark prose laws)
+units: "−a + −b = −(a + b)"   # the law in standard notation; a conditional law's opens with "PREMISE …"
+gloss_check: "-A + -B == -(A+B)"   # optional: a Python expression the checker evaluates against the form's value in ℂ
+schema_range: "n=2..8"        # schema nodes, and decrees/imports written over the place: the instances the engine checks (§3.7)
+schema_draw: "n=3"            # schema nodes, optional: the instance the card draws
+witness: tools/models/x.py    # meta nodes: the script that checks the claim; exits 0 iff it holds
+forms: []                     # optional: canonical forms this node reads, for the census (§7.6)
+holds:                        # per setting (§2.2); every setting of §5 is a legal column
   classical: holds
   J1: holds
   JH: holds
-readings:                     # readings table: EXACT | PARTIAL | ANALOGY | ABSENT | CONVERSE | untested
+  JO: untested
+  JP: holds
+readings:                     # per reading (§2.3)
   C: EXACT
-  finset: ABSENT              # no negatives in finite sets — group completion is exactly what <> adds
+  finset: ABSENT
   lambda: untested
   CC: untested
   logic: untested
-status: NATIVE                # NATIVE | NATIVE-BY-SCHEMA | NATIVE-BY-DECREE | IMPORTED | ANALOGY | CONJECTURE | REFUTED | ABSENT
-verified: engine              # none | hand | engine | numeric | lean
+status: NATIVE                # §8.1
+verified: engine              # none | hand | engine | numeric | lean (§8.2)
 known_since: "1993 (James); the arithmetic fact is ancient"
 entered: 2026-10-03
 guide: shape-led              # shape-led | need-led
 band: "1–2"                   # K–12 band: K | 1–2 | 3–5 | 6–8 | 9–12 | beyond
-uses: [Z.inversion, void.space]   # mechanical: must equal the set of rules cited in the derivation
-see_also: [M.inverse-promotion]   # curated
+uses: [Z.inversion, void.space]   # mechanical: must equal the set of [[ids]] cited in the Derivation section
+see_also: [mult.inverse-promotion]   # curated
 aliases: []                   # ids in the existing ledgers (JO-n, JS-n, JP-n, JH-n, Field) and other names
 concepts: [negation, addition]
-guarded_by: []                # mechanical: [mult.seam-decree] iff the derivation relies on a clause of the decree — by content (a unit step at a non-absorbing position) or by position (an absorbing seam step); §5.4. Feeds the price
-understood: no                # personal tracker: no | partial | yes
-understood_note: ""           # optional
+guarded_by: []                # mechanical: [mult.seam-decree] iff the derivation relies on a clause of the decree (§4.3)
+understood: no                # Lui's tracker: no | partial | yes
+understood_note: ""
 reentry: false                # true only on the one re-entry edge's source node
 ---
 ```
 
-Field rules:
+Field rules: `uses` is **mechanical** (the checker computes the citations and fails the node if `uses` differs; hand-chosen relevance goes in `see_also`); `holds` is per setting and `readings` per reading — tables, not branches (LEGISLATION 8); `status`, `verified`, `known_since`, `entered` are four separate things (LEGISLATION 12); `band` follows the Iconic Mathematics scope and sequence and is unfilled (`beyond`) where unsure; `understood` is Lui's, never used in verification, rendered as a progress bar over the walk.
 
-- `uses` is **mechanical**: the checker computes the set of `[[id]]` cited in the Derivation section and fails the node if `uses` differs. Hand-chosen relevance goes in `see_also`.
-- `holds` is per **setting**; `readings` is per **reading**. Both are small tables, not branches (LEGISLATION 8). A setting that doesn't exist yet in the chart is still a legal column (`untested`).
-- `status` describes the law's standing in the program; `verified` describes how it was checked; `known_since` is the mathematics' date; `entered` is the program's date (LEGISLATION 12). Four separate things.
-- `band` is the K–12 band from the Iconic Mathematics scope and sequence (additive-first order: void → instance → inverse (additive) → abstract → inverse+abstract → J → functional), or `beyond`. Visible in v1, unfilled where unsure (LEGISLATION 25).
-- `understood` is Lui's, is never used in verification, and is rendered as a progress bar over the walk.
+### 3.4 Body sections (in this order; `##` headings; a section may say `none`)
 
-### 2.4 Body sections (in this order; `##` headings; a section may say `none`)
-
-1. **Law** — the law displayed three ways, side by side: raw form · named units (`o`, `□`, `J`, `ω`, `i`) · standard notation. The generator draws the forms from the canonical string; the file holds the strings.
-2. **Plain** — one sentence a ninth-grader could read, stating the ordinary fact this is the boundary version of. Required on every node (LEGISLATION 24).
-3. **Derivation** — a Given–Rule table in Book One's style:
-
-   ```
-   | form | rule | note |
-   |---|---|---|
-   | <A><B> | given | |
-   | <A><B> A B <A B> | [[Z.inversion]] | create the pair (A B)<A B> |
-   | <A B> | [[Z.inversion]] | cancel A<A> and B<B> |
-   ```
-   Allowed rules: `given`, `[[id]]` (one or more), `medium` (rearrangement in space — must also cite `[[void.space]]` once in the table), `substitution` (replacing a variable by a form), `congruence` (applying the same operation to both sides), `definition` (unfolding a definition — cite it), `name` (a row that merely names the previous form in standard notation, e.g. `A × B`; not a form, not checked), `lemma` (an equation proved by an earlier table of the same node, used right to left), `hypothesis` (schema nodes only: the schema's own law at a smaller parameter — the note cites `[[N.induction]]`; §2.7). Axioms, primitives, decrees and imports write `none — adjoined` and cite in prose the nodes their statement is built from — those citations are their `uses`. Gaps write `none — gap`. Meta-level nodes use a `| statement | rule | note |` table instead: prose steps, each citing the laws it leans on, plus a `witness:` script in the front matter where a computation carries the proof.
-   The engine evaluates every consecutive pair of forms on random values and fails the node if any step is not an equality in the declared sense; for an object-level theorem it also requires the tables to start at one side of the law and end at the other, as forms. Since 2026-10-04 it also checks that **the cited rule licenses the step**: the derivation checker (`tools/prover.py`, run by `check.py`) rewrites the previous form by the cited laws — each law as a rewrite in either orientation, at any position, variables matching sub-multisets — and must reach the next form in at most fourteen applications (one row may say "the counit, twice" or "Distribution n − 1 times"); a numerically true step with the wrong rule fails. Laws linked in the note cell count as cited. `given` may only open a table — a chain cannot restart — and the endpoint check asks that *one* table run from one side of the law to the other, as forms (a lemma table proves an equation a later table uses and contributes no endpoint). What the engine still does not check: that a note *describes* the step correctly, that the derivation is the intended one, or anything about the prose — that remains the referee's job (§10).
-4. **Confirms** — the standard-notation fact (with its usual name) that this law *is*, and what it is **not** (where a naive reading overreaches). This is the "in-house confirmation" line for the walk.
-5. **Settings and readings** — the two tables from the front matter, with one-line justifications for any cell that is not `holds`/`EXACT`.
-6. **Refuted readings** — ~~struck through~~ readings or derivations once believed and since refuted, each with the date and the refuting witness (LEGISLATION 15). `none` is a legal entry.
-7. **Notes** — anything else: Bricken's variant (attributed by volume), history, the thread that owns it.
-8. **Plan** — gaps only (§6.3).
+1. **Law** — the law three ways, side by side: raw form · named units · standard notation; the generator draws the forms from the canonical string. Then the lede: what the law is, in prose, with its back-links.
+2. **Plain** — one sentence (at most 45 words) a ninth-grader could read, stating the ordinary fact this is the boundary version of. Required on every node (LEGISLATION 24).
+3. **Derivation** — a Given–Rule table `| form | rule | note |` in Book One's style, every row a canonical form. Rules: `given` (opens a table — a chain cannot restart; start a new table or a lemma), `[[id]]` (one or more; a law linked in the note cell counts as cited), `medium` (rearrangement in space; cite `[[void.space]]` once in the table), `substitution`, `congruence`, `definition` (unfolding a definition — the row is an identity once the sugar is expanded), `name` (a row that merely names the previous form in standard notation; not a form, not checked), `lemma` (an equation proved by an earlier table of the same node), `hypothesis` (schema nodes only: the schema's own law at a smaller parameter; the note cites `[[N.induction]]`). Axioms, primitives, decrees and imports write `none — adjoined` and cite in prose the nodes their statement is built from — those citations are their `uses`. Gaps write `none — gap`. Meta-level nodes use a `| statement | rule | note |` table: prose steps, each citing the laws it leans on, with `witness part (k)` naming what the script checks. What the engine checks of a derivation: §7.1–7.3.
+4. **Confirms** — the standard-notation fact (with its usual name) that this law *is*, and what it is **not** (where a naive reading overreaches). The "in-house confirmation" line for the walk.
+5. **Settings and readings** — the two tables from the front matter, with one-line justifications for any cell that is not `holds`/`EXACT`; the body tables must agree with the front matter (checked).
+6. **Refuted readings** — ~~struck through~~ readings or derivations once believed and since refuted, each with the date and the refuting witness (LEGISLATION 15). `none` is legal.
+7. **Notes** — anything else: Bricken's variant (attributed by volume), history, the thread that owns it, what is owed.
+8. **Plan** — gaps only (§9.1).
 
 Price and used-by are **not** written in the file; the generator computes and renders them.
 
-### 2.5 Canonical strings
+### 3.5 Canonical strings
 
-- Boundaries: `( )`, `[ ]`, `< >`; from rung `H`, `[x ; y ; …]` — the ordered square, entries separated by `;`, each entry a form (its own multiset), the sequence ordered. Later primitives: `{ }` brace (extrusion), `{n }` lens (JP). Whitespace is ignored.
-- Sugar accepted by the parser and expanded before checking: `o` = `()`, `□` = `[]`, `J` = `[<o>]`, `ω` = `[()]` (the period form, rung `J1`; the cube root of unity that rung `C`'s prose also calls ω is never written as a canonical string, so the two do not collide), `void` = the empty form; from rung `H`: `i` = `(([J] <[oo]>))`, `j` = `(([Jj] <[oo]>))`, `k` = `([i ; j])`, and `Jj` the second seed — a **constant**, not sugar: the one form of the chart with no expansion into the three boundaries (`H.seed`). The printer folds the expansions back to `i`, `j`, `k`. Numerals `n` are **not** sugar in canonical strings (write the pile) except inside `[[...]]` prose.
-- Variables: single capital letters `A`–`Z`, optionally followed by a digit. The checker instantiates them on random values of the node's domain (the shadow check). A node whose law is one value of a family over n (`A A ≐ ([A][oo])`, the pile `ooo`) is marked `kind: instance`; the family itself, when the chart states it, is a `schema` node (§2.7).
-- Repetition over a count ("n copies") is a `schema` node (§2.7), whose canonical strings are templates in `X^{e}` / `Σ{…}` notation; an object law writes its small instance out in full (`A A`, `J J`), never a superscript.
+- Boundaries: `( )`, `[ ]`, `< >`; from rung `H`, `[x ; y ; …]` — the ordered square, entries separated by `;`, each entry a form (its own multiset), the sequence ordered. Whitespace is ignored. Later primitives: `{ }` brace (extrusion), `{n }` lens (JP).
+- Sugar, expanded by the parser and folded back by the printer: `o` = `()`, `□` = `[]`, `J` = `[<o>]`, `ω` = `[()]` (the period form; the cube root of unity that rung `C`'s prose also calls ω is never a canonical string), `void` = the empty form; from rung `H`: `i` = `(([J] <[oo]>))`, `j` = `(([Jj] <[oo]>))`, `k` = `([i ; j])`; and `Jj`, the second seed, a **constant** (§1). Numerals are **not** sugar in canonical strings (write the pile) except inside `[[...]]` prose.
+- Variables: single capital letters `A`–`Z`, optionally followed by a digit; the checker instantiates them on random values of the node's domain. A node whose law is one value of a family over n (`A A ≐ ([A][oo])`) is `kind: instance`; the family itself is a `schema` node (§3.7). Repetition over a count is a schema; an object law writes its small instance out in full, never a superscript.
+- A conditional law (§1) writes the bare equation in `law:` and its premise in `units:` (`PREMISE P·Q ≐ Q·P — …`); its domain is `slice`.
 
-### 2.6 Rendering conventions (generator)
+### 3.6 Domains
 
-Canonical strings are drawn as nested boundaries: round → rounded capsule, square → rectangle, angle → hexagon with pointed sides. Beside the drawing: the ASCII string, the units form, the standard form. Type = colour; status = badge; verified = badge; band = small tag. Refuted content is struck through. House typographic notation in prose: *italic* for a reduction (an emptying), ***bold-italic*** for an emergent operation, **bold** for a settled one, ~~strikethrough~~ for wrong, "scare-quotes" to hold a term at arm's length.
+The domain says where the shadow check samples a node's variables, per reading (§6): `natural` — a small count; `positive` — a positive real (at a place: a principal unit, now and then times p, and a fifth of the time a fraction of principal units); `negative`; `real` — either, nonzero; `unit` — a unit of the place (at ∞ a nonzero real); `complex` — any complex number (at a place any residue; in ℍ a generic quaternion); `slice` — in ℍ, co-sliced quaternions (in ℂ, any complex number); `plane` — internal to the ℍ ledger, ℂ ⊂ ℍ. Defaults: `positive` through `alg`, `complex` from `C` on; a node may narrow or widen it, and a law unsound outside its domain says so in its reading cells. The engine snaps values that are real up to rounding onto the real axis before taking a log.
 
----
+### 3.7 Schema nodes (LEGISLATION 29)
 
-### 2.7 Schema nodes (LEGISLATION 29)
+A `type: schema` node states a law for every value of a count parameter; the law and the derivation rows are **templates**: `X^{e}` — e juxtaposed copies of X (X a variable, `o`, `J`, `□`, or a bracketed group; e an expression in the parameters: `n`, `k`, `n-1`, `2k`, `2k+1`, `n+1`; `o^{n}` is the pile n); `Σ{j=a..b: F}` — the juxtaposition of F for j = a … b (an empty range is void). `schema_range:` gives the instances the engine checks (`n=2..8`; `n=2..7; k=1..n-1`). A derivation table whose header reads `| form (n = 1) | rule | note |` is a **base case**; the other tables are the **step**; an instance at the base value is the base table alone, at any other value the step tables alone — so a `hypothesis` row always points at a value already checked, and the range may not start below the base. The step may cite the schema itself at a smaller parameter with the rule `hypothesis`, whose note cites `[[N.induction]]` — the gap enters `uses` and the price. What the engine checks per instance: the law shadow, every row pair as an equality, the seam decree, the endpoints as forms, and for a `hypothesis` row that it is one application of the schema's own law at a smaller parameter in range (strong induction; variables kept as written). What it does not check: the passage to all n — that is the gap, priced; `NATIVE-BY-SCHEMA` records exactly this. Only the `law:` string and the form column are expanded; rule and note cells are kept as written. Cards draw one instance (`schema_draw:`, default n = 3).
 
-A `type: schema` node states a law for every value of a count parameter. The law and the derivation rows are **templates**:
+**Over the place.** The parameter `p` is the place: `o^{p}` is the prime as a pile, `[o^{p}]` its log; the range is an explicit list, `p=2,3,5,7,13`, joined with a depth (`p=2,3; n=1..3`) or given as tuples where the depths differ (`(p,n)=(2,2),(3,1),…`); expressions may use `**`. Each instance is read *at its own place* to its depth. **Every** node whose range binds p cites `[[place.ostrowski]]` in `uses` — the import names the places and does not license the passage from the five tested to all of them, exactly as the induction gap prices the passage from a range to all n. A `decree` may be written over p and n (the void pile): checked at every instance, a rule at each, no derivation, no tape; an `import` may be too (Fermat–Euler), checked at every instance and priced as an import.
 
-- `X^{e}` — e juxtaposed copies of X, where X is a variable, `o`, `J`, `□`, or a bracketed group, and e is an expression in the parameters (`n`, `k`, `n-1`, `2k`, `2k+1`, `n+1`); `o^{n}` is the pile n.
-- `Σ{j=a..b: F}` — the juxtaposition of F for j = a, …, b, with counts `^{…j…}` inside F (an empty range, b = a − 1, is void).
-- `schema_range:` in the front matter, e.g. `n=2..8` or `n=2..7; k=1..n-1`, gives the instances the engine checks. A derivation table whose header reads `| form (n = 1) | rule | note |` (any parameter, any value) is a **base case**; the other tables are the **step**. An instance at a base value consists of the base table alone; an instance at any other value consists of the step tables alone — so a `hypothesis` row always points at a value already checked, and the range may not start below the base.
-- The step may cite the schema itself at a smaller parameter with the rule `hypothesis`, and that row cites `[[N.induction]]` in its note, which puts the gap in `uses` and so in the price. A schema with a `hypothesis` row must have a base case at the minimum of its range; a schema without one (one that reduces to earlier schemas, as the roots of unity reduce to cardinality) needs no base.
-- What the engine checks, per instance: the law shadow, every consecutive pair of rows as an equality in ℂ, the seam decree on every row (with `guarded_by` the union over instances), and the endpoints — the first row is the instantiated law's left side and the last its right side *as forms*, not merely in value. For a `hypothesis` row it checks, syntactically, that the row is obtained from the previous one by one application, in either direction, of the schema's own law at a smaller parameter in range (any smaller one — strong induction — with the variables kept as written, so a hypothesis applied under a substitution is a `substitution` row first and a `hypothesis` row after). What it does **not** check: that any other cited rule licenses its step (the referee's job, as everywhere), and the passage to all n — that is the gap, and it is priced. So a schema is verified *up to the range* and no further; that is what `NATIVE-BY-SCHEMA` records. Cards draw one instance (n = 3 by default, `schema_draw:`) and show the template beneath it; each derivation table is captioned with the values it is drawn at.
-- Only canonical cells are expanded: the `law:` string and the form column of a derivation table. Rule and note cells and the prose of the section are kept as written, so a note may say `a^{n−1}` or ω^{n+1} without being a template. A row whose instance coincides with the row before it (the pile n *is* the pile n − 1 beside a unit) is legal and says so in its note.
-- **Schemas over the place (rung `place`; proposed, pending LEGISLATION 31).** The parameter `p` is the place: `o^{p}` is the prime as a pile, `[o^{p}]` its log, and the range is an explicit list, `p=2,3,5,7,13`, which may be joined with a depth, `p=2,3; n=1..3`, or given as tuples where the depths differ by place, `(p,n)=(2,2),(2,3),(3,1),(3,2),(3,3)`. Expressions may use `**` (`o^{p**n}`, `o^{(p-1)*p**(n-1)}`). The engine reads each instance *at its own place* (SPEC §4.4), to the depth n when the range has one. The price of the meta-move "at every place" is the import [[place.ostrowski]]: **every** node whose range binds p cites it in `uses` — a schema over p as a schema over n cites [[N.induction]] (resting on another schema does not stand in for it) — and the import names the places without licensing the passage from the five the engine reads at to all of them, exactly as the induction gap is the price of the passage from a range to all n. A `decree` may be written over p and n too (the void pile, `o^{p**n} ≃ void`): its declared equation is then checked at every instance, and it acts as a rule at each, but it has no derivation and earns no tape; an `import` may be too (Fermat–Euler), checked at every instance of its range and priced as an import.
+### 3.8 Meta nodes and witnesses
 
----
+A meta node's Derivation is a statement table; its `witness:` script in `tools/models/` checks what the statements claim, exits 0 iff all hold, and prints one line per part; the node's rows name the parts. The checker runs every witness. A meta claim a witness computes is `verified: engine`; without a witness it is at most `hand`, and "Exact" is withheld (§8.2). A witness computes what the node cites — a row that names "witness part (k)" refers to a check the script actually makes.
 
-## 3. Links
+### 3.9 Rendering
 
-- **Back-links** (`uses`) are exactly the rules cited in the derivation. They are the chart's edges. A node may cite a node of a later rung only if that node's `order` is smaller — the walk order, not the rung, is what the DAG check enforces, so cross-rung dependencies (Dominion needs Inversion) are legal and visible.
-- **Used-by** is computed.
-- **See-also** is curated and drawn dashed.
-- **Aliases** map ledger ids (JO-12, JS-39, JP-1, JH-3, Field prohibitions) onto nodes so the existing work is reachable by its old names (LEGISLATION 25).
-- **Concepts** form the second index: `concepts/<slug>.md` holds a one-paragraph plain description; the generator lists under each concept every node that names it. "Square root" resolves to its concept page, which resolves to the forms and the laws (LEGISLATION 5).
+Canonical strings are drawn as nested boundaries: round → capsule, square → rectangle, angle → hexagon, the ordered square → a rectangle with dashed dividers between its entries, a constant → an italic letter. Beside the drawing: the ASCII string, the units form, the standard form. Type = colour; status = badge; verified = badge; band = tag; refuted content struck through. Each card shows its 𝕁₁ tape, its law at the places, its law in ℍ and its tape in ℍ, from the ledgers (§7.4).
 
 ---
 
-## 4. Settings and readings
+## 4. Links, order and price
 
-### 4.1 Settings are attributes, not branches (LEGISLATION 8)
+### 4.1 Links
 
-A **setting** is a named set of nodes in force. A calculus extension is itself a node (a new axiom or primitive), and the setting is the set that includes it:
+**Back-links** (`uses`) are exactly the rules cited in the Derivation; they are the chart's edges. **Used-by** is computed. **See-also** is curated, drawn dashed. **Aliases** map ledger ids (JH-3, JO-12, JS-39, JP-1, Field prohibitions) onto nodes so the existing work is reachable by its old names (LEGISLATION 25). **Concepts** form the second index: `concepts/<slug>.md` holds a one-paragraph plain description; the generator lists under each concept every node that names it (LEGISLATION 5).
+
+### 4.2 Order (LEGISLATION 18)
+
+Dependency order is the spine (the `uses` DAG); rungs are the chapters; `order` is the walk, a total order refining the DAG, integers spaced by 10. A node may cite a node of a later rung only if that node's `order` is smaller — the walk order, not the rung, is what the DAG check enforces. `guide: shape-led | need-led` on every node records whether the step followed the shape of the forms or was pushed by what mathematics needed; the ratio per rung is rendered — it is itself a finding.
+
+### 4.3 Price (LEGISLATION 11)
+
+`price(n)` = the ancestors of n along `uses` whose type is `primitive`, `axiom`, `decree`, `import` or `gap`, together with every `guarded_by` along the way (a guard declared by an ancestor is inherited by price, never re-declared), partitioned into **base** (the three boundaries, the medium, James's three axioms) and **extra** (everything else). Rendered as "what it costs to write X". The concept index shows the cheapest price among a concept's forms.
+
+**`guarded_by`** (LEGISLATION 28). A node declares `guarded_by: [mult.seam-decree]` exactly when its derivation relies on a clause of the seam decree, and the checker computes this from the derivation and enforces it both ways: **by content** — a unit step `[(X)] ↔ X` at a non-absorbing position, admitted because X stays on the principal strip over the whole domain, which the ℂ reading certifies; **by position** — a unit step in an absorbing position whose content leaves the strip for some value of the domain (a seam step, saved by the enclosing instance); **free** — an absorbing on-strip unit step, any derivation with no unit step, and a unit step on void or hole content (`mult.log-of-one`, `mult.hole-instance`). The clause is shown on the card; status is unaffected (a guarded theorem is `NATIVE`). In 𝕁₁ the guards dissolve into receipts (§7.3): by position → absorbed; by content at depth 0 → posted; by content under a square → an import, still a guard.
+
+---
+
+## 5. Settings (LEGISLATION 8)
+
+A **setting** is a named set of nodes in force. An extension is itself a node (a new axiom, primitive or decree), and the setting is the set that includes it — an attribute of every law (its `holds` cell), not a branch of the chart.
 
 | setting | = classical ∪ … | source |
 |---|---|---|
-| `classical` | three boundaries, Involution, Distribution, Inversion, and two decrees: the undefined forms (`<□>`, `[□]`) and the seam discipline (of which James's J-discipline is a special case — `C.james-discipline`; stated in the ℂ reading because no syntactic signature exists — `mult.seam-signature`) | James 1993; Book One Part I–II; `mult.hole-exclusion`, `mult.seam-decree` |
-| `J1` | Involution split: the counit `([A]) ≡ A` strict (`J1.counit`), the unit `[(A)] ≃ A` witnessed by a receipt (`J1.unit`); the period form ω := `[()]` kept rather than erased; the period `(ω) ≡ ()` and absorption `(ω A) ≃ (A)` are theorems (strict; absorbed); L0 linearity (`J1.linearity`, decree); the pole read by polarity (`J1.pole`, decree); the ψ-wall (`J1.psi-wall`, decree) with von Staudt–Clausen as its one import. Three equalities: ≡ strict, ≃ witnessed, ≈ evaluated (LEGISLATION 30) | Number at Height One (2026-07-21), 𝕁 v3.1 Linearity (2026-08-09), the page-logic legislation (2026-08-22), LEGISLATION 30 |
-| `JH` | + the ordered square `[ ; ]` (a fourth boundary, `H.ordered-bracket`) with its bookkeeping axioms — splice, the unit entry, two-sided list distribution — and two conditional axioms, the exchange of commuting entries (`H.commutation`) and the collapse of co-sliced entries to the classical square (`H.collapse`, witnessed); the second seed `Jj` with `(Jj) ≐ <o>` (`H.seed`, a decree) and anticommutation O9 `([i ; j]) ≐ <([j ; i])>` (`H.anticommutation`, the one non-commutativity axiom); ordered cancellation a theorem; the seam guard `H.seam-guard` (the trunk's seam decree read on the sphere of logs of −1); receipts with a direction, paid only in their own slice (`H.slice-wall`). Read in ℍ at ∞ (`tools/quat.py`) and at the places 2, 3, 5, 7, 13 (`tools/quatplace.py`): §4.5. *Proposed, pending LEGISLATION 32* | the JH-Calculus report (2026-08); rung `H` (2026-10-07) |
-| `JO` | + tree nesting, priced receipts, alternator | Book One Part IV |
-| `JS` | + fourth doubling, octave grade | JS-algebra-sedenionic |
-| `JP` | the enriched calculus read at a finite place: the void pile `o^{p**n} ≃ void` declares the page (`place.void-pile`, a decree over p and n), the reading at p (`place.reading`: the log space ℤ_p ⊕ ℚ[p] ⊕ ℚJ_p, the radius of the instance, the selection of the fractions of the period, no reciprocal of the prime, the log of exactly one as the place's period ω_p), and the discipline of the page — the page's equality does not pass through a square, so a law of the page is ≃ and a page step is graded by position (§5.5); the lens and the completion are the rung's gap. *Proposed, pending LEGISLATION 31* | Part II: Calculus of Number at a Place; rung `place` (2026-10-06) |
+| `classical` | three boundaries, Involution, Distribution, Inversion, and two decrees: the undefined forms (`<□>`, `[□]` excluded: `mult.hole-exclusion`) and the seam discipline (`mult.seam-decree`, stated in the ℂ reading because no syntactic signature exists — `mult.seam-signature`; James's J-discipline is its special case, `C.james-discipline`). The ℂ import is provisional until `J1` (LEGISLATION 27) | James 1993; Book One I–II |
+| `J1` | Involution split: the counit `([A]) ≡ A` strict (`J1.counit`), the unit `[(A)] ≃ A` witnessed by a receipt (`J1.unit`); the period form ω := `[()]` kept rather than erased; closure `(ω) ≡ ()` and absorption `(ω A) ≃ (A)` theorems; L0 linearity, the pole read by polarity, the ψ-wall as decrees; von Staudt–Clausen the one import. Three equalities ≡, ≃, ≈ | Number at Height One; 𝕁 v3.1; LEGISLATION 30 |
+| `JP` | the enriched calculus read at a finite place: the void pile `o^{p**n} ≃ void` declares the page (`place.void-pile`, a decree over p and n); the reading at p (`place.reading`, an import); the discipline of the page — the page's equality does not pass through a square, so a law of the page is ≃ and a page step is graded by position; the lens and the completion are the rung's gap. *Pending LEGISLATION 31* | Part II: Calculus of Number at a Place; rung `place` |
+| `JH` | the ordered square `[ ; ]` (`H.ordered-bracket`, a fourth boundary) with splice, the unit entry and two-sided distribution as axioms and two conditional axioms — the exchange of commuting entries (`H.commutation`) and the collapse of co-sliced entries to the classical square (`H.collapse`, witnessed); the second seed `Jj`, `(Jj) ≐ <o>` (`H.seed`, decree); anticommutation O9 (`H.anticommutation`, the one non-commutativity axiom); ordered cancellation a theorem; the seam guard `H.seam-guard`; receipts with a direction (`H.slice-wall`). *Pending LEGISLATION 32* | the JH-Calculus report; rung `H` |
+| `JO` | + tree-shaped nesting, the alternative laws, a third seed: the rung's gap (`H.octonion-gap`), not yet laid | Book One Part IV |
+| `JS` | + the fourth doubling, the octave grade | JS-algebra-sedenionic |
 | `extrusion` | + brace `{ }`, gauge principle G0 | 𝕁 v3.2 |
 | `field` | + ι or κ adjunction, boost seed | The Field, Vol. I |
 
-Every law carries a `holds` cell for each setting: `holds` · `holds-mod-Λ` · `guarded` (holds under a named guard) · `replaced` (a more general law restricts back to it) · `fails` · `untested`. The three-way dominion check (classical holds / spectral fails / J1 deferred) is the template.
-
-### 4.2 Readings
-
-A **reading** is a model. The default gloss is `C`. The F₁ roads enter as readings first: `finset` (trunk road), `lambda` (Borger), `CC` (Connes–Consani); `logic` covers LoF/Existential-Graphs. Cells: `EXACT` · `PARTIAL` · `ANALOGY` · `ABSENT` · `CONVERSE` · `untested` — the five-word verdict vocabulary from the page-logic ledger, plus `untested`.
-
-Readings are how the moduli-stack idea (LEGISLATION 17) enters the chart without a new primitive: a form is one thing; its readings are the points of its moduli; a law that holds in every reading is the stable part, and a law that holds in only one is the chart's way of saying where a reading is doing work the calculus is not.
-
-### 4.3 Bricken (LEGISLATION 9)
-
-James 1993 is the ground truth for `classical` (the thesis is in `references/james-1993-calculus-of-number.pdf`; its page numbers are cited in `known_since` and Notes). Bricken's constructs (`[[ ]]` as complex infinity, unit-ensemble presentations, parallel forms) enter as **attributed notes** inside the node they vary, tagged by volume (*Iconic Arithmetic* I/II/III), and become nodes only where they add a law James does not have.
-
-### 4.4 The place ledger (computed; rung `place`; proposed, pending LEGISLATION 31)
-
-The chart reads every law at the finite places p = 2, 3, 5, 7, 13 (`tools/place.py`, `tools/placeledger.py`) and writes `census/place-ledger.md`. The reading at p is the 𝕁₁ reading moved to a finite place: a value is a number part (a residue of the page, mod p^n — the void pile), a count of the prime's log `[p]` and a count of the torsion log J_p; `[ ]` splits a number into the three and `( )` reassembles them where it can — the number part on the radius p·ℤ_p (4ℤ_2), the counts whole. Five conventions (`place.reading`): the log of *exactly one* reads the place's period ω_p = (p−1)·J_p (2·J_2 at 2), every other log principal (LEGISLATION 30b at p); a fraction of a torsion count is taken in 0 … p−2 (0, 1 at 2) — the *principal root* of the place, canonical on the principal units and a convention elsewhere; the generator of the torsion is the Teichmüller lift of the least primitive root (−1 at 2), a convention like the choice of 2πi over −2πi; a formal element's log is a formal symbol that a count scales, and the product of two formal elements has no value (weight 2); counts scale formal elements only when exact. Counts are carried exactly beside the residues. **Depth and precision.** The page's depth n is what equality is mod; the engine's working precision N is what the arithmetic is carried to — the depth plus a margin of as many shells again (`default_depth(p)`: 17 at 2, 11 at 3, 8 at 5, 6 at 7, 5 at 13), so that a log that loses shells (the log of a non-unit loses its count of `[p]`) is still read to the depth; a value that has lost more than the margin cannot be judged at the depth, and `equal`/`receipt` raise `BeyondPrecision` for it (the sample is dropped, never judged). "Exactly one" — and "exactly zero" for a pure torsion count, which is then exactly ±1 — is decided at N: a 1-unit ≡ 1 mod p^n but not mod p^N has the log of a 1-unit, not the period; a count of `[p]` at or past N has no instance that can be read (`BeyondPrecision`, dropped), so that nothing past the precision is ever read as the exact one. The ledger reads at the default depth (the resolution that tells small counts apart) with N twice it; the rung's own schemas read at their depth n with the same margin. The equality at depth n is coarser than at N and the values are the same, so a law exact at N is exact at every smaller depth, and a receipt void at N is void there: the ledger is the strongest statement, and the referee's depth-1…3 runs (2026-10-06, after the repair) find no law that holds at N and fails at a smaller depth.
-
-**The discipline of the page (LEGISLATION 31(g)).** The page's equality — agreement mod p^n — passes through juxtaposition, angles and instances, not through a square: `[o^{p**n}]` is n·[p], `[void]` is the pole, and the log of a non-unit loses as many shells as its count of `[p]`. The laws of the page — the void pile and what follows from it by the page's equality alone (residues, minus one as a pile, Fermat–Euler, division by a unit, the prime power, the geometric doll) — are written ≃, and the receipt prover grades a page step by position (§5.5): `page` with no square anywhere above it; with a square above, measured at every square above it. An instance does not *pay* a page difference as it pays a period: exp(a + pⁿ) ≡ exp(a) only mod pⁿ, so a square above the instance can still read the difference — as the period, at the point where one side is exactly one — which is why every square above the step is measured, not only the first (the second referee pass, 2026-10-06). Without the discipline the page collapses (`o^{5} ≐ void` at p = 5, depth 2, by the void pile under the exponent's square). The pole is the limit end of the count of `[p]` — no finite count is it; the instance of n·[p] is the void pile at depth n (`place.prime-power`, `place.two-ends`).
-
-**The domains at a place.** `natural` — a small count; `positive` — a principal unit, now and then times p or p², and a fifth of the time a *fraction* of principal units (so that a count that is not whole is sampled: the laws that hold for integer turns only are told apart) — the place's image of the positive reals, the sector where the log is single-valued and the receipts are void; `negative` — minus a principal unit; `real` — either; `unit` — any unit of the page; `complex` and the rest — any residue, with the natural share of multiples of p. The radius is the *standing proviso* of every instance at a finite place: a sample whose instance content falls outside it is retried on the radius (every variable times p, 4 at 2), and if it is still outside, the form has no value at p for that sample — it counts as formless, exactly as a sample that is not a form for a *selection* reason does (a fraction of the period that is not a form at p, the reciprocal of the prime, weight 2; at 2 a unit ≡ 5 mod 8 has no root, and the root form's content is outside the radius there). A sample past the engine's working precision is dropped unjudged — a limit of the engine, not of the place. The exceptional points are probed by domain as at ∞ — a variable exactly one, and minus one for a negative or real variable — on the lattice point itself (no retry), and a failure there is marked `·exc`, as the tape names the exceptional points at ∞.
-
-**Per place** the ledger records the law — `exact` (as stated on every generic sample), `mod-Λ` (a strict law holding only mod ω_p), `guarded` (holds where its forms exist; some sample is not a form), `none` (no sample is a form), `fails` — and the derivation's **tape**: the licensed path found at ∞ re-graded with the place's receipts (strict, absorbed, posted, import, absent), so that "the same wall at every place" is checked by the same prover; a step whose content has no value at p on any sample is `formless` there (an empty receipt set — not `?`, which is a difference that is no lattice element at every sample, a false step), and a tape whose only absent steps are formless makes the law `guarded` at p, not `fails`. **The JP cell** these imply: `replaced` when the law is a form at no tested place (the hand cell names the place law that takes over — the radius, the void pile); `fails` when it fails somewhere it is a form, or its tape is absent; `guarded` when some instance somewhere is not a form, or the tape imports; else the tape's grade — strict, page or absorbed `holds`, posted `holds-mod-Λ` — or, for a node without a derivation, from the law alone. The hand cell may say more (`guarded` over `holds`, `replaced` over `fails`), never less, and `untested` is no longer legal where the ledger computes. The nodes of rung `place` are graded at their own place as they are checked, like 𝕁₁'s at ∞: the equality symbol and the JP cell follow the tape, and the rung's tapes are kept for the nodes after them (a page law cited under a square is measured there). A trunk theorem cited by a node of the rung is priced at its grade at ∞ (its grade at the place is computed afterwards, by the ledger). A path re-graded at p is the path found cheapest at ∞; a cheaper one may exist at p, so a tape at p can be too pessimistic, never too generous. `tools/check.py --only place.` grades the cited trunk theorems first, so that its tapes agree with the full run's.
-
-### 4.5 The ℍ reading and the quaternion ledgers (computed; rung `H`; proposed, pending LEGISLATION 32)
-
-**Breadth is commutative.** `[A][B]` and `[B][A]` are one form of the medium, so any reading in which `([A][B])` is a product makes that product commute; in ℍ the encoding `([A][B])` = exp(log A + log B) is A·B only for co-sliced contents, and pairwise-commuting quaternions lie in one slice C_u = ℝ + ℝu (`H.no-go`, the Slice theorem, JH-1). A non-commutative product therefore lives in *depth*: the **ordered square** `[x₁ ; … ; xₙ]` (`H.ordered-bracket`) reads as the log of the ordered product x₁ ⋯ xₙ, and `([A ; B])` is A·B (`H.ordered-product`). Its bookkeeping is adjoined: splice `[A ; ([B ; C])] ≐ [A ; B ; C]` (associativity as concatenation), the unit entry `[A ; o ; B] ≐ [A ; B]`, two-sided list distribution `([A ; B C]) ≐ ([A ; B]) ([A ; C])`; the empty entry is the pole and the central sign `([A ; <B>]) ≐ <([A ; B])>` are theorems. A law of the ordered square written with vector entries in the JH report (x⃗ ; y ; z⃗) is a **family** of rules, one per shape of the list; the engine instantiates each family for lists of up to five entries (`tools/licences.py`, `FAMILIES`), the node's derivation proves the shape its `law:` states, and the other shapes are the same law at another position.
-
-**Conditional laws.** Two axioms hold under a premise the forms cannot state: commuting entries exchange, `[P ; Q] ≐ [Q ; P]` when the *values* P·Q = Q·P (`H.commutation`), and co-sliced entries collapse, `[P ; Q] ≃ [P] [Q]` when the *logs* of P and Q commute (`H.collapse`, the Slice Principle JH-4: on co-sliced contents the classical calculus holds verbatim with J → J_u). The `law:` field carries the equation, the `units:` field opens with `PREMISE …`, the law's domain is `slice`, and the reading checks the premise at every use of the rule on the entries matched as P and Q (`tools/j1.py`, `CONDITIONAL`; `premise_holds`): a step whose premise fails is `absent [premise]`. The two premises differ, and the difference is the pinning: −1 and j commute as values, but the pinned log of −1 lies in the slice of i and the log of j in the slice of j, so `[<o> ; j]` exchanges and does not collapse (the refuted reading on `H.collapse`). The collapse is also **witnessed**: log(PQ) and log P + log Q differ by a lattice element even on a slice, so a collapse posts a receipt by position exactly as the unit does — absorbed directly inside an instance, posted at depth 0, an import under a square (`WITNESSED_H`).
-
-**The reading at ∞** (`tools/quat.py`, `Reading`). A value is a quaternion; `[ ]` is the principal log — L(q) = ln|q| + θu for q = |q|e^{θu}, θ ∈ [0, π], with the one choice the forms force: **J-pinning** (LEGISLATION 31 carried to ℍ), L(−r) = ln r + πi, so that the one form `[<o>]` has one value, and the log of *exactly one* is the pinned ω = 2πi as in 𝕁₁ (LEGISLATION 30b); an ordered square is the log of the ordered product of its entries' values; `Jj` reads πj; `( )` is exp; the Hamilton product is ℍ's. The period lattice is Λ_ℍ = {2πk·u : u a pure unit}: a **receipt carries a direction**, and `equal(≃)` tests whether a difference is a lattice element in *any* direction — so ≃ in ℍ is not a congruence through an instance (A ≃ A Jj Jj, while `(A)` and `(A Jj Jj)` differ for A off the slice of j); what keeps the tapes sound is the value check of every absorbed step at its paying instance, and a posted law with a cross-slice receipt would pass the law check while its instances differ — none is on the chart, and the ledgers' value columns are where one would show. The domains: the real ones (natural, positive, negative, real, unit) are central — on them every trunk law holds as it holds in ℝ; `complex` is a generic quaternion, all four coordinates random; `slice` is co-sliced — every variable in one random slice C_u; `plane` (internal) is ℂ ⊂ ℍ, the slice of the pinned J. The probes are the lattice points of 𝕁₁ and the units i, j, k.
-
-**The tape in ℍ.** The receipt prover grades every derivation of rung `H`, and re-grades every licensed path of the trunk, in this reading (§5.5, "the tape in ℍ"): the strict rules of the ordered square leave the tape untouched; a collapse or a unit step posts a receipt by position; and — the first non-commutative wall — an **absorbed step is checked by value**: the instance that pays the receipt must still agree before and after. For a primitive witnessed rule, and for a unit-shaped step of a theorem, the paying instance is the innermost instance above the redex, through angles; for a theorem reused on another shape the two sides themselves. Where the instance does not agree the step is `absent [cross-slice]`: the content is not co-sliced with the receipt's direction, and exp(2πu + A) ≠ exp(A) when [A, u] ≠ 0 (in-band rigidity; `H.slice-wall`). A receipt that is no lattice element is the **seam**: πu against πi, two logs of −1 that differ by no period. At depth 0 a seam displacement is `absent` — the two forms differ on the page by a displacement no period measures, and the step is false there (`H.seam-guard`: the sphere seam, JH-3); directly inside an instance whose values agree it is paid, and recorded `where = seam` — James's J-discipline pays it the same way (`H.j-squared`'s collapse, πj against πi). The trunk's derivations are re-graded on the **plane**: a trunk derivation is the classical calculus, which ℍ carries verbatim on the slice of the pinned J and on no other slice (its receipts ω are 2πi, and `[()]` has one value), and conjugation by a unit quaternion — an automorphism of ℍ — carries the same derivation to every other slice with J → J_u; a trunk theorem reused in rung `H` is value-checked at its use site, on the citing node's own contents (`tools/hledger.py`, `on_slice`).
-
-**The ℍ ledger** (`census/h-ledger.md`). For every object-level law of the trunk: the law on its own domain in ℍ and on generic quaternions (`exact` · `mod-Λ` · `guarded` · `none` · `seam` · `fails`; `seam` — the two sides differ by a seam displacement on some sample, a positive-measure event only at a finite place), its tape in ℍ, and the JH cell they imply (`replaced` when formless on its domain; `fails` when it fails on its domain or its tape is absent with a non-void receipt; `guarded` when some sample is formless, the law is on the seam, or the tape imports; `holds-mod-Λ` when the tape posts or the law holds mod Λ; else `holds`), compared with the hand cell, which may say more (`replaced` names the law of rung `H` that takes over — the central sign for the sign laws, the slice wall for absorption, the collapse for the exp law), never less; `untested` is no longer legal where the ledger computes. What the ledger found (2026-10-07): fifteen trunk laws fail on generic quaternions and hold on the plane ℂ ⊂ ℍ — the unit law and the absorptions (`[o]` is the pinned 2πi, paid only on the slice of i), the sign laws (a sign passes a pinned half-turn), the exp law (the No-Go equation), phase under an instance (the rigidity dichotomy JH-12), phase independence and the seam theorem (the half-turn is in the direction of A, not of i) — each `replaced` by its rung-`H` form; the ones that mention J or ω fail on a *random* slice too, since the forms pin both to i (the Slice Principle's J → J_u is a substitution the forms do not make); four post at depth 0 in ℍ as in 𝕁₁ (`holds-mod-Λ`); two import; the rest hold. The nodes of rung `H` are graded in ℍ as they are checked, like 𝕁₁'s at ∞ and `place`'s at p: the equality symbol and the JH cell follow the tape (`tools/check.py --only H.` grades the cited trunk theorems first, in ℍ).
-
-**The reading at a place** (`tools/quatplace.py`; `H.ramification`). Hamilton's quaternions ramify at exactly 2 and ∞ and split at every odd p. At an **odd p** the quaternions of the page are 2×2 matrices over ℤ/pⁿ (`H.split-place`): i and j are the Hurwitz units, Hamilton's relations hold on the page, the norm is the determinant and is *isotropic* — a nonzero quaternion of the page with norm ≡ 0 is a zero divisor, has no reciprocal and no log (the norm-null species, JH-20 on the page, refused by name). At **2** the page is the Hurwitz order O (all-integer or all-half-odd parts) mod a power of π = 1 + i, the prime of the division algebra: v(π) = ½, the valuation v(q) = v₂(N(q))/2 runs in half-shells over the whole algebra (the order is its valuation ring), the residue field O/πO is 𝔽₄ = {0, 1, ζ, ζ²} with ζ = (−1 + i + j + k)/2, the radius of the instance is v ≥ 3/2, and the 24 Hurwitz units — the torsion of the *global* order, its elements of norm 1 — are the torsion the reading names; the local order O₂ has infinitely many more (the conjugates of i, j, ζ: (3i + 4j)/5 squares to −1 in O₂), which the reading does not read (`H.ramified-place`, `H.hurwitz-units`). A value is a number part (a residue of the page), a count of the prime's log — `[π]` at 2, in halves — and a **torsion part**: a dict of (direction, count) pairs over the Hurwitz units, with the pinned −1 at (i, 1), the central Teichmüller log J_p at odd p (`CENTRAL`), and a *carrier* ("e", the element) for any other unit of finite order prime to p — its Teichmüller lift, the limit of its pⁿ-th powers, with whole counts only. The log of a unit: strip the prime's power (on the left at 2, q = πᵐ·unit, as the instance rebuilds it), then a torsion factor t with the rest t⁻¹·unit principal — and **t must commute with the rest**, so that the log is the sum of two logs whose negation is the log of the inverse (exp(−L)·t⁻¹ = t⁻¹·exp(−L) = x⁻¹); the pinned −1 and the central scalars first, then the Hurwitz units, then the Teichmüller carrier (a limit of powers of the unit, it commutes). A unit whose torsion and principal parts do not commute, or whose reduction has order divisible by p (a unipotent part), has no log in the reading — *owed*, and named in the refusal; at 2 that is nearly every unit of O₂ (half of O^× has no Hurwitz representative, and of the rest only the commuting ones read: a few per cent, by the witness's sample of 2000), so the rung's structural laws read `none` there and `guarded` at odd p, while the Hamilton table, the quaternion, its conjugate, the pure square and the norm — laws whose variables are central — read `exact` at every place. The log of exactly one is the page's period: 2·J_i at 2, (p−1)·J_p at odd p. Antipodal directions are one direction with a signed count ((−u, c) is (u, −c)), so `[oo][oo]` and `[oooo]` agree mod the period at 2 — not exactly, since the prime π is not central and a central number acquires a torsion part from its spelling (2 = π²·(−i), 4 = π⁴·(−1)). The log is read at the working precision, not the depth: two representatives equal at the depth can differ in whether a commuting torsion factor exists, so on the quaternion page the digits past the depth decide the *existence* of a log, not only its value (LEGISLATION 31(g), sharpened). The `slice` domain at a place is co-sliced by construction: powers of one Hurwitz unit times principal units of the plane it spans. The **seam** has positive measure on the page: a product of co-sliced units is a negative principal unit as often as not, and its log is pinned to i while the sum of the two logs lies in the slice; `seam(x, y)` — not equal mod the page's periods, but the torsion parts instance to one element — is the ledger's verdict there, and the collapse reads `seam` at every place: `guarded`.
-
-**The quaternion place ledger** (`census/h-place-ledger.md`). Two tables: every object-level law of rung `H` read at p = 2, 3, 5, 7, 13 in the quaternion reading at the place — per place `exact` · `mod-Λ` · `guarded` · `none` · `seam` · `fails`, and the JP cell they imply (`replaced` when formless at every place, `fails` when it fails anywhere, `guarded` when formless or on the seam somewhere, `holds-mod-Λ`, `holds`); and every object-level law of rung `place` read in that reading at its own place and depth, on the centre (its own domain: the page's own numbers) and on generic quaternions of the page — its JH cell `holds` when exact on both, `guarded` when exact on the centre only (Fermat–Euler: U = i has order 4; division by a unit: a non-central unit's quotient is not `[A] <[U]>`), `replaced` or `fails` otherwise. The laws of rung `place` written over the place and the depth are read instance by instance (their templates parse only when expanded); declarations and the meta theorems of the rung are read by hand from the two place witnesses and say so in their cells.
-
-**What is not read.** The 120° law and phase interference (`H.polar-form`) and the sphere of phases (`H.phase-sphere`) have no finite-place analogue the chart reads: their place cells are `replaced` by the place's polar form and read by hand. The anti-automorphism conj(pq) = conj(q) conj(p) is witnessed exactly (`H.four-squares`) and its derivation on the page is owed. The octonions are the rung's gap (`H.octonion-gap`): splice is associativity, and the next doubling needs a tree-shaped depth the chart has no boundary for.
+Every law carries a `holds` cell for every setting (§2.2). A setting that is not yet built is still a legal column, `untested`, until a ledger computes it.
 
 ---
 
-## 5. Status, verification, dates, price
+## 6. Readings
 
-### 5.1 Status (one enum for the whole program; LEGISLATION 12)
+A **reading** is a model. The default gloss is `C`; the F₁ roads enter as readings first (`finset`, `lambda`, `CC`); `logic` covers LoF / Existential Graphs (§2.3 for the cells). Readings are how the moduli-stack idea (LEGISLATION 17) enters without a new primitive: a form is one thing, its readings are the points of its moduli. James 1993 is the ground truth for `classical`; Bricken's constructs enter as attributed notes tagged by volume and as nodes only where they add a law (LEGISLATION 9).
+
+The engine computes with five readings, each a `Reading` object with one interface (§6.5): ℂ (classical), 𝕁₁ (§6.1), the page at a finite place (§6.2–6.3), ℍ at ∞ (§6.4) and ℍ at a finite place (§6.4). Each is the 𝕁₁ reading moved to its place and algebra.
+
+### 6.1 The 𝕁₁ reading (LEGISLATION 30b, amended; pending)
+
+Values are complex numbers. The log of *exactly one* is the chosen lift ω = 2πi; every other log is principal. This is compositional — a square's value depends only on the value inside it — so the strict rules are exact in every context; `[()]`, `[(ω)]`, `[(J J)]` all read 2πi, and the crack's non-void receipt sits at the log of one, `[()] → void` (`mult.log-of-one`). The **receipt of a step** is the lattice element it forgets: value before minus value after, in units of ω, sampled over the node's domain (for a step between two instances the contents are compared). The reading has **exceptional points** — where a content is exactly one its log reads ω — probed at each variable's lattice values (1, −1, ½, 2, i within the domain) and named on the tape.
+
+### 6.2 The reading at a finite place (LEGISLATION 31; pending)
+
+A value is a number part (a residue of the page, mod pⁿ), a count of the prime's log `[p]`, and a count of the torsion log J_p; `[ ]` splits a number into the three and `( )` reassembles them where it can — the number part on the radius p·ℤ_p (4ℤ₂), the counts whole. Five conventions (`place.reading`): the log of *exactly one* reads the place's period ω_p = (p−1)·J_p (2·J₂ at 2), every other log principal; a fraction of a torsion count is taken in 0 … p−2 (0, 1 at 2) — the *principal root* of the place, canonical on the principal units and a convention elsewhere; the generator of the torsion is the Teichmüller lift of the least primitive root (−1 at 2) — a convention like 2πi over −2πi; a formal element's log is a formal symbol that a count scales, and the product of two formal elements has no value (weight 2); counts scale formal elements only when exact.
+
+**Depth and precision.** The page's depth n is what equality is mod; the engine's working precision N is the depth plus a margin of as many shells again (`default_depth(p)`: 17 at 2, 11 at 3, 8 at 5, 6 at 7, 5 at 13), so that a log that loses shells is still read to the depth; a value that has lost more than the margin cannot be judged (`BeyondPrecision`: the sample is dropped, never judged). "Exactly one" is decided at N. A law exact at N is exact at every smaller depth. **The radius** is the standing proviso of every instance: a sample whose instance content falls outside it is retried on the radius (every variable times p, 4 at 2) and, if still outside, is formless for that sample — as is a sample that is not a form for a selection reason (a fraction of the period that is not a form at p, the reciprocal of the prime, weight 2). The exceptional points are probed by domain as at ∞ (a variable exactly one, its negative for a real variable, the void pile pⁿ) and a failure there is marked `·exc`.
+
+### 6.3 The discipline of the page (LEGISLATION 31(g); pending)
+
+The page's equality — agreement mod pⁿ — passes through juxtaposition, angles and instances, **not through a square**: `[o^{p**n}]` is n·[p], `[void]` is the pole, the log of a non-unit loses as many shells as its count of `[p]`. The laws of the page — the void pile and what follows from it by the page's equality alone (residues, minus one as a pile, Fermat–Euler, division by a unit, the prime power, the geometric doll; `PAGE_RULES`) — are ≃, never ≡, and a page step is graded by position (§7.3). The pole is the limit end of the count of `[p]` — no finite count is it; the instance of n·[p] is the void pile at depth n (`place.prime-power`, `place.two-ends`).
+
+### 6.4 The ℍ reading, at ∞ and at the places (LEGISLATION 32; pending)
+
+**Breadth is commutative.** `[A][B]` and `[B][A]` are one form, so any reading in which `([A][B])` is a product makes it commute; in ℍ that encoding is A·B only for co-sliced contents (`H.no-go`, the Slice theorem). A non-commutative product lives in *depth*: the ordered square reads as the log of the ordered product, `([A ; B])` is A·B. A law of the ordered square written with vector entries is a **family** of rules, one per shape of the list; the engine instantiates each family for lists of up to five entries (`tools/licences.py`, `FAMILIES`); the node's derivation proves the shape its law states.
+
+**At ∞** (`tools/quat.py`). A value is a quaternion; `[ ]` is the principal log L(q) = ln|q| + θu, θ ∈ [0, π], with **J-pinning**: L(−r) = ln r + πi, so that the one form `[<o>]` has one value, and the log of exactly one is the pinned ω = 2πi; an ordered square is the log of the ordered product of its entries' values; `Jj` reads πj. The period lattice is Λ_ℍ = {2πk·u}: a receipt carries a direction, and `equal(≃)` tests whether a difference is a lattice element in *any* direction — so ≃ in ℍ is not a congruence through an instance (A ≃ A Jj Jj while `(A)` and `(A Jj Jj)` differ for A off the slice of j); what keeps the tapes sound is the value check of every absorbed step at its paying instance (§7.3). The domains: the real ones are central; `complex` is a generic quaternion; `slice` is co-sliced; `plane` is ℂ ⊂ ℍ. The Slice Principle (JH-4) — on a slice the classical calculus holds with J → J_u — is a substitution the forms do not make: J and ω are pinned to i, so a trunk law that mentions them holds verbatim on the **plane** and is carried to the other slices by the symmetry of ℍ, not by the forms. A **seam displacement** is a difference that is no lattice element though the instances agree (πu against πi): measure zero at ∞.
+
+**Conditional laws.** `H.commutation` (`[P ; Q] ≐ [Q ; P]` when the *values* commute) and `H.collapse` (`[P ; Q] ≃ [P] [Q]` when the *logs* commute). The reading checks the premise at every use on the entries matched as P and Q (`CONDITIONAL`, `premise_holds`); a step whose premise fails, or whose premise no sample could test, is `absent [premise]`. The two premises differ by the pinning: −1 and j commute as values, their pinned logs do not, so `[<o> ; j]` exchanges and does not collapse. The collapse is also witnessed (`WITNESSED_H`): it posts a receipt by position exactly as the unit does.
+
+**At a finite place** (`tools/quatplace.py`). Hamilton's quaternions ramify at exactly 2 and ∞ and split at every odd p (`H.ramification`). At an **odd p** the quaternions of the page are 2×2 matrices over ℤ/pⁿ: Hamilton's relations hold, the norm is the determinant and is isotropic — a nonzero quaternion with norm ≡ 0 is a zero divisor with no reciprocal and no log (the norm-null species, JH-20, refused by name). At **2** the page is the Hurwitz order O (all-integer or all-half-odd parts) mod a power of π = 1 + i: v(π) = ½, the valuation v(q) = v₂(N(q))/2 runs in half-shells over the whole algebra, the residue field O/πO is 𝔽₄, the radius of the instance is v ≥ 3/2, and the 24 Hurwitz units — the torsion of the *global* order — are the torsion the reading names; the local order O₂ has infinitely many more (the conjugates of i, j, ζ), which the reading does not read. A value is a number part, a count of the prime's log (`[π]` at 2, in halves), and a **torsion part**: (direction, count) pairs over the Hurwitz units, antipodal directions one direction with a signed count, the pinned −1 at (i, 1), the central Teichmüller log J_p at odd p, and a *carrier* for any other unit of finite order prime to p (its Teichmüller lift, whole counts only). The log of a unit: strip the prime's power (on the left at 2, q = πᵐ·unit, as the instance rebuilds it), then a torsion factor t with the rest t⁻¹·unit principal — and **t must commute with the rest**, so that the log is a sum of two logs whose negation is the log of the inverse; a unit whose torsion and principal parts do not commute, or whose reduction has order divisible by p, has no log — *owed*, and named in the refusal (at 2 nearly every unit of O₂; the rung's structural laws read `none` there and `guarded` at odd p, the laws whose variables are central `exact` everywhere). The log is read at the working precision, so on the quaternion page the digits past the depth decide the *existence* of a log, not only its value. Since π is not central, a central number acquires a torsion part from its spelling (2 = π²·(−i)), so `[oo][oo]` and `[oooo]` agree mod the period at 2, not exactly. The `slice` domain at a place is co-sliced by construction. The **seam** has positive measure on a page (a product of co-sliced units is a negative principal unit as often as not, its log pinned to i while the sum of the logs lies in the slice): the ledger's verdict `seam`, a guard.
+
+### 6.5 The `Reading` interface
+
+Every reading the engine computes with provides: `evaluate(form, env)`; `random_env(names, domain, rng)` and `probes(names, domain, rng)` by the domains of §3.6; `equal(a, b, equality)` for ≐/≡ and for ≃ (mod the reading's periods); `seam(a, b)` (not equal mod the periods, instances agree); `k(a, b)` — the receipt in units of the period, `None` when the difference is no lattice element; `direction(a, b)` where receipts have one; `premise(name, env, domain, rng)` for conditional rules; `is_pole`, `fmt`, `skip_errors` (what counts as formless), and `noncommutative` where absorbed steps must be value-checked. A new setting arrives with its reading (§11.3).
+
+---
+
+## 7. The engine
+
+### 7.1 The shadow check
+
+Every object-level law parses and is sampled on random values of its domain in the node's setting's reading; a definition's `gloss_check` is compared with the form's value; every consecutive pair of rows of every derivation table is an equality in the declared sense on random instantiations; for an object-level theorem or schema, *one* table runs from one side of the law to the other **as forms**. Samples on which a form has no value (formless, past the precision, overflow) are skipped — and a law no sample can judge **fails** (§2.4). Exceptional points are probed as §6 says. The seam decree is checked on every row of a classical node (`guarded_by`, §4.3). In 𝕁₁, at the places and in ℍ, the decree is not in force: receipts replace it.
+
+### 7.2 The derivation checker (`tools/prover.py`, `tools/licences.py`)
+
+Every row must be *obtained from the previous one by the rule it cites*: each cited law is a rewrite in either orientation at any position (associative-commutative matching over the multiset of boundaries; inside the entries of an ordered square, never across entry boundaries), and the next form must be reached in at most fourteen applications. A numerically true step with the wrong rule fails. Rules: a node's `law:` (and its `EXTRA_RULES`, laws the node proves in a second table — the two-sided norm); a schema's instances at the citing node's own place and depth; a family's shapes (`FAMILIES`); `lemma` rules from the node's earlier tables; a `hypothesis` rule at a smaller parameter. The identity rules (`definition`, `substitution`, `congruence`, `medium`, `name`) license a row that is the same form once sugar is expanded. The search is a focus-guided beam from both ends, never joined: a strict path the search misses can make a grade *worse* than the truth, never better — the author's remedy is to split the row. What the checker does not do: read the note, judge whether the derivation is the intended one, or anything about the prose — the referee's job (§11.2).
+
+### 7.3 The receipt prover (`tools/j1.py`)
+
+For every derivation the engine asks for the cheapest licensed path — strict steps only, then absorbed, then posted, then anything — and grades each step by the rule and the position:
+
+- **strict** — the counit, Distribution, Inversion, the medium, the hole rules, the strict rules of the ordered square (splice, the unit entry, list distribution, anticommutation, the seed, the definitions, commutation); a theorem whose own tape is empty; a unit step on *pole-valued* content (no winding to record: Dominion is ≡).
+- **page** (at a place only) — a step by a law of the page with no square anywhere above it. A page step with a square above it is **measured at every square above it**: an import where no square's value changes at the generic points, absorbed or posted where some change by one period (the outermost changed square posts the receipt, and the instance directly outside it pays it — an import when a further square lies above that instance; posted at depth 0), absent otherwise. A page theorem reused keeps its standing as a floor; page, like absorption, is never promoted to ≡ by reuse.
+- **absorbed** — the unit `[(A)] ↔ A`, absorption `(ω A) ↔ (A)`, the collapse, or a theorem with posted receipts, applied *directly inside an instance, through angles at most*: the instance pays the receipt; value-exact. A theorem whose receipts were all absorbed is absorbed when reused, at any position, and a law that uses it is ≃.
+- **posted** — a unit step, a collapse, or a posted theorem at depth 0: the receipt stays on the tape; the two forms agree mod Λ.
+- **import** — a unit step or a posted theorem under a square before any instance, whose receipt is void at the generic points of the domain (≃ is not a congruence through `[ ]`; the step is sound by a fact of the reading the calculus cannot see). The exceptional points are probed and named; the law stays `guarded`.
+- **absent** — a receipt that is not void where it must be; a rule the setting does not have; a conditional rule whose premise fails (`premise`); in ℍ a cross-slice absorption or a seam displacement at depth 0.
+
+**In ℍ.** Receipts carry a direction. Every absorbed step is **checked by value** at its paying instance — the innermost instance above the redex, through angles, for a primitive witnessed rule and for a unit-shaped step of a theorem; the two sides themselves for a theorem reused on another shape — and is `absent [cross-slice]` when the instance no longer agrees (the first non-commutative wall, `H.slice-wall`). A receipt that is no lattice element is the seam: `absent` at depth 0, paid and recorded `seam` directly inside an agreeing instance (`H.seam-guard`). The trunk's derivations are re-graded on the plane, and a trunk theorem reused in rung `H` is value-checked on the citing node's own contents.
+
+A node's grade is its worst step; the cell it implies: strict, page or absorbed → `holds`; posted → `holds-mod-Λ`; import → `guarded`; absent → `fails` (or `guarded` when every absent step is formless). In `J1`, `JP` and `JH` the node's equality symbol and its own cell must be what the tape earns. **What the tape does not do:** receipts are sampled (24 random points plus the probes), so `k = 0` is evidence, not proof; the tape is a multiset (exchange is free); a path re-graded in another reading is the path found cheapest at ∞, so it can be too pessimistic, never too generous.
+
+### 7.4 The ledgers (written by the engine; `census/`)
+
+| ledger | file | reads | computes |
+|---|---|---|---|
+| 𝕁₁ | `j1-ledger.md` | every derivation of the chart at ∞ in the 𝕁₁ reading | the J1 cell of every node; the tape on each card |
+| place | `place-ledger.md` | every trunk law at p = 2, 3, 5, 7, 13 on the domain dictionary of §3.6, every licensed path re-graded there | the JP cell of every trunk node; rung `place`'s nodes graded at their own place as they are checked |
+| ℍ | `h-ledger.md` | every trunk law in ℍ on its domain and on generic quaternions, every licensed path re-graded on the plane | the JH cell of every trunk node; rung `H`'s nodes graded in ℍ as they are checked |
+| quaternion place | `h-place-ledger.md` | every law of rung `H` at the five places in the quaternion reading; every law of rung `place` in that reading at its own place, on the centre and on generic quaternions of the page | the JP cells of rung `H`; the JH cells of rung `place` |
+
+Cell logic, common to all: `replaced` when the law is formless at every tested point; `fails` when it fails somewhere it is a form, or its tape is absent with a non-void receipt; `guarded` when some sample is formless, the law is on the seam, or the tape imports; `holds-mod-Λ` when the tape posts or the law holds mod Λ; else `holds`. The hand cell is compared under the ACCEPT rule (§2.2). Declarations and meta theorems are not computed by a ledger; their cells are read by hand from the witnesses and say so. `tools/check.py --only <prefix>` grades the cited closure first, so that its tapes agree with the full run's; the full run writes the ledgers.
+
+### 7.5 Witnesses
+
+`tools/models/*.py`, one per meta node (§3.8); `h_common.py`-style helpers may be shared. A witness that reads an engine output (the 𝕁₁ ledger, `J1.classical-floor`) runs after the ledgers are written.
+
+### 7.6 The census
+
+`tools/census.py` enumerates every form up to a size bound (≤ 3 boundaries, no variables), canonicalizes, evaluates in the `C` reading, and classifies each form as `numeral` · `reduces` · `new` · `hole` · `excluded` (contains `<□>`) · `undefined` (contains `[□]`). Every `new` form must be assigned to a node or listed in `census/open-forms.md`; `excluded` and `undefined` forms are assigned to the exclusion decree. Ownership: a node's explicit `forms:` or a definition's/primitive's law sides and an axiom's or decree's left-hand side, earliest `order` first; then the numeral patterns; then a theorem's left-hand side — never any right-hand side. Raising the bound is a standing task; the census is re-run by the checker.
+
+### 7.7 What the engine checks, in one list
+
+Required fields and enums, id = filename, unique order, required sections, Plain ≤ 45 words (warned); every link resolves; `uses` = the citations; the DAG by order; the body's settings/readings tables agree with the front matter; the law shadow and gloss; every derivation row parses, cites allowed rules, is an equality, is licensed; `given` opens tables only; endpoints as forms; hypothesis rows; the seam decree and `guarded_by` both ways on classical nodes; the tapes, the equality symbol and the cells in the graded settings; every witness exits 0; `verified` below `engine` on a theorem (warned: Exact withheld); the census fresh and assigned; the four ledgers, with the ACCEPT rule. Exit 0 iff no failures.
+
+---
+
+## 8. Status, verification, dates
+
+### 8.1 Status (LEGISLATION 12)
 
 | status | meaning |
 |---|---|
-| `NATIVE` | derived inside the setting from its own axioms; or a primitive/axiom of the base three |
-| `NATIVE-BY-SCHEMA` | holds for every value of a count parameter by an induction the calculus cannot do natively: each instance in the declared range is engine-checked (base case at the base, step at every other value, the hypothesis row verified to be the law at a smaller parameter); the passage to all n is not checked, and the induction gap `N.induction` is in the price |
-| `NATIVE-BY-DECREE` | the *statement* holds because a decree was issued — exclusions (`a/0 is not a form`), the decrees themselves, and the meta theorems about the decree-governed calculus (consistency; James's rules sitting inside the decree). A node whose *derivation* merely passes through a guarded unit step stays `NATIVE` and declares `guarded_by` (§5.4, Amendment A2) |
-| `IMPORTED` | used, not derived; the import is named and dated |
-| `ANALOGY` | a correspondence asserted but not an equation of forms (e.g. 24 ↔ ν) |
+| `NATIVE` | derived inside the setting from its own axioms; or a primitive/axiom of the base three; a guarded theorem stays `NATIVE` |
+| `NATIVE-BY-SCHEMA` | holds for every value of a count parameter by an induction the calculus cannot do natively: each instance in range engine-checked, the passage to all n priced as the gap |
+| `NATIVE-BY-DECREE` | the *statement* holds because a decree was issued — exclusions, the decrees themselves, the meta theorems about the decree-governed calculus |
+| `IMPORTED` | used, not derived; the import named and dated |
+| `ANALOGY` | a correspondence asserted but not an equation of forms (24 ↔ M(2)) |
 | `CONJECTURE` | stated, unrefuted, undemonstrated |
 | `REFUTED` | shown false; kept, struck through, attached to the law it was mistaken for |
 | `ABSENT` | the concept has no form (gaps) |
 
-Mapping from the old ledgers (recorded in `aliases`/`notes`, never silently): EXACT→`NATIVE` (with reading EXACT); PARTIAL→`NATIVE` with a `PARTIAL` reading cell or `IMPORTED`; IMPORTED→`IMPORTED`; emerged→`NATIVE`; CONJECTURE/REFUTED unchanged; ANALOGY/ABSENT/CONVERSE live in reading cells.
+### 8.2 Verification tier (LEGISLATION 20, 21)
 
-### 5.2 Verification tier
+`none` → `hand` (a written derivation or meta argument with no script) → `engine` (every step shadow-checked and licensed, the tables connecting the law's sides as forms; or a meta claim checked by a named witness) → `numeric` (a high-precision identity beyond the shadow check) → `lean` (a Lean declaration, node id = declaration name; a later scoped expansion over the classical trunk). **"Exact" is withheld until `engine`**: a node whose `verified` is below it renders with a hollow badge whatever its status says.
 
-`none` → `hand` (a written derivation, or a meta argument with no script) → `engine` (every derivation step shadow-checked in the ℂ reading by `tools/check.py`, every step licensed by the rule it cites (`tools/prover.py`), and the tables shown to connect the law's two sides as forms; or a meta claim checked by a named `witness:` script in `tools/models/`) → `numeric` (high-precision numerical identity beyond the shadow check) → `lean` (a Lean declaration; node id = declaration name — later scoped expansion, LEGISLATION 20). A meta-level node without a witness script is at most `hand`, whatever its author believes.
+### 8.3 Two dates
 
-**"Exact" is withheld until `engine`** (LEGISLATION 21): a node whose `verified` is `none` or `hand` renders with a hollow badge whatever its status says.
-
-### 5.3 Two dates
-
-`known_since` — when the mathematics was known (James 1993; "ancient"; Sagle 1961; "this chart, 2026" when nothing earlier is located — and then a literature check is a standing obligation). `entered` — when it entered the program.
-
-### 5.4 Price (computed; LEGISLATION 11)
-
-`price(n)` = the set of ancestors of `n` along `uses` whose type is `primitive`, `axiom`, `decree`, `import`, or `gap` (a schema cites the induction gap in its hypothesis row, so induction is priced), together with every `guarded_by` along the way (so a guard declared by an ancestor is inherited by price, never by re-declaring the field), partitioned into:
-
-- **base**: the three boundaries, the medium, and James's three axioms;
-- **extra**: everything else — further primitives, axioms, decrees, imports.
-
-Rendered as "what it costs to write X": *i* costs nothing extra (fractional cardinality is a theorem schema); ℍ costs an ordered bracket + O9 + OC; ℤ_p costs the void-pile decree. The concept index shows the cheapest price among a concept's forms.
-
-**`guarded_by` (Amendment A2).** A node declares `guarded_by: [mult.seam-decree]` exactly when its derivation *relies* on a clause of the seam decree, and the checker computes this from the derivation and enforces it both ways:
-
-- **by content** — a unit step `[(X)] ↔ X` at a non-absorbing position: it is admitted only because X stays on the principal strip over the whole domain, which the ℂ reading certifies (e.g. `alg.log-law`, `C.log-of-negative`);
-- **by position** — a unit step in an absorbing position whose content leaves the strip for some value of the domain (a *seam step*: the local equation `[(X)] ≐ X` is false there, and only the enclosing instance saves it — e.g. `Q.reciprocal-of-negative`, `C.period-absorption`);
-- **free** — a unit step that is absorbing *and* on the strip relies on neither clause (the equation is true and the position is safe), as does any derivation with no unit step; and a unit step on **void or hole content** — `[(void)] ≐ void` (which is `[o] ≐ void`, `mult.log-of-one`) and `[(□)] ≐ □` (`mult.hole-instance` with `mult.black-hole`) — is exempt: the second is a theorem of the hole rules wherever it stands, and the first is exact in the classical reading (ln 1 = 0), which is the reading the decree is stated in. Without this clause the decree would enter the price of nearly every node through `[o] ≐ void`. (The exemption is classical: in 𝕁₁ the log of one is the receipt ω itself — §5.5 — which is why it is a node of its own.)
-
-The card shows which clause. Status is unaffected: a guarded theorem is `NATIVE`. (The earlier convention, which made seam-step laws `NATIVE-BY-DECREE` and left absorbing seam steps unpriced, labelled exact identities of ℂ — `e^{a+2πi} = e^a` — "by decree" while leaving the half-true `ln(−a) = ln a + iπ` NATIVE; the C referee pass found four rung-C laws priced as if the decree did not exist, and the rule was changed.) One correction to the clause above, found by the receipt prover (§5.5): `[o] ≐ void` is not free in 𝕁₁ — it is the receipt ω — so it is a node of its own, `mult.log-of-one`; the classical exemption stands for the classical setting.
-
-### 5.5 The 𝕁₁ tape (computed; LEGISLATION 30)
-
-For every derivation, `check.py` asks the derivation checker (§2.4) for the cheapest licensed path in 𝕁₁ — strict steps only, then absorbed, then posted, then anything — and grades each step by the rule it used and the position it used it at (`tools/j1.py`):
-
-- **strict** — the counit `([A]) ≡ A`, Distribution, Inversion, the medium, the hole rules; a theorem whose own tape is empty; and a unit step on *pole-valued* content (the pole has no winding to record: LEGISLATION 30f, refined 2026-10-06 — this is why Dominion is ≡);
-- **absorbed** — the unit `[(A)] ↔ A`, absorption `(ω A) ↔ (A)`, or a theorem with posted receipts, applied *directly inside an instance, through angles at most*: the instance pays the receipt on the spot; value-exact; the receipt is recorded on the tape as paid. A theorem whose own receipts were all absorbed is also **absorbed** when reused, at any position: its reuse replays the paid moves, and a law that uses it is ≃, never ≡ (LEGISLATION 30a: absorption is a witnessed move);
-- **posted** — a unit step, or a posted theorem, at depth 0 (through angles and juxtaposition only): the receipt stays on the tape; the two forms agree mod Λ;
-- **import** — a unit step, or a posted theorem, under a square before any instance, whose receipt is void at the *generic* points of the node's domain. ≃ is not a congruence through `[ ]` (a lattice offset inside a log is not a lattice offset of the log), so the step is sound only by that fact of the reading — the classical decree's by-content clause — which 𝕁₁ cannot see. The reading has *exceptional points*: where a content is exactly one its log reads ω, and the receipt there can be non-void. The prover probes them (each variable at 1, −1, ½, 2, i within the domain, the others at 2 and at random, and all variables equal to one probe) and names on the tape, for up to three receipt values found at the probes, one point each (`except k = −1 at A=1, B=1`); the exceptional set is a locus, not a list — the law stays `guarded`, with the points stated — there the classical law is false in 𝕁₁'s reading;
-- **fails** — the same with a receipt that is not void (the step is false in 𝕁₁), or a rule 𝕁₁ does not have.
-
-A node's grade is its worst step; the `J1` cell it implies: strict or absorbed → `holds`; posted → `holds-mod-Λ`; import → `guarded`; fails → `fails`. The checker compares the computed cell with the hand-written one and fails the node on disagreement, allowing the hand cell to say *more* (a `guarded` by legislation over a computed `holds`, as for Inversion's stratification; a `replaced` that names what takes a failed law's place); `untested` is no longer a legal J1 cell for a graded derivation. For a node in `setting: J1` the equality symbol must be the one the tape earns — ≡ for strict, ≃ for absorbed or posted — and its own J1 cell must match. The result is `census/j1-ledger.md`, written by `check.py` and rendered on each card as its **𝕁₁ tape**.
-
-**The reading and the receipt values.** Receipts are read in the 𝕁₁ reading (LEGISLATION 30b, amended 2026-10-06): the log of *exactly one* is the chosen lift ω = 2πi, every other log is principal. This is compositional — a square's value depends only on the value inside it — so the strict rules stay exact inside any context, which the literal convention ("the form `[()]` reads as 2πi") did not give (`[(o <o>)] → [()]` is Inversion, strict, and jumped 0 → 2πi under it). Consequences: `[()]`, `[(ω)]` and `[(J J)]` all read 2πi; `[(J J)] → J J` has receipt 0 and the crack's non-void receipt sits at the log of one, `[()] → void`, which is where the classical calculus actually erases the turn (`mult.log-of-one`). The **receipt of a step** is the lattice element the step forgets: value before minus value after, in units of ω, sampled over the node's domain; for a step between two instances the contents are compared (an absorbed period is invisible at the instance level and is exactly what the receipt records). A receipt is `?` when a sampled difference is not a lattice element, or a reused theorem's sides reach the pole (none on the current ledger); a unit step on pole-valued content is not `?` but `strict [pole]`. The tape records the position class and the sampled receipt values of every non-strict step; a step inherited from a theorem's own tape is marked `inherited`, naming the theorem (its k counts the periods the theorem's own derivation moved at content level, all paid where it is absorbed); a strict unit step on pole-valued content is marked `pole`, with no receipt.
-
-**The tape at a place.** The receipt prover takes a reading as a parameter (`tools/j1.py`, `Reading`): the same grading runs at a finite place with that place's period, and the place ledger (§4.4) re-grades every licensed path there. One grade exists only at a place, between strict and absorbed — **page**: a step by a law of the page (the void pile and the laws derived from it by the page's equality alone; `PAGE_RULES` in `tools/j1.py`, and any theorem or lemma whose own tape carries a page step, whatever its worst grade — `Tape.is_page`) applied with **no square anywhere above it**: at depth 0, through angles, juxtaposition and instances. The two forms agree mod p^n, which *is* the page's equality, but that equality is not a congruence through a square (§4.4), and an instance does not pay a page difference (it only page-equalizes it — the square above an instance still reads the difference at the exactly-one point), so a page step with a square above it is **measured at every square above it** (`page_under_square`; the prover records every square's content before and after on the step, innermost first, through instances and angles alike): where no square's value changes at the generic points of the domain, the step is an `import` (sound by content, as a unit step under a square is); where some change, each by one lattice element, the *outermost* changed square posts that receipt and its own position grades the step — `posted` at depth 0; `absorbed` directly inside an instance (through angles) when no square lies above that instance, and `import` when one does (the instance pays the period and only page-equalizes the rest, which the square above reads as equal at the generic points: by content); `absent` under another square; a square that changes by anything else makes the step `absent`. The exceptional points of every measured square are probed and named as at ∞ — at a place the probes are a variable exactly one and the void pile pⁿ (where an instance is exactly one: the page's own lattice point), with their negatives for a negative or real variable, and the natural domain samples multiples of the prime. A page law is ≃ (its JP cell `holds`), and page, like absorption, is never promoted to ≡ by reuse; a page theorem reused keeps its own standing as a floor — a posted one posts again (posted at depth 0, absorbed directly inside an instance), an import or absent one stays so — and the measurement at the squares above can only make that worse (`page_floor`). The same measurement would be sound for a unit step under a square at ∞ (a square whose value changes by kω, directly inside an instance, is absorbed there, and exactly); it is not applied to the trunk, whose tapes stand as graded, and is recorded as a proposal (LEGISLATION 31(g)).
-
-**The tape in ℍ.** The same prover runs in the ℍ reading (`tools/quat.py`) for rung `H` and for the trunk's paths re-graded there (§4.5): receipts carry a direction; an absorbed step is checked by value and is `absent [cross-slice]` when the paying instance no longer agrees; a receipt that is no lattice element is a seam displacement — `absent` at depth 0, paid and marked `seam` directly inside an agreeing instance; a conditional rule's premise is checked at the use site (`absent [premise]`); the collapse is a witnessed rule graded by position like the unit; a theorem reused is value-checked on the citing node's contents. The trunk's derivations are graded on the plane ℂ ⊂ ℍ, where the classical calculus holds verbatim, and carried to the other slices by the symmetry of ℍ.
-
-**What the tape does not do.** Receipts are *sampled*: 24 random points of the node's domain and the probe points above; a value the sampler never hits can hide a non-void receipt, and a tape's `k = 0` is evidence, not proof. The search for the cheapest path is heuristic (a focus-guided beam, §2.4): a strict path the search misses can make a grade *worse* than the truth, never better — the author's remedy is to split the row. A lemma table is graded as it closes and priced at that grade in every later table's search (`on_table`), so a later row prefers a strict path to an absorbed lemma when one exists; the lemma's own rows are not searched again at the use site. Two directions are searched separately and never joined, so a row needing a creation step and a reduction step at once may be refused though each licenses alone. The position rule is pessimistic at a counit pair: a square that is the only child of an instance is transparent to a receipt below it, and the rule still refuses. The tape is a multiset: exchange is free, duplicates from a schema's instances are merged, and a reused theorem contributes one entry whatever its tape held — the exchange half of L0 (ordered vs unordered tape, Q2 of the page-logic draft) is not represented. The derivation checker licenses a step; it does not read the note.
-
-What this settled on the trunk (2026-10-04): of 93 derivations, 78 agreed with the hand cells as written; eight that said `holds-mod-Λ` for a unit step under a square were wrong and are `guarded` (the by-content guard survives into 𝕁₁ as an import: `alg.power-of-base`, `alg.power-of-power`, `alg.root-of-product`, `alg.root-of-quotient`, `alg.sqrt4`, `C.i-to-the-i`, `C.root-of-negative`, `C.modulus-of-polar`); the nine cells waiting on □ were filled from the grades and LEGISLATION 30(f) — Dominion strict, by the pole exemption; `alg.one-to-power` fails in 𝕁₁ exactly where the prover points (the log of one under a square, receipt ω) and is `replaced` by the receptacle. LEGISLATION 28's forecast is corrected accordingly: a *by position* guard dissolves into an absorbed receipt; a *by content* guard at depth 0 becomes a posted receipt (holds mod Λ); a *by content* guard under a square stays a guard — the receipt check the reading performs.
+`known_since` — when the mathematics was known (James 1993; "ancient"; Hamilton 1843; "this chart, 2026-10-07" when nothing earlier is located — and then a literature check is a standing obligation). `entered` — when it entered the program.
 
 ---
 
-## 6. Gaps
+## 9. Gaps, owed, refuted
 
-### 6.1 Two kinds (LEGISLATION 13)
+### 9.1 Gaps (LEGISLATION 13, 14)
 
-- `kind: concept` — a mathematical concept with no form (induction, order, a heap, a metric at ∞, weight).
-- `kind: form` — a form the calculus can write that nobody has read yet (the size-3 constants `(o)`, `((o))`, `[o o]` before their rungs are laid). Forms containing `[□]` or `<□>` are not gaps: James leaves both undefined and the chart excludes them by decree, because admitting either collapses the calculus (`mult.hole-exclusion`).
+Two kinds: `kind: concept` — a mathematical concept with no form (induction, order, a metric at ∞, weight); `kind: form` — a form the calculus can write that nobody has read yet. Forms containing `[□]` or `<□>` are not gaps: both are excluded by decree. Every gap node's **Plan** has exactly these fields: candidate form(s); law(s) to add, and type; nativity criterion (stated in forms and ≐ only); refutation test; meta-move? (whether the plan needs the calculus looked at from outside, and which); owner thread; rank (reading < definition < theorem < decree < axiom < new primitive). The first gaps the reader meets, `N.induction` and `N.order`, are meta-level and resolved by meta-moves (the schema machinery prices the first).
 
-### 6.2 The census
+### 9.2 Owed
 
-`tools/census.py` enumerates every form up to a size bound (v1: ≤ 3 boundaries, no variables), canonicalizes, evaluates in the `C` reading (with `□` as the black hole), and classifies each form as `numeral` · `reduces` (its value is already achieved by a smaller form) · `new` (a value no smaller form has) · `hole` · `excluded` (contains `<□>`) · `undefined` (contains `[□]`). Every `new` form must be assigned to a node or listed in `census/open-forms.md`; `excluded` and `undefined` forms are assigned to the exclusion decree. Raising the bound is a standing task; the census is re-run by the checker.
+An obligation the chart has not met — a derivation it cites by witness, a reading it refuses by name, a cell read by hand — is written where it falls due: in the node's Notes with the word *owed*, in the refusal message of the reading that declines, and in ROADMAP's "what the rung does not do". A referee's MINOR finding that is not repaired becomes an owed item. (Proposed, LEGISLATION 33(d): an `owed:` front-matter list, rendered and collected like the gaps.)
 
-### 6.3 Gap plans (LEGISLATION 14)
+### 9.3 Refuted readings (LEGISLATION 15)
 
-Every gap node's **Plan** section has exactly these fields:
-
-| field | content |
-|---|---|
-| candidate form(s) | the form(s) proposed, or "none — a rule schema" |
-| law(s) to add, and type | what would have to be adjoined (`axiom`, `decree`, `primitive`, `import`) |
-| nativity criterion | the test the addition must pass to count as native (stated in terms of forms and ≐ only) |
-| refutation test | the concrete computation or model that would kill it |
-| meta-move? | whether the plan requires looking at the calculus from outside (a schema, a model, a moduli of readings) — and if so, which |
-| owner thread | the existing project file that owns it |
-| rank | by cost: reading < definition < theorem < decree < axiom < new primitive (new primitives rank last) |
-
-### 6.4 Induction and order (LEGISLATION 17)
-
-The first honest gaps the reader meets, both at rung N: an equational calculus does not express "by induction on a pile", and `m < n` is not a form. Both are `gap` nodes with plans; both are **meta-level**; both are expected to be resolved by meta-moves (a schema rule; the finite-set reading in which induction is the universal property of the free monoid on `o`; the Lean tier where `Nat.rec` lives natively). The chart records them as gaps rather than smoothing them over.
+Refutations are kept, never deleted: attached to the node they were mistaken for, struck through, with date and witness; the generator collects them into one searchable list. A refuted reading of a rule's premise, a derivation, or a cell stays on the node that carried it.
 
 ---
 
-## 7. Refuted readings (LEGISLATION 15)
+## 10. Scope
 
-Refutations are kept, never deleted. Attached to the node they were mistaken for, struck through, with date and witness. The generator collects them into one searchable list. The Field's error log, the JH adversarial ledger, and the JS refuter's catches are the first backfill.
+### 10.1 Tiers (LEGISLATION 16)
 
----
+**A** number and algebra (void → ℕ → ℤ → the square → ℚ → algebraic → J, ℂ → 𝕁₁ → ℍ → 𝕆 → 𝕊) in full; **B** analysis (exp–log completeness, shift and derivative, metric and order, places and p-adics, the adelic page) in full; **C** logic (LoF, Existential Graphs, polarized readings) as one strand; **D** structure (`() ⊣ []`, ω/Λ, im J, Bott, moduli, the F₁ road) as far as the F₁ road needs; **E** The Field as pointers.
 
-## 8. Scope and the trunk
+### 10.2 Rungs, in walk order (LEGISLATION 29)
 
-### 8.1 Tiers (LEGISLATION 16)
+`void` → `N` → `Z` → `mult` → `Q` → `alg` → `C` → `schema` → `J1` → `place` → `H` → `analysis` → `J2` → `logic` → `struct` → `F1` (→ re-entry to `void`), with `O` and `S` a branch off `H`; `field` a side chapter. Built through `H` (229 laws, 2026-10-13). The additive-first order follows the Iconic Mathematics scope and sequence: each stage adds an idea, not necessarily a boundary. Why the order (ROADMAP §2): `schema` first because every target needs statements over n; `J1` before everything else because it pays off the chart's biggest import; `place` before `H` and `H` directly after it so the first non-commutative wall is read against the places; `analysis` next because "at every place" needs a metric; `J2` as a rung of gaps and witnesses for the level-2 question; `logic`, `struct` before `F1`; `F1` last, as the fibre over the trivial place.
 
-| tier | content | v1 |
-|---|---|---|
-| **A** number and algebra | void → ℕ → ℤ → the square boundary → ℚ → algebraic (fractional cardinality) → J, ℂ → 𝕁₁ → ℍ (JH) → 𝕆 (JO) → 𝕊 (JS) | full |
-| **B** analysis | exp–log completeness (the receipt prover), shift and derivative, metric and order, places and p-adics (JP), the adelic page | full |
-| **C** logic | LoF Boolean, Existential Graphs, polarized/affine readings | one strand |
-| **D** structure | `() ⊣ []`, ω/Λ, im J, Bott, moduli, the F₁ road | as far as the F₁ road needs |
-| **E** The Field | ι/κ census, E and B as one form | pointers only |
+### 10.3 Trunk and roads (LEGISLATION 19)
 
-### 8.2 Rungs (chapters), in walk order
+The 𝕁₁ road is the trunk: ℕ → ℤ → ℚ → algebraic → ℂ → 𝕁₁ → finite sets / sphere spectrum → F₁. The adelic page (JP) is the second road into F₁. The division-algebra branch (JH/JO/JS) rejoins at 24, marked `ANALOGY` until a form equates them (`H.twenty-four`). Analysis and The Field are branches.
 
-`void` → `N` → `Z` → `mult` → `Q` → `alg` → `C` → `schema` → `J1` → `place` → `H` → `analysis` → `J2` → `logic` → `struct` → `F1` (→ re-entry to `void`), with `O` and `S` a branch off `H` (LEGISLATION 29). `field` is a side chapter. Built through `H` (2026-10-07): the finite places as pages, read by `tools/place.py`, with the trunk's JP cells computed (§4.4); the quaternions in depth — the ordered square — read in ℍ at ∞ and at the places, with the trunk's JH cells and the places' JH cells computed (§4.5). The additive-first order (ℤ before the square boundary) follows the Iconic Mathematics scope and sequence and is the walk's own ordering principle: each stage adds an idea, not necessarily a boundary; the inverse boundary gains multiplicative powers only when it meets the square.
+### 10.4 What does not change
 
-### 8.3 Trunk and roads (LEGISLATION 19)
-
-The **𝕁₁ road** is the trunk: ℕ → ℤ → ℚ → algebraic → ℂ → 𝕁₁ → finite sets / sphere spectrum → F₁. The **adelic page** (JP) is the second road into F₁ (Connes–Consani lives there). The **division-algebra branch** (JH/JO/JS) rejoins at 24, marked `ANALOGY` until a form equates them. **Analysis** and **The Field** are branches.
+One law per node; every derivation engine-checked and licensed; referees before acceptance; the price computed, never asserted; readings and settings filled honestly (`untested` is a legal cell where nothing computes it; a confident wrong cell is not); the thesis as ground truth for `classical` and the ledgers (JH, JO, JS, JP, 𝕁 v3.x) for the branches, each cited by page or rule number.
 
 ---
 
-## 9. Order (LEGISLATION 18)
+## 11. Process
 
-- Dependency order is the spine (the `uses` DAG).
-- Rungs are the chapters.
-- `order` is the walk: a total order refining the DAG. Integers spaced by 10.
-- `guide: shape-led | need-led` on every node records whether the step followed the shape of the forms or was pushed by what mathematics needed. The ratio per rung is rendered — it is itself a finding.
+### 11.1 Adding a law
+
+Copy the nearest node file; give it the next free `order` in its rung and an id that matches the filename; write the `law:` in canonical strings and the `units:` in standard notation; write the Given–Rule derivation citing the licensing node on every row; set `uses` to exactly the ids cited in the Derivation; fill the `holds` and `readings` tables (`untested` where no ledger computes the cell); run `tools/check.py` — a theorem becomes `verified: engine` only when it passes; run `tools/build.py` and look at the card. A law over every n is a `schema` (§3.7); a meta claim gets a witness (§3.8).
+
+### 11.2 Adding a rung — the rung protocol (proposed, LEGISLATION 33(b))
+
+A rung lands in this order, each step a gate for the next:
+
+1. **Plan.** A short plan, sent to Lui before building: the node list with types and the expected cells per setting, the engine and ledger work, the decisions it proposes (as a draft LEGISLATION item with defaults), what it leaves owed. Kept as `docs/plans/<rung>.md`.
+2. **Nodes and engine.** Nodes written as above; the engine extended where the rung's setting needs a reading, a rule family, a grade or a ledger (§11.3); witnesses for every meta node.
+3. **Full check, zero failures.** `tools/check.py` exits 0; the ledgers are written; `untested` is gone wherever a ledger computes.
+4. **Referee pass.** An independent agent that has not seen the drafting attacks derivations, cells, engine soundness, the mathematics and the documents, and reports findings as BLOCKER (a false law, a collapse of the calculus, an unsound grade) / MAJOR (a wrong claim, a wrong cell, an unsound path the chart does not yet take) / MINOR (a wrong sentence, a stale number, a weak witness). Blockers and majors are repaired before the commit; minors are repaired or become owed. The report is kept as `docs/referee/<rung>.md`, and the repairs are recorded in the nodes' Refuted readings where they refute something.
+5. **Documents.** The SPEC's increment (new rules only, stated in force), the LEGISLATION item (pending), ROADMAP's "as built" section and "next", README's Status entry (latest first), the generator's lede for the rung.
+6. **Release.** Check (0 failures) → build → commit with the session's attribution → republish the artifact → zip the repository and send it. Lui pushes to GitHub from his own Claude Code, confirms or amends the LEGISLATION item, and flips `understood` as he walks.
+
+### 11.3 Adding a setting (proposed, LEGISLATION 33(c))
+
+A new setting comes with: its nodes (the extension as axioms, primitives, decrees and the theorems they settle); a **reading** implementing §6.5, as the 𝕁₁ reading moved to its place and algebra; a **ledger** that reads every object-level law of the trunk in it and re-grades every licensed path there, and reads the earlier settings' rungs in it where that is meaningful (as `H` read `place`); the ACCEPT rule applied to its column, so that its cells are computed, not typed; its grades on the cards; witnesses for the meta theorems that state what the reading is. The trunk's cells in the new column are filled from the ledger, each `replaced` cell naming the law of the new setting that takes over.
+
+### 11.4 Iterating this specification (proposed, LEGISLATION 33(a))
+
+The SPEC is versioned: a rung lands with an increment (v2.1, v2.2, …) that adds the rules its setting needs, stated once and in force, and never a narrative of how they were found — history goes to README's Status, ROADMAP's "as built" sections and LEGISLATION's amendments. A decision changes only in LEGISLATION, by a dated amendment under its number; the SPEC then restates the rule. The version in force is named at the top; the register in §14 lists what is pending. Lui brings the current SPEC into his project when a rung is to be added, and the session that adds it returns the next increment.
+
+### 11.5 Roles
+
+The session proposes, builds, referees and repairs; it never pushes. Lui confirms or amends decisions, pushes, and walks the chart. A pending decision is implemented as the proposal so the chart is never blocked on it, and reversed if he decides otherwise.
 
 ---
 
-## 10. Verification and process
-
-- **Engine is the core** (LEGISLATION 20): every object-level law and derivation step is shadow-checked in `tools/check.py`; meta-level claims are checked by a named script in `tools/models/`; where the receipt prover or `jadic.js` applies, their results are cited as `numeric`. The engine enforces the undefined-form decree by exception: a row that mirrors or abstracts a form whose value is □ fails. It samples variables only in the node's declared `domain`, so a law that is unsound outside that domain (Involution-down off the principal strip) is not caught by it — the node must say so in its reading cells.
-- **Propose → refute → repair** per rung (LEGISLATION 21): a rung's nodes are drafted, an independent referee pass (a fresh agent that has not seen the drafting) attacks derivations and status claims — above all whether each cited rule *licenses* its step, which the engine cannot see — repairs are made, and only then are nodes marked `engine`. Nodes are written to be picked up cold. The pilot's referee pass (2026-10-03) found two mis-licensed steps and one collapse of the unrestricted theory; all three are recorded in the nodes' Refuted readings.
-- **Lean later** (LEGISLATION 20): a scoped expansion in which node ids become Lean declaration names for the classical trunk; `#print axioms` then computes price automatically and doc-gen produces the hyperlinked chart. Not in v1; the id scheme is chosen so this is a renaming-free step.
-
----
-
-## 11. Repository and tooling (LEGISLATION 22)
+## 12. Repository and tooling (LEGISLATION 22)
 
 ```
 boundary-chart/
   SPEC.md               this file
-  LEGISLATION.md        the binding decisions, by number
-  README.md             how to add a node, run the checker, build the site
+  LEGISLATION.md        the binding decisions, by number, with their status
+  ROADMAP.md            the path to the three targets; each rung as planned and as built
+  README.md             how to add a node, run the checker, build the site; the status by date
+  references/           James 1993, the ground truth for the classical setting
   nodes/<id>.md         one law per file
   concepts/<slug>.md    one paragraph per concept (optional per concept)
-  census/               generated: size-le-3.md, open-forms.md
+  census/               generated: size-le-3.md, open-forms.md (hand-kept), j1-ledger.md, place-ledger.md, h-ledger.md, h-place-ledger.md
+  docs/plans/, docs/referee/   a rung's plan and referee report (from rung H on)
   tools/
-    forms.py            parser · canonicalizer · ℂ evaluator (black hole, exclusion) · random instantiation
+    forms.py            parser · canonicalizer · ℂ evaluator · random instantiation (the ordered square, the constants)
     nodes.py            front-matter + section parser shared by check and build
-    check.py            schema · DAG · uses-consistency · shadow check of every derivation step and law · census freshness
-    census.py           the small-form census
-    build.py            nodes → site/index.html (drawn forms, clickable chart, price, used-by, concept index, gaps, refuted list, walk progress)
-    models/             witnesses for meta theorems (e.g. dominion_models.py)
-  site/index.html       generated; the pilot chart, publishable as an artifact
-  docs/                 narrative material that is not a law (the F₁ roads memo, backfill maps)
+    schema.py           templates and ranges (§3.7)
+    prover.py           the rewrite engine behind the derivation checker
+    licences.py         licensing of every row by the rules it cites; rule families; extra rules
+    j1.py               the receipt prover: grades, positions, receipts, premises
+    place.py            the reading at a finite place      placeledger.py   the place ledger
+    quat.py             the ℍ reading at ∞                 quatplace.py     the quaternion reading at a place
+    hledger.py          the ℍ ledger and the quaternion place ledger
+    check.py            the engine (§7.7)                  build.py         nodes → site/index.html
+    census.py           the small-form census              models/          witnesses for meta theorems
+  site/index.html       generated; publishable as an artifact
 ```
 
-Zero dependencies beyond Python 3. `python3 tools/check.py` must exit 0 before any node is marked `engine`. `python3 tools/build.py` regenerates the site. The repo is the source of truth; the published artifact is a build product.
+Zero dependencies beyond Python 3. `python3 tools/check.py` (flags: `--only <prefix>`, `--seed`, `--trials`, `--no-census`, `--no-licences`, `--no-places`) must exit 0 before any node is marked `engine`; `python3 tools/build.py` regenerates the site; `python3 tools/census.py` regenerates the census. The repository is the source of truth; the published artifact is a build product; the zip is how it travels to Lui.
 
 ---
 
-## 12. The visual encyclopedia
+## 13. The visual encyclopedia (LEGISLATION 23)
 
-- **v1 (now):** (a) every form drawn as nested boundaries from its canonical string; (b) the chart as a zoomable, clickable DAG layered by rung, with the re-entry edge drawn as a loop; the concept index; the gap list with plans; the refuted list; the walk with its progress bar.
-- **v2:** (c) a live instrument per law — apply-this-law on an editable form — reusing the rewrite calculator and `jadic.js`, scoped node by node.
-- **Game skin (deferred):** prerequisites = `uses`; "unlocked" = status `NATIVE` with a derivation; the player is at a node and must reach the next by rewriting. All of this is derivable from the files; nothing is stored for it now.
+**v1 (built):** every form drawn from its canonical string; the chart as a zoomable, clickable DAG layered by rung with the re-entry edge drawn as a loop; the concept index; the gap list with plans; the refuted list; the walk with its progress bar; each card's tapes and ledger lines. **v2:** a live instrument per law — apply-this-law on an editable form — reusing the rewrite calculator, scoped node by node. **Game skin (deferred):** prerequisites = `uses`; "unlocked" = `NATIVE` with a derivation; the player is at a node and must reach the next by rewriting. All derivable from the files; nothing is stored for it now.
 
 ---
 
-## 13. Seeding and backfill (LEGISLATION 25)
+## 14. Decisions
 
-1. **Fresh uniform walk** of the trunk to ℂ: rungs `void`, `N`, `Z`, `mult`, `Q`, `alg`, `C`, in that order, each rung refereed before the next. Estimated: 30 (pilot) + ~45; actual, 2026-10-03: 138 laws through `C`, every rung refereed twice and `C` five times, the last against the thesis text. 2026-10-04: rung `schema` — seven laws over every n (145 laws), the induction gap priced on each. 2026-10-04, later: the derivation checker and the receipt prover (§2.4, §5.5), `mult.log-of-one` split out (146), and rung `J1` — twenty-one nodes (167 laws): the split Involution, the period form, closure and absorption as theorems, L0, the half-period, James's Theorems 1 and 2 re-read, the receptacle, the depth-one criterion, the strata of annihilation as a gap, the pole, soundness and the classical floor with witnesses, the ψ-wall with its census and import. 2026-10-06: rung `place` — twenty-two nodes (189 laws): the places imported (Ostrowski), the void pile as a decree over p and n, the reading at p as an import with its engine (`tools/place.py`), residues, minus one as a pile, the irreducible `[p]`, no reciprocal of the prime, Fermat–Euler imported, division by a unit, the doll and the geometric doll, the radius, the Teichmüller element, the torsion log, the selection rule, the polar form, the same wall at every place, the prime power, the two ends, Hensel's lift, the local wall, and completion as the gap — with the trunk's JP cells computed by the place ledger (§4.4) and the discipline of the page (§5.5; LEGISLATION 31(g)) found by the rung's referee pass. The walk continues: `H`, `analysis`, `J2`, `logic`, `struct`, `F1`.
-2. **Backfill the branches** from the existing ledgers, keeping the old ids as aliases: `JH-1…22` (Exposition Guide App. C), `JO-1…34`, `JS-1…41`, `JP-1…` (Shell Calculus, settlements, adelic page), the exp–log ledger with its known-since column, the motivic rule card, The Field's results and prohibitions.
-3. **Place the F₁ node** and the three roads as readings on the trunk; fill `finset` cells on every trunk node.
-4. **Census** to size 4; assign or list.
-5. **Referee** each rung; promote to `engine`.
-6. **Generate** the site; publish; walk.
+The register is `LEGISLATION.md`; this section says what stands and what waits.
+
+**In force (decided):** 0–29 (the framing, the ends, the types, links, price, status, gaps, scope, order, verification, process, the repository, the visual, the audience, seeding, the pilot; Amendments A1 and A2 as 27 and 28; the rung order and the schema type as 29).
+
+**Decided by default** (stand unless Lui objects): rung `mult` after `Z`; medium facts as `primitive`/`medium`; meta nodes count as laws; the domain defaults of §3.6; the two undefined forms as one decree and the ℂ reading as an import; rule names after James 1993 / Book One with Bricken's as aliases.
+
+**Pending Lui's confirmation** (each implemented as the proposal):
+
+| item | the decision | the alternative |
+|---|---|---|
+| 30(b′) | the compositional 𝕁₁ reading: the log of *exactly one* is ω = 2πi, every other log principal (§6.1) | classical values, receipts as tape tokens only — then five guarded trunk laws would be true everywhere |
+| 30(f′) | a unit step on pole-valued content posts no receipt; Dominion strict | the daimon as an opaque token on the arithmetic's tape |
+| 30(d′) | stratified annihilation recorded as a gap (`J1.annihilation`), not a conjecture | a conjecture node |
+| 30(a′), 30(c′) | an absorbed theorem reused is a witnessed move (never promoted to ≡); the prover's search is heuristic and pessimistic | — |
+| 31(a)–(h) | the shape of `place`: a place is a pile declared void; the 𝕁₁ reading at p with its five conventions; Ostrowski prices "at every place"; the trunk's JP cells computed; the same wall as a witnessed theorem; the discipline of the page; the generator of the torsion | ROADMAP §6 gives the alternatives each was weighed against |
+| 31(g) offer | **not** applying the measurement at the square to unit steps under a square at ∞ (it would upgrade some trunk imports to absorbed; the trunk's tapes stand as graded) | apply it, for one rule at ∞ and at p |
+| 32(a)–(h) | the shape of `H`: the bill (semicolon, `Jj`, O9), ordered cancellation a theorem; the collapse's premise on the logs; directional receipts and the value check; the seam guard as a new node; the ledgers at 2 and the odd places with three conventions (the prime on the left at 2, a commuting torsion factor, the seam as a verdict); 24 as ANALOGY; the sphere of phases ∞'s; the octonions as the gap | ROADMAP §7 |
+| 33(a)–(e) | **proposed by this version:** (a) the SPEC is versioned and iterated per rung (§11.4); (b) the rung protocol with the referee's severities as gates (§11.2); (c) a new setting comes with a reading, a ledger and computed cells (§11.3); (d) owed items as an `owed:` front-matter list, rendered and collected (§9.2); (e) the next rung is `analysis` (the metric: |·|_v, Ostrowski retiring as an import, the product formula; James's Table 7.1), with `J2` after it and the `O` branch deferred until a tree-shaped depth is designed | `J2` first; the `O` branch next |
 
 ---
 
-## 14. Decided by default — revisit if wrong
+## Appendix A — Changelog of this specification
 
-- Rung `mult` (the square boundary) sits after `Z`, not inside `N`, per the additive-first curriculum. The dependency DAG is unaffected either way.
-- Medium facts (void transparency, unordered juxtaposition) are `primitive` nodes with `kind: medium`, so commutativity is visibly *free* rather than an axiom.
-- Meta-level nodes count as laws and may be theorems (a finite model is a proof).
-- `domain` for the shadow check defaults to `positive` in rungs through `alg` and `complex` from `C` on; nodes may narrow or widen it. The engine snaps values that are real up to rounding onto the real axis before taking a log, so the branch cut is not decided by floating-point noise.
-- **Decided under referee pressure, 2026-10-03, pending Lui's confirmation:** the seam discipline is a decree of the classical setting from rung `mult` on (`mult.seam-decree`), because `J J = [<o>][<o>]` can be written there and one unguarded unit step — in either orientation — proves `J J ≐ void`, from which the ℚ sign laws collapse the calculus. A **seam step** is a unit step whose content leaves the principal strip for some value in the node's domain; a law whose derivation uses one declares `guarded_by` (by position; Amendment A2 — until the C referee pass such laws were NATIVE-BY-DECREE, and absorbing seam steps went unpriced). The decree is stated in the ℂ reading, because `[[[oo]]]` carries iπ with no mirror anywhere and no shape-based signature is exact (`mult.seam-signature`); the alternative (defer the sign laws to rung C, or to J1 with `≃`) was rejected as the less honest inventory. Laws whose unit steps are admitted by content at non-absorbing positions, or by position on off-strip content, declare `guarded_by: [mult.seam-decree]` — a mechanical field the checker enforces in both directions — and carry the guard in their price (§5.4).
-- The two undefined forms, `<□>` and `[□]`, are one decree node (`mult.hole-exclusion`), read up to ≐; the ℂ reading is an `import` node so that consistency has a computable price.
-- Rule names follow James 1993 / Book One (Involution, Distribution, Inversion); Bricken's names (inversion, arrangement, reflection; involution for `<<A>> ≐ A`) are carried as aliases, to be verified against the sources.
+- **v1.0 (2026-10-03).** The data model, the node format, links, settings and readings, status, price, gaps, scope, verification, the build plan; the pilot of `void`, `N`, `Z`, the opening of `mult`; then the trunk to `C` with five referee passes.
+- **v1.1 (2026-10-04).** The `schema` type (§3.7); the derivation checker (§7.2); rung `J1` and the receipt prover (§7.3), LEGISLATION 30.
+- **v1.2 (2026-10-06).** Rung `place`: the reading at a finite place, the place ledger, the discipline of the page (§6.2–6.3), LEGISLATION 31.
+- **v1.3 (2026-10-07).** Rung `H`: the ordered square, conditional laws and rule families, the ℍ reading at ∞ and at the places, the ℍ ledgers, the referee's repairs (§6.4), LEGISLATION 32.
+- **Section map, v1 → v2.** §1 vocabulary → §1; equalities (end of §1) → §2.1; §2.1–2.6 the node → §3.1–3.6 (§2.3 front matter → §3.3; §2.4 body → §3.4; §2.5 canonical strings → §3.5; §2.6 rendering → §3.9); §2.7 schemas → §3.7; §3 links → §4.1; §4.1 settings → §5; §4.2–4.3 readings, Bricken → §6; §4.4 the place ledger → §6.2–6.3 (the reading) and §7.4 (the ledger); §4.5 the ℍ reading → §6.4 and §7.4; §5.1 status → §8.1; §5.2 verification → §8.2; §5.3 dates → §8.3; §5.4 price → §4.3; §5.5 the tape → §7.3; §6.1–6.3 gaps → §9.1; §6.2 census → §7.6; §7 refuted → §9.3; §8 scope → §10; §9 order → §4.2; §10 process → §11; §11 repository → §12; §12 visual → §13; §13 seeding → README (Status); §14 defaults → §14. A bare "§x.y" in a node's prose written before 2026-10-13 is a v1 number.
+- **v2.0 (2026-10-13).** Consolidation: the rules stated once, in force; the cell vocabulary and the ACCEPT rule in one place (§2); the engine's checks in one list (§7.7); the `Reading` interface (§6.5); the process — the rung protocol, adding a setting, iterating the spec, roles (§11); the decisions register (§14). Proposes LEGISLATION 33. The history that v1 carried inline now lives in README (Status), ROADMAP (§5–§7) and LEGISLATION.

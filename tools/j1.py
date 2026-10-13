@@ -1,4 +1,4 @@
-"""j1.py — the receipt tape: what each licensed step costs in 𝕁₁ (LEGISLATION 30; SPEC §5.5).
+"""j1.py — the receipt tape: what each licensed step costs in 𝕁₁ (LEGISLATION 30; SPEC §7.3).
 
 The derivation checker (prover.py) tells us which rule took a row to the next, in which orientation, at which
 position. This module grades every such step for the enriched calculus 𝕁₁:
@@ -67,7 +67,7 @@ UNIT_RULES = {"mult.involution", "mult.log-of-one", "J1.unit"}     # rules whose
 STRICT_J1 = {"J1.counit", "J1.closure", "J1.period-form"}            # strict rules of the J1 rung itself
 ABSORB_J1 = {"J1.absorption", "J1.absorption-mirror"}                 # witnessed moves inside an instance
 # Rung H: the strict rules of the ordered bracket (bookkeeping of an ordered log: exact in ℍ at every position), and
-# the conditional rule whose premise the reading checks at the use site (SPEC §4.5).
+# the conditional rule whose premise the reading checks at the use site (SPEC §6.4).
 STRICT_H = {"H.ordered-bracket", "H.splice", "H.unit-entry", "H.list-distribution", "H.anticommutation", "H.seed",
             "H.ordered-product", "H.j", "H.k", "H.commutation"}
 # Witnessed rules of rung H: a ≃ law whose use posts a receipt by position exactly as the unit does — the collapse
@@ -448,7 +448,7 @@ def step_grade(step: P.Step, grades: dict, node=None, rng=None, reading=None) ->
 
 def phases(grades: dict, node=None, rng=None, reading=None):
     """Search phases for the prover, cheapest tape first: strict only; then absorbed; then posted; then anything.
-    The search is heuristic (SPEC §5.5): a path the search misses can make a grade worse, never better."""
+    The search is heuristic (SPEC §7.3): a path the search misses can make a grade worse, never better."""
     def at_most(level):
         return lambda s: GRADE_ORDER.index(step_grade(s, grades, node, rng, reading)) <= level
     levels = [0, 1, 2, 3] if (reading is not None and reading is not READING) else [0, 2, 3]   # `page` only at a place
@@ -612,7 +612,7 @@ def grade_steps(steps: list, node, grades: dict, rng, reading=None) -> Tape:
         if noncomm and g == "absorbed" and None in ks:
             where = "seam"  # ℍ: the paying instance agrees (checked above) though the contents differ by no period — a
                             # seam displacement, e^{πu} = e^{πi}: paid by the instance, as James's J-discipline pays it,
-                            # and recorded as such (SPEC §4.5)
+                            # and recorded as such (SPEC §6.4)
         content = F.to_string(_unit_shape(s), True) if _unit_shape(s) is not None else F.to_string(s.redex, True)
         if _unit_shape(s) is not None and not _unit_shape(s):
             content = "void"

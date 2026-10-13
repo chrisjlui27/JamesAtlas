@@ -63,7 +63,7 @@ James's own repair of the "crack" in his calculus (Ch. 6 §6.3, p. 47): J-cancel
 | setting | holds | why |
 |---|---|---|
 | classical | holds | this is the classical setting's second decree; James's J-discipline is a special case of it stated through J ([[C.james-discipline]]) — and his on-sight conversion `[<A>] ≐ [A] J`, taken literally, is unsound: at A = `[[oo]]` the left side is −1.0037 and the right −1.0037 + 2πi, so the conversion holds only for Im Ln A ∈ (−π, 0] |
-| J1 | replaced | by the witnessed unit [[J1.unit]] with receipts: the position clause is the theorem [[J1.seam-theorem]] (an absorbed receipt), the content clause at depth 0 is a posted receipt (holds mod Λ), and nothing is refused; under a square 𝕁₁ takes no unit step at all, so the content clause there survives as an import of the reading (SPEC §5.5) |
+| J1 | replaced | by the witnessed unit [[J1.unit]] with receipts: the position clause is the theorem [[J1.seam-theorem]] (an absorbed receipt), the content clause at depth 0 is a posted receipt (holds mod Λ), and nothing is refused; under a square 𝕁₁ takes no unit step at all, so the content clause there survives as an import of the reading (SPEC §7.3) |
 | JH, JO | replaced | by the semantic seam guard JH-3 — the one-orientation form of this guard; whether JH admits the reverse unit step unguarded is to be checked against the JH ledger |
 | JP | holds | the axiom audit at a finite place passed with the discipline in force |
 

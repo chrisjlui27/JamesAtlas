@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""check.py — the chart's engine check (SPEC §10).
+"""check.py — the chart's engine check (SPEC §7).
 
 For every node:
   schema      required fields, enums, id = filename, unique walk order, required sections
@@ -10,7 +10,7 @@ For every node:
   derivation  every consecutive pair of forms in every Given–Rule table is equal in the declared
               sense, on random instantiations of its variables in the node's domain
   witness     a `witness:` script (meta theorems) exits 0
-  exact       a theorem whose `verified` is below `engine` is reported (SPEC §5.2: Exact withheld)
+  exact       a theorem whose `verified` is below `engine` is reported (SPEC §8.2: Exact withheld)
 Then:
   census      every `new`/`undefined` census form is assigned to a node or listed in open-forms.md
 
@@ -165,7 +165,7 @@ def check_schema(node: N.Node, nodes, rep: Report):
         except ValueError:
             over_p = False
         if over_p and "place.ostrowski" not in (m.get("uses") or []):
-            rep.fail(nid, "a law over the place p cites [[place.ostrowski]] in uses: the places are what the import names, and 'at every place' is priced by it (SPEC §2.7)")
+            rep.fail(nid, "a law over the place p cites [[place.ostrowski]] in uses: the places are what the import names, and 'at every place' is priced by it (SPEC §3.7)")
         text = node.sections.get("Derivation", "")
         has_hyp = any(len(r) > 1 and "hypothesis" in rule_tokens(r[1]) for t in N.parse_tables(text) for r in t[1:])
         try:
@@ -213,7 +213,7 @@ def check_schema(node: N.Node, nodes, rep: Report):
     if m.get("type") in ("theorem", "definition") and not node.derivations:
         rep.fail(nid, "theorems and definitions need a derivation table")
     if m.get("type") == "theorem" and m.get("verified") in ("none", "hand"):
-        rep.warn(nid, f"theorem verified only '{m.get('verified')}' — Exact withheld (SPEC §5.2)")
+        rep.warn(nid, f"theorem verified only '{m.get('verified')}' — Exact withheld (SPEC §8.2)")
     if m.get("type") == "decree" and m.get("status") != "NATIVE-BY-DECREE":
         rep.fail(nid, "decrees have status NATIVE-BY-DECREE")
 
@@ -516,7 +516,7 @@ def find_unit_steps(f1, f2, path=()):
         for e in src:
             if _unit_shaped(e):
                 cx = Counter(e[1][0][1])
-                # cx empty is the unit on nothing, [()] <-> void. It is deliberately NOT collected: SPEC §5.4 exempts
+                # cx empty is the unit on nothing, [()] <-> void. It is deliberately NOT collected: SPEC §4.3 exempts
                 # void/hole content from the decree (`[o] ≐ void` is a theorem of the hole rules), and a vacuous match
                 # here would preempt the pairing of a genuine redex standing next to it (e.g. [[(o)]] -> [o]).
                 if cx and all(dst_c[k] >= v for k, v in cx.items()):
@@ -684,7 +684,7 @@ def seam_reliance(node: N.Node, rng=None, trials: int = 60):
                         v = None
                     if v is F.BH or not x:
                         continue  # void or hole content: [(void)] ≐ void and [(□)] ≐ □ are theorems of the hole rules
-                        # (mult.unit-law, mult.hole-instance + mult.black-hole), so the step relies on neither clause — SPEC §5.4
+                        # (mult.unit-law, mult.hole-instance + mult.black-hole), so the step relies on neither clause — SPEC §4.3
                     if not absorbing(path):
                         rel.add("content")
                     else:
@@ -698,7 +698,7 @@ def seam_reliance(node: N.Node, rng=None, trials: int = 60):
 def schema_instances(node: N.Node):
     """The engine-checked instances of a schema node: one Node copy per parameter environment in schema_range,
     with the law and the Derivation expanded. At a base-case value the instance's derivation is the base table
-    alone; at every other value it is the step tables alone (SPEC §2.7), so a `hypothesis` row always refers to
+    alone; at every other value it is the step tables alone (SPEC §3.7), so a `hypothesis` row always refers to
     a value at or above the base. The instance carries the template and its environment for the hypothesis check."""
     out = []
     text = node.sections.get("Derivation", "")
@@ -787,7 +787,7 @@ def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 6
         return
     if node.get("setting") in ("J1", "JP", "JH"):
         if declared:
-            rep.fail(nid, "a 𝕁₁ node (or a node of a place, or of ℍ) does not declare guarded_by: its unit steps post receipts (SPEC §5.5)")
+            rep.fail(nid, "a 𝕁₁ node (or a node of a place, or of ℍ) does not declare guarded_by: its unit steps post receipts (SPEC §7.3)")
         else:
             rep.ok()
         return

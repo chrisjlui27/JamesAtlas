@@ -1,7 +1,7 @@
 """placeledger.py — the chart at every place: each law read at p = 2, 3, 5, 7, 13 (tools/place.py), and each
 derivation's licensed path re-graded there by the receipt prover (tools/j1.py) with the place's period ω_p.
 
-Written by check.py as census/place-ledger.md (rung `place`, SPEC §4.4). For a node the ledger records
+Written by check.py as census/place-ledger.md (rung `place`, SPEC §6.2, §7.4). For a node the ledger records
 
   * per place, the **law**: `exact` (equal as stated on every sample), `mod-Λ` (a strict law that holds only mod
     the place's period), `guarded` (holds where its forms exist; some sample is not a form at p), `none` (no
@@ -17,7 +17,7 @@ Written by check.py as census/place-ledger.md (rung `place`, SPEC §4.4). For a 
     `holds` / `holds-mod-Λ` from the law alone.
 
 A path re-graded at p is the path the search found cheapest at ∞; a cheaper path at p may exist, so a tape at p
-can be too pessimistic, never too generous (the heuristic caveat of SPEC §5.5, once more).
+can be too pessimistic, never too generous (the heuristic caveat of SPEC §7.3, once more).
 """
 from __future__ import annotations
 import os

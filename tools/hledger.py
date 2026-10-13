@@ -1,6 +1,6 @@
 """hledger.py — the chart in ℍ: every law of the trunk read in the ℍ reading (tools/quat.py) on its own domain and on
 generic quaternions, and each derivation's licensed path re-graded there by the receipt prover with directional
-receipts (rung `H`; SPEC §4.5, LEGISLATION 32).
+receipts (rung `H`; SPEC §6.4, §7.4, LEGISLATION 32).
 
 Written by check.py as census/h-ledger.md. For a node the ledger records
 
@@ -21,7 +21,7 @@ Written by check.py as census/h-ledger.md. For a node the ledger records
     no longer legal where the ledger computes.
 
 A path re-graded in ℍ is the path the search found cheapest in ℂ; a cheaper one in ℍ may exist, so a tape in ℍ
-can be too pessimistic, never too generous (SPEC §5.5).
+can be too pessimistic, never too generous (SPEC §7.3).
 """
 from __future__ import annotations
 import os

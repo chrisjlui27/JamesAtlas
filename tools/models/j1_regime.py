@@ -6,7 +6,7 @@ content is a sum of positive reals. Each of the three doors admits the lattice: 
 iπ with no mirror in sight — the signature failure of mult.seam-signature). The exceptional points of the
 reading open the second door by value: at B = 1 the square `[B]` reads ω, and `[(A [B])]` has receipt −ω.
 
-The receipt of a unit redex is value([(X)]) − value(X) in units of ω (SPEC §5.5), read in the 𝕁₁ reading: the
+The receipt of a unit redex is value([(X)]) − value(X) in units of ω (SPEC §7.3), read in the 𝕁₁ reading: the
 log of exactly one is 2πi, every other log principal.
 
 Exits 0 iff 20 000 random forms of the class have only void receipts at generic points, the three doors each
@@ -56,7 +56,7 @@ def nested_square(f, in_square=False):
 
 
 def windings(form, env):
-    """Receipts of every unit redex [(X)] inside the form, in the 𝕁₁ reading (SPEC §5.5): the value of [(X)]
+    """Receipts of every unit redex [(X)] inside the form, in the 𝕁₁ reading (SPEC §7.3): the value of [(X)]
     minus the value of X, in units of ω — the lattice element the unit step forgets."""
     out = []
     def walk(f):

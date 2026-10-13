@@ -1,4 +1,4 @@
-"""census.py — the small-form census (SPEC §6.2).
+"""census.py — the small-form census (SPEC §7.6).
 
 Enumerates every form with at most SIZE boundaries (no variables), canonicalizes,
 evaluates in the ℂ reading, classifies, and assigns each form to the node that reads it.

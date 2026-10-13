@@ -80,4 +80,4 @@ none
 
 ## Notes
 
-The chart's own `verified: engine` badge means "every derivation step holds in this reading on sampled values, and is reproduced from the previous row by the rule it cites" (the derivation checker, `tools/prover.py`, since 2026-10-04); what it still does not mean is that the *note* describes the step correctly — that remains the referee's job (SPEC §10).
+The chart's own `verified: engine` badge means "every derivation step holds in this reading on sampled values, and is reproduced from the previous row by the rule it cites" (the derivation checker, `tools/prover.py`, since 2026-10-04); what it still does not mean is that the *note* describes the step correctly — that remains the referee's job (SPEC §11.2).

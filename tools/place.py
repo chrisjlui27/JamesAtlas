@@ -1,4 +1,4 @@
-"""place.py — the reading at a place: forms evaluated at a prime p to a depth N (rung `place`; SPEC §4.4).
+"""place.py — the reading at a place: forms evaluated at a prime p to a depth N (rung `place`; SPEC §6.2).
 
 The page at a finite place is a pile declared void — p^N marks ≐ void (the void pile, `place.void-pile`) — so a
 number is a residue mod p^N, read as a doll of N shells. A value lives in the place's log space
@@ -57,7 +57,7 @@ def _cap(r):
 
 
 class NotAForm(ArithmeticError):
-    """A form with no value at this place (SPEC §4.4): a fraction of the period or of [p] that is not a form at p,
+    """A form with no value at this place (SPEC §6.2): a fraction of the period or of [p] that is not a form at p,
     the reciprocal of the prime, a product of formal elements — the selection rules of the place."""
 
 
@@ -453,7 +453,7 @@ class Place:
         return 1 + m * rng.randint(1, max(1, min(self.M // m - 1, 10 ** 6)))
 
     def random_env(self, names, domain: str, rng: random.Random) -> dict:
-        """Values for the variables at this place, by the node's domain (SPEC §4.4):
+        """Values for the variables at this place, by the node's domain (SPEC §6.2):
         natural — a small count 1 … 8; positive — a principal unit, now and then times p or p² (the reals' image
         is the 1-units; the prime carries the count of [p]); negative — minus a principal unit; real — either;
         unit — any unit of the page; complex (and anything else) — a random residue of the page: any torsion,
