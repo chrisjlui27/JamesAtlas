@@ -34,6 +34,7 @@ uses: [place.prime-power, place.no-inverse-of-the-prime, J1.pole]
 see_also: [J1.pole, mult.black-hole, mult.hole-exclusion, place.prime-power, place.no-inverse-of-the-prime, place.completion]
 aliases: [the two ends, □₊ and □₋, the wheel, one-ended calculus, ⊥ = □₋□₊, the rung-count axis]
 concepts: [place, pole, zero, division]
+owed: ["2026-10-06: the decree admitting the other end of the count of [p] — a lens, or a second page (place.completion)"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

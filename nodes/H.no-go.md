@@ -57,7 +57,7 @@ Two boxes side by side are the same picture whichever is on the left, so "a time
 | statement | rule | note |
 |---|---|---|
 | **Symmetry.** `[A][B]` and `[B][A]` are one form: juxtaposition is unordered | [[void.space]] | witness part (a): the two parse to one canonical form |
-| **The encoding.** `([A][B])` reads as exp(log A + log B) ([[mult.c-reading]] moved to ℍ, SPEC §6.4); it equals A·B on co-sliced contents and not on generic ones | [[mult.multiplication]] | witness part (b): 60/60 generic samples fail, 60/60 co-sliced samples agree up to the seam's sign |
+| **The encoding.** `([A][B])` reads as exp(log A + log B) ([[mult.c-reading]] moved to ℍ, SPEC §4.5); it equals A·B on co-sliced contents and not on generic ones | [[mult.multiplication]] | witness part (b): 60/60 generic samples fail, 60/60 co-sliced samples agree up to the seam's sign |
 | **Commuting ⟹ co-sliced.** pq − qp = 2 P × Q for the pure parts P, Q; so pairwise commutation forces parallel pure parts, and a pairwise-commuting set lies in one slice | — | witness part (c) |
 | **In-band rigidity.** For X, Y in the band, exp(X + Y) = exp X · exp Y iff [X, Y] = 0; sharp: out of band X = 4πi, Y = 3πj gives −1 = −1 with [X, Y] ≠ 0 | — | witness part (d): the branch discipline is what makes the theorem exact |
 

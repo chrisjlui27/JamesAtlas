@@ -37,6 +37,7 @@ guarded_by: [mult.seam-decree]
 see_also: [C.cube-root-of-unity, schema.cardinality, schema.period-multiple, schema.roots-sum, N.order]
 aliases: [roots of unity, ζ_n, "ωⁿ = 1"]
 concepts: [root, phase, one, induction]
+owed: ["2026-10-04: the multiplication of the n-th roots of unity as a schema in two parameters, and that they are all the roots (needs N.order, or a reading)"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

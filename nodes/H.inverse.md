@@ -34,6 +34,7 @@ uses: [H.collapse, H.commutation, H.conjugate, H.norm, H.ordered-cancellation, H
 see_also: [Q.reciprocal-law, Q.no-division-by-zero, C.complex-quotient, H.split-place, H.hurwitz-units, mult.hole-exclusion]
 aliases: [q⁻¹ = q̄/N, the quaternion inverse, division of quaternions, ℍ is a division algebra, the inverse quaternion]
 concepts: [quaternion, reciprocal, division]
+owed: ["2026-10-13: the law at 2 is formless on every sample because the reading's log refuses the conjugate; it reads once the ramified place's log reaches more of O₂^× (H.ramified-place)"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

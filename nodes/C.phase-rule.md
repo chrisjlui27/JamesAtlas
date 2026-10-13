@@ -34,6 +34,7 @@ uses: [C.phase, void.page, Z.inversion, mult.unit-law, mult.distribution, mult.b
 see_also: [C.log-of-negative, mult.cardinality, mult.product-of-negatives]
 aliases: [phase rule, negative cardinality, "−a = a · (−1)", "<A> = ([A] J)", "(J[A]) = <A>"]
 concepts: [phase, negation, multiplication]
+owed: ["2026-10-03: an independent 𝕁₁ derivation of the phase rule (the survival ledger asserts it directly)"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

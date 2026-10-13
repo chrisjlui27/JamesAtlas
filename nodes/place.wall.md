@@ -35,6 +35,7 @@ uses: [J1.period-form, J1.absorption, J1.half-period, J1.classical-floor, place.
 see_also: [J1.absorption, J1.closure, J1.half-period, J1.classical-floor, place.torsion, place.local-wall]
 aliases: [the same wall at every place, Axiom 4 (Wall), ω_v, the period of the place, the wall parameterized by a place]
 concepts: [place, period, receipt]
+owed: ["2026-10-06: the adelic page — one re-entry counted on every place's clock at once, with ∞'s share — is rung J2's"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

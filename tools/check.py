@@ -119,6 +119,11 @@ def check_schema(node: N.Node, nodes, rep: Report):
     for k in REQUIRED:
         if k not in m:
             rep.fail(nid, f"missing field {k}")
+    owed = m.get("owed")
+    if owed is not None:
+        # an owed item is a short dated obligation (LEGISLATION 33(d)): "YYYY-MM-DD: what is owed"
+        if not isinstance(owed, list) or not all(isinstance(x, str) and re.match(r"^\d{4}-\d{2}-\d{2}: \S", x) for x in owed):
+            rep.fail(nid, "owed must be a list of strings of the form 'YYYY-MM-DD: what is owed'")
     if m.get("type") not in N.TYPES:
         rep.fail(nid, f"bad type {m.get('type')}")
     if m.get("level") not in N.LEVELS:

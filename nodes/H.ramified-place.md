@@ -35,6 +35,7 @@ uses: [H.hurwitz-units, H.k, H.no-go, H.quaternion, H.ramification, place.radius
 see_also: [H.split-place, place.prime-log, place.void-pile, place.doll, place.no-inverse-of-the-prime, H.twenty-four, place.polar-form]
 aliases: [the ramified place, the Hurwitz order at 2, π = 1 + i, v(π) = ½, half-shells, 𝔽₄, the quaternionic doll, JP v0.3 (3)]
 concepts: [place, quaternion, prime, torsion, period]
+owed: ["2026-10-13: the torsion of the local order O₂ beyond the 24 Hurwitz units — the conjugates of i, j, ζ — which the reading does not read", "2026-10-13: the log of a unit of O₂ whose torsion factor does not commute with its principal rest (a few per cent of O₂^× read today)"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

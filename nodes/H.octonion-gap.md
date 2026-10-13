@@ -34,6 +34,7 @@ uses: []
 see_also: [H.splice, H.ordered-bracket, H.ramification, H.four-squares, H.twenty-four, H.ordered-cancellation, N.induction]
 aliases: [the octonion gap, JO, non-associative depth, JH OP-3, JH OP-5, emergent order, the Cayley–Dickson doubling]
 concepts: [quaternion, ordered-product, multiplication]
+owed: ["2026-10-13: an octonion reading of rung H at ∞ (splice failing) that computes the JO cells before any boundary is designed — LEGISLATION 32(h), when the O branch's turn comes"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

@@ -34,6 +34,7 @@ uses: [alg.root, C.modulus-squared]
 see_also: [C.modulus-squared, C.polar-form, alg.root]
 aliases: [modulus, absolute value, "|z|"]
 concepts: [complex-number, root]
+owed: ["2026-10-03: |zw| = |z||w| as rows (the two-square identity on the page)"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

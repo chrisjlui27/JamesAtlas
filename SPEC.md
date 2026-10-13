@@ -1,8 +1,8 @@
-# The Boundary Chart — Specification v2.0
+# The Boundary Chart — Specification v2.1
 
 *A step-by-step exposition of mathematics in James boundary arithmetic, from the void to F₁, as a searchable chart of laws; the data model, the engine and the process behind a future visual encyclopedia.*
 
-Status: **binding** where it records a decision from `LEGISLATION.md`; **pending** where it records one the session proposed and Lui has not yet confirmed (marked; the register in §14 lists them); **proposed** elsewhere. Version 2.0, 2026-10-13, consolidates v1.0 (2026-10-03) and the increments of rungs `schema`, `J1`, `place` and `H`: the rules are stated once, in force as of this version, and the history of how they were reached lives in `README.md` (Status), `ROADMAP.md` (§5–§7) and `LEGISLATION.md`, not here. Written for Lui; meant to be picked up cold by a later session, and to be brought into a project as its reference. How it is iterated: §11.4.
+Status: **binding** — every rule here records a decision from `LEGISLATION.md` (0–33, all decided as of 2026-10-13; the forks taken and the deferrals are listed in §14) or a default that stands unless Lui objects. Version 2.1, 2026-10-13: v2.0 consolidated v1.0 (2026-10-03) and the increments of rungs `schema`, `J1`, `place` and `H` — the rules stated once, in force, with the history of how they were reached in `README.md` (Status), `ROADMAP.md` (§5–§7) and `LEGISLATION.md`; v2.1 records Lui's confirmation of every pending decision and the actions it folded in. Written for Lui; meant to be picked up cold by a later session, and to be brought into a project as its reference. How it is iterated: §11.4.
 
 ---
 
@@ -48,7 +48,7 @@ The chart has the shape all three need; the rungs make it native (ROADMAP §1). 
 | **witness** | a script in `tools/models/` that checks a meta-level claim by computation; exits 0 iff the claim holds |
 | **price** | the set of non-derivable ancestors of a node (primitives, axioms, decrees, imports, gaps) and the guards along the way — computed, never typed (§4.3) |
 | **gap** | a node of type `gap`: a concept with no form, or a form with no reading, with a plan (§9) |
-| **owed** | a named obligation the chart has not met — a derivation, a reading, a cell — recorded where it falls due (§9.2) |
+| **owed** | a named, dated obligation the chart has not met — a derivation, a reading, a cell — recorded on the node where it falls due (`owed:`, §9.2) and collected into one list |
 | **walk** | the linear order in which the chart is read; a total order (`order`) refining the dependency DAG. Rung order (LEGISLATION 29): `void N Z mult Q alg C` · `schema` · `J1` · `place` · `H` · `analysis` · `J2` · `logic` `struct` · `F1`; `O`, `S` are a branch |
 | **schema** | a node whose law carries a count parameter (`n`, and optionally `k` or the place `p`); the engine instantiates it over a declared range and checks every instance; its derivation is an induction step (§3.7) |
 | **page** | the finite place p read to depth n: the residues mod pⁿ, declared by the void pile `o^{p**n} ≃ void` (§6.3) |
@@ -156,6 +156,7 @@ see_also: [mult.inverse-promotion]   # curated
 aliases: []                   # ids in the existing ledgers (JO-n, JS-n, JP-n, JH-n, Field) and other names
 concepts: [negation, addition]
 guarded_by: []                # mechanical: [mult.seam-decree] iff the derivation relies on a clause of the decree (§4.3)
+owed: ["2026-10-07: what is owed, in a line"]   # optional: dated obligations this node carries (§9.2); rendered and collected
 understood: no                # Lui's tracker: no | partial | yes
 understood_note: ""
 reentry: false                # true only on the one re-entry edge's source node
@@ -230,8 +231,8 @@ A **setting** is a named set of nodes in force. An extension is itself a node (a
 |---|---|---|
 | `classical` | three boundaries, Involution, Distribution, Inversion, and two decrees: the undefined forms (`<□>`, `[□]` excluded: `mult.hole-exclusion`) and the seam discipline (`mult.seam-decree`, stated in the ℂ reading because no syntactic signature exists — `mult.seam-signature`; James's J-discipline is its special case, `C.james-discipline`). The ℂ import is provisional until `J1` (LEGISLATION 27) | James 1993; Book One I–II |
 | `J1` | Involution split: the counit `([A]) ≡ A` strict (`J1.counit`), the unit `[(A)] ≃ A` witnessed by a receipt (`J1.unit`); the period form ω := `[()]` kept rather than erased; closure `(ω) ≡ ()` and absorption `(ω A) ≃ (A)` theorems; L0 linearity, the pole read by polarity, the ψ-wall as decrees; von Staudt–Clausen the one import. Three equalities ≡, ≃, ≈ | Number at Height One; 𝕁 v3.1; LEGISLATION 30 |
-| `JP` | the enriched calculus read at a finite place: the void pile `o^{p**n} ≃ void` declares the page (`place.void-pile`, a decree over p and n); the reading at p (`place.reading`, an import); the discipline of the page — the page's equality does not pass through a square, so a law of the page is ≃ and a page step is graded by position; the lens and the completion are the rung's gap. *Pending LEGISLATION 31* | Part II: Calculus of Number at a Place; rung `place` |
-| `JH` | the ordered square `[ ; ]` (`H.ordered-bracket`, a fourth boundary) with splice, the unit entry and two-sided distribution as axioms and two conditional axioms — the exchange of commuting entries (`H.commutation`) and the collapse of co-sliced entries to the classical square (`H.collapse`, witnessed); the second seed `Jj`, `(Jj) ≐ <o>` (`H.seed`, decree); anticommutation O9 (`H.anticommutation`, the one non-commutativity axiom); ordered cancellation a theorem; the seam guard `H.seam-guard`; receipts with a direction (`H.slice-wall`). *Pending LEGISLATION 32* | the JH-Calculus report; rung `H` |
+| `JP` | the enriched calculus read at a finite place: the void pile `o^{p**n} ≃ void` declares the page (`place.void-pile`, a decree over p and n); the reading at p (`place.reading`, an import); the discipline of the page — the page's equality does not pass through a square, so a law of the page is ≃ and a page step is graded by position; the lens and the completion are the rung's gap (LEGISLATION 31) | Part II: Calculus of Number at a Place; rung `place` |
+| `JH` | the ordered square `[ ; ]` (`H.ordered-bracket`, a fourth boundary) with splice, the unit entry and two-sided distribution as axioms and two conditional axioms — the exchange of commuting entries (`H.commutation`) and the collapse of co-sliced entries to the classical square (`H.collapse`, witnessed); the second seed `Jj`, `(Jj) ≐ <o>` (`H.seed`, decree); anticommutation O9 (`H.anticommutation`, the one non-commutativity axiom); ordered cancellation a theorem; the seam guard `H.seam-guard`; receipts with a direction (`H.slice-wall`) (LEGISLATION 32) | the JH-Calculus report; rung `H` |
 | `JO` | + tree-shaped nesting, the alternative laws, a third seed: the rung's gap (`H.octonion-gap`), not yet laid | Book One Part IV |
 | `JS` | + the fourth doubling, the octave grade | JS-algebra-sedenionic |
 | `extrusion` | + brace `{ }`, gauge principle G0 | 𝕁 v3.2 |
@@ -247,21 +248,21 @@ A **reading** is a model. The default gloss is `C`; the F₁ roads enter as read
 
 The engine computes with five readings, each a `Reading` object with one interface (§6.5): ℂ (classical), 𝕁₁ (§6.1), the page at a finite place (§6.2–6.3), ℍ at ∞ (§6.4) and ℍ at a finite place (§6.4). Each is the 𝕁₁ reading moved to its place and algebra.
 
-### 6.1 The 𝕁₁ reading (LEGISLATION 30b, amended; pending)
+### 6.1 The 𝕁₁ reading (LEGISLATION 30(b′))
 
 Values are complex numbers. The log of *exactly one* is the chosen lift ω = 2πi; every other log is principal. This is compositional — a square's value depends only on the value inside it — so the strict rules are exact in every context; `[()]`, `[(ω)]`, `[(J J)]` all read 2πi, and the crack's non-void receipt sits at the log of one, `[()] → void` (`mult.log-of-one`). The **receipt of a step** is the lattice element it forgets: value before minus value after, in units of ω, sampled over the node's domain (for a step between two instances the contents are compared). The reading has **exceptional points** — where a content is exactly one its log reads ω — probed at each variable's lattice values (1, −1, ½, 2, i within the domain) and named on the tape.
 
-### 6.2 The reading at a finite place (LEGISLATION 31; pending)
+### 6.2 The reading at a finite place (LEGISLATION 31)
 
 A value is a number part (a residue of the page, mod pⁿ), a count of the prime's log `[p]`, and a count of the torsion log J_p; `[ ]` splits a number into the three and `( )` reassembles them where it can — the number part on the radius p·ℤ_p (4ℤ₂), the counts whole. Five conventions (`place.reading`): the log of *exactly one* reads the place's period ω_p = (p−1)·J_p (2·J₂ at 2), every other log principal; a fraction of a torsion count is taken in 0 … p−2 (0, 1 at 2) — the *principal root* of the place, canonical on the principal units and a convention elsewhere; the generator of the torsion is the Teichmüller lift of the least primitive root (−1 at 2) — a convention like 2πi over −2πi; a formal element's log is a formal symbol that a count scales, and the product of two formal elements has no value (weight 2); counts scale formal elements only when exact.
 
 **Depth and precision.** The page's depth n is what equality is mod; the engine's working precision N is the depth plus a margin of as many shells again (`default_depth(p)`: 17 at 2, 11 at 3, 8 at 5, 6 at 7, 5 at 13), so that a log that loses shells is still read to the depth; a value that has lost more than the margin cannot be judged (`BeyondPrecision`: the sample is dropped, never judged). "Exactly one" is decided at N. A law exact at N is exact at every smaller depth. **The radius** is the standing proviso of every instance: a sample whose instance content falls outside it is retried on the radius (every variable times p, 4 at 2) and, if still outside, is formless for that sample — as is a sample that is not a form for a selection reason (a fraction of the period that is not a form at p, the reciprocal of the prime, weight 2). The exceptional points are probed by domain as at ∞ (a variable exactly one, its negative for a real variable, the void pile pⁿ) and a failure there is marked `·exc`.
 
-### 6.3 The discipline of the page (LEGISLATION 31(g); pending)
+### 6.3 The discipline of the page (LEGISLATION 31(g))
 
 The page's equality — agreement mod pⁿ — passes through juxtaposition, angles and instances, **not through a square**: `[o^{p**n}]` is n·[p], `[void]` is the pole, the log of a non-unit loses as many shells as its count of `[p]`. The laws of the page — the void pile and what follows from it by the page's equality alone (residues, minus one as a pile, Fermat–Euler, division by a unit, the prime power, the geometric doll; `PAGE_RULES`) — are ≃, never ≡, and a page step is graded by position (§7.3). The pole is the limit end of the count of `[p]` — no finite count is it; the instance of n·[p] is the void pile at depth n (`place.prime-power`, `place.two-ends`).
 
-### 6.4 The ℍ reading, at ∞ and at the places (LEGISLATION 32; pending)
+### 6.4 The ℍ reading, at ∞ and at the places (LEGISLATION 32)
 
 **Breadth is commutative.** `[A][B]` and `[B][A]` are one form, so any reading in which `([A][B])` is a product makes it commute; in ℍ that encoding is A·B only for co-sliced contents (`H.no-go`, the Slice theorem). A non-commutative product lives in *depth*: the ordered square reads as the log of the ordered product, `([A ; B])` is A·B. A law of the ordered square written with vector entries is a **family** of rules, one per shape of the list; the engine instantiates each family for lists of up to five entries (`tools/licences.py`, `FAMILIES`); the node's derivation proves the shape its law states.
 
@@ -295,7 +296,7 @@ For every derivation the engine asks for the cheapest licensed path — strict s
 - **page** (at a place only) — a step by a law of the page with no square anywhere above it. A page step with a square above it is **measured at every square above it**: an import where no square's value changes at the generic points, absorbed or posted where some change by one period (the outermost changed square posts the receipt, and the instance directly outside it pays it — an import when a further square lies above that instance; posted at depth 0), absent otherwise. A page theorem reused keeps its standing as a floor; page, like absorption, is never promoted to ≡ by reuse.
 - **absorbed** — the unit `[(A)] ↔ A`, absorption `(ω A) ↔ (A)`, the collapse, or a theorem with posted receipts, applied *directly inside an instance, through angles at most*: the instance pays the receipt; value-exact. A theorem whose receipts were all absorbed is absorbed when reused, at any position, and a law that uses it is ≃.
 - **posted** — a unit step, a collapse, or a posted theorem at depth 0: the receipt stays on the tape; the two forms agree mod Λ.
-- **import** — a unit step or a posted theorem under a square before any instance, whose receipt is void at the generic points of the domain (≃ is not a congruence through `[ ]`; the step is sound by a fact of the reading the calculus cannot see). The exceptional points are probed and named; the law stays `guarded`.
+- **import** — a unit step or a posted theorem under a square before any instance, whose receipt is void at the generic points of the domain (≃ is not a congruence through `[ ]`; the step is sound by a fact of the reading the calculus cannot see). The exceptional points are probed and named; the law stays `guarded`. The measurement at every square above (the page rule) is the criterion stated for both ∞ and p; at ∞ it coincides with this receipt check on the eight trunk laws it would touch (the experiment of 2026-10-13, LEGISLATION 31(g)), so the engine keeps the receipt check as its ∞ case.
 - **absent** — a receipt that is not void where it must be; a rule the setting does not have; a conditional rule whose premise fails (`premise`); in ℍ a cross-slice absorption or a seam displacement at depth 0.
 
 **In ℍ.** Receipts carry a direction. Every absorbed step is **checked by value** at its paying instance — the innermost instance above the redex, through angles, for a primitive witnessed rule and for a unit-shaped step of a theorem; the two sides themselves for a theorem reused on another shape — and is `absent [cross-slice]` when the instance no longer agrees (the first non-commutative wall, `H.slice-wall`). A receipt that is no lattice element is the seam: `absent` at depth 0, paid and recorded `seam` directly inside an agreeing instance (`H.seam-guard`). The trunk's derivations are re-graded on the plane, and a trunk theorem reused in rung `H` is value-checked on the citing node's own contents.
@@ -358,9 +359,9 @@ Required fields and enums, id = filename, unique order, required sections, Plain
 
 Two kinds: `kind: concept` — a mathematical concept with no form (induction, order, a metric at ∞, weight); `kind: form` — a form the calculus can write that nobody has read yet. Forms containing `[□]` or `<□>` are not gaps: both are excluded by decree. Every gap node's **Plan** has exactly these fields: candidate form(s); law(s) to add, and type; nativity criterion (stated in forms and ≐ only); refutation test; meta-move? (whether the plan needs the calculus looked at from outside, and which); owner thread; rank (reading < definition < theorem < decree < axiom < new primitive). The first gaps the reader meets, `N.induction` and `N.order`, are meta-level and resolved by meta-moves (the schema machinery prices the first).
 
-### 9.2 Owed
+### 9.2 Owed (LEGISLATION 33(d))
 
-An obligation the chart has not met — a derivation it cites by witness, a reading it refuses by name, a cell read by hand — is written where it falls due: in the node's Notes with the word *owed*, in the refusal message of the reading that declines, and in ROADMAP's "what the rung does not do". A referee's MINOR finding that is not repaired becomes an owed item. (Proposed, LEGISLATION 33(d): an `owed:` front-matter list, rendered and collected like the gaps.)
+An obligation the chart has not met — a derivation it cites by witness, a reading it refuses by name, a cell read by hand — is recorded on the node where it falls due, in its `owed:` list: short strings of the form `YYYY-MM-DD: what is owed` (checked), rendered on the card and collected by the generator into one list beside the gaps. The node's prose may say *owed* as well, and a reading that declines names the owed case in its refusal; ROADMAP's "what the rung does not do" summarizes. A referee's MINOR finding that is not repaired becomes an owed item. An owed item is closed by removing it when the obligation is met — with a line in the node's Notes or Refuted readings saying what met it.
 
 ### 9.3 Refuted readings (LEGISLATION 15)
 
@@ -376,7 +377,7 @@ Refutations are kept, never deleted: attached to the node they were mistaken for
 
 ### 10.2 Rungs, in walk order (LEGISLATION 29)
 
-`void` → `N` → `Z` → `mult` → `Q` → `alg` → `C` → `schema` → `J1` → `place` → `H` → `analysis` → `J2` → `logic` → `struct` → `F1` (→ re-entry to `void`), with `O` and `S` a branch off `H`; `field` a side chapter. Built through `H` (229 laws, 2026-10-13). The additive-first order follows the Iconic Mathematics scope and sequence: each stage adds an idea, not necessarily a boundary. Why the order (ROADMAP §2): `schema` first because every target needs statements over n; `J1` before everything else because it pays off the chart's biggest import; `place` before `H` and `H` directly after it so the first non-commutative wall is read against the places; `analysis` next because "at every place" needs a metric; `J2` as a rung of gaps and witnesses for the level-2 question; `logic`, `struct` before `F1`; `F1` last, as the fibre over the trivial place.
+`void` → `N` → `Z` → `mult` → `Q` → `alg` → `C` → `schema` → `J1` → `place` → `H` → `analysis` → `J2` → `logic` → `struct` → `F1` (→ re-entry to `void`), with `O` and `S` a branch off `H`; `field` a side chapter. Built through `H` (233 laws, 2026-10-13); next `analysis` (LEGISLATION 33(e)). The additive-first order follows the Iconic Mathematics scope and sequence: each stage adds an idea, not necessarily a boundary. Why the order (ROADMAP §2): `schema` first because every target needs statements over n; `J1` before everything else because it pays off the chart's biggest import; `place` before `H` and `H` directly after it so the first non-commutative wall is read against the places; `analysis` next because "at every place" needs a metric; `J2` as a rung of gaps and witnesses for the level-2 question; `logic`, `struct` before `F1`; `F1` last, as the fibre over the trivial place.
 
 ### 10.3 Trunk and roads (LEGISLATION 19)
 
@@ -394,22 +395,22 @@ One law per node; every derivation engine-checked and licensed; referees before 
 
 Copy the nearest node file; give it the next free `order` in its rung and an id that matches the filename; write the `law:` in canonical strings and the `units:` in standard notation; write the Given–Rule derivation citing the licensing node on every row; set `uses` to exactly the ids cited in the Derivation; fill the `holds` and `readings` tables (`untested` where no ledger computes the cell); run `tools/check.py` — a theorem becomes `verified: engine` only when it passes; run `tools/build.py` and look at the card. A law over every n is a `schema` (§3.7); a meta claim gets a witness (§3.8).
 
-### 11.2 Adding a rung — the rung protocol (proposed, LEGISLATION 33(b))
+### 11.2 Adding a rung — the rung protocol (LEGISLATION 33(b))
 
 A rung lands in this order, each step a gate for the next:
 
 1. **Plan.** A short plan, sent to Lui before building: the node list with types and the expected cells per setting, the engine and ledger work, the decisions it proposes (as a draft LEGISLATION item with defaults), what it leaves owed. Kept as `docs/plans/<rung>.md`.
 2. **Nodes and engine.** Nodes written as above; the engine extended where the rung's setting needs a reading, a rule family, a grade or a ledger (§11.3); witnesses for every meta node.
 3. **Full check, zero failures.** `tools/check.py` exits 0; the ledgers are written; `untested` is gone wherever a ledger computes.
-4. **Referee pass.** An independent agent that has not seen the drafting attacks derivations, cells, engine soundness, the mathematics and the documents, and reports findings as BLOCKER (a false law, a collapse of the calculus, an unsound grade) / MAJOR (a wrong claim, a wrong cell, an unsound path the chart does not yet take) / MINOR (a wrong sentence, a stale number, a weak witness). Blockers and majors are repaired before the commit; minors are repaired or become owed. The report is kept as `docs/referee/<rung>.md`, and the repairs are recorded in the nodes' Refuted readings where they refute something.
+4. **Referee pass.** An independent agent that has not seen the drafting attacks derivations, cells, engine soundness, the mathematics and the documents, and reports findings as BLOCKER (a false law, a collapse of the calculus, an unsound grade) / MAJOR (a wrong claim, a wrong cell, an unsound path the chart does not yet take) / MINOR (a wrong sentence, a stale number, a weak witness). Blockers and majors are repaired before the commit; minors are repaired or become owed. The report is kept as `docs/referee/<rung>.md`, and the repairs are recorded in the nodes' Refuted readings where they refute something. A rung that adds a boundary gets two independent passes.
 5. **Documents.** The SPEC's increment (new rules only, stated in force), the LEGISLATION item (pending), ROADMAP's "as built" section and "next", README's Status entry (latest first), the generator's lede for the rung.
 6. **Release.** Check (0 failures) → build → commit with the session's attribution → republish the artifact → zip the repository and send it. Lui pushes to GitHub from his own Claude Code, confirms or amends the LEGISLATION item, and flips `understood` as he walks.
 
-### 11.3 Adding a setting (proposed, LEGISLATION 33(c))
+### 11.3 Adding a setting (LEGISLATION 33(c))
 
 A new setting comes with: its nodes (the extension as axioms, primitives, decrees and the theorems they settle); a **reading** implementing §6.5, as the 𝕁₁ reading moved to its place and algebra; a **ledger** that reads every object-level law of the trunk in it and re-grades every licensed path there, and reads the earlier settings' rungs in it where that is meaningful (as `H` read `place`); the ACCEPT rule applied to its column, so that its cells are computed, not typed; its grades on the cards; witnesses for the meta theorems that state what the reading is. The trunk's cells in the new column are filled from the ledger, each `replaced` cell naming the law of the new setting that takes over.
 
-### 11.4 Iterating this specification (proposed, LEGISLATION 33(a))
+### 11.4 Iterating this specification (LEGISLATION 33(a))
 
 The SPEC is versioned: a rung lands with an increment (v2.1, v2.2, …) that adds the rules its setting needs, stated once and in force, and never a narrative of how they were found — history goes to README's Status, ROADMAP's "as built" sections and LEGISLATION's amendments. A decision changes only in LEGISLATION, by a dated amendment under its number; the SPEC then restates the rule. The version in force is named at the top; the register in §14 lists what is pending. Lui brings the current SPEC into his project when a rung is to be added, and the session that adds it returns the next increment.
 
@@ -459,26 +460,26 @@ Zero dependencies beyond Python 3. `python3 tools/check.py` (flags: `--only <pre
 
 ## 14. Decisions
 
-The register is `LEGISLATION.md`; this section says what stands and what waits.
+The register is `LEGISLATION.md`; this section says what stands, which forks were taken, and what is deferred.
 
-**In force (decided):** 0–29 (the framing, the ends, the types, links, price, status, gaps, scope, order, verification, process, the repository, the visual, the audience, seeding, the pilot; Amendments A1 and A2 as 27 and 28; the rung order and the schema type as 29).
+**In force (decided):** 0–29 (2026-10-03/04); the amendments to 30, and 31, 32, 33 — confirmed 2026-10-13 (Lui: "Fold all recommended actions into the spec, noting deferrals and forked paths taken"), each as recommended on the ballot of that day. **Defaults** (stand unless Lui objects): rung `mult` after `Z`; medium facts as `primitive`/`medium`; meta nodes count as laws; the domain defaults of §3.6; the two undefined forms as one decree and the ℂ reading as an import; rule names after James 1993 / Book One with Bricken's as aliases.
 
-**Decided by default** (stand unless Lui objects): rung `mult` after `Z`; medium facts as `primitive`/`medium`; meta nodes count as laws; the domain defaults of §3.6; the two undefined forms as one decree and the ℂ reading as an import; rule names after James 1993 / Book One with Bricken's as aliases.
+**Forked paths taken, and deferrals** (the alternative each was weighed against is in LEGISLATION's item):
 
-**Pending Lui's confirmation** (each implemented as the proposal):
-
-| item | the decision | the alternative |
+| item | the path taken | deferred or noted |
 |---|---|---|
-| 30(b′) | the compositional 𝕁₁ reading: the log of *exactly one* is ω = 2πi, every other log principal (§6.1) | classical values, receipts as tape tokens only — then five guarded trunk laws would be true everywhere |
-| 30(f′) | a unit step on pole-valued content posts no receipt; Dominion strict | the daimon as an opaque token on the arithmetic's tape |
-| 30(d′) | stratified annihilation recorded as a gap (`J1.annihilation`), not a conjecture | a conjecture node |
-| 30(a′), 30(c′) | an absorbed theorem reused is a witnessed move (never promoted to ≡); the prover's search is heuristic and pessimistic | — |
-| 31(a)–(h) | the shape of `place`: a place is a pile declared void; the 𝕁₁ reading at p with its five conventions; Ostrowski prices "at every place"; the trunk's JP cells computed; the same wall as a witnessed theorem; the discipline of the page; the generator of the torsion | ROADMAP §6 gives the alternatives each was weighed against |
-| 31(g) offer | **not** applying the measurement at the square to unit steps under a square at ∞ (it would upgrade some trunk imports to absorbed; the trunk's tapes stand as graded) | apply it, for one rule at ∞ and at p |
-| 32(a)–(h) | the shape of `H`: the bill (semicolon, `Jj`, O9), ordered cancellation a theorem; the collapse's premise on the logs; directional receipts and the value check; the seam guard as a new node; the ledgers at 2 and the odd places with three conventions (the prime on the left at 2, a commuting torsion factor, the seam as a verdict); 24 as ANALOGY; the sphere of phases ∞'s; the octonions as the gap | ROADMAP §7 |
-| 33(a)–(e) | **proposed by this version:** (a) the SPEC is versioned and iterated per rung (§11.4); (b) the rung protocol with the referee's severities as gates (§11.2); (c) a new setting comes with a reading, a ledger and computed cells (§11.3); (d) owed items as an `owed:` front-matter list, rendered and collected (§9.2); (e) the next rung is `analysis` (the metric: |·|_v, Ostrowski retiring as an import, the product formula; James's Table 7.1), with `J2` after it and the `O` branch deferred until a tree-shaped depth is designed | `J2` first; the `O` branch next |
-
----
+| 30(b′) | the compositional 𝕁₁ reading (§6.1): the log of exactly one is ω; five trunk laws stay `guarded` at their exceptional points | — |
+| 30(f′), (d′), (a′), (c′) | the pole exemption; annihilation as a gap; reuse of an absorbed theorem is ≃; the heuristic search accepted as pessimistic | — |
+| 31(a) | a place is a pile declared void; the lens not drawn | whether `[x ; y]` of rung `H` is the lens of `place.completion` — settled at `analysis` or `J2` (owed on `place.completion`) |
+| 31(b)–(f), (h) | the 𝕁₁ reading at p; Ostrowski as the price; the trunk's JP cells computed; the wall a theorem of the reading; the generator of the torsion by table | 31(f) is discharged by 32(e) |
+| 31(g) | the discipline of the page, with measurement at every square above | the offer (the same measurement for unit steps under a square at ∞) was *run as an experiment* on 2026-10-13: the eight trunk laws it would touch stay `import` — no square above changes — so the measurement is the rule stated for ∞ and p alike (§7.3) and no cell changed; the engine keeps the receipt check as its ∞ case |
+| 32(a)–(d), (f) | the bill; the collapse's premise on the logs; directional receipts and the seam payment; the seam guard as its own node; 24 as `ANALOGY` | — |
+| 32(e) | the prime on the left at 2; a torsion factor must commute with its principal rest; the seam as a ledger verdict | the extension that reads non-commuting torsion factors (negation by conjugation) is owed on `H.split-place` and `H.ramified-place` |
+| 32(g) | **split**: one law per node (LEGISLATION 5) — `H.rigidity-dichotomy`, `H.half-phase`, `H.120-law`, `H.interference` are their own nodes with their own witnesses (44 nodes on the rung) | the sphere of phases at a finite place is owed on `H.phase-sphere` |
+| 32(h) | the octonions as the rung's gap | an octonion reading of rung `H` at ∞ (splice failing), computing the JO cells before any boundary is designed — when the `O` branch's turn comes (owed on `H.octonion-gap`) |
+| 33(a)–(c) | the spec versioned (§11.4); the rung protocol with severities as gates, two passes for a rung that adds a boundary (§11.2); a setting comes with a reading and a ledger (§11.3) | — |
+| 33(d) | owed items as the `owed:` field (§9.2) — implemented: checked, rendered, collected; seventeen nodes carry one, nineteen items in all | — |
+| 33(e) | the next rung is `analysis`; then `J2`; the `O` branch deferred | the `finset` back-fill of the trunk (LEGISLATION 2) is reading work that may run alongside `analysis` |
 
 ## Appendix A — Changelog of this specification
 
@@ -487,4 +488,5 @@ The register is `LEGISLATION.md`; this section says what stands and what waits.
 - **v1.2 (2026-10-06).** Rung `place`: the reading at a finite place, the place ledger, the discipline of the page (§6.2–6.3), LEGISLATION 31.
 - **v1.3 (2026-10-07).** Rung `H`: the ordered square, conditional laws and rule families, the ℍ reading at ∞ and at the places, the ℍ ledgers, the referee's repairs (§6.4), LEGISLATION 32.
 - **Section map, v1 → v2.** §1 vocabulary → §1; equalities (end of §1) → §2.1; §2.1–2.6 the node → §3.1–3.6 (§2.3 front matter → §3.3; §2.4 body → §3.4; §2.5 canonical strings → §3.5; §2.6 rendering → §3.9); §2.7 schemas → §3.7; §3 links → §4.1; §4.1 settings → §5; §4.2–4.3 readings, Bricken → §6; §4.4 the place ledger → §6.2–6.3 (the reading) and §7.4 (the ledger); §4.5 the ℍ reading → §6.4 and §7.4; §5.1 status → §8.1; §5.2 verification → §8.2; §5.3 dates → §8.3; §5.4 price → §4.3; §5.5 the tape → §7.3; §6.1–6.3 gaps → §9.1; §6.2 census → §7.6; §7 refuted → §9.3; §8 scope → §10; §9 order → §4.2; §10 process → §11; §11 repository → §12; §12 visual → §13; §13 seeding → README (Status); §14 defaults → §14. A bare "§x.y" in a node's prose written before 2026-10-13 is a v1 number.
+- **v2.1 (2026-10-13, later).** Every pending decision confirmed as recommended (LEGISLATION 30′, 31, 32, 33); the forks and deferrals recorded in §14; the `owed:` field implemented (§9.2, §3.3); rung `H`'s folded laws split into their own nodes (§14, 32(g)); the 31(g) experiment run and its result stated (§7.3); two referee passes for a rung that adds a boundary (§11.2).
 - **v2.0 (2026-10-13).** Consolidation: the rules stated once, in force; the cell vocabulary and the ACCEPT rule in one place (§2); the engine's checks in one list (§7.7); the `Reading` interface (§6.5); the process — the rung protocol, adding a setting, iterating the spec, roles (§11); the decisions register (§14). Proposes LEGISLATION 33. The history that v1 carried inline now lives in README (Status), ROADMAP (§5–§7) and LEGISLATION.

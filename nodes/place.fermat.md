@@ -36,6 +36,7 @@ uses: [mult.exponentiation, place.void-pile, place.reading, place.ostrowski]
 see_also: [place.division-by-unit, place.teichmuller, place.torsion, J1.receptacle, schema.power, N.order]
 aliases: [Fermat's little theorem, Euler's theorem, U^φ = 1, the order of the unit group, φ(p^n) = (p−1)p^{n−1}]
 concepts: [place, power, one, prime]
+owed: ["2026-10-06: a derivation on the page — the counting argument (Lagrange) needs an order or a count of forms the chart does not have (N.order)"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

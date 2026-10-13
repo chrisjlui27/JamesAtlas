@@ -34,6 +34,7 @@ uses: [Q.division, C.phase, C.imaginary-unit]
 see_also: [C.phase, C.imaginary-unit, C.euler-identity, alg.base]
 aliases: [π, pi, "J/i"]
 concepts: [phase, constant]
+owed: ["2026-10-03: the equality of James's π, `(J [J] ([J] <[oo]>))`, with the chart's, written as rows"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

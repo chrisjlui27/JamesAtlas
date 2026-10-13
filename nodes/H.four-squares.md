@@ -35,6 +35,7 @@ uses: [H.commutation, H.conjugate, H.norm, H.splice]
 see_also: [H.hurwitz-units, H.twenty-four, C.modulus-of-polar, H.inverse, H.octonion-gap]
 aliases: [Euler's four-square identity, N(pq) = N(p) N(q), the norm is multiplicative, composition of sums of four squares, Hamilton's modulus theorem]
 concepts: [quaternion, modulus, ordered-product]
+owed: ["2026-10-07: the anti-automorphism conj(pq) = conj(q) conj(p) as a derivation on the page — witnessed exactly; it would make this node object-level"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

@@ -34,6 +34,7 @@ uses: [Z.subtraction, C.complex-number, C.imaginary-unit, mult.multiplication]
 see_also: [C.complex-number, C.modulus-squared, C.conjugate-of-turn]
 aliases: [conjugate, "a − bi", z̄]
 concepts: [complex-number, negation]
+owed: ["2026-10-03: conj(zw) = conj(z) conj(w) as rows"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

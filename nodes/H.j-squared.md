@@ -45,7 +45,7 @@ reentry: false
 |---|---|---|
 | `([j ; j]) ≃ <o>` | j times j is minus one | j² = −1 |
 
-The derivation of [[C.i-squared]] with the second seed in place of the first: the ordered square collapses (j is co-sliced with itself), the two unit steps open the halves inside the instance, half of J_j and half of J_j make J_j ([[Q.fractional-cardinality]]), and the seed's instance is minus one ([[H.seed]]). Every step is paid by the outer instance: absorbed. One of them is a *seam* payment — `[j ; j]` is the log of −1, pinned to πi, while `[j][j]` is πj; the contents differ by no period, and the instance pays the difference because e^{πi} = e^{πj}: recorded on the tape as `absorbed [seam]` (SPEC §6.4).
+The derivation of [[C.i-squared]] with the second seed in place of the first: the ordered square collapses (j is co-sliced with itself), the two unit steps open the halves inside the instance, half of J_j and half of J_j make J_j ([[Q.fractional-cardinality]]), and the seed's instance is minus one ([[H.seed]]). Every step is paid by the outer instance: absorbed. One of them is a *seam* payment — `[j ; j]` is the log of −1, pinned to πi, while `[j][j]` is πj; the contents differ by no period, and the instance pays the difference because e^{πi} = e^{πj}: recorded on the tape as `absorbed [seam]` (SPEC §4.5).
 
 ## Plain
 

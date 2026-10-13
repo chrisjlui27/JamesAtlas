@@ -34,6 +34,7 @@ uses: [H.central-sign, H.quaternion, Z.subtraction]
 see_also: [C.conjugate, H.norm, H.inverse, H.reversal, H.four-squares]
 aliases: [quaternion conjugate, q̄, a − bi − cj − dk, the adjugate, conj q]
 concepts: [quaternion, negation]
+owed: ["2026-10-07: the anti-automorphism conj(pq) = conj(q) conj(p) as a derivation (with H.four-squares)"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

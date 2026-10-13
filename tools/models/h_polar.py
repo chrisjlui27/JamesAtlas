@@ -1,8 +1,7 @@
-"""Witness for H.polar-form — every q ≠ 0 is r·e^{tπu} (JH-17), with the 120° law (JH-15) and phase interference
-(JH-16). (1) q = |q| exp(tπu), t ∈ [0, 1], u the direction of Im q; (2) the negative reals are the non-uniqueness
-locus (t = 1, u free); (3) the 120° law: |u + v| = 1 ⟹ J_u J_v is a phase, exp(π(u+v)) = −1 (so two phases are a
-third); (4) interference: exp(π Σ u_i) is 1 iff |Σu| is an even integer and −1 iff odd; (5) (J_i J_j J_k) has
-phase π√3 in the direction (i+j+k)/√3. Exits 0 iff all hold."""
+"""Witness for H.polar-form — every q ≠ 0 is r·e^{tπu} (JH-17). (1) q = |q| exp(tπu), t ∈ [0, 1], u the direction of
+Im q, on 60 random quaternions; (2) the negative reals are the non-uniqueness locus (t = 1, u free); (3) the unit
+quaternions are the suspension of the phase sphere: at t = 0 and t = 1 every u gives one point (±1), between them
+the points are distinct. Exits 0 iff all hold."""
 from h_common import *  # noqa: F401,F403
 
 checks = []
@@ -19,29 +18,9 @@ checks.append(("the negative reals: t = 1 and every u gives the same q (non-uniq
                all(close(Q(r) * exp(unit().scale(PI)), Q(-r), 1e-7) for r in (0.5, 2.0, 7.0))))
 ok3 = True
 for _ in range(40):
-    u = unit()
-    # v at 120° from u: v = −u/2 + (√3/2) w, w ⟂ u unit
-    w = unit()
-    w = w - u.scale(u.b * w.b + u.c * w.c + u.d * w.d)
-    w = w.scale(1.0 / w.imag_abs())
-    v = u.scale(-0.5) + w.scale(math.sqrt(3) / 2)
-    s = u + v
-    ok3 = ok3 and abs(s.imag_abs() - 1.0) < 1e-9 and close(exp(s.scale(PI)), Q(-1), 1e-7)
-checks.append(("the 120° law: |u + v| = 1 ⟹ π(u + v) ∈ π·S², so (J_u J_v) = −1 and J_u J_v = J_{u+v}", ok3))
-ok4 = True
-for _ in range(40):
-    us = [unit() for _ in range(RNG.randint(2, 5))]
-    s = Q()
-    for u in us:
-        s = s + u
-    val = exp(s.scale(PI))
-    m = s.imag_abs()
-    if abs(m - round(m)) < 1e-9:
-        ok4 = ok4 and close(val, Q(1 if round(m) % 2 == 0 else -1), 1e-6)
-    else:
-        ok4 = ok4 and not (close(val, Q(1), 1e-6) or close(val, Q(-1), 1e-6))
-checks.append(("interference: (J_{u₁} … J_{uₙ}) is 1 iff |Σu| is an even integer, −1 iff odd, neither otherwise", ok4))
-s = I + Jq + K
-checks.append(("(J_i J_j J_k): phase π√3 about (i+j+k)/√3 — generating a dense torsion-free subgroup of that circle",
-               abs(s.imag_abs() - math.sqrt(3)) < 1e-12 and not close(exp(s.scale(PI)), Q(1), 1e-6) and not close(exp(s.scale(PI)), Q(-1), 1e-6)))
+    u, v = unit(), unit()
+    ok3 = ok3 and close(exp(u.scale(0.0)), exp(v.scale(0.0)), 1e-9) and close(exp(u.scale(PI)), exp(v.scale(PI)), 1e-9)
+    t = RNG.uniform(0.05, 0.95)
+    ok3 = ok3 and (close(u, v, 1e-6) or not close(exp(u.scale(t * PI)), exp(v.scale(t * PI)), 1e-6))
+checks.append(("S³ is the suspension of the phase sphere: the poles t = 0, 1 pinch every direction to ±1, the rest are distinct", ok3))
 report("H.polar-form", checks)

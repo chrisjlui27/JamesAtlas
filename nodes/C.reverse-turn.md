@@ -35,6 +35,7 @@ guarded_by: [mult.seam-decree]
 see_also: [C.cosine, C.sine, C.cosine-even, C.sine-odd, Q.reciprocal]
 aliases: [reverse turn, reciprocal of a turn, "1/e^{iθ} = e^{−iθ}"]
 concepts: [phase, inverse]
+owed: ["2026-10-03: the complex log of a turn as a law with a bounded variable (a unit-interval domain, or the schema machinery)"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

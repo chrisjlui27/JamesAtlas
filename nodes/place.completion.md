@@ -34,6 +34,7 @@ uses: []
 see_also: [N.induction, place.doll, place.geometric-doll, place.lift, place.two-ends]
 aliases: [completion, the lens, {n A}, the ordered lens, ℤ_p as a tower, the infinite doll, JP-2, JP-3]
 concepts: [place, induction, zero]
+owed: ["2026-10-13: whether the ordered square `[x ; y]` of rung H is the lens of this gap — to be settled at `analysis` or `J2`"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

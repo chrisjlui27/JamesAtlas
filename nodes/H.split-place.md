@@ -35,6 +35,7 @@ uses: [H.inverse, H.k, H.no-go, H.norm, H.quaternion, H.ramification, place.ferm
 see_also: [H.ramified-place, H.no-go, H.ordered-cancellation, place.division-by-unit, place.torsion, H.hurwitz-units]
 aliases: [the split places, M₂(ℚ_p), quaternions mod pⁿ, the norm-null species, JH-20, zero divisors on the page, the matrix reading]
 concepts: [place, quaternion, prime, division]
+owed: ["2026-10-07: the log of a unit whose reduction mod p has order divisible by p (a unipotent part) — refused by name", "2026-10-13: the log of a unit whose torsion factor does not commute with its principal rest — refused by name; the extension with negation by conjugation, −(t, L) := (t⁻¹, −tLt⁻¹), is LEGISLATION 32(e)(ii)'s alternative"]
 understood: "no"
 understood_note: "not yet walked — the tracker is Lui's to flip"
 reentry: false

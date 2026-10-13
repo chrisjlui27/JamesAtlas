@@ -542,6 +542,7 @@ def render_node(node, nodes, used_by, depth, price):
     <div class="kv"><span class="k">uses</span><span class="v">{uses_links or "—"}</span></div>
     <div class="kv"><span class="k">used by</span><span class="v">{used_links or "—"}</span></div>
     {f'<div class="kv"><span class="k">guarded by</span><span class="v">{guard_links}</span></div>' if guard_links else ""}
+    {f'<div class="kv"><span class="k">owed</span><span class="v owed">{"<br>".join(inline(str(x), nodes) for x in (m.get("owed") or []))}</span></div>' if m.get("owed") else ""}
     {tape_html(nid)}
     {f'<div class="kv"><span class="k">see also</span><span class="v">{see_links}</span></div>' if see_links else ""}
     {price_html}
@@ -654,6 +655,8 @@ def main():
                         + "".join(render_node(n, nodes, used_by, depth, price) for n in ns) + "</section>")
 
     gap_html = "".join(f'<div class="gapitem"><a class="nl" href="#{n.id}">{n.id}</a> <b>{html.escape(str(n.get("title")))}</b> — {inline(str(n.get("law")), nodes)}</div>' for n in gaps)
+    owed_items = [(n, x) for n in ordered for x in (n.get("owed") or [])]
+    owed_html = "".join(f'<div class="gapitem"><a class="nl" href="#{n.id}">{n.id}</a> {inline(str(x), nodes)}</div>' for n, x in owed_items)
     ref_html = "".join(f'<div class="refitem"><a class="nl" href="#{n.id}">{n.id}</a>{md(txt, nodes)}</div>' for n, txt in refuted)
     toc = "".join(f'<a href="#rung-{r}">{html.escape(r)}</a>' for r in rungs)
 
@@ -791,7 +794,7 @@ td.fcell code {{ display:block; margin-top:2px; font-size:0.74rem; background:tr
 .nl:hover {{ border-bottom-color:var(--accent); }}
 .nl.dashed {{ border-bottom-style:dashed; }}
 .cl {{ font-size:0.84em; text-decoration:none; border-bottom:1px dotted var(--line); margin-right:6px; }}
-.v.tape {{ font-size:0.76rem; color:var(--mute); }} .v.tape b {{ color:var(--fg); font-weight:600; }}
+.v.tape {{ font-size:0.76rem; color:var(--mute); }} .v.tape b {{ color:var(--fg); font-weight:600; }} .v.owed {{ font-size:0.8rem; color:var(--warn); }}
 article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--line); font-size:0.8rem; display:flex; flex-direction:column; gap:4px; }}
 .kv {{ display:flex; gap:10px; flex-wrap:wrap; align-items:baseline; }}
 .kv .k {{ font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg2); min-width:60px; }}
@@ -818,6 +821,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
     <div class="stat"><b>{counts.get("axiom",0)} + {counts.get("primitive",0)}</b><span>axioms + primitives</span></div>
     <div class="stat"><b>{counts.get("decree",0)}</b><span>decrees</span></div>
     <div class="stat"><b>{counts.get("gap",0)}</b><span>gaps</span></div>
+    <div class="stat"><b>{len(owed_items)}</b><span>owed</span></div>
     <div class="stat"><b>{steps}</b><span>derivation steps checked</span></div>
     <div class="stat"><b>{engine}/{len(nodes)}</b><span>engine-verified</span></div>
     <div class="stat"><b>{shape_led}/{len(nodes)}</b><span>shape-led</span></div>
@@ -835,7 +839,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 </header>
 <div class="toolbar">
   <input id="q" type="search" placeholder="search laws, aliases, concepts — e.g. negation, Dominion, JH-20" aria-label="search the chart">
-  <nav class="toc">{toc}<a href="#concepts">concepts</a><a href="#gaps">gaps</a><a href="#refuted">refuted</a><a href="#census">census</a></nav>
+  <nav class="toc">{toc}<a href="#concepts">concepts</a><a href="#gaps">gaps</a><a href="#owed">owed</a><a href="#refuted">refuted</a><a href="#census">census</a></nav>
 </div>
 <section id="chart">
   <h2>The chart<span class="rmeta">columns = derivation depth · click a law to jump · hover to light its edges · drag to pan</span></h2>
@@ -845,6 +849,7 @@ article footer {{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--
 {"".join(chapters)}
 <section id="concepts"><h2>Concept index<span class="rmeta">a concept resolves to the laws that express it</span></h2><div class="concepts">{render_concepts(nodes, concepts)}</div></section>
 <section id="gaps"><h2>Gaps<span class="rmeta">concepts without a form; each carries a plan</span></h2>{gap_html}</section>
+<section id="owed"><h2>Owed<span class="rmeta">obligations the chart has not met — a derivation, a reading, a cell — recorded where they fall due (LEGISLATION 33(d))</span></h2>{owed_html or "<p>none</p>"}</section>
 <section id="refuted"><h2>Refuted readings<span class="rmeta">kept, struck through, attached to the law they were mistaken for</span></h2>{ref_html or "<p>none yet</p>"}</section>
 <section id="census"><h2>Census of small forms<span class="rmeta">every form with at most three boundaries</span></h2>
   <p>{census_summary} · {len(rows)} forms. A form is <b>new</b> when no smaller form has its value; <b>reduces</b> when one does; <b>undefined</b> when it contains <code>[□]</code>; <b>excluded</b> when it contains <code>&lt;□&gt;</code>.</p>
