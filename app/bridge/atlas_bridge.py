@@ -61,18 +61,26 @@ class Chart:
     # ------------------------------------------------------------------ loading
 
     def load(self):
+        """Read the chart. Nothing already loaded is replaced unless the whole read succeeds."""
         B, N = self.B, self.N
+        nodes_dir = os.path.join(self.root, "nodes")
+        try:
+            nodes = N.load_nodes(nodes_dir)
+        except Exception as e:
+            raise BridgeError("the chart's nodes could not be read:\n" + "\n".join(diagnose_nodes(N, nodes_dir) or [str(e)]), "bad-chart")
+        concepts = N.load_concepts(os.path.join(self.root, "concepts"))
         B._J1_LEDGER = None          # the ledgers are re-read: a check run may have rewritten them
         B._PLACE_LEDGER = None
         B._H_LEDGER = None
-        nodes_dir = os.path.join(self.root, "nodes")
         try:
-            self.nodes = N.load_nodes(nodes_dir)
+            used_by, depth, price = B.compute(nodes)
         except Exception as e:
-            raise BridgeError("the chart's nodes could not be read:\n" + "\n".join(diagnose_nodes(N, nodes_dir) or [str(e)]), "bad-chart")
-        self.concepts = N.load_concepts(os.path.join(self.root, "concepts"))
-        self.used_by, self.depth, self.price = B.compute(self.nodes)
-        self.ordered = sorted(self.nodes.values(), key=lambda n: (n.get("order", 0), n.id))
+            raise BridgeError(f"the chart's links could not be followed: {e} — run Check to see which law", "bad-chart")
+        # an `order:` that is not a whole number sorts first, as check.py does, so the app still opens and Check names it
+        ordered = sorted(nodes.values(), key=lambda n: (n.get("order") if isinstance(n.get("order"), int) else 0, n.id))
+        self.nodes, self.concepts = nodes, concepts
+        self.used_by, self.depth, self.price = used_by, depth, price
+        self.ordered = ordered
         self.cards = {}
         self.rule_cache = {}
         self.rule_env = {}       # a schema instance's parameters, by rule
@@ -288,25 +296,65 @@ class Chart:
                     "usable": bool(rules),
                     "conditional": units.startswith("PREMISE"),
                     "schema": bool(n.get("schema_range")),
-                    "reading": default_reading(n),
+                    "reading": default_reading(n, self.instance(n)[0]),
                     "why": why,
                 })
             self.rule_index = out
         return self.rule_index
 
+    def instance(self, n):
+        """For a law written over n (and the place p): the instance its card draws (build.draw_env), when that is in
+        the law's range, or else the first in range — as (env, lhs, rhs) with both sides parseable; (None, None, None)
+        for an ordinary law or one that will not expand."""
+        if not n.get("schema_range"):
+            return None, None, None
+        import schema as S   # the chart's own module
+        F = self.F
+        law = str(n.get("law", ""))
+        try:
+            envs = S.parse_range(n.get("schema_range", ""))
+        except Exception:
+            envs = []
+        drawn = self.B.draw_env(n)
+        first = [e for e in envs if all(drawn.get(k) == v for k, v in e.items())]
+        for env in first + envs:
+            try:
+                lhs, rhs, _sym = F.split_law(S.expand(law, env))
+                if rhs is None:
+                    continue
+                F.parse(lhs)
+                F.parse(rhs)
+                return dict(env), lhs, rhs
+            except Exception:
+                continue
+        return None, None, None
+
     def law(self, nid):
         n = self.node(nid)
         self._classical()
         lhs, rhs, sym = self.F.split_law(str(n.get("law", "")))
+        env, ilhs, irhs = self.instance(n)
+        if env is not None:     # a template (A^{n}, o^{p**n}, Σ{…}) is not a form: start from the instance the card draws
+            lhs, rhs = ilhs, irhs
         rules = self.node_rules(n)
         one_way = [r.label or f"{self.F.to_string(r.lhs, True) or 'void'} {sym or '≐'} {self.F.to_string(r.rhs, True) or 'void'}"
                    for r in rules if len(r.oriented()) == 1]
         return {"id": n.id, "title": str(n.get("title", "")), "html": self.B.law_block(n, self.nodes),
                 "lhs": lhs if rhs is not None else None, "rhs": rhs, "symbol": sym,
                 "units": str(n.get("units", "")), "conditional": str(n.get("units", "")).startswith("PREMISE"),
-                "setting": n.get("setting"), "domain": n.get("domain"), "reading": default_reading(n),
+                "setting": n.get("setting"), "domain": n.get("domain"), "reading": default_reading(n, env),
+                "instance": self._describe(env),
                 "rules": len(rules), "oneWay": bool(one_way) and len(one_way) == len(rules),
                 "instances": [r.label for r in rules if r.label][:40] if len(rules) > 1 else []}
+
+    def _describe(self, env):
+        if not env:
+            return ""
+        import schema as S
+        try:
+            return S.describe(env)
+        except Exception:
+            return ", ".join(f"{k} = {v}" for k, v in env.items())
 
     def inspect(self, text, seed=0, reading="C", domain="positive"):
         F = self.F
@@ -337,6 +385,13 @@ class Chart:
         rules = self.node_rules(n)
         if not rules:
             raise BridgeError(f"{n.id} has no law the instrument can apply: {_why_not_rule(str(n.get('law', '')))}", "no-rule")
+        rname = reading or default_reading(n, self.instance(n)[0])
+        place_pick = int(rname[1:]) if rname.startswith("p") else None
+        if place_pick is not None:
+            # read at one place: only the instances written for that place license a step there
+            rules = [r for r in rules if self.rule_env.get(r, {}).get("p", place_pick) == place_pick]
+            if not rules:
+                raise BridgeError(f"{n.id} has no instance at the place {place_pick}: choose another place", "no-rule")
         risky = [r for r in rules if match_cost(r, form, F) > MATCH_BUDGET]
         if risky and len(risky) == len(rules):
             raise BridgeError(
@@ -363,11 +418,6 @@ class Chart:
             if time.time() - started > 15:
                 truncated = True
                 break
-        rname = reading or default_reading(n)
-        place_pick = int(rname[1:]) if rname.startswith("p") else None
-        if place_pick is not None:
-            # read at one place: only the instances written for that place license a step there
-            results = [t for t in results if self.rule_env.get(t[2], {}).get("p", place_pick) == place_pick]
         results.sort(key=lambda t: (t[1].direction != "→", F.size(t[0]), F.to_string(t[0])))
         shown = results[:MAX_RESULTS]
         sym = F.split_law(str(n.get("law", "")))[2] or "≐"
@@ -472,17 +522,16 @@ READINGS = {
 }
 
 
-def default_reading(n) -> str:
+def default_reading(n, env=None) -> str:
+    """The reading a law is read in by the engine (check.set_reading): its setting's, and for a law written over the
+    place p, the place of the instance it starts from."""
     setting = n.get("setting")
     if setting == "J1":
         return "J1"
     if setting == "JH":
         return "H"
     if setting == "JP":
-        p = n.get("place")
-        if p is None:
-            m = re.search(r"\bp\s*=\s*(\d+)", str(n.get("schema_range", "")))
-            p = m.group(1) if m else None
+        p = (env or {}).get("p", n.get("place"))
         if p is not None and f"p{p}" in READINGS:
             return f"p{p}"
     return "C"
@@ -586,9 +635,9 @@ def _widest(form, F) -> int:
 
 
 def _free_names(pattern, F, top=True):
-    """The largest number of variables sitting side by side at one level of a pattern (plus the context the
-    rewriter adds at the level it matches at)."""
-    here = sum(1 for ch in pattern if ch[0] == F.VAR) + (1 if top else 0)
+    """The largest number of distinct variables side by side at one level of a pattern (plus the context the
+    rewriter adds at the level it matches at): `A A` splits a multiset two ways, not three."""
+    here = len({ch[1] for ch in pattern if ch[0] == F.VAR}) + (1 if top else 0)
     best = here
     for ch in pattern:
         if F.is_leaf(ch):

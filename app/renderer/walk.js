@@ -21,13 +21,14 @@
       const counts = { yes: 0, partial: 0, no: 0 };
       ids.forEach((id) => { counts[A.state.byId[id].understood]++; });
       const pct = (k) => (100 * counts[k] / ids.length).toFixed(1) + '%';
-      const head = A.el('li', { class: 'rung-h' + (collapsed.has(r.id) ? ' collapsed' : ''), dataset: { rung: r.id }, title: `${counts.yes} understood · ${counts.partial} partly · ${counts.no} not yet` },
+      const head = A.el('li', { class: 'rung-h' + (collapsed.has(r.id) ? ' collapsed' : ''), dataset: { rung: r.id }, title: `${counts.yes} understood · ${counts.partial} partly · ${counts.no} not yet`, tabindex: '0', role: 'button', 'aria-expanded': String(!collapsed.has(r.id)) },
         A.el('span', { class: 'caret', text: collapsed.has(r.id) ? '▸' : '▾' }),
         A.el('span', { class: 'rid', text: r.id }),
         A.el('span', { text: r.title }),
         A.el('span', { class: 'rcount', text: String(ids.length) }),
         A.el('span', { class: 'rmini', html: `<i class="y" style="width:${pct('yes')};background:var(--ok)"></i><i style="width:${pct('partial')};background:var(--warn)"></i>` }));
       head.addEventListener('click', () => toggleRung(r.id));
+      head.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggleRung(r.id); } });
       list.append(head);
       for (const id of ids) {
         const n = A.state.byId[id];
@@ -50,6 +51,7 @@
     const head = list.querySelector(`.rung-h[data-rung="${CSS.escape(r)}"]`);
     if (head) {
       head.classList.toggle('collapsed', collapsed.has(r));
+      head.setAttribute('aria-expanded', String(!collapsed.has(r)));
       head.querySelector('.caret').textContent = collapsed.has(r) ? '▸' : '▾';
     }
     applyFilter();
@@ -106,7 +108,8 @@
     const i = A.state.walk.indexOf(id);
     const rung = A.state.summary.rungs.find((r) => r.id === n.rung);
     const k = rung ? rung.nodes.indexOf(id) + 1 : 0;
-    A.$('#walk-where').innerHTML = `<b>${i + 1}</b> of ${A.state.walk.length} in the walk · rung <b>${A.esc(n.rung)}</b>, ${k} of ${rung ? rung.nodes.length : '?'}`;
+    A.$('#walk-where').innerHTML = `<b>${i + 1}</b> of ${A.state.walk.length} in the walk · rung <b>${A.esc(n.rung)}</b>, ${k} of ${rung ? rung.nodes.length : '?'}` +
+      `<span class="sr-only"> — ${A.esc(id)}, ${A.esc(n.title)}</span>`;
     A.$('#prev-btn').disabled = i <= 0;
     A.$('#next-btn').disabled = i >= A.state.walk.length - 1;
     setSeg(n.understood);
@@ -152,10 +155,25 @@
     }
   }
 
+  // Next and Previous follow the walk; with a filter or a search on, they follow the laws the list is showing.
+  function filtering() { return filterUnd !== 'all' || q.value.trim() !== ''; }
+
   function step(d) {
-    const i = A.state.walk.indexOf(A.state.current);
-    const j = Math.max(0, Math.min(A.state.walk.length - 1, i + d));
-    if (j !== i) A.go(A.state.walk[j]);
+    let order = A.state.walk;
+    if (filtering()) {
+      order = A.$$('.wl-item:not(.off)', list).map((li) => li.dataset.id);
+      if (!order.length) return;
+      if (!order.includes(A.state.current)) {
+        // from a law the filter hides, go to the nearest shown one in that direction
+        const at = A.state.walk.indexOf(A.state.current);
+        const next = d > 0 ? order.find((id) => A.state.walk.indexOf(id) > at) : [...order].reverse().find((id) => A.state.walk.indexOf(id) < at);
+        if (next) A.go(next);
+        return;
+      }
+    }
+    const i = order.indexOf(A.state.current);
+    const j = Math.max(0, Math.min(order.length - 1, i + d));
+    if (j !== i) A.go(order[j]);
   }
 
   // ------------------------------------------------------------------ wiring
@@ -164,7 +182,7 @@
     if (ev.key === 'Enter') {
       applyFilter();   // the typing may not have been filtered yet
       const first = A.$$('.wl-item:not(.off)', list)[0];
-      if (first) A.go(first.dataset.id);
+      if (first) { A.go(first.dataset.id); q.blur(); }   // the keys now act on the law again
     } else if (ev.key === 'Escape') { q.value = ''; applyFilter(); q.blur(); }
   });
   A.$$('.filters .chip').forEach((b) => b.addEventListener('click', () => {
@@ -186,6 +204,7 @@
 
   document.addEventListener('keydown', (ev) => {
     if (A.state.view !== 'walk' || A.typing(ev) || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    if (document.querySelector('dialog[open]') || !A.$('#blocker').hidden) return;   // nothing acts behind a dialog
     if (ev.key === 'ArrowRight' || ev.key === 'j') { step(1); ev.preventDefault(); }
     else if (ev.key === 'ArrowLeft' || ev.key === 'k') { step(-1); ev.preventDefault(); }
     else if (ev.key === 'n') setUnderstood('no');

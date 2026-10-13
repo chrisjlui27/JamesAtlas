@@ -30,13 +30,23 @@
   A.$$('[data-mark]').forEach((b) => b.insertAdjacentHTML('afterbegin', A.mark(b.dataset.mark) + ' '));
 
   // ------------------------------------------------------------------ the blocker: no chart, no Python
-  function block(title, msg, actions = true) {
+  // primary: which way out comes first — 'chart' (choose the folder), 'python' (Python settings), 'retry' (try again)
+  const PRIMARY = { chart: '#blocker-choose', python: '#blocker-settings', retry: '#blocker-retry' };
+  function block(title, msg, primary = null, detail = '') {
     A.$('#blocker-title').textContent = title;
     A.$('#blocker-msg').textContent = msg || '';
-    A.$('#blocker-actions').hidden = !actions;
+    A.$('#blocker-detail').textContent = detail || '';
+    A.$('#blocker-detail').hidden = !detail;
+    A.$('#blocker-actions').hidden = !primary;
+    for (const [k, sel] of Object.entries(PRIMARY)) A.$(sel).classList.toggle('primary', k === primary);
+    A.$('main.views').inert = true;      // the views behind take no focus and no keys
     blocker.hidden = false;
+    if (primary) A.$(PRIMARY[primary]).focus();
   }
-  function unblock() { blocker.hidden = true; }
+  function unblock() {
+    blocker.hidden = true;
+    A.$('main.views').inert = false;
+  }
 
   // ------------------------------------------------------------------ loading the chart
   async function load() {
@@ -53,29 +63,29 @@
   }
 
   async function boot() {
-    block('Opening the chart…', '', false);
+    block('Opening the chart…', '');
     let info;
     try {
       info = await window.atlas.info();
     } catch (err) {
-      block('James Atlas could not start', A.cleanError(err));
+      block('James Atlas could not start', 'Something went wrong before the chart could be opened.', 'retry', A.cleanError(err));
       return;
     }
     A.state.info = info;
     fillSettings(info);
     if (!info.chartOk) {
-      block('Where is the Boundary Chart?', 'Choose the folder that holds nodes/ and tools/ — the chart itself. James Atlas reads it there and writes back only your “understood” marks.');
+      block('Where is the Boundary Chart?', 'Choose the folder that holds nodes and tools — the chart itself. James Atlas reads it there and writes back only your “understood” marks.', 'chart');
       return;
     }
     if (!info.python) {
-      block('Python 3 is needed', 'The chart\'s engine is Python 3 (standard library only), and James Atlas runs it.\n\n' +
-        (info.pythonError || '') + '\n\nInstall Python 3 from python.org (tick “Add python.exe to PATH”), then press Try again — or tell James Atlas where it is under Python settings.');
+      block('Python 3 is needed', 'The chart’s engine is Python 3 (standard library only), and James Atlas runs it. Install Python 3 from python.org — tick “Add python.exe to PATH” — then press Try again; or, if it is installed somewhere unusual, tell James Atlas where under Python settings.',
+        'python', info.pythonError || '');
       return;
     }
     try {
       await load();
     } catch (err) {
-      block('The chart could not be read', err.message);
+      block('The chart could not be read', 'A file in the chart could not be read. Fix it (an editor will open it), then press Try again.', 'retry', err.message);
       return;
     }
     unblock();
@@ -110,7 +120,7 @@
   function fillSettings(info) {
     A.$('#set-chart').textContent = info.chartRoot || 'not chosen';
     A.$('#set-python').textContent = info.python ? `${info.python.label} — Python ${info.python.version} (${info.python.executable})` : (info.pythonError || 'not found');
-    A.$('#set-python-in').value = info.pythonSetting || '';
+    A.$('#set-python-in', dlg).value = info.pythonSetting || '';
     A.$('#set-version').textContent = `James Atlas ${info.appVersion} · ${info.platform}`;
   }
 
@@ -130,22 +140,29 @@
     dlg.showModal();
   });
   A.$('#set-choose').addEventListener('click', chooseChart);
-  A.$('#set-python-btn').addEventListener('click', async () => {
-    A.$('#set-err').textContent = 'Trying it…';
-    const r = await window.atlas.setPython(A.$('#set-python-in').value);
+  const pyIn = A.$('#set-python-in', dlg);
+  async function usePython() {
+    const err = A.$('#set-err', dlg);
+    err.textContent = 'Trying it…';
+    const r = await window.atlas.setPython(pyIn.value);
     if (r.ok) {
-      A.$('#set-err').textContent = '';
       fillSettings(await window.atlas.info());
+      err.textContent = r.preferredFailed ? `What you entered did not run (${r.preferredFailed}); using ${r.python.label} — Python ${r.python.version} — instead.` : '';
       A.toast(`Using Python ${r.python.version}`);
       if (!A.state.summary) boot();
     } else {
-      A.$('#set-err').textContent = r.error;
+      err.textContent = r.error;
     }
+  }
+  A.$('#set-python-btn', dlg).addEventListener('click', usePython);
+  pyIn.addEventListener('keydown', (ev) => {
+    // Enter would submit the dialog's form and close it, losing what was typed
+    if (ev.key === 'Enter') { ev.preventDefault(); usePython(); }
   });
   A.$('#blocker-choose').addEventListener('click', chooseChart);
   A.$('#blocker-settings').addEventListener('click', () => { A.$('#settings-btn').click(); });
   A.$('#blocker-retry').addEventListener('click', async () => {
-    await window.atlas.setPython(A.$('#set-python-in').value);   // forget what was found, look again
+    await window.atlas.setPython(pyIn.value);   // forget what was found, look again
     boot();
   });
 

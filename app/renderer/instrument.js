@@ -73,15 +73,21 @@
     const notes = [];
     if (law.conditional) notes.push(`<p class="note warn">A conditional law: ${A.esc(law.units)}. The forms cannot state the premise, so each result says whether it holds there (read in ℍ).</p>`);
     if (law.oneWay) notes.push('<p class="note">One of this law’s sides is a bare variable or the void, which would match anything, so it is applied left to right only.</p>');
-    if (law.instances.length) notes.push(`<p class="note">A law with ${law.rules} instances (${A.esc(law.instances.slice(0, 6).join('; '))}${law.instances.length > 6 ? '; …' : ''}); each result names the one it used.</p>`);
+    if (law.instances.length) notes.push(`<p class="note">A law with ${law.rules} instances (${A.esc(law.instances.slice(0, 6).join('; '))}${law.instances.length > 6 ? '; …' : ''}); each result names the one it used.${law.instance ? ` The sides below are the instance its card draws, ${A.esc(law.instance)}.` : ''}</p>`);
     notes.push(`<p class="note">Values are read in ${A.esc(readingLabel(law.reading))} — the law’s own setting${law.domain ? `, with variables sampled from its domain (${A.esc(law.domain)})` : ''}.</p>`);
     box.innerHTML = `<div class="lawhead"><span class="id">${A.esc(law.id)}</span><h3>${A.esc(law.title)}</h3><span class="spacer"></span><a href="#${A.esc(law.id)}" class="nl">open its card</a></div>` + law.html + notes.join('');
-    A.$('#results').innerHTML = '';
-    A.$('#apply-note').textContent = '';
+    clearResults();
     if (prefill || !input.value.trim()) {
       if (law.lhs) setForm(law.lhs);
     }
     updateButtons();
+  }
+
+  // Results belong to the form they were computed from: any change to the form takes them away, so a step can
+  // only ever be taken from the form shown.
+  function clearResults() {
+    A.$('#results').innerHTML = '';
+    A.$('#apply-note').textContent = '';
   }
 
   function readingLabel(r) {
@@ -133,6 +139,7 @@
       current = null;
       err.textContent = e.message;
       input.classList.add('bad');
+      view.innerHTML = '<span class="muted">—</span>';
     }
     updateButtons();
   }
@@ -141,6 +148,8 @@
     if (!law) return;
     await inspect();   // the drawing above must be of the form being rewritten, even straight after typing
     if (!current || !current.ok) return;
+    const from = current;
+    const ruleId = law.id;
     const btn = A.$('#apply-btn');
     btn.disabled = true;
     A.$('#apply-note').textContent = 'Applying…';
@@ -154,7 +163,7 @@
       parts.push(`Values in ${readingLabel(r.reading)}${r.valueNote ? ' ' + r.valueNote : ''}: this form is ${r.value}.`);
       A.$('#apply-note').textContent = parts.join(' ');
       out.textContent = '';
-      for (const x of r.results) out.append(resultCard(x, r));
+      for (const x of r.results) out.append(resultCard(x, r, from, ruleId));
     } catch (e) {
       A.$('#apply-note').textContent = '';
       out.innerHTML = `<p class="form-err">${A.esc(e.message)}</p>`;
@@ -164,7 +173,7 @@
     }
   }
 
-  function resultCard(x, r) {
+  function resultCard(x, r, from, ruleId) {
     const dir = x.direction === '→' ? '→ left to right' : '← right to left';
     const kept = x.kept === true ? `<span class="tag ok" title="the value in this reading is unchanged (${A.esc(r.symbol)})">value kept</span>`
       : x.kept === false ? `<span class="tag bad" title="the value in this reading changed — the step needs a guard, a receipt, or another reading">value changed</span>`
@@ -177,19 +186,25 @@
       `<div class="drawing">${x.svg}</div><code>${A.esc(x.sugar)}</code>` +
       `<div class="step"><code>${A.esc(x.redex)}</code> becomes <code>${A.esc(x.into)}</code>${env ? ` <span>(${A.esc(env)})</span>` : ''}</div>` +
       `<div class="val">${kept}${premise}<span>${A.esc(x.value)}${x.readingLabel ? ` <span class="muted">in ${A.esc(x.readingLabel)}</span>` : ''}</span></div>`;
-    card.addEventListener('click', () => take(x));
+    card.addEventListener('click', () => take(x, from, ruleId));
     return card;
   }
 
-  function take(x) {
-    if (!trail.length) {
-      trail.push({ sugar: current.sugar, canonical: current.canonical, svg: current.svg, rule: null, dir: '', instance: '', value: current.value });
+  // A step is recorded only from the trail's last form: if the form was changed since (by hand, from a side of the
+  // law, from another card), the derivation starts again from the form the step was taken from.
+  function take(x, from, ruleId) {
+    const last = trail[trail.length - 1];
+    if (last && last.canonical !== from.canonical) {
+      trail = [];
+      A.toast('The form was changed since the last step, so a new derivation starts here.');
     }
-    trail.push({ sugar: x.sugar, canonical: x.canonical, svg: x.svg, rule: law.id, dir: x.direction, instance: x.instance, value: x.value });
+    if (!trail.length) {
+      trail.push({ sugar: from.sugar, canonical: from.canonical, svg: from.svg, rule: null, dir: '', instance: '', value: from.value });
+    }
+    trail.push({ sugar: x.sugar, canonical: x.canonical, svg: x.svg, rule: ruleId, dir: x.direction, instance: x.instance, value: x.value });
     renderTrail();
-    A.$('#results').innerHTML = '';
-    A.$('#apply-note').textContent = `Took the step by ${law.id}. Apply it again, or pick another law.`;
     setForm(x.sugar);
+    A.$('#apply-note').textContent = `Took the step by ${ruleId}. Apply it again, or pick another law.`;
   }
 
   function renderTrail() {
@@ -218,13 +233,13 @@
   }
 
   // ------------------------------------------------------------------ wiring
-  input.addEventListener('input', inspectSoon);
+  input.addEventListener('input', () => { clearResults(); inspectSoon(); });
   input.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); apply(); } });
-  readingSel.addEventListener('change', () => { inspect(); A.$('#results').innerHTML = ''; A.$('#apply-note').textContent = ''; });
+  readingSel.addEventListener('change', () => { clearResults(); inspect(); });
   A.$('#resample').addEventListener('click', () => { seed++; inspect(); if (A.$('#results').childElementCount) apply(); });
   A.$('#apply-btn').addEventListener('click', apply);
-  A.$('#use-lhs').addEventListener('click', () => law && law.lhs && setForm(law.lhs));
-  A.$('#use-rhs').addEventListener('click', () => law && law.rhs && setForm(law.rhs));
+  A.$('#use-lhs').addEventListener('click', () => { if (law && law.lhs) { clearResults(); setForm(law.lhs); } });
+  A.$('#use-rhs').addEventListener('click', () => { if (law && law.rhs) { clearResults(); setForm(law.rhs); } });
   A.$$('#palette > button[data-ins]').forEach((b) => b.addEventListener('click', () => {
     const ins = b.dataset.ins;
     const s = input.selectionStart ?? input.value.length, e = input.selectionEnd ?? s;
@@ -238,14 +253,17 @@
       input.setSelectionRange(s + ins.length, s + ins.length);
     }
     input.focus();
+    clearResults();
     inspectSoon();
   }));
   A.$('#undo-btn').addEventListener('click', () => {
     if (!trail.length) return;
+    const first = trail[0];
     trail.pop();
-    if (trail.length === 1) trail = [];
-    const last = trail[trail.length - 1];
+    let last = trail[trail.length - 1];
+    if (trail.length === 1) { trail = []; last = first; }   // undoing the first step leaves nothing to record
     renderTrail();
+    clearResults();
     if (last) setForm(last.sugar);
   });
   A.$('#clear-btn').addEventListener('click', () => { trail = []; renderTrail(); });
@@ -254,6 +272,13 @@
     A.toast('Copied as a Given–Rule table — paste it into a node’s Derivation.');
   });
   q.addEventListener('input', A.debounce(renderList, 120));
+  q.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter') {
+      renderList();
+      const first = A.$('.wl-item:not(.unusable)', list);
+      if (first) { choose(first.dataset.id); input.focus(); }
+    } else if (ev.key === 'Escape') { q.value = ''; renderList(); }
+  });
   A.$('#law-all').addEventListener('change', renderList);
   A.followLinks(A.$('#inst-law'));
   A.followLinks(A.$('#trail-body'));
@@ -274,6 +299,7 @@
     async tryLaw(id) {
       A.showView('instrument');
       await choose(id, { prefill: true });
+      input.focus();
     },
     rulesReady: ensureRules,
   };

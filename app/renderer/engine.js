@@ -7,6 +7,7 @@
   const runBtns = ['#run-check', '#run-build', '#run-census'].map((s) => A.$(s));
   const MAX_LINES = 20000;
   const SUMMARY = /^(\d+) nodes · (\d+) checks passed · (\d+) warnings · (\d+) failures$/;
+  const ENTRY = /^\s*(FAIL|warn): ([A-Za-z0-9]+\.[A-Za-z0-9-]+(@[^:]*)?|chart|census): /;
   let run = null;           // { runId, tool, args, lines, fails, warns, summary }
   const history = [];
   let pendingLines = [];
@@ -83,11 +84,15 @@
     if (exit) {
       const secs = exit.seconds < 90 ? `${exit.seconds.toFixed(1)} s` : `${Math.floor(exit.seconds / 60)} min ${Math.round(exit.seconds % 60)} s`;
       if (exit.stopped) h += `<span class="verdict stop">stopped after ${secs}</span>`;
+      else if (run.tool === 'check' && s && s.nodes === 0) h += `<span class="verdict stop">no law’s id starts with “${A.esc(run.only || '')}” — ids are case-sensitive, e.g. Z. or H.</span>`;
       else if (exit.code === 0) h += `<span class="verdict ok">${run.tool === 'check' ? '0 failures' : 'done'} · ${secs}</span>`;
       else h += `<span class="verdict bad">${run.tool === 'check' && s ? `${s.failures} failure${s.failures === 1 ? '' : 's'}` : 'exit code ' + exit.code} · ${secs}</span>`;
     } else if (!s) {
       const p = run.progress || {};
-      const label = PHASES[p.phase] || (run.tool === 'check' ? 'Starting' : 'Running');
+      let label = PHASES[p.phase] || (run.tool === 'check' ? 'Starting' : 'Running');
+      // a full check goes through up to six steps; say which one this is
+      const steps = run.tool === 'check' && !run.only ? ['laws', 'j1-ledger', 'place-ledger', 'h-ledger', 'h-place-ledger', 'witnesses', 'census'].filter((k) => run.phasesSeen.has(k) || !run.skips.has(k)) : null;
+      if (steps && p.phase && steps.includes(p.phase)) label = `Step ${steps.indexOf(p.phase) + 1} of ${steps.length}: ${label}`;
       let frac = null, detail = '';
       if (p.phase === 'laws' && p.total) { frac = p.done / p.total; detail = `${p.done} of ${p.total}${p.id ? ' — ' + p.id : ''}`; }
       else if (p.phase === 'witnesses' && p.wTotal) { frac = p.wDone / p.wTotal; detail = `${p.wDone} of ${p.wTotal}${p.wId ? ' — ' + p.wId : ''}`; }
@@ -119,7 +124,12 @@
   async function start(tool, args) {
     if (run && !run.done) { A.toast('A run is already going — stop it first.', true); return; }
     con.textContent = '';
-    run = { tool, args, fails: [], warns: [], summary: null, done: false, runId: null, started: Date.now(), progress: {} };
+    const only = tool === 'check' && args.includes('--only') ? args[args.indexOf('--only') + 1] : '';
+    const skips = new Set();
+    if (args.includes('--no-licences')) ['j1-ledger', 'place-ledger', 'h-ledger', 'h-place-ledger'].forEach((k) => skips.add(k));
+    if (args.includes('--no-places')) ['place-ledger', 'h-ledger', 'h-place-ledger'].forEach((k) => skips.add(k));
+    if (args.includes('--no-census')) skips.add('census');
+    run = { tool, args, only, skips, phasesSeen: new Set(), fails: [], warns: [], summary: null, done: false, runId: null, started: Date.now(), progress: {}, lastEntry: null };
     A.$('#run-title').textContent = 'Starting…';
     renderFailures();
     renderSummary(null);
@@ -145,7 +155,7 @@
     } else if (ev.type === 'progress') {
       const p = run.progress;
       if (ev.event === 'start') Object.assign(p, { total: ev.total, wTotal: ev.witnesses });
-      else if (ev.event === 'phase') p.phase = ev.name;
+      else if (ev.event === 'phase') { p.phase = ev.name; run.phasesSeen.add(ev.name); }
       else if (ev.event === 'node') Object.assign(p, { phase: 'laws', done: ev.done, total: ev.total || p.total, id: ev.id });
       else if (ev.event === 'witness') Object.assign(p, { phase: 'witnesses', wDone: ev.done, wTotal: ev.total || p.wTotal, wId: ev.id });
       const st = A.$('#status-run');
@@ -155,10 +165,19 @@
       const cls = ev.stream === 'err' ? 'err' : classify(ev.text);
       append(ev.text, cls);
       const t = ev.text.trim();
-      if (t.startsWith('FAIL:')) { run.fails.push(t.slice(5).trim()); renderFailures(); }
-      else if (t.startsWith('warn:')) { run.warns.push(t.slice(5).trim()); renderFailures(); }
       const m = t.match(SUMMARY);
       if (m) { run.summary = { nodes: +m[1], checks: +m[2], warnings: +m[3], failures: +m[4] }; renderSummary(null); }
+      else if (run.summary && ev.stream === 'out') {
+        // after the summary, check.py prints "  warn: <id>: …" and "  FAIL: <id>: …"; a failing witness's message
+        // runs on over several lines, some of which may themselves start with FAIL — they belong to the entry above
+        const e = ev.text.match(ENTRY);
+        if (e) {
+          run.lastEntry = { list: e[1] === 'FAIL' ? run.fails : run.warns, i: (e[1] === 'FAIL' ? run.fails : run.warns).push(ev.text.trim().slice(e[1].length + 1).trim()) - 1 };
+        } else if (run.lastEntry && t) {
+          run.lastEntry.list[run.lastEntry.i] += '\n' + ev.text;
+        }
+        renderFailures();
+      }
     } else if (ev.type === 'exit') {
       run.done = true;
       busy(false);
@@ -188,21 +207,25 @@
     }
   }
 
+  const view = A.$('#view-engine');
   function checkArgs() {
     const args = [];
-    const only = A.$('#chk-only').value.trim();
+    const only = A.$('#chk-only', view).value.trim();
     if (only) args.push('--only', only);
-    if (A.$('#chk-nocensus').checked) args.push('--no-census');
-    if (A.$('#chk-nolic').checked) args.push('--no-licences');
-    if (A.$('#chk-noplaces').checked) args.push('--no-places');
-    const trials = A.$('#chk-trials').value.trim();
-    if (trials) args.push('--trials', String(parseInt(trials, 10)));
-    const seed = A.$('#chk-seed').value.trim();
-    if (seed) args.push('--seed', String(parseInt(seed, 10)));
+    if (A.$('#chk-nocensus', view).checked) args.push('--no-census');
+    if (A.$('#chk-nolic', view).checked) args.push('--no-licences');
+    if (A.$('#chk-noplaces', view).checked) args.push('--no-places');
+    const trials = parseInt(A.$('#chk-trials', view).value.trim(), 10);
+    if (Number.isFinite(trials) && trials > 0) args.push('--trials', String(trials));
+    const seed = parseInt(A.$('#chk-seed', view).value.trim(), 10);
+    if (Number.isFinite(seed)) args.push('--seed', String(seed));
     return args;
   }
 
   A.$('#run-check').addEventListener('click', () => start('check', checkArgs()));
+  for (const id of ['#chk-only', '#chk-trials', '#chk-seed']) {
+    A.$(id).addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); if (!A.$('#run-check').disabled) start('check', checkArgs()); } });
+  }
   A.$('#run-build').addEventListener('click', () => start('build', []));
   A.$('#run-census').addEventListener('click', () => start('census', []));
   stopBtn.addEventListener('click', () => { if (run && run.runId !== null) window.atlas.stop(run.runId); });

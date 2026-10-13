@@ -1,6 +1,6 @@
 // James Atlas — the main process: the window, the chart folder, Python, the bridge and the engine.
 
-const { app, BrowserWindow, ipcMain, dialog, shell, Menu, session, clipboard } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell, Menu, session, clipboard, screen } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const { Settings } = require('./settings');
@@ -174,7 +174,7 @@ ipcMain.handle('atlas:set-python', async (_e, command) => {
   resetBridge();
   try {
     const py = await ensurePython();
-    return { ok: true, python: { label: py.label, version: py.version, executable: py.executable } };
+    return { ok: true, python: { label: py.label, version: py.version, executable: py.executable }, preferredFailed: py.preferredFailed || null };
   } catch (err) {
     return { ok: false, error: err.message };
   }
@@ -195,7 +195,7 @@ ipcMain.handle('atlas:bridge', async (_e, method, params) => {
     return await b.call(method, params, timeout);
   } catch (err) {
     // a request that never came back leaves the bridge busy: start a fresh one for the next request
-    if (/did not answer/.test(err.message)) resetBridge();
+    if (/did not answer/.test(err.message) && b === bridge) resetBridge();
     throw err;
   }
 });
@@ -235,23 +235,33 @@ ipcMain.handle('atlas:open-external', async (_e, url) => {
 // ----------------------------------------------------------------------------- windows
 
 function lockDown(contents) {
-  contents.setWindowOpenHandler(({ url }) => {
-    if (/^https?:\/\//i.test(url)) shell.openExternal(url);
-    return { action: 'deny' };
-  });
+  // Nothing a page does on its own opens a window or leaves the app: a link goes to the browser only when it is
+  // clicked in the app's own window, through atlas.openExternal.
+  contents.setWindowOpenHandler(() => ({ action: 'deny' }));
   contents.on('will-navigate', (e, url) => {
-    if (url !== contents.getURL()) {
-      e.preventDefault();
-      if (/^https?:\/\//i.test(url)) shell.openExternal(url);
-    }
+    if (url !== contents.getURL()) e.preventDefault();
   });
 }
 
-function createWindow() {
+// The saved place is used only if it is still on a screen: a window last left on a monitor that has since been
+// unplugged would otherwise open where nobody can see it.
+function restoredBounds() {
   const b = settings.get('bounds') || {};
+  const area = screen.getPrimaryDisplay().workArea;
+  const width = Math.min(Number.isFinite(b.width) ? b.width : 1320, area.width);
+  const height = Math.min(Number.isFinite(b.height) ? b.height : 880, area.height);
+  const onScreen = Number.isFinite(b.x) && Number.isFinite(b.y) && screen.getAllDisplays().some((d) => {
+    const a = d.workArea;
+    return b.x < a.x + a.width - 100 && b.x + width > a.x + 100 && b.y >= a.y - 10 && b.y < a.y + a.height - 50;
+  });
+  return onScreen ? { width, height, x: b.x, y: b.y } : { width, height };
+}
+
+function createWindow() {
+  const b = restoredBounds();
   win = new BrowserWindow({
-    width: b.width || 1320,
-    height: b.height || 880,
+    width: b.width,
+    height: b.height,
     x: b.x, y: b.y,
     minWidth: 860,
     minHeight: 560,

@@ -80,7 +80,7 @@ app/
   bridge/atlas_bridge.py    imports the chart's tools: cards, graph, lists, the tracker, the instrument
   bridge/check_progress.py  runs tools/check.py unchanged and announces its progress on stderr
   renderer/            index.html, app.css and one script per view (walk, graph, lists, engine, instrument)
-  test/e2e.js          drives the real app on a scratch copy of the chart (15 steps, screenshots in test/out/)
+  test/e2e.js          drives the real app on a scratch copy of the chart (19 steps, screenshots in test/out/)
   bridge/test_bridge.py     unit tests for the bridge, also on a scratch copy
 ```
 

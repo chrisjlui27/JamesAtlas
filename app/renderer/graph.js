@@ -106,7 +106,9 @@
       g.classList.toggle('hit', !!hit);
       if (hit && !first) first = g;
     }
-    host.classList.toggle('searching', words.length > 0);
+    // with no match, say so and leave the graph as it is rather than fading all of it
+    host.classList.toggle('searching', !!first);
+    A.$('#graph-nohit').hidden = !(words.length > 0 && !first);
     return first;
   }
 

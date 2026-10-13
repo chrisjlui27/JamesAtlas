@@ -21,12 +21,12 @@ const FLAGS = {
 };
 
 function validateArgs(tool, args) {
-  const allowed = FLAGS[tool];
+  const allowed = Object.hasOwn(FLAGS, tool) ? FLAGS[tool] : null;
   if (!allowed) throw new Error(`Unknown tool: ${tool}`);
   const out = [];
   for (let i = 0; i < args.length; i++) {
     const a = String(args[i]);
-    const kind = allowed[a];
+    const kind = Object.hasOwn(allowed, a) ? allowed[a] : null;
     if (!kind) throw new Error(`${tool} does not take ${a}`);
     out.push(a);
     if (kind === 'value') {
@@ -50,7 +50,7 @@ class EngineRunner {
   }
 
   async run(tool, args = []) {
-    const script = TOOLS[tool];
+    const script = Object.hasOwn(TOOLS, tool) ? TOOLS[tool] : null;
     if (!script) throw new Error(`Unknown tool: ${tool}`);
     const clean = validateArgs(tool, args);
     const python = await this.getPython();

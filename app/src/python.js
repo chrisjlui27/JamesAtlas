@@ -21,16 +21,39 @@ function pythonEnv(extra = {}) {
   };
 }
 
-// "py -3" → { command: "py", args: ["-3"] }; a path with spaces is kept whole.
+// What the user typed into "Use this Python": "py -3" → { command: "py", args: ["-3"] }. A path is kept whole even
+// with spaces in it, with or without surrounding quotes (PowerShell's '…' or cmd's "…") and with or without .exe
+// (Explorer hides it); a folder stands for the python.exe inside it.
 function parseCommand(text) {
-  const t = String(text || '').trim();
+  let t = String(text || '').trim();
   if (!t) return null;
-  const quoted = t.match(/^"([^"]+)"\s*(.*)$/);
-  if (quoted) return { command: quoted[1], args: quoted[2] ? quoted[2].split(/\s+/) : [] };
-  // A bare path that exists may contain spaces (C:\Program Files\Python313\python.exe).
+  const whole = t.match(/^(["'])(.*)\1$/);
+  if (whole) t = whole[2].trim();
+  const asPath = existingPython(t);
+  if (asPath) return { command: asPath, args: [] };
+  const quoted = t.match(/^(["'])(.+?)\1\s*(.*)$/);
+  if (quoted) return { command: existingPython(quoted[2]) || quoted[2], args: quoted[3] ? quoted[3].split(/\s+/) : [] };
   if (/[\\/]/.test(t) && /\.exe$/i.test(t)) return { command: t, args: [] };
   const parts = t.split(/\s+/);
   return { command: parts[0], args: parts.slice(1) };
+}
+
+function existingPython(p) {
+  try {
+    if (!/[\\/]/.test(p)) return null;
+    for (const cand of [p, p + '.exe']) {
+      if (!fs.existsSync(cand)) continue;
+      if (fs.statSync(cand).isDirectory()) {
+        for (const name of ['python.exe', 'python3', 'python']) {
+          const inner = require('path').join(cand, name);
+          if (fs.existsSync(inner) && fs.statSync(inner).isFile()) return inner;
+        }
+        continue;
+      }
+      return cand;
+    }
+  } catch (_) { /* not a path */ }
+  return null;
 }
 
 function candidates(preferred) {
@@ -64,18 +87,22 @@ function probe(cand, timeoutMs = 15000) {
   });
 }
 
-// Returns { command, args, version, executable } or throws with every attempt listed.
+// Returns { command, args, version, executable, label, preferredFailed? } or throws with every attempt listed.
+// preferredFailed says why the interpreter the user named did not run, when another one was found instead.
 async function findPython(preferred) {
   const tried = [];
+  const wanted = parseCommand(preferred);
   for (const cand of candidates(preferred)) {
     const r = await probe(cand);
     const label = [cand.command, ...cand.args].join(' ');
     if (r.ok) {
       // Spawn the interpreter itself, not a launcher in front of it: `py -3` stays the label, python.exe runs.
       const direct = r.executable && fs.existsSync(r.executable) && !/\\WindowsApps\\/i.test(r.executable);
-      return direct
+      const found = direct
         ? { command: r.executable, args: [], version: r.version, executable: r.executable, label }
         : { command: cand.command, args: cand.args, version: r.version, executable: r.executable, label };
+      if (wanted && tried.length) found.preferredFailed = tried[0];
+      return found;
     }
     tried.push(`${label}: ${r.reason}`);
   }

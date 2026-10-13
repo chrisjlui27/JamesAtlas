@@ -178,6 +178,36 @@ class ChartTests(unittest.TestCase):
         self.assertTrue(all("p = 2" in x["instance"] for x in r["results"]))
         self.assertTrue(all(x["kept"] for x in r["results"]))
 
+    def test_place_instance_survives_dedup(self):
+        # place.fermat at (p=2, n=2) and (p=3, n=1) are the same rewrite; at p = 3 the p = 3 instance must be offered
+        r = self.chart.apply("place.fermat", "(([o o] [[U]]))", reading="p3")
+        self.assertTrue(any(x["direction"] == "→" and x["sugar"] == "o" for x in r["results"]), r["results"])
+        self.assertTrue(all("p = 3" in x["instance"] for x in r["results"]))
+
+    def test_guard_counts_names_not_occurrences(self):
+        twelve = "o " * 12
+        r = self.chart.apply("mult.cardinality", twelve)
+        self.assertTrue(r["results"])
+        r = self.chart.apply("schema.cardinality", "o " * 7)
+        labels = {x["instance"] for x in r["results"]}
+        self.assertIn("n = 7", labels)
+
+    def test_schema_laws_start_from_a_form(self):
+        F = self.chart.F
+        for r in self.chart.rules_index():
+            if not (r["usable"] and r["schema"]):
+                continue
+            law = self.chart.law(r["id"])
+            for side in (law["lhs"], law["rhs"]):
+                F.parse(side)                      # a template would raise here
+            if self.chart.nodes[r["id"]].get("setting") == "JP":
+                self.assertTrue(law["reading"].startswith("p"), (r["id"], law["reading"]))
+
+    def test_prefilled_place_law_applies_at_its_place(self):
+        law = self.chart.law("place.fermat")
+        r = self.chart.apply("place.fermat", law["lhs"], reading=law["reading"])
+        self.assertTrue(any(x["direction"] == "→" for x in r["results"]), (law, r["results"]))
+
     def test_no_rule(self):
         with self.assertRaises(AB.BridgeError) as cm:
             self.chart.apply("N.induction", "o")
@@ -194,6 +224,22 @@ class ChartTests(unittest.TestCase):
     def test_evaluator_left_classical(self):
         self.chart.apply("J1.unit", "[(J J)]")
         self.assertIsNone(self.chart.F.OMEGA)     # a 𝕁₁ reading never leaks into the next card
+
+
+class OddCharts(unittest.TestCase):
+    def test_non_integer_order_still_opens(self):
+        root = copy_chart()
+        try:
+            p = os.path.join(root, "nodes", "Z.collection.md")
+            with open(p, encoding="utf-8") as fh:
+                text = fh.read()
+            import re
+            with open(p, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(re.sub(r"^order: \d+$", "order: 260.5", text, count=1, flags=re.M))
+            chart = AB.Chart(root)
+            self.assertIn("Z.collection", [n["id"] for n in chart.summary()["nodes"]])
+        finally:
+            shutil.rmtree(root, ignore_errors=True)
 
 
 class Protocol(unittest.TestCase):

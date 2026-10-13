@@ -150,6 +150,33 @@ function expect(cond, msg) { if (!cond) throw new Error(msg); }
     await shot('6-instrument-trail');
   });
 
+  await step('a step taken after the form was changed by hand starts a new derivation', async () => {
+    // the trail holds given → step; now change the form by hand and take a step from it
+    await win.fill('#form-in', '<o> <o> <o>');
+    await win.click('#apply-btn');
+    await win.waitForSelector('#results .res');
+    await win.click('#results .res >> nth=0');
+    await win.waitForFunction(() => document.querySelectorAll('#trail-body tr').length === 2);
+    const first = await win.textContent('#trail-body tr:first-child td.f code');
+    expect(first.replace(/\s+/g, ' ').trim() === '<o> <o> <o>', `the new derivation should start from the edited form, not ${first}`);
+    // undoing the only step puts the given form back in the box and empties the table
+    await win.click('#undo-btn');
+    await win.waitForFunction(() => document.querySelectorAll('#trail-body tr.empty').length === 1);
+    expect((await win.inputValue('#form-in')).replace(/\s+/g, ' ').trim() === '<o> <o> <o>', 'undo did not restore the form');
+  });
+
+  await step('a schema law starts from the instance its card draws, a real form', async () => {
+    await win.fill('#law-q', 'schema.cardinality');
+    await win.press('#law-q', 'Enter');
+    await win.waitForFunction(() => document.querySelector('#inst-law .lawhead .id')?.textContent === 'schema.cardinality');
+    await win.click('#use-lhs');
+    await win.waitForSelector('#form-view svg');
+    expect((await win.textContent('#form-err')).trim() === '', 'the left side did not parse');
+    await win.click('#apply-btn');
+    await win.waitForSelector('#results .res');
+    await win.fill('#law-q', '');
+  });
+
   await step('the instrument refuses a malformed form with a message', async () => {
     await win.fill('#form-in', '(A [B');
     await win.waitForFunction(() => document.querySelector('#form-err').textContent.includes('unclosed'));
@@ -179,6 +206,13 @@ function expect(cond, msg) { if (!cond) throw new Error(msg); }
     await shot('7-engine-check');
   });
 
+  await step('a prefix that matches no law is not shown as a pass', async () => {
+    await win.fill('#chk-only', 'zz.');
+    await win.press('#chk-only', 'Enter');
+    await win.waitForSelector('#run-summary .verdict.stop', { timeout: 60000 });
+    expect(/case-sensitive/.test(await win.textContent('#run-summary')), 'no warning about the prefix');
+  });
+
   await step('a failing law shows up as a failure with a link', async () => {
     const file = path.join(chart, 'nodes', 'Z.normal-form.md');
     const text = fs.readFileSync(file, 'utf8');
@@ -204,6 +238,25 @@ function expect(cond, msg) { if (!cond) throw new Error(msg); }
     expect(/Boundary Chart/.test(title), `title ${title}`);
     expect((await page.textContent('h1')).length > 0, 'no heading');
     await page.close();
+  });
+
+  await step('Enter in the Python box tries it instead of closing the settings', async () => {
+    await win.click('#settings-btn');
+    await win.waitForSelector('#settings-dlg[open]');
+    await win.fill('#set-python-in', 'no-such-python-here');
+    await win.press('#set-python-in', 'Enter');
+    await win.waitForFunction(() => /did not run/.test(document.querySelector('#set-err').textContent), null, { timeout: 30000 });
+    expect(await win.isVisible('#settings-dlg[open]'), 'the dialog closed');
+    // keys meant for the walk do nothing behind the dialog
+    const before = await win.getAttribute('#card-host article.node', 'id');
+    await win.focus('#set-choose');
+    await win.keyboard.press('ArrowRight');
+    await win.waitForTimeout(200);
+    expect((await win.getAttribute('#card-host article.node', 'id')) === before, 'the walk moved behind the dialog');
+    await win.fill('#set-python-in', '');
+    await win.press('#set-python-in', 'Enter');
+    await win.waitForFunction(() => document.querySelector('#set-err').textContent === '', null, { timeout: 30000 });
+    await win.click('#settings-dlg button[value="close"]');
   });
 
   await step('dark mode draws the shell and the card in the dark palette', async () => {

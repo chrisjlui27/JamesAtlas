@@ -31,6 +31,8 @@ class Bridge extends EventEmitter {
       stdio: ['pipe', 'pipe', 'pipe'],
     });
     this.proc = proc;
+    // a request written just as the process dies must fail that request, not crash the app
+    proc.stdin.on('error', (err) => { if (this.proc === proc) this._fail(err); });
     proc.stdout.setEncoding('utf8');
     proc.stderr.setEncoding('utf8');
     readline.createInterface({ input: proc.stdout }).on('line', (line) => this._onLine(line));
@@ -39,14 +41,16 @@ class Bridge extends EventEmitter {
       if (this.stderrTail.length > 60) this.stderrTail.shift();
       this.log('[bridge] ' + line);
     });
-    proc.on('error', (err) => this._fail(err));
+    proc.on('error', (err) => { if (this.proc === proc) this._fail(err); });
     proc.on('exit', (code, signal) => {
       const was = this.proc === proc;
       if (was) this.proc = null;
       const why = `The Python bridge stopped (${signal || 'exit code ' + code}).` +
         (this.stderrTail.length ? '\n' + this.stderrTail.slice(-12).join('\n') : '');
-      for (const [, p] of this.pending) p.reject(new Error(why));
-      this.pending.clear();
+      if (was) {
+        for (const [, p] of this.pending) { clearTimeout(p.timer); p.reject(new Error(why)); }
+        this.pending.clear();
+      }
       if (was && !this.stopping) this.emit('crash', why);
     });
   }
@@ -69,7 +73,10 @@ class Bridge extends EventEmitter {
   }
 
   _fail(err) {
-    for (const [, p] of this.pending) p.reject(err);
+    const proc = this.proc;
+    this.proc = null;                 // the next request starts a fresh process
+    if (proc && proc.exitCode === null) { try { proc.kill(); } catch (_) { /* gone */ } }
+    for (const [, p] of this.pending) { clearTimeout(p.timer); p.reject(err); }
     this.pending.clear();
     this.emit('crash', String(err && err.message || err));
   }
@@ -99,6 +106,8 @@ class Bridge extends EventEmitter {
     const proc = this.proc;
     setTimeout(() => { try { proc.kill(); } catch (_) { /* gone */ } }, 1500);
     this.proc = null;
+    for (const [, p] of this.pending) { clearTimeout(p.timer); p.reject(new Error('The Python bridge was restarted; try again.')); }
+    this.pending.clear();
   }
 }
 
