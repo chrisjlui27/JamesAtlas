@@ -15,7 +15,7 @@ gloss_check: "1"
 holds:
   classical: holds
   J1: holds-mod-Λ
-  JH: holds
+  JH: holds-mod-Λ
   JO: holds
   JP: replaced
 readings:
@@ -67,7 +67,8 @@ ln e = 1, the companion of [[mult.unit-law]]'s ln 1 = 0: the two facts that pin 
 |---|---|---|
 | classical | holds | — |
 | J1 | holds-mod-Λ | a bare unit step: the law's sides are not under an instance, so the receipt is not absorbed — `[(o)] ≃ o` with receipt |
-| JH, JO | holds | — |
+| JO | holds | — |
+| JH | holds-mod-Λ | `[(o)] ≃ o` posts its receipt at depth 0, in ℍ as in 𝕁₁ (census/h-ledger.md) |
 | JP | replaced | `(o)` is not a form at a finite place ([[place.radius]]); there is no base to take the log of |
 
 | reading | cell | why |

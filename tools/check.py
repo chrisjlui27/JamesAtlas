@@ -35,6 +35,8 @@ import j1 as J1  # noqa: E402
 import census as C  # noqa: E402
 import place as PL  # noqa: E402
 import placeledger as PLG  # noqa: E402
+import quat as QT  # noqa: E402
+import hledger as HLG  # noqa: E402
 
 ROOT = os.path.dirname(HERE)
 BANDS = {"K", "1–2", "3–5", "6–8", "9–12", "beyond"}
@@ -47,15 +49,19 @@ ALLOWED_RULES = {"given", "medium", "substitution", "congruence", "definition", 
 
 # The reading in force: None reads in ℂ (classical, or 𝕁₁ with F.OMEGA set); a place.Reading reads at a prime
 # (nodes in `setting: JP`, rung `place`), chosen per node from its `place:` / `depth:` front matter or a schema
-# instance's parameter p (and n for the depth).
-PLACE_READING: PL.Reading | None = None
+# instance's parameter p (and n for the depth); the ℍ reading (tools/quat.py) for `setting: JH` (rung `H`).
+PLACE_READING: PL.Reading | QT.Reading | None = None
+H_READING = QT.Reading()
 
 
 def set_reading(node: N.Node):
-    """Select the reading for a node (or a schema instance): ℂ, 𝕁₁'s ℂ, or the place the node declares."""
+    """Select the reading for a node (or a schema instance): ℂ, 𝕁₁'s ℂ, ℍ, or the place the node declares."""
     global PLACE_READING
     F.OMEGA = (2j * math.pi) if node.get("setting") == "J1" else None  # LEGISLATION 30b: ω = [()] reads as 2πi in 𝕁₁
     PLACE_READING = None
+    if node.get("setting") == "JH":
+        PLACE_READING = H_READING   # rung H is read in ℍ (LEGISLATION 32b)
+        return
     if node.get("setting") != "JP":
         return
     env = node.get("schema_env") or {}
@@ -85,7 +91,7 @@ def _fmt(v):
     return PLACE_READING.fmt(v) if PLACE_READING else F.fmt(v)
 
 
-NO_VALUE = (F.Undefined, F.Excluded, PL.NotAForm)
+NO_VALUE = (F.Undefined, F.Excluded, PL.NotAForm, ZeroDivisionError)
 
 
 class Report:
@@ -302,6 +308,7 @@ def check_equal_forms(f1, f2, node: N.Node, rng, trials: int):
     names = F.variables(f1) | F.variables(f2)
     eq = node.get("equality", "≐")
     domain = node.get("domain", "positive")
+    judged = 0
     for _ in range(trials if names else 1):
         env = _env(names, domain, rng)
         try:
@@ -317,8 +324,13 @@ def check_equal_forms(f1, f2, node: N.Node, rng, trials: int):
             same = _equal(v1, v2, eq)
         except PL.BeyondPrecision:
             continue   # at a place: a value that cannot be judged at the depth (shells lost past the margin) — skipped
+        judged += 1
         if not same:
             return False, f"{F.to_string(f1, True)} = {_fmt(v1)} but {F.to_string(f2, True)} = {_fmt(v2)} at {{{', '.join(f'{k}={_fmt(v) if PLACE_READING is None else v}' for k, v in env.items())}}}"
+    if judged == 0:
+        # a law no sample can judge (every value overflowed, or was past the precision) is not a law that holds: an
+        # equality is certified by samples, never by their absence (the rung-H referee pass, 2026-10-07)
+        return False, f"no sample of the domain could be judged (every value overflowed or was past the precision): {F.to_string(f1, True)} / {F.to_string(f2, True)}"
     return True, ""
 
 
@@ -445,7 +457,7 @@ def check_derivations(node: N.Node, rep: Report, rng, trials):
                         rep.fail(nid, f"derivation row {i+1}: {hmsg}")
                     else:
                         rep.ok()
-            if node.get("type") != "decree" and node.get("setting") not in ("J1", "JP"):  # 𝕁₁ (and the places) have receipts, not the decree
+            if node.get("type") != "decree" and node.get("setting") not in ("J1", "JP", "JH"):  # 𝕁₁ (the places, ℍ) have receipts, not the decree
                 seam = check_seam(prev, f, node, rep, i + 1, rng, trials)
                 if seam:
                     rep.ok()
@@ -583,7 +595,7 @@ def seam_env(names, domain, rng):
             env[n] = complex(math.exp(rng.uniform(math.log(0.01), math.log(100.0))) * rng.choice((-1, 1)))
         elif domain == "negative":
             env[n] = complex(-math.exp(rng.uniform(math.log(0.01), math.log(100.0))))
-        elif domain == "complex":
+        elif domain in ("complex", "slice"):
             env[n] = complex(math.exp(rng.uniform(-3, 3)) * rng.choice((-1, 1)), math.exp(rng.uniform(-3, 3)) * rng.choice((-1, 1)))
         else:
             raise ValueError(domain)
@@ -593,7 +605,7 @@ def seam_env(names, domain, rng):
 PROBES = {"natural": [1, 2, 3, 7, 12], "positive": [0.01, 0.5, 0.999, 1.0, 1.001, 2.0, 10.0, 100.0],
           "negative": [-100.0, -2.0, -1.001, -1.0, -0.999, -0.5, -0.01],
           "real": [-100.0, -2.0, -1.0, -0.5, 0.5, 1.0, 2.0, 100.0], "complex": [1j, -1j, -1 + 0j, 2 + 3j],
-          "unit": [-2.0, -1.0, 0.5, 1.0, 2.0, 7.0]}
+          "slice": [1j, -1j, -1 + 0j, 2 + 3j], "unit": [-2.0, -1.0, 0.5, 1.0, 2.0, 7.0]}
 
 
 def off_strip(x, node: N.Node, rng, trials: int):
@@ -773,9 +785,9 @@ def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 6
             rep.fail(nid, f"guarded_by {g} does not precede this node")
     if node.get("type") == "decree":
         return
-    if node.get("setting") in ("J1", "JP"):
+    if node.get("setting") in ("J1", "JP", "JH"):
         if declared:
-            rep.fail(nid, "a 𝕁₁ node (or a node of a place) does not declare guarded_by: its unit steps post receipts (SPEC §5.5)")
+            rep.fail(nid, "a 𝕁₁ node (or a node of a place, or of ℍ) does not declare guarded_by: its unit steps post receipts (SPEC §5.5)")
         else:
             rep.ok()
         return
@@ -789,6 +801,7 @@ def check_guarded_by(node: N.Node, nodes, rep: Report, rng=None, trials: int = 6
 
 J1_GRADES: dict = {}     # node id -> j1.Tape, filled in walk order (cited theorems are graded before their users)
 PLACE_GRADES: dict = {}   # the tapes of rung `place`'s nodes, at their own place (tools/j1.py grade `page` among them)
+H_GRADES: dict = {}       # the tapes of rung `H`'s nodes, in ℍ (and of the trunk theorems they cite, re-graded there)
 J1_ROWS: list = []       # (node id, tape, hand cell) for census/j1-ledger.md
 LIC_STEPS: dict = {}     # node (or schema instance) id -> the licensed steps of its derivation, from the ℂ search
 GRADED_TYPES = {"theorem", "schema"}
@@ -802,8 +815,10 @@ def check_licences(node: N.Node, nodes, rep: Report, cache: dict, rng, parent=No
         return None
     graded = (parent or node).get("type") in GRADED_TYPES
     local = dict(J1_GRADES)   # this node's view of the grades: the chart's, plus its own lemma tables as they close
-    if PLACE_READING is not None:
+    if node.get("setting") == "JP":
         local.update(PLACE_GRADES)   # at a place, the rung's own laws at their grades there (page laws included)
+    if node.get("setting") == "JH":
+        local.update(H_GRADES)       # in ℍ, the rung's own laws and the cited trunk theorems at their grades there
     by_table = {}
 
     def on_table(ti, rows):
@@ -845,6 +860,23 @@ J1_ACCEPT = {
 
 def record_j1(node: N.Node, tape, rep: Report):
     """Store the computed grade and compare it with the node's hand-written J1 cell."""
+    if node.get("setting") == "JH":
+        # a node of rung `H`: its tape was computed in ℍ; the JH cell and the equality follow it
+        H_GRADES[node.id] = tape
+        HLG.H_RUNG_ROWS.append((node.id, tape, (node.get("holds") or {}).get("JH", "")))
+        hand = (node.get("holds") or {}).get("JH", "")
+        eq = str(node.get("equality", ""))
+        want = "≡" if tape.grade == "strict" else ("≃" if tape.grade in ("absorbed", "posted") else None)
+        d = J1.describe(tape, H_READING)[:200]
+        if want is None:
+            rep.fail(node.id, f"a law of ℍ whose derivation needs an import or fails: {d}")
+        elif eq != want:
+            rep.fail(node.id, f"equality is {eq} but the tape in ℍ says {want}: {d}")
+        elif hand != tape.cell:
+            rep.fail(node.id, f"JH cell says {hand} but the tape in ℍ earns {tape.cell}: {d}")
+        else:
+            rep.ok()
+        return
     if node.get("setting") == "JP":
         # a node of rung `place`: its tape was computed at its own place; the JP cell and the equality follow it
         PLACE_GRADES[node.id] = tape   # for the rung's later nodes: a page law cited under a square is measured there
@@ -996,12 +1028,27 @@ def main(argv=None):
                         tape.merge(t, dedupe=True)
             else:
                 tape = check_licences(node, nodes, quiet, lic_cache, rng)
-            if tape is not None and node.get("setting") != "JP":
+            if tape is not None and node.get("setting") not in ("JP", "JH"):
                 J1_GRADES[node.id] = tape
         print(f"--only {args.only}: graded {len([n for n in want if n in J1_GRADES])} cited theorems outside the prefix first")
+        if args.only.startswith("H"):
+            HLG.grade_cited_in_h(nodes, order, want, lic_cache, rng, LIC_STEPS, schema_instances, H_GRADES)
+    h_primed = bool(args.only and args.only.startswith("H"))
     for node in order:
         if args.only and not node.id.startswith(args.only):
             continue
+        if node.get("setting") == "JH" and not h_primed and not args.no_licences:
+            # rung H cites trunk theorems; their grades in ℍ (not in ℂ) price its tapes: re-grade the cited closure
+            want = set()
+            todo = [n.id for n in order if n.get("setting") == "JH"]
+            while todo:
+                nid = todo.pop()
+                for u in (nodes[nid].get("uses") or []) if nid in nodes else []:
+                    if u not in want and nodes[u].get("setting") != "JH":
+                        want.add(u)
+                        todo.append(u)
+            HLG.grade_cited_in_h(nodes, order, want, lic_cache, rng, LIC_STEPS, schema_instances, H_GRADES)
+            h_primed = True
         set_reading(node)
         check_schema(node, nodes, rep)
         check_links(node, nodes, rep)
@@ -1050,6 +1097,8 @@ def main(argv=None):
         write_j1_ledger()  # before the witnesses: J1.classical-floor reads it
         if not args.no_places:
             PLG.compute(nodes, rep, rng, LIC_STEPS, schema_instances)   # census/place-ledger.md: the trunk at every place
+            HLG.compute(nodes, rep, rng, LIC_STEPS, schema_instances)   # census/h-ledger.md: the trunk in ℍ
+            HLG.compute_places(nodes, rep, rng, LIC_STEPS, schema_instances)   # census/h-place-ledger.md: H at the places, place in ℍ
     for node in witnesses:
         check_witness(node, rep)
     if not args.no_census:

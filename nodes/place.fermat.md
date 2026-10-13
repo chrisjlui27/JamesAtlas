@@ -17,7 +17,7 @@ schema_draw: "p=5; n=1"
 holds:
   classical: fails
   J1: fails
-  JH: untested
+  JH: guarded
   JO: untested
   JP: holds
 readings:
@@ -67,7 +67,8 @@ Fermat's little theorem at depth 1 and Euler's at depth n; the order p − 1 of 
 |---|---|---|
 | classical | fails | at ∞ no power of a number other than 1 is 1 (for positive reals); the law is the finite clock's |
 | J1 | fails | as classical |
-| JH, JO | untested | owed |
+| JO | untested | owed |
+| JH | guarded | on the centre only: U = i has order 4, and 4 ∤ φ(pⁿ) when p ≡ 3 mod 4 ([[H.split-place]], witness part (4)); exact on the centre, fails on generic units of the page (census/h-place-ledger.md) |
 | JP | holds | imported; engine-checked on units at p = 2, 3, 5, 7, depths 1, 2 — a page law, ≃ |
 
 | reading | cell | why |

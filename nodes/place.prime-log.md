@@ -16,7 +16,7 @@ witness: tools/models/place_prime_log.py
 holds:
   classical: replaced
   J1: replaced
-  JH: untested
+  JH: replaced
   JO: untested
   JP: holds
 readings:
@@ -70,7 +70,8 @@ The p-adic valuation as a count on the page, and its three axioms for free: v(ab
 |---|---|---|
 | classical | replaced | at ∞ the log of a pile is a real number: `[oo]` = ln 2 |
 | J1 | replaced | as classical |
-| JH, JO | untested | owed |
+| JO | untested | owed |
+| JH | replaced | at 2 the prime of the quaternion page is π = o i, not 2: `[π]` has count ½ and `[oo]` is `[π][π]` up to a unit ([[H.ramified-place]]); at odd p `[p]` is as stated, central |
 | JP | holds | witness |
 
 | reading | cell | why |

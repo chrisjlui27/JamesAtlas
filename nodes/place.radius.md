@@ -16,7 +16,7 @@ witness: tools/models/place_radius.py
 holds:
   classical: replaced
   J1: replaced
-  JH: untested
+  JH: replaced
   JO: untested
   JP: holds
 readings:
@@ -68,7 +68,8 @@ The domain of the p-adic exponential and the fact that ℚ_p is not ℝ: no numb
 |---|---|---|
 | classical | replaced | at ∞ every instance is a number: [[N.round]] |
 | J1 | replaced | as classical |
-| JH, JO | untested | owed |
+| JO | untested | owed |
+| JH | replaced | at 2 the radius of the instance is the half-shell v ≥ 3/2, the series converging where it does not at v = 1 ([[H.ramified-place]], witness part (3)); at odd p v ≥ 1 as on the centre |
 | JP | holds | witness, at p = 2, 3, 5, 7, 13 |
 
 | reading | cell | why |

@@ -17,7 +17,7 @@ schema_draw: "p=3; n=2"
 holds:
   classical: fails
   J1: fails
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -71,7 +71,8 @@ That the log space at a finite place is ℤ_p ⊕ ℤ[p] ⊕ ℤJ_p *with no fin
 |---|---|---|
 | classical | fails | at ∞ no finite count of logs instances to nothing: pⁿ is pⁿ |
 | J1 | fails | as classical |
-| JH, JO | untested | owed |
+| JO | untested | owed |
+| JH | holds | exact on the quaternion page, centre and generic (census/h-place-ledger.md) |
 | JP | holds | the gathering steps inside the instance are absorbed; the void pile at depth 0 is a page step — p = 2, 3, 5, 7, depths 1 … 3 |
 
 | reading | cell | why |

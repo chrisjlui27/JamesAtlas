@@ -15,7 +15,7 @@ gloss_check: "exp(B)"
 holds:
   classical: holds
   J1: guarded
-  JH: holds
+  JH: guarded
   JO: holds
   JP: replaced
 readings:
@@ -72,7 +72,8 @@ exp(b) = e^b — in analysis a theorem that takes some work (the series and the 
 |---|---|---|
 | classical | holds | — |
 | J1 | guarded | the unit on `(o)` sits under a square inside the inner instance. ≃ does not pass through `[ ]` (a lattice offset inside a log is not a lattice offset of the log), so the step is sound only because its receipt is void — k = 0, the content `o` on the strip — which 𝕁₁ cannot see and the reading can: the classical by-content guard survives as an import (receipt prover, `census/j1-ledger.md`) |
-| JH, JO | holds | — |
+| JO | holds | — |
+| JH | guarded | as in 𝕁₁: the unit step under the square imports; the receipt is void on the domain (census/h-ledger.md) |
 | JP | replaced | `(o)` is not a form at a finite place ([[place.radius]]) |
 
 | reading | cell | why |

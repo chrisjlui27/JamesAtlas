@@ -37,7 +37,7 @@ Each law read at p = 2, 3, 5, 7, 13 (page depth 2: 17, 3: 11, 5: 8, 7: 6, 13: 5 
 | `mult.dominion` | exact · strict | exact · strict | exact · strict | exact · strict | exact · strict | holds | holds |
 | `mult.inverse-promotion` | exact · strict | exact · strict | exact · strict | exact · strict | exact · strict | holds | holds |
 | `mult.product-of-negatives` | exact · strict | exact · strict | exact · strict | exact · strict | exact · strict | holds | holds |
-| `Q.division` | guarded | guarded | guarded | guarded | exact | guarded | guarded |
+| `Q.division` | guarded | guarded | guarded | exact | guarded | guarded | guarded |
 | `Q.self-division` | exact · strict | exact · strict | exact · strict | exact · strict | exact · strict | holds | holds |
 | `Q.division-by-one` | exact · absorbed | exact · absorbed | exact · absorbed | exact · absorbed | exact · absorbed | holds | holds |
 | `Q.reciprocal` | guarded | guarded | guarded | guarded | guarded | guarded | guarded |
@@ -56,7 +56,7 @@ Each law read at p = 2, 3, 5, 7, 13 (page depth 2: 17, 3: 11, 5: 8, 7: 6, 13: 5 
 | `Q.flip` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
 | `Q.divide-by-fraction` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
 | `Q.reciprocal-of-product` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
-| `Q.negative-fraction` | guarded · strict | guarded · strict | guarded · strict | guarded · strict | exact · strict | guarded | guarded |
+| `Q.negative-fraction` | guarded · strict | guarded · strict | exact · strict | guarded · strict | guarded · strict | guarded | guarded |
 | `Q.reciprocal-of-negative` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
 | `Q.negative-denominator` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
 | `Q.negatives-cancel` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
@@ -69,16 +69,16 @@ Each law read at p = 2, 3, 5, 7, 13 (page depth 2: 17, 3: 11, 5: 8, 7: 6, 13: 5 
 | `alg.power-of-base` | none · absent | none · absent | none · absent | none · absent | none · absent | replaced | replaced |
 | `alg.log-law` | exact · posted | exact · posted | exact · posted | exact · posted | exact · posted | holds-mod-Λ | holds-mod-Λ |
 | `alg.exp-of-pile` | none · absorbed | none · absorbed | none · absorbed | none · absorbed | none · absorbed | replaced | replaced |
-| `alg.product-of-powers` | exact · absorbed | guarded · absorbed | guarded · absorbed | exact · absorbed | exact · absorbed | guarded | guarded |
+| `alg.product-of-powers` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | exact · absorbed | guarded | guarded |
 | `alg.first-power` | exact · absorbed | exact · absorbed | exact · absorbed | exact · absorbed | exact · absorbed | holds | holds |
 | `alg.zeroth-power` | exact · strict | exact · strict | exact · strict | exact · strict | exact · strict | holds | holds |
-| `alg.one-to-power` | guarded · absent | fails · absent | fails · absent | fails · absent | guarded · absent | fails | replaced |
-| `alg.log-of-power` | exact · posted | guarded · posted | guarded · posted | guarded · posted | exact · posted | guarded | guarded |
+| `alg.one-to-power` | guarded · absent | fails · absent | fails · absent | fails · absent | fails · absent | fails | replaced |
+| `alg.log-of-power` | exact · posted | exact · posted | exact · posted | exact · posted | exact · posted | holds-mod-Λ | guarded |
 | `alg.negative-exponent` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
-| `alg.power-of-power` | exact · import | exact · import | guarded · import | guarded · import | guarded · import | guarded | guarded |
+| `alg.power-of-power` | guarded · import | guarded · import | exact · import | guarded · import | guarded · import | guarded | guarded |
 | `alg.root` | guarded | guarded | guarded | guarded | guarded | guarded | guarded |
 | `alg.root-squared` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
-| `alg.root-of-product` | guarded ·exc · import | guarded ·exc · import | guarded ·exc · import | guarded ·exc · import | guarded ·exc · import | guarded | guarded |
+| `alg.root-of-product` | guarded ·exc · import | guarded ·exc · import | guarded ·exc · import | guarded ·exc · import | exact ·exc · import | guarded | guarded |
 | `alg.root-of-quotient` | guarded ·exc · import | guarded ·exc · import | guarded ·exc · import | guarded ·exc · import | guarded ·exc · import | guarded | guarded |
 | `alg.sqrt4` | exact · import | fails · absent | exact · import | exact · import | exact · import | fails | fails |
 | `alg.sqrt2` | none | none | none | exact | none | guarded | guarded |
@@ -107,7 +107,7 @@ Each law read at p = 2, 3, 5, 7, 13 (page depth 2: 17, 3: 11, 5: 8, 7: 6, 13: 5 
 | `C.polar-form` | guarded | guarded | guarded | guarded | guarded | guarded | guarded |
 | `C.turn-of-sum` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
 | `C.polar-product` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
-| `C.reverse-turn` | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded · absorbed | guarded | guarded |
+| `C.reverse-turn` | guarded · absorbed | guarded · absorbed | guarded · absorbed | exact · absorbed | guarded · absorbed | guarded | guarded |
 | `C.minus-one-power` | guarded | guarded | guarded | guarded | guarded | guarded | guarded |
 | `C.conjugate` | none | none | exact | none | exact | guarded | guarded |
 | `C.complex-product` | none · absorbed | none · absorbed | exact · absorbed | none · absorbed | exact · absorbed | guarded | guarded |

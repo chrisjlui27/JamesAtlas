@@ -15,7 +15,7 @@ gloss_check: ""
 holds:
   classical: holds
   J1: holds-mod-Λ
-  JH: holds
+  JH: holds-mod-Λ
   JO: holds
   JP: holds-mod-Λ
 readings:
@@ -69,7 +69,8 @@ ln 1 = 0 — the log of the multiplicative unit is the additive unit. Every use 
 |---|---|---|
 | classical | holds | — |
 | J1 | holds-mod-Λ | `[()]` is ω, the generator of Λ, not void: the law holds mod Λ with receipt ω and fails strictly — the first law to change in 𝕁₁ |
-| JH, JO | holds | the log of the unit is void in every slice |
+| JO | holds | the log of the unit is void in every slice |
+| JH | holds-mod-Λ | as in 𝕁₁: `[(void)] → void` posts the receipt ω, now the pinned 2πi (census/h-ledger.md) |
 | JP | holds-mod-Λ | `[o]` reads ω_p = (p−1)·J_p at a finite place, the generator of the kernel of the instance there ([[place.torsion]], [[place.reading]]): the law holds mod Λ_p with receipt ω_p, exactly as in 𝕁₁ — the place ledger |
 
 | reading | cell | why |

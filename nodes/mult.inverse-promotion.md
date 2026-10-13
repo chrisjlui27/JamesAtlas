@@ -15,7 +15,7 @@ gloss_check: "-(exp(A)*B)"
 holds:
   classical: holds
   J1: holds
-  JH: holds
+  JH: replaced
   JO: holds
   JP: holds
 readings:
@@ -81,7 +81,8 @@ So `(A [<B>])` is an inverse of `(A [B])`; inverses are unique:
 
 | setting | holds | why |
 |---|---|---|
-| all | holds | the Inversion cluster, verbatim in every extension (JH Ch. 15; survival ledger for J1). Note the chart's own derivation routes through [[mult.zero-annihilates]], whose J1 cell is untested — the ledger asserts survival directly; an independent J1 derivation is owed |
+| classical, J1, JO, JP | holds | the Inversion cluster, verbatim in every extension (JH Ch. 15; survival ledger for J1). Note the chart's own derivation routes through [[mult.zero-annihilates]], whose J1 cell is untested — the ledger asserts survival directly; an independent J1 derivation is owed |
+| JH | replaced | the sign must pass a pinned log: `<(A [B])>` is exp(A + log B + πi) only when A commutes with i, and on generic quaternions the law fails (census/h-ledger.md); the ordered square moves the sign without a log, [[H.central-sign]] |
 
 | reading | cell | why |
 |---|---|---|

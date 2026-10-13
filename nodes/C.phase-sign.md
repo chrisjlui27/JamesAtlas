@@ -15,7 +15,7 @@ gloss_check: "-exp(A)"
 holds:
   classical: holds
   J1: holds
-  JH: guarded
+  JH: replaced
   JO: guarded
   JP: holds
 readings:
@@ -69,7 +69,8 @@ e^{−iπ} = e^{iπ} = −1: the two half-periods ±iπ land on the same point. 
 |---|---|---|
 | classical | holds | — |
 | J1 | holds | −ω/2 ≡ ω/2 mod Λ, and the instance absorbs the difference (A5′) |
-| JH, JO | guarded | slice-local, as [[C.period-absorption]] |
+| JO | guarded | slice-local, as [[C.period-absorption]] |
+| JH | replaced | −J and J are antipodes on the sphere of phases ([[H.phase-sphere]]), and the instance identifies them only in the slice of i ([[H.slice-wall]]): fails on generic quaternions (census/h-ledger.md) |
 | JP | holds | by the same absorbing step at a place |
 
 | reading | cell | why |

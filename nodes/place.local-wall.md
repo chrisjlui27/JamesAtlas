@@ -16,7 +16,7 @@ witness: tools/models/place_local_wall.py
 holds:
   classical: replaced
   J1: holds
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -70,7 +70,8 @@ Von Staudt–Clausen's theorem (1840) read locally: a prime p divides the denomi
 |---|---|---|
 | classical | replaced | the classical calculus has no wall |
 | J1 | holds | the wall at ∞ is the whole product, seen as one condition on n |
-| JH, JO | untested | — |
+| JO | untested | — |
+| JH | holds | the ψ-wall is computed place by place on the centre, which ℍ does not change; the Hurwitz units' 24 beside its M(2) = 24 is [[H.twenty-four]], an analogy |
 | JP | holds | witness |
 
 | reading | cell | why |

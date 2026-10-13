@@ -15,7 +15,7 @@ gloss_check: ""
 holds:
   classical: replaced
   J1: replaced
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -65,7 +65,8 @@ The projective line's two points at the valuation: ℤ_p has the pole (as the li
 |---|---|---|
 | classical | replaced | at ∞ the pole is −∞ ([[mult.black-hole]]) and +∞ is not a form; one-ended there too |
 | J1 | replaced | [[J1.pole]]: ✠/Ω at ∞ |
-| JH, JO | untested | the Hurwitz pages; owed |
+| JO | untested | the Hurwitz pages; owed |
+| JH | holds | the count of `[π]` has two ends at 2 as well, in half-steps ([[H.ramified-place]]) |
 | JP | holds | the declaration of the setting |
 
 | reading | cell | why |

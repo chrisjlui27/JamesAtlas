@@ -15,7 +15,7 @@ gloss_check: "1"
 holds:
   classical: holds
   J1: replaced
-  JH: holds
+  JH: replaced
   JO: holds
   JP: replaced
 readings:
@@ -68,7 +68,8 @@ One to any power is one: the log of one is nothing, the log of nothing is the pi
 
 | setting | holds | why |
 |---|---|---|
-| classical, JH, JO | holds | — |
+| classical, JO | holds | — |
+| JH | replaced | as in 𝕁₁, by [[J1.receptacle]] — and in ℍ the period ω has a direction besides (census/h-ledger.md) |
 | JP | replaced | fails as derived at every place, as at 𝕁₁: `[o]` is ω_p under a square. The instances hold for a whole count B; for a fraction 1/n the receptacle takes over ([[J1.receptacle]]), with the place's selection rule — ω_p/n is a form only for n | p − 1 ([[place.selection]]) |
 | J1 | replaced | **fails** as stated, and the prover says where: the log of one `[()] → void` is taken *under a square*, where ≃ does not pass, with receipt ω ≠ void. In 𝕁₁ `[[o]]` is `[ω]`, and `(([[o]] [B]))` is e^{Bω}: `o` when B is a count (the outer instance absorbs Bω), a root of unity when B is a fraction — 1^{1/3} is ω₃. The law is replaced by the receptacle (`J1.receptacle`): the value 1 has a lattice of logs, and the classical law was its shadow |
 

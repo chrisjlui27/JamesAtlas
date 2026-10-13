@@ -17,7 +17,7 @@ schema_draw: "p=2; n=3"
 holds:
   classical: fails
   J1: fails
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -72,7 +72,8 @@ On a clock with p^n hours, going back one hour from midnight lands on the last h
 |---|---|---|
 | classical | fails | at ∞ no pile is negative ([[Z.negative-numeral]], [[N.freeness]]) |
 | J1 | fails | as classical |
-| JH, JO | untested | owed to rung `H` |
+| JO | untested | owed to rung `H` |
+| JH | holds | exact on the quaternion page, centre and generic (census/h-place-ledger.md) |
 | JP | holds | a page step at depth 0 at every instance: the page's equality, ≃ |
 
 | reading | cell | why |

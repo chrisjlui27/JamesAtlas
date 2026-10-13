@@ -17,7 +17,7 @@ schema_draw: "p=3; n=2"
 holds:
   classical: fails
   J1: fails
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -71,7 +71,8 @@ none — declared. The pile of pⁿ marks ([[N.numeral]]) is declared the void (
 |---|---|---|
 | classical | fails | no pile is void at ∞ ([[N.freeness]]): the law is the place's, and ∞ is not a finite place |
 | J1 | fails | as classical: 𝕁₁ at ∞ keeps every pile |
-| JH, JO | untested | the Hurwitz places (rung `H`) have their own void piles — the primes where the quaternions ramify; owed |
+| JO | untested | the Hurwitz places (rung `H`) have their own void piles — the primes where the quaternions ramify; owed |
+| JH | holds | at 2 the quaternion page is O/2ⁿO and the pile 2ⁿ is void there too — `π^{2n} ≐ void`, the prime π = o i with v(π) = ½ ([[H.ramified-place]]); at odd p the page is M₂(ℤ/pⁿ) and pⁿ is void as on the centre ([[H.split-place]]) |
 | JP | holds | the declaration of the setting, at p = 2, 3, 5, 7, 13 and depths 1 … 3 (the engine reads each instance at its own place); a page law — ≃, not under a square |
 
 | reading | cell | why |

@@ -16,7 +16,7 @@ witness: tools/models/place_selection.py
 holds:
   classical: replaced
   J1: replaced
-  JH: untested
+  JH: replaced
   JO: untested
   JP: holds
 readings:
@@ -69,7 +69,8 @@ The roots of unity in ℚ_p, and that ℚ_p(i) is a quadratic extension for p �
 |---|---|---|
 | classical | replaced | at ∞ every ω/n is a form ([[J1.receptacle]] in the ℂ reading) |
 | J1 | replaced | as classical: the receptacle is ℚ/ℤ at ∞, and (ℤ/(p−1)) at p |
-| JH, JO | untested | owed |
+| JO | untested | owed |
+| JH | replaced | at 2 the roots of unity of the quaternion page are the 24 of [[H.hurwitz-units]] — orders 1, 2, 3, 4, 6 — where the centre selects only ±1; at odd p the centre's selection is as stated and the page selects more |
 | JP | holds | witness |
 
 | reading | cell | why |

@@ -16,7 +16,7 @@ witness: tools/models/place_lift.py
 holds:
   classical: replaced
   J1: replaced
-  JH: untested
+  JH: guarded
   JO: untested
   JP: holds
 readings:
@@ -69,7 +69,8 @@ Hensel's lemma in its first case and the quadratic residues: a unit is a square 
 |---|---|---|
 | classical | replaced | at ∞ every positive number has a root; the test at depth one has no analogue |
 | J1 | replaced | as classical |
-| JH, JO | untested | owed |
+| JO | untested | owed |
+| JH | guarded | on the centre as stated; a non-central unit of the page has a square root in its own slice under the same criterion, and the reading's log reaches only the units whose torsion and principal parts commute ([[H.split-place]], Notes) |
 | JP | holds | witness |
 
 | reading | cell | why |

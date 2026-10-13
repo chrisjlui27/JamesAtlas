@@ -16,7 +16,7 @@ witness: tools/models/place_wall.py
 holds:
   classical: replaced
   J1: holds
-  JH: untested
+  JH: guarded
   JO: untested
   JP: holds
 readings:
@@ -71,7 +71,8 @@ Chapter 9 of the JP ledger, Axiom 4 (Wall), and the 2026-09-13 finding that "the
 |---|---|---|
 | classical | replaced | the classical calculus has no wall: it erases the period ([[mult.log-of-one]]) and the crack follows |
 | J1 | holds | the wall at ∞ is [[J1.absorption]] |
-| JH, JO | untested | the Hurwitz wall at a place: owed to rung `H` |
+| JO | untested | the Hurwitz wall at a place: owed to rung `H` |
+| JH | guarded | the same tape per slice: at the places the torsion logs carry a direction too, and a receipt is paid only by an instance whose content lies in its slice ([[H.slice-wall]]) |
 | JP | holds | witness, and the place ledger |
 
 | reading | cell | why |

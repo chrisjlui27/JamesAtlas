@@ -17,7 +17,7 @@ schema_draw: "p=3; n=1; k=2"
 holds:
   classical: fails
   J1: fails
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -71,7 +71,8 @@ The residue classes mod p^n, and that the chart's piles wrap: the normal form of
 |---|---|---|
 | classical | fails | [[N.freeness]]: at ∞ distinct piles are distinct |
 | J1 | fails | as classical |
-| JH, JO | untested | owed to rung `H` |
+| JO | untested | owed to rung `H` |
+| JH | holds | on the quaternion page: at 2 the residue field is 𝔽₄ and at odd p the matrices mod p ([[H.ramified-place]], [[H.split-place]]); exact on the centre and on generic quaternions of the page (census/h-place-ledger.md) |
 | JP | holds | a page step at depth 0 at every instance (p = 2, 3, 5; depths 1, 2; k = 1 … 3): the page's equality, ≃ |
 
 | reading | cell | why |

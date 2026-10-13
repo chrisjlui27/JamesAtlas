@@ -17,7 +17,7 @@ schema_draw: "p=5"
 holds:
   classical: holds
   J1: holds
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -79,7 +79,8 @@ The Teichmüller lift and the structure ℤ_p^× = μ_{p−1} × (1 + pℤ_p): t
 |---|---|---|
 | classical | holds | degenerate: ω erases to void there, and the law reads `o ≐ o` |
 | J1 | holds | at ∞ the same form is e^{2πi/(p−1)} raised to p, which is itself times one whole period, absorbed: the same derivation, the same absorbed receipts — the (p−1)-th roots of unity are Frobenius-fixed at ∞ as well |
-| JH, JO | untested | owed |
+| JO | untested | owed |
+| JH | holds | exact on the quaternion page (census/h-place-ledger.md); at 2 the Teichmüller part is μ₃, the roles inverted ([[H.ramified-place]]) |
 | JP | holds | absorbed receipts, at p = 3, 5, 7 |
 
 | reading | cell | why |

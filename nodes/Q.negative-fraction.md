@@ -15,7 +15,7 @@ gloss_check: -A/B
 holds:
   classical: holds
   J1: holds
-  JH: holds
+  JH: replaced
   JO: holds
   JP: guarded
 readings:
@@ -66,7 +66,8 @@ The sign rule for fractions as one instance of inverse promotion — no unit ste
 
 | setting | holds | why |
 |---|---|---|
-| classical, JH, JO | holds | the Inversion cluster |
+| classical, JO | holds | the Inversion cluster |
+| JH | replaced | as [[mult.product-of-negatives]]: the sign of a quotient passes a pinned half-turn, which fails on generic quaternions (census/h-ledger.md); [[H.central-sign]] in the ordered square |
 | J1 | holds | per the survival ledger (promotion unchanged); the chart's own derivation of [[mult.inverse-promotion]] routes through zero-annihilates, whose J1 cell is untested |
 | JP | guarded | the denominator must be a unit at p |
 

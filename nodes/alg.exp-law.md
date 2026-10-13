@@ -15,7 +15,7 @@ gloss_check: exp(A + B)
 holds:
   classical: holds
   J1: holds
-  JH: guarded
+  JH: replaced
   JO: guarded
   JP: holds
 readings:
@@ -69,7 +69,8 @@ The law of exponents for one base. It is **not** an axiom here and it is **not**
 |---|---|---|
 | classical | holds | — |
 | J1 | holds | the unit steps sit directly under an instance: depth-1 criterion ([[mult.involution]], Notes) |
-| JH, JO | guarded | holds only for commuting exponents (one slice); the in-band rigidity lemma of JH-1 |
+| JO | guarded | holds only for commuting exponents (one slice); the in-band rigidity lemma of JH-1 |
+| JH | replaced | e^A e^B = e^{A+B} is the No-Go theorem's equation: it holds for co-sliced A, B ([[H.collapse]]) and fails on generic quaternions (census/h-ledger.md; [[H.no-go]]); the ordered product `([(A) ; (B)])` is e^A e^B, and `(A B)` is not |
 | JP | holds | — |
 
 | reading | cell | why |

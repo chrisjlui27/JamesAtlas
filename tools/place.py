@@ -505,6 +505,8 @@ def _eval_child(ch, env, P: Place) -> PV:
         if ch[1] not in env:
             raise KeyError(f"unbound variable {ch[1]}")
         return P.number(env[ch[1]])
+    if ch[0] in (F.CONST, F.ORDERED):
+        raise NotAForm("the ordered square and the seed J_j are read at a place by the ℍ reading (tools/quatplace.py), not this one")
     inner = evaluate(ch[1], env, P)
     if ch[0] == F.ROUND:
         return P.instance(inner)
@@ -541,7 +543,7 @@ class Reading:
             return []
         pile = Fraction(self.P.p ** self.P.depth)   # the page's own lattice point: the void pile, where (X) is exactly one
         values = [Fraction(1), pile]
-        if domain in ("negative", "real", "complex", "unit"):
+        if domain in ("negative", "real", "complex", "slice", "unit"):
             values += [Fraction(-1), -pile]
         if domain == "negative":
             values = [Fraction(-1), -pile]

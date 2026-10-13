@@ -28,7 +28,7 @@ BASE_IDS = {"void.page", "void.space", "N.round", "Z.angle", "mult.square", "mul
 PRICED_TYPES = {"primitive", "axiom", "decree", "import", "gap"}
 RUNG_TITLES = {
     "void": "The page", "N": "ℕ — piles", "Z": "ℤ — the angle boundary", "mult": "× — the square boundary",
-    "Q": "ℚ — division and fractional counts", "alg": "Radicals and the base", "C": "ℂ and J", "schema": "Schemas — one law for every n", "J1": "𝕁₁ — the receipt", "H": "ℍ (JH)", "O": "𝕆 (JO)", "S": "𝕊 (JS)", "J2": "𝕁₂ — the moduli of lattices",
+    "Q": "ℚ — division and fractional counts", "alg": "Radicals and the base", "C": "ℂ and J", "schema": "Schemas — one law for every n", "J1": "𝕁₁ — the receipt", "H": "ℍ — the ordered square", "O": "𝕆 (JO)", "S": "𝕊 (JS)", "J2": "𝕁₂ — the moduli of lattices",
     "analysis": "Analysis", "place": "Places — the same wall at p", "logic": "Logic", "struct": "Structure", "F1": "F₁", "field": "The Field",
 }
 
@@ -46,9 +46,23 @@ def _layout(form):
     return {"w": w, "h": h, "kids": kids}
 
 
+SEP = 9.0   # the gap either side of the divider between the entries of an ordered square
+
+
 def _layout_child(ch):
     if ch[0] == F.VAR:
         return {"kind": "v", "name": ch[1], "w": FS * 0.75 * len(ch[1]) + 2, "h": FS + 2}
+    if ch[0] == F.CONST:
+        name = F.CONSTANTS.get(ch[1], ch[1])
+        return {"kind": "v", "name": name, "w": FS * 0.75 * len(name) + 2, "h": FS + 2, "const": True}
+    if ch[0] == F.ORDERED:
+        ents = [_layout(e) for e in ch[1]]
+        for e in ents:
+            if e["w"] == 0:
+                e["w"] = H0 * 0.6   # an empty entry still takes a slot
+        w = sum(e["w"] for e in ents) + SEP * (len(ents) - 1) + 2 * PAD
+        h = max(e["h"] for e in ents) + 2 * PAD
+        return {"kind": F.ORDERED, "entries": ents, "w": w, "h": h, "inner": {"w": w}}
     inner = _layout(ch[1])
     if inner["w"] == 0:
         w = h = H0
@@ -73,7 +87,20 @@ def _draw(lay, x, y, out):
 def _draw_child(k, x, y, out):
     w, h = k["w"], k["h"]
     if k["kind"] == "v":
-        out.append(f'<text class="fv" x="{x + w/2:.1f}" y="{y + h/2 + FS*0.36:.1f}" text-anchor="middle">{html.escape(k["name"])}</text>')
+        cls = "fv fc" if k.get("const") else "fv"
+        out.append(f'<text class="{cls}" x="{x + w/2:.1f}" y="{y + h/2 + FS*0.36:.1f}" text-anchor="middle">{html.escape(k["name"])}</text>')
+        return
+    if k["kind"] == F.ORDERED:
+        # an ordered square: a rectangle whose entries are separated by thin dividers (the semicolons)
+        out.append(f'<rect class="b-s b-q" x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}"/>')
+        cx = x + PAD
+        for n, e in enumerate(k["entries"]):
+            if n:
+                sx = cx - SEP / 2
+                out.append(f'<line class="b-sep" x1="{sx:.1f}" y1="{y + 2:.1f}" x2="{sx:.1f}" y2="{y + h - 2:.1f}"/>')
+            if e["kids"]:
+                _draw(e, cx, y + PAD + (h - 2 * PAD - e["h"]) / 2, out)
+            cx += e["w"] + SEP
         return
     if k["kind"] == F.ROUND:
         out.append(f'<rect class="b-r" x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" rx="{h/2:.1f}" ry="{h/2:.1f}"/>')
@@ -316,9 +343,51 @@ def place_ledger():
     return _PLACE_LEDGER
 
 
+_H_LEDGER = None
+
+
+def h_ledger():
+    """census/h-ledger.md as {"trunk": {node id: (on its domain, on generic ℍ, tape, computed JH, hand JH)},
+    "rung": {node id: (computed JH, hand JH, tape)}} and census/h-place-ledger.md as {"h": {node id: (per-place
+    cells, computed JP, hand JP)}, "place": {node id: (centre, generic, computed JH, hand JH)}, "places": [...]} —
+    both written by check.py (SPEC §4.5)."""
+    global _H_LEDGER
+    if _H_LEDGER is None:
+        _H_LEDGER = {"trunk": {}, "rung": {}, "h": {}, "place": {}, "places": []}
+        path = os.path.join(ROOT, "census", "h-ledger.md")
+        if os.path.exists(path):
+            section = "trunk"
+            for line in open(path):
+                if line.startswith("## Rung"):
+                    section = "rung"
+                if line.startswith("| `"):
+                    cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                    nid = cells[0].strip("`")
+                    if section == "trunk" and len(cells) >= 6:
+                        _H_LEDGER["trunk"][nid] = (cells[1], cells[2], cells[3], cells[4], cells[5])
+                    elif section == "rung" and len(cells) >= 4:
+                        _H_LEDGER["rung"][nid] = (cells[1], cells[2], cells[3])
+        path = os.path.join(ROOT, "census", "h-place-ledger.md")
+        if os.path.exists(path):
+            section = "h"
+            for line in open(path):
+                if line.startswith("**Rung place in"):
+                    section = "place"
+                if line.startswith("| node |") and section == "h":
+                    _H_LEDGER["places"] = [c.strip() for c in line.strip().strip("|").split("|")][1:-2]
+                if line.startswith("| `"):
+                    cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                    nid = cells[0].strip("`")
+                    if section == "h" and len(cells) >= 8:
+                        _H_LEDGER["h"][nid] = (cells[1:6], cells[6], cells[7])
+                    elif section == "place" and len(cells) >= 5:
+                        _H_LEDGER["place"][nid] = (cells[1], cells[2], cells[3], cells[4])
+    return _H_LEDGER
+
+
 def tape_html(nid: str) -> str:
-    """The 𝕁₁ tape of a derivation, as the receipt prover computed it (LEGISLATION 30c), and the law at the places
-    (the place ledger, rung `place`)."""
+    """The 𝕁₁ tape of a derivation, as the receipt prover computed it (LEGISLATION 30c), the law at the places
+    (the place ledger, rung `place`), and the law in ℍ (the ℍ ledger and the quaternion place ledger, rung `H`)."""
     out = ""
     entry = j1_ledger().get(nid)
     if entry:
@@ -333,6 +402,22 @@ def tape_html(nid: str) -> str:
     elif nid in pl["rung"]:
         place, computed, tape = pl["rung"][nid]
         out += f'<div class="kv"><span class="k">tape at {html.escape(place)}</span><span class="v tape">{inline_tape(tape)}</span></div>'
+    hl = h_ledger()
+    if nid in hl["trunk"]:
+        dom, gen, tape, computed, hand = hl["trunk"][nid]
+        t = f'; tape {inline_tape(tape)}' if tape and tape != "—" else ""
+        out += f'<div class="kv"><span class="k">in ℍ</span><span class="v tape">on its domain <b>{html.escape(dom)}</b> · on generic ℍ <b>{html.escape(gen)}</b>{t} — JH <b>{html.escape(computed)}</b></span></div>'
+    elif nid in hl["rung"]:
+        computed, hand, tape = hl["rung"][nid]
+        out += f'<div class="kv"><span class="k">tape in ℍ</span><span class="v tape">{inline_tape(tape)}</span></div>'
+    if nid in hl["h"]:
+        cells, computed, hand = hl["h"][nid]
+        places = hl["places"] or [f"p = {q}" for q in (2, 3, 5, 7, 13)]
+        items = " · ".join(f"<b>{html.escape(pq)}</b> {html.escape(c)}" for pq, c in zip(places, cells))
+        out += f'<div class="kv"><span class="k">at the places</span><span class="v tape">{items} — JP <b>{html.escape(computed)}</b></span></div>'
+    elif nid in hl["place"]:
+        centre, gen, computed, hand = hl["place"][nid]
+        out += f'<div class="kv"><span class="k">in ℍ at its place</span><span class="v tape">on the centre <b>{html.escape(centre)}</b> · on generic quaternions of the page <b>{html.escape(gen)}</b> — JH <b>{html.escape(computed)}</b></span></div>'
     return out
 
 
@@ -345,6 +430,7 @@ def inline_tape(tape: str) -> str:
     out = out.replace("formless [under-square]", "<b>formless</b> [under-square]")
     out = re.sub(r"(absorbed|posted|import|absent) \[page step under a square, measured at the square: ([^\]]*)\]", r"<b>\1</b> [page step, measured at the square above it: \2]", out)
     out = re.sub(r"absorbed \[inherited ([^\]]*)\]", r"<b>absorbed</b> [inherited \1]", out)
+    out = out.replace("absent [cross-slice]", "<b>absent</b> [cross-slice]").replace("absent [premise]", "<b>absent</b> [premise]").replace("absorbed [seam]", "<b>absorbed</b> [seam]")
     return out
 
 
@@ -670,6 +756,8 @@ svg.form {{ overflow:visible; vertical-align:middle; flex:none; }}
 .law .drawing svg.form {{ max-width:100%; height:auto; }}
 svg.form .b-r {{ fill:none; stroke:var(--round); stroke-width:1.6; }}
 svg.form .b-s {{ fill:none; stroke:var(--square); stroke-width:1.6; }}
+svg.form .b-sep {{ stroke:var(--square); stroke-width:1; stroke-dasharray:2 2; }}
+svg.form .fc {{ font-style:italic; }}
 svg.form .b-a {{ fill:none; stroke:var(--angle); stroke-width:1.6; stroke-linejoin:round; }}
 svg.form .fv {{ font-family:var(--serif); font-style:italic; font-size:12px; fill:var(--fg); }}
 svg.form.sm {{ transform:scale(0.85); transform-origin:left center; }}

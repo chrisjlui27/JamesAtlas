@@ -17,7 +17,7 @@ schema_draw: "n=3"
 holds:
   classical: holds
   J1: holds
-  JH: holds
+  JH: replaced
   JO: holds
   JP: holds
 readings:
@@ -79,7 +79,8 @@ James's cardinality theorem (p. 27): "Multiple references in the same context ma
 |---|---|---|
 | classical | holds | each instance by the engine; all n by the induction |
 | J1 | holds | survival ledger: cardinality unchanged, read as the graded exponential |
-| JH, JO | holds | per slice |
+| JO | holds | per slice |
+| JH | replaced | at n = 1 it is the unit law `([A] [o]) ≐ A`, whose receipt is the pinned period ([[H.slice-wall]]); for n ≥ 2 the count's log is real and the law is exact on every quaternion; the schema as a whole fails on generic quaternions (census/h-ledger.md) |
 | JP | holds | — |
 
 | reading | cell | why |

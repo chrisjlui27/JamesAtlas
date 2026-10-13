@@ -28,6 +28,10 @@ def _is_var(ch) -> bool:
     return ch[0] == F.VAR
 
 
+def _is_leaf(ch) -> bool:
+    return ch[0] in F.LEAVES
+
+
 def _mult(form: Form) -> Counter:
     return Counter(form)
 
@@ -57,12 +61,36 @@ def _match_concrete(concrete, i, remaining: Counter, env, var_occ: Counter, none
         if sch[0] != kind or sch in tried:
             continue
         tried.add(sch)
-        for env2 in match(psub, sch[1], env, nonempty):
+        for env2 in _match_child(kind, psub, sch[1], env, nonempty):
             rem2 = remaining.copy()
             rem2[sch] -= 1
             if rem2[sch] == 0:
                 del rem2[sch]
             yield from _match_concrete(concrete, i + 1, rem2, env2, var_occ, nonempty)
+
+
+def _match_child(kind, psub, ssub, env, nonempty):
+    """Match the content of a pattern child against the content of a subject child of the same kind: a constant
+    by identity; an ordered square entry by entry, in order, the substitution threaded through; a round, square or
+    angle by the multiset matcher."""
+    if kind == F.CONST:
+        if psub == ssub:
+            yield env
+        return
+    if kind == F.ORDERED:
+        if len(psub) != len(ssub):
+            return
+        yield from _match_entries(psub, ssub, 0, env, nonempty)
+        return
+    yield from match(psub, ssub, env, nonempty)
+
+
+def _match_entries(psub, ssub, i, env, nonempty):
+    if i == len(psub):
+        yield env
+        return
+    for env2 in match(psub[i], ssub[i], env, nonempty):
+        yield from _match_entries(psub, ssub, i + 1, env2, nonempty)
 
 
 def _match_vars(remaining: Counter, env, var_occ: Counter, nonempty):
@@ -161,8 +189,12 @@ class Step:
     redex: Form             # the matched sub-multiset (instantiated lhs)
     result: Form            # the instantiated rhs
     squares: tuple = ()     # every square above the redex, innermost first, through instances and angles alike:
-                            # (content before, content after, distance) with distance the number of boundaries
-                            # between that square and the redex's multiset — what a step does to each square above it
+                            # (content before, content after, distance[, kind]) with distance the number of boundaries
+                            # between that square and the redex's multiset — what a step does to each square above it;
+                            # kind is F.SQUARE or F.ORDERED (an ordered square's content is its tuple of entries)
+    rounds: tuple = ()      # every instance above the redex, innermost first: (content before, content after,
+                            # distance) — what a step does to each instance above it (the ℍ reading asks whether the
+                            # innermost one still pays a receipt: tools/j1.py, LEGISLATION 32)
 
 
 def rewrite_all(form: Form, rule: Rule, limit: int = 4000) -> list:
@@ -189,9 +221,22 @@ def _rewrite_at(form: Form, path: tuple, rule: Rule, direction: str, frm: Form, 
     # inside each boundary
     seen = set()
     for i, ch in enumerate(form):
-        if _is_var(ch) or ch in seen:
+        if _is_leaf(ch) or ch in seen:
             continue
         seen.add(ch)
+        if ch[0] == F.ORDERED:
+            for ei, e in enumerate(ch[1]):
+                sub_out = []
+                _rewrite_at(e, path + (F.ORDERED,), rule, direction, frm, to, sub_out, limit)
+                for new_sub, step in sub_out:
+                    ents = list(ch[1])
+                    ents[ei] = new_sub
+                    lst = list(form)
+                    lst[i] = F.ordered(ents)
+                    out.append((F.canon(tuple(lst)), step))
+                    if len(out) >= limit:
+                        return
+            continue
         sub_out = []
         _rewrite_at(ch[1], path + (ch[0],), rule, direction, frm, to, sub_out, limit)
         for new_sub, step in sub_out:
@@ -236,20 +281,37 @@ def distance(a: Form, b: Form) -> int:
     for x in ra:
         best = None
         for j, y in enumerate(rb):
-            if j in used or y[0] != x[0] or _is_var(x) or _is_var(y):
+            if j in used or y[0] != x[0] or _is_leaf(x) or _is_leaf(y):
                 continue
-            d = distance(x[1], y[1])
+            d = _child_distance(x, y)
             if best is None or d < best[0]:
                 best = (d, j)
         if best is None:
-            total += 1 + (F.size(x[1]) if not _is_var(x) else 0)
+            total += _child_size(x)
         else:
             used.add(best[1])
             total += best[0]
     for j, y in enumerate(rb):
         if j not in used:
-            total += 1 + (F.size(y[1]) if not _is_var(y) else 0)
+            total += _child_size(y)
     return total
+
+
+def _child_size(ch) -> int:
+    if _is_leaf(ch):
+        return 1
+    return 1 + sum(F.size(e) for e in F.entries_of(ch))
+
+
+def _child_distance(x, y) -> int:
+    """Distance between two same-kind children: an ordered square entry by entry, the rest by content."""
+    if x[0] == F.ORDERED:
+        ex, ey = x[1], y[1]
+        d = sum(distance(a, b) for a, b in zip(ex, ey))
+        for e in ex[len(ey):] + ey[len(ex):]:
+            d += 1 + F.size(e)
+        return d
+    return distance(x[1], y[1])
 
 
 def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000, allow=None) -> list:
@@ -273,8 +335,8 @@ def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000, al
                     return out
     ca, cb = Counter(form), Counter(target)
     common = ca & cb
-    ra = [x for x in (ca - common).elements() if not _is_var(x)]
-    rb = [y for y in (cb - common).elements() if not _is_var(y)]
+    ra = [x for x in (ca - common).elements() if not _is_leaf(x)]
+    rb = [y for y in (cb - common).elements() if not _is_leaf(y)]
     done = set()
     for x in ra:
         if x in done:
@@ -283,14 +345,31 @@ def rewrites_toward(form: Form, target: Form, rules: list, limit: int = 3000, al
         cands = [y for y in rb if y[0] == x[0]]
         # with no counterpart of the same kind in the target the child must still be rewritten (it may be about
         # to disappear, e.g. by a counit or a cancellation): descend unguided
-        y_sub = min(cands, key=lambda y: distance(x[1], y[1]))[1] if cands else ()
+        y_best = min(cands, key=lambda y: _child_distance(x, y)) if cands else None
+        if x[0] == F.ORDERED:
+            # an ordered square: descend into each entry, guided by the target's entry at the same index
+            for ei, e in enumerate(x[1]):
+                y_sub = y_best[1][ei] if (y_best is not None and ei < len(y_best[1])) else ()
+                for new_sub, step in rewrites_toward(e, y_sub, rules, limit):
+                    ents = list(x[1])
+                    ents[ei] = new_sub
+                    lst = list(form)
+                    lst[lst.index(x)] = F.ordered(ents)
+                    squares = step.squares + ((x[1], tuple(ents), len(step.path), F.ORDERED),)
+                    out.append((F.canon(tuple(lst)), Step(step.rule, step.direction, (x[0],) + step.path, step.env, step.redex, step.result, squares, step.rounds)))
+                    if len(out) >= limit:
+                        return out
+            continue
+        y_sub = y_best[1] if y_best is not None else ()
         for new_sub, step in rewrites_toward(x[1], y_sub, rules, limit):
             lst = list(form)
             lst[lst.index(x)] = (x[0], new_sub)
-            squares = step.squares
+            squares, rounds = step.squares, step.rounds
             if x[0] == F.SQUARE:
-                squares = squares + ((x[1], new_sub, len(step.path)),)   # a square above the redex: before, after
-            out.append((F.canon(tuple(lst)), Step(step.rule, step.direction, (x[0],) + step.path, step.env, step.redex, step.result, squares)))
+                squares = squares + ((x[1], new_sub, len(step.path), F.SQUARE),)   # a square above the redex: before, after
+            if x[0] == F.ROUND:
+                rounds = rounds + ((x[1], new_sub, len(step.path)),)   # an instance above the redex: before, after
+            out.append((F.canon(tuple(lst)), Step(step.rule, step.direction, (x[0],) + step.path, step.env, step.redex, step.result, squares, rounds)))
             if len(out) >= limit:
                 return out
     return out
@@ -314,9 +393,10 @@ def licence(prev: Form, cur: Form, rules: list, max_steps: int = 14, beam: int =
 
 def _flipped(s: Step) -> Step:
     """The same step read in the other direction: the opposite orientation, redex and result swapped, each square's
-    before and after swapped."""
-    sq = tuple((b, a, d) for a, b, d in s.squares)
-    return Step(s.rule, "←" if s.direction == "→" else "→", s.path, s.env, s.result, s.redex, sq)
+    (and instance's) before and after swapped."""
+    sq = tuple((t[1], t[0]) + tuple(t[2:]) for t in s.squares)
+    ro = tuple((b, a, d) for a, b, d in s.rounds)
+    return Step(s.rule, "←" if s.direction == "→" else "→", s.path, s.env, s.result, s.redex, sq, ro)
 
 
 def _flip_allow(allow):
@@ -376,7 +456,11 @@ if __name__ == "__main__":
     counit = Rule("mult.counit", F.parse("([A])"), F.parse("A"))
     unit = Rule("mult.unit", F.parse("[(A)]"), F.parse("A"))
     card = Rule("mult.cardinality", F.parse("A A"), F.parse("([A] [oo])"))
+    spl = Rule("H.splice", F.parse("[A ; ([B ; C])]"), F.parse("[A ; B ; C]"))
     tests = [
+        ("[i ; ([j ; i])]", "[i ; j ; i]", [spl]),
+        ("([X ; <Y>]) Z", "([X ; Y <Y>]) Z", [inv]),
+        ("[A ; (B <B>)]", "[A ; ()]", [inv]),
         ("B A <A>", "B", [inv]),
         ("B", "B C <C>", [inv]),
         ("(X [Y Z])", "(X [Y]) (X [Z])", [dist]),

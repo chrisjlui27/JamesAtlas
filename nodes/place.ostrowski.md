@@ -15,7 +15,7 @@ gloss_check: ""
 holds:
   classical: holds
   J1: holds
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -64,7 +64,8 @@ The completeness of the rung's list of pages. It is **not** the product formula 
 | setting | holds | why |
 |---|---|---|
 | classical, J1 | holds | the ∞ place is one of the two kinds |
-| JH, JO | untested | the places of a quaternion algebra over ℚ are those of ℚ where it ramifies; owed to rung `H` |
+| JO | untested | the places of a quaternion algebra over ℚ are those of ℚ where it ramifies; owed to rung `H` |
+| JH | holds | the places of ℚ are the places of the centre of ℍ, and ℍ adds none: it ramifies at two of them and splits at the rest ([[H.ramification]]) |
 | JP | holds | the import that closes the list |
 
 | reading | cell | why |

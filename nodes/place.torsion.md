@@ -16,7 +16,7 @@ witness: tools/models/place_torsion.py
 holds:
   classical: replaced
   J1: replaced
-  JH: untested
+  JH: replaced
   JO: untested
   JP: holds
 readings:
@@ -69,7 +69,8 @@ The Teichmüller character and the splitting ℤ_p^× = μ_{p−1} × (1 + pℤ_
 |---|---|---|
 | classical | replaced | J = iπ, a number ([[C.phase]]) |
 | J1 | replaced | J = ω/2 as a number, iπ = 2πi/2: the same statement with ∞'s period |
-| JH, JO | untested | the JH seed J_j at a place; owed |
+| JO | untested | the JH seed J_j at a place; owed |
+| JH | replaced | at 2 the torsion of the page is the 24 Hurwitz units, with μ₃ the Teichmüller part and J a half-turn with a direction ([[H.ramified-place]], [[H.hurwitz-units]]); at odd p J_p is central as stated and the page adds the non-central torsion of GL₂ — the Hurwitz units among them, named ([[H.split-place]]) |
 | JP | holds | witness |
 
 | reading | cell | why |

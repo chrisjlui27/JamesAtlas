@@ -15,7 +15,7 @@ gloss_check: "A"
 holds:
   classical: holds
   J1: holds
-  JH: holds
+  JH: replaced
   JO: holds
   JP: holds
 readings:
@@ -67,7 +67,8 @@ That 1 is the unit for multiplication, in one step from the log of one ([[mult.l
 |---|---|---|
 | classical | holds | — |
 | J1 | holds | the log of one inside the instance is absorbed: the receipt ω is paid by the instance (the card's 𝕁₁ tape); exact in value |
-| JH, JO | holds | the Unit rule `[x⃗ ; o ; z⃗] ≐ [x⃗ ; z⃗]` |
+| JO | holds | the Unit rule `[x⃗ ; o ; z⃗] ≐ [x⃗ ; z⃗]` |
+| JH | replaced | `[o]` reads as the pinned period 2πi, and an instance of A pays it only when A lies in the slice of i: on generic quaternions the law fails (census/h-ledger.md) — the first non-commutative wall, [[H.slice-wall]]; in rung `H` the unit entry of the ordered square, [[H.unit-entry]], is strict |
 | JP | holds | — |
 
 | reading | cell | why |

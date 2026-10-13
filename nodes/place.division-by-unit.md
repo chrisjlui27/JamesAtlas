@@ -17,7 +17,7 @@ schema_draw: "p=3; n=1"
 holds:
   classical: fails
   J1: fails
-  JH: untested
+  JH: guarded
   JO: untested
   JP: holds
 readings:
@@ -76,7 +76,8 @@ Modular inverses by Euler's theorem, and that the finite page is a ring in which
 |---|---|---|
 | classical | fails | at ∞ a reciprocal is not a power of the number ([[place.fermat]] fails there) |
 | J1 | fails | as classical |
-| JH, JO | untested | owed |
+| JO | untested | owed |
+| JH | guarded | on the centre: for a non-central unit U the quotient's log is not `[A] <[U]>` unless A and U commute — the no-go at the place ([[H.split-place]]); exact on the centre, fails on generic quaternions (census/h-place-ledger.md) |
 | JP | holds | engine-checked at p = 3, 5, 7, depths 1, 2, and at p = 2, depth 2; absorbed receipts (the inserted log of one, the page step measured at its square, the unit inside the instance) |
 
 | reading | cell | why |

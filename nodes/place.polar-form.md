@@ -16,7 +16,7 @@ witness: tools/models/place_polar.py
 holds:
   classical: replaced
   J1: replaced
-  JH: untested
+  JH: replaced
   JO: untested
   JP: holds
 readings:
@@ -69,7 +69,8 @@ Every p-adic number is p to a power, times a root of unity, times something cong
 |---|---|---|
 | classical | replaced | [[C.polar-form]] at ∞: modulus and turn |
 | J1 | replaced | as classical |
-| JH, JO | untested | — |
+| JO | untested | — |
+| JH | replaced | at 2 by a power of π, a Hurwitz unit and a principal unit in half-shells ([[H.ramified-place]]); at odd p by the matrix decomposition ([[H.split-place]]); the quaternionic polar form at ∞ is [[H.polar-form]] |
 | JP | holds | witness |
 
 | reading | cell | why |

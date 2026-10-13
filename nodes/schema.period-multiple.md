@@ -17,7 +17,7 @@ schema_draw: "n=2"
 holds:
   classical: holds
   J1: holds
-  JH: guarded
+  JH: replaced
   JO: guarded
   JP: holds
 readings:
@@ -77,7 +77,8 @@ e^{a + 2πin} = e^a for every n ≥ 1 (the negative multiples need one Inversion
 |---|---|---|
 | classical | holds | — |
 | J1 | holds | A5′: exp kills the whole kernel Λ — this schema *is* that axiom, read classically |
-| JH, JO | guarded | slice-local, as [[C.period-absorption]] |
+| JO | guarded | slice-local, as [[C.period-absorption]] |
+| JH | replaced | whole turns about i are absorbed only by contents in the slice of i ([[H.slice-wall]]): fails on generic quaternions (census/h-ledger.md) |
 | JP | holds | `(ω_v A) ≐ (A)` at every place, iterated |
 
 | reading | cell | why |

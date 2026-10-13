@@ -15,7 +15,7 @@ gloss_check: ""
 holds:
   classical: fails
   J1: fails
-  JH: untested
+  JH: fails
   JO: untested
   JP: fails
 readings:
@@ -76,7 +76,8 @@ That the chart is honest about what it has: residues, dolls to a depth, roots to
 | setting | holds | why |
 |---|---|---|
 | classical, J1 | fails | ∞ has the same gap in another dress: the real numbers are also limits the page does not draw ([[alg.irrationality]]: √2 is reached by a form only because the root form is one) |
-| JH, JO | untested | the quaternionic dolls converge (JP v0.3); owed |
+| JO | untested | the quaternionic dolls converge (JP v0.3); owed |
+| JH | fails | the same gap: no form is a tower of quaternion pages either; at 2 the tower runs in half-shells and the quaternionic dolls converge (JP v0.3), but a tower is not a form ([[H.ramified-place]]) |
 | JP | fails | the gap |
 
 | reading | cell | why |

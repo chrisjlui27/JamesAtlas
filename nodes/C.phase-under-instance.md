@@ -15,7 +15,7 @@ gloss_check: "-exp(A)"
 holds:
   classical: holds
   J1: holds
-  JH: guarded
+  JH: replaced
   JO: guarded
   JP: holds
 readings:
@@ -70,7 +70,8 @@ e^{a + iπ} = −e^a for every complex a, exactly, with no condition on a. The *
 |---|---|---|
 | classical | holds | — |
 | J1 | holds | the unit step is directly under an instance: the receipt is absorbed (depth-1 criterion, [[mult.involution]] Notes) |
-| JH, JO | guarded | slice-local: `(A J_u) ≐ <(A)>` when A lies in the slice of u — for real A every u serves; a J from another slice does not commute with A (the rigidity dichotomy, JH-12) |
+| JO | guarded | slice-local: `(A J_u) ≐ <(A)>` when A lies in the slice of u — for real A every u serves; a J from another slice does not commute with A (the rigidity dichotomy, JH-12) |
+| JH | replaced | `(A J)` is −e^A only when A commutes with the pinned J = πi: the rigidity dichotomy, JH-12 ([[H.phase-sphere]]) — a negation is a half-turn in the plane of A, `<(A)> ≐ (A J_u)` for u = ±dir(A); fails on generic quaternions (census/h-ledger.md) |
 | JP | holds | the Phase rule and the absorbing unit both pass the audit at a place |
 
 | reading | cell | why |

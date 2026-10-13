@@ -16,7 +16,7 @@ witness: tools/models/place_reading.py
 holds:
   classical: replaced
   J1: replaced
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -68,7 +68,8 @@ The p-adic logarithm and exponential (Hensel), the Teichmüller lift, the decomp
 |---|---|---|
 | classical | replaced | the ℂ reading at ∞ ([[mult.c-reading]]) |
 | J1 | replaced | the ℂ reading with ω = 2πi; this is the same reading with ω_p = (p−1)J_p |
-| JH, JO | untested | the Hurwitz places need a quaternionic log; owed to rung `H` |
+| JO | untested | the Hurwitz places need a quaternionic log; owed to rung `H` |
+| JH | holds | the quaternion reading at a place, tools/quatplace.py: the same declaration with the Hurwitz order and half-shells at 2 ([[H.ramified-place]]) and matrices at odd p ([[H.split-place]]); the rung's laws read on it fill census/h-place-ledger.md |
 | JP | holds | the declaration of the setting; witness |
 
 | reading | cell | why |

@@ -17,7 +17,7 @@ schema_draw: "p=2; n=3"
 holds:
   classical: fails
   J1: fails
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -84,7 +84,8 @@ The convergence of the geometric series in ℚ_p and the doll of a rational numb
 |---|---|---|
 | classical | fails | the series diverges at ∞; 1 + 2 + 4 + 8 is not −1 there |
 | J1 | fails | as classical |
-| JH, JO | untested | owed |
+| JO | untested | owed |
+| JH | holds | exact on the quaternion page, centre and generic (census/h-place-ledger.md) |
 | JP | holds | absorbed receipts at p = 2, 3 and depths 1 … 3 (the unit inside the instance; the page step measured at its square) — a page law, ≃ |
 
 | reading | cell | why |

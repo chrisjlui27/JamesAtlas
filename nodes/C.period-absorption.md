@@ -15,7 +15,7 @@ gloss_check: "exp(A)"
 holds:
   classical: holds
   J1: holds
-  JH: guarded
+  JH: replaced
   JO: guarded
   JP: holds
 readings:
@@ -71,7 +71,8 @@ The period of exp: e^{a + 2πi} = e^a for every complex a. This is the sound con
 |---|---|---|
 | classical | holds | — |
 | J1 | holds | this is A5′ at λ = ω: exp kills the kernel Λ |
-| JH, JO | guarded | slice-local: `(A J_u J_u) ≐ (A)` when A lies in the slice of u (for real A, any u); across slices J_u does not commute with A |
+| JO | guarded | slice-local: `(A J_u J_u) ≐ (A)` when A lies in the slice of u (for real A, any u); across slices J_u does not commute with A |
+| JH | replaced | `(A J J)` is `(A)` only in the slice of i — the first non-commutative wall, [[H.slice-wall]]: fails on generic quaternions (census/h-ledger.md) |
 | JP | holds | `(ω_v A) ≐ (A)` at every place, by the same absorbing step |
 
 | reading | cell | why |

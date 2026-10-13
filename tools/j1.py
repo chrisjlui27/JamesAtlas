@@ -31,6 +31,15 @@ At a finite place one more grade sits between strict and absorbed:
              page step (its own or inherited, measured or not) is itself a page law: its reuse with a square above
              is measured in the same way.
 
+In the ℍ reading (tools/quat.py, rung `H`; LEGISLATION 32(c)) a receipt carries a direction, and an instance pays
+a receipt 2πu only when the rest of its content commutes with u — so every step graded `absorbed` by position is
+checked BY VALUE there: the paying instance before and after (a unit step directly inside it), or the step's own
+two sides (an absorption rule, a theorem reused): if they differ at the generic points of the domain the step is
+`absent` with `where = cross-slice` — the first non-commutative wall, as the tape sees it. A step whose receipt is
+no lattice element (`?` — the seam: L(e^{πj}) = πi ≠ πj) is `absent` in that reading as well. A conditional rule
+(H.collapse: `[A ; B] ≃ [A] [B]` only for commuting entries) is checked at its use site: the reading evaluates the
+premise on the matched entries, and a failing premise makes the step `absent`.
+
 A node's grade is the worst grade among its steps. The `holds` cell it implies: strict, page or absorbed → holds;
 posted → holds-mod-Λ; import → guarded; absent → fails.
 
@@ -57,6 +66,17 @@ PAGE_RULES = {"place.void-pile", "place.residue", "place.negation-is-a-pile", "p
 UNIT_RULES = {"mult.involution", "mult.log-of-one", "J1.unit"}     # rules whose unit-shaped steps post receipts
 STRICT_J1 = {"J1.counit", "J1.closure", "J1.period-form"}            # strict rules of the J1 rung itself
 ABSORB_J1 = {"J1.absorption", "J1.absorption-mirror"}                 # witnessed moves inside an instance
+# Rung H: the strict rules of the ordered bracket (bookkeeping of an ordered log: exact in ℍ at every position), and
+# the conditional rule whose premise the reading checks at the use site (SPEC §4.5).
+STRICT_H = {"H.ordered-bracket", "H.splice", "H.unit-entry", "H.list-distribution", "H.anticommutation", "H.seed",
+            "H.ordered-product", "H.j", "H.k", "H.commutation"}
+# Witnessed rules of rung H: a ≃ law whose use posts a receipt by position exactly as the unit does — the collapse
+# `[P ; Q] ≃ [P] [Q]` differs from a strict equality by a lattice element (log(PQ) against log P + log Q).
+WITNESSED_H = {"H.collapse"}
+# Conditional rules: rule -> premise name; the reading's `premise(name, env, domain, rng)` decides at the use site on
+# the entries matched as P and Q. `cosliced`: the logs of P and Q commute (the collapse); `commute`: the values of P
+# and Q commute (the ordered commutation).
+CONDITIONAL = {"H.collapse": "cosliced", "H.commutation": "commute"}
 # The strict rules of 𝕁₁ among the trunk's axioms and primitives (theorems are graded from their derivations).
 # Dominion is strict by LEGISLATION 30(f): the pole has no winding, so a unit step on pole-valued content posts
 # nothing — see pole_valued().
@@ -87,13 +107,14 @@ def _counit_shape(step: P.Step) -> bool:
 
 
 def position_class(path: tuple) -> str:
-    """Walk outward from the redex: angles are transparent; the first instance absorbs; the first square refuses."""
+    """Walk outward from the redex: angles are transparent; the first instance absorbs; the first square (ordered or
+    not) refuses."""
     for k in reversed(path):
         if k == F.ANGLE:
             continue
         if k == F.ROUND:
             return "absorbing"
-        if k == F.SQUARE:
+        if k in (F.SQUARE, F.ORDERED):
             return "under-square"
     return "depth-0"
 
@@ -113,9 +134,11 @@ GENERIC = 2.0                        # the other variables' value in a probe, so
 
 class CReading:
     """The 𝕁₁ reading in ℂ (ω = 2πi): the default reading of the receipt prover. A reading at a finite place
-    (tools/place.py, `Reading`) offers the same five hooks, so that the same tape is computed at every place."""
+    (tools/place.py, `Reading`) and the ℍ reading (tools/quat.py) offer the same hooks, so that the same tape is
+    computed at every place and in ℍ."""
     name = "C"
     period_name = "ω"
+    noncommutative = False
     skip_errors = (F.Undefined, F.Excluded, OverflowError)
 
     def evaluate(self, form, env):
@@ -152,7 +175,7 @@ def _sample(names, domain, rng, trials, reading=None):
 
 def _in_domain(p, domain: str) -> bool:
     if isinstance(p, complex):
-        return domain == "complex"
+        return domain in ("complex", "slice", "plane")
     if domain == "natural":
         return p == int(p) and p >= 1
     if domain == "positive":
@@ -254,11 +277,13 @@ def receipt_values(redex: F.Form, result: F.Form, domain: str, rng, trials: int 
 class Receipt:
     rule: str
     content: str        # what the step rewrote, as a string
-    where: str          # absorbing | depth-0 | under-square | inherited (a theorem's own tape) | pole (strict, 30f)
+    where: str          # absorbing | depth-0 | under-square | inherited (a theorem's own tape) | pole (strict, 30f) |
+                        # cross-slice (ℍ: the paying instance does not pay) | premise (a conditional rule's premise fails)
     grade: str          # strict (pole only) | absorbed | posted | import | absent
     k: set = field(default_factory=set)   # sampled receipt values in units of ω (None = ?)
     exceptional: dict = field(default_factory=dict)   # under a square: non-void receipts at probe points {k: [env…]}
     page: bool = False  # a page step (a law of the page, or a page theorem reused): the tape that holds it is a page law
+    direction: str = ""  # ℍ: the direction the receipt winds about, when one was sampled
 
 
 @dataclass
@@ -353,8 +378,9 @@ def page_under_square(step: P.Step, node, rng, reading=None, with_probes: bool =
         return ("import" if ks == {0} else "absent"), ks, exc, "square:unchanged" if ks == {0} else "square:under-square"
     exceptional: dict = {}
     measured = []
-    for before, after, distance in step.squares:
-        a, b = ((F.SQUARE, before),), ((F.SQUARE, after),)
+    for before, after, distance, *rest in step.squares:
+        kind = rest[0] if rest else F.SQUARE
+        a, b = ((kind, before),), ((kind, after),)
         idx = len(step.path) - 1 - distance          # the square's index in the path from the root
         where = position_class(step.path[:idx])       # the square's own position
         if with_probes:
@@ -404,7 +430,14 @@ def step_grade(step: P.Step, grades: dict, node=None, rng=None, reading=None) ->
         if node is not None and rng is not None:
             return _worse(page_under_square(step, node, rng, reading)[0], floor)
         return _worse("import", floor)
-    if step.rule in STRICT_J1 or step.rule in STRICT_NODES:
+    if step.rule in WITNESSED_H:
+        # a witnessed rule of rung H, graded by position like the unit (its premise, if any, is checked by grade_steps)
+        where = position_class(step.path)
+        if where == "under-square" and node is not None and rng is not None:
+            ks = receipt_values(step.redex, step.result, node.get("domain", "positive"), rng, reading=reading)
+            return "import" if ks == {0} else "absent"
+        return BY_POSITION[where]
+    if step.rule in STRICT_J1 or step.rule in STRICT_NODES or step.rule in STRICT_H:
         return "strict"
     if step.rule in ABSORB_J1:
         return "absorbed"
@@ -422,18 +455,116 @@ def phases(grades: dict, node=None, rng=None, reading=None):
     return [at_most(l) for l in levels] + [None]
 
 
+def _values_agree(redex, result, domain, rng, reading, trials: int = 16) -> bool:
+    """Do two forms have the same value at the generic points of the domain (exactly, not mod Λ)? Samples on which
+    either has no value are skipped; False when nothing could be compared — agreement is certified by samples, never
+    by their absence (the rung-H referee pass, 2026-10-07)."""
+    R = reading or READING
+    names = F.variables(redex) | F.variables(result)
+    judged = 0
+    for env in _sample(names, domain, rng, trials, R):
+        try:
+            a, b = R.evaluate(redex, env), R.evaluate(result, env)
+        except R.skip_errors:
+            continue
+        if R.is_pole(a) and R.is_pole(b):
+            judged += 1
+            continue
+        if R.is_pole(a) or R.is_pole(b) or not R.equal(a, b, "≐"):
+            return False
+        judged += 1
+    return judged > 0
+
+
+def _paying_instance(step: P.Step):
+    """For a step at an absorbing position: the innermost instance above the redex (through angles only), as its
+    content before and after; None when the step has no recorded instance there."""
+    trailing = 0
+    for k in reversed(step.path):
+        if k == F.ANGLE:
+            trailing += 1
+        else:
+            break
+    for before, after, distance in step.rounds:
+        if distance == trailing:
+            return before, after
+    return None
+
+
+def _direction_of(redex, result, domain, rng, reading):
+    """ℍ: the direction of the receipt of a step, at one generic sample (for the tape's description)."""
+    R = reading
+    if not getattr(R, "noncommutative", False) or not hasattr(R, "direction"):
+        return ""
+    if _single_instance(redex) and _single_instance(result):
+        redex, result = redex[0][1], result[0][1]
+    names = F.variables(redex) | F.variables(result)
+    for env in _sample(names, domain, rng, 4, R):
+        try:
+            a, b = R.evaluate(redex, env), R.evaluate(result, env)
+        except R.skip_errors:
+            continue
+        if R.is_pole(a) or R.is_pole(b):
+            continue
+        u = R.direction(a, b)
+        if u is not None:
+            return R.fmt(u)
+    return ""
+
+
+def premise_holds(step: P.Step, node, rng, reading=None) -> bool:
+    """A conditional rule (CONDITIONAL) licenses a step only where its premise holds; the reading decides it on the
+    matched substitution, at the generic points of the node's domain (ℂ: every premise of commutation holds)."""
+    name = CONDITIONAL.get(step.rule)
+    if name is None:
+        return True
+    R = reading or READING
+    if not hasattr(R, "premise"):
+        return True
+    return R.premise(name, dict(step.env), node.get("domain", "positive"), rng)
+
+
 def grade_steps(steps: list, node, grades: dict, rng, reading=None) -> Tape:
     """Grade the licensed steps of one derivation row and record their receipts."""
     tape = Tape()
     domain = node.get("domain", "positive")
+    R = reading or READING
+    noncomm = getattr(R, "noncommutative", False)
     for s in steps:
         g = step_grade(s, grades, node, rng, reading)
+        if s.rule in CONDITIONAL and not premise_holds(s, node, rng, reading):
+            # a conditional rule whose premise fails at the use site: the step is not licensed by the law as stated
+            tape.receipts.append(Receipt(s.rule, F.to_string(s.redex, True) or "void", "premise", "absent", {None}))
+            tape.absent.append(s.rule)
+            tape.worse("absent")
+            continue
         if g == "strict":
             x = _unit_shape(s)
             if x is not None and (s.rule in UNIT_RULES or s.rule.startswith("lemma") or s.rule == "hypothesis"):
                 # a unit step graded strict is one on pole-valued content (LEGISLATION 30f): on the tape, no receipt
                 tape.receipts.append(Receipt(s.rule, F.to_string(x, True) or "void", "pole", "strict", set()))
             continue
+        if noncomm and g == "absorbed":
+            # ℍ: an absorbed step is checked by value — the instance that pays the receipt must still agree
+            # (LEGISLATION 32(c), the first non-commutative wall). A unit step or an absorption rule directly inside an
+            # instance: that instance, before and after; a theorem reused, or a rule whose own sides are instances:
+            # the two sides themselves.
+            # a primitive witnessed rule (the unit, the collapse) is paid by the instance above it, and so is a
+            # unit-shaped step of a theorem (the log of one, a lemma that is a unit step): the receipt is the
+            # content's, and only the instance above can pay it; a theorem reused on other shapes, or an absorption
+            # rule, has its own two sides to compare
+            pay = _paying_instance(s) if (s.rule not in ABSORB_J1 and (grades.get(s.rule) is None or _unit_shape(s) is not None)) else None
+            if pay is not None:
+                ok = _values_agree(((F.ROUND, pay[0]),), ((F.ROUND, pay[1]),), domain, rng, R)
+            else:
+                ok = _values_agree(s.redex, s.result, domain, rng, R)
+            if not ok:
+                content = F.to_string(_unit_shape(s), True) if _unit_shape(s) is not None else F.to_string(s.redex, True)
+                direction = _direction_of(s.redex, s.result, domain, rng, R)
+                tape.receipts.append(Receipt(s.rule, content or "void", "cross-slice", "absent", receipt_values(s.redex, s.result, domain, rng, reading=R), direction=direction))
+                tape.absent.append(s.rule)
+                tape.worse("absent")
+                continue
         where = position_class(s.path) if s.rule not in ABSORB_J1 else "absorbing"
         if _unit_shape(s) is None and s.rule not in ABSORB_J1 and grades.get(s.rule) is not None and (
                 grades[s.rule].grade in ("absorbed", "import") or (grades[s.rule].is_page and g == "page")):
@@ -473,10 +604,20 @@ def grade_steps(steps: list, node, grades: dict, rng, reading=None) -> Tape:
                 g = "absent"
         else:
             ks = receipt_values(s.redex, s.result, domain, rng, reading=reading)
+        if s.rule in WITNESSED_H and where == "absorbing" and not (_unit_shape(s) is None and grades.get(s.rule) is not None):
+            where = "absorbing"
+        if noncomm and g == "posted" and None in ks:
+            g = "absent"   # ℍ: a receipt that is no lattice element at depth 0 — the seam (L(e^{πu}) = πi ≠ πu): the two
+                           # forms differ on the page by a displacement no period measures, and the step is false there
+        if noncomm and g == "absorbed" and None in ks:
+            where = "seam"  # ℍ: the paying instance agrees (checked above) though the contents differ by no period — a
+                            # seam displacement, e^{πu} = e^{πi}: paid by the instance, as James's J-discipline pays it,
+                            # and recorded as such (SPEC §4.5)
         content = F.to_string(_unit_shape(s), True) if _unit_shape(s) is not None else F.to_string(s.redex, True)
         if _unit_shape(s) is not None and not _unit_shape(s):
             content = "void"
-        tape.receipts.append(Receipt(s.rule, content or "void", where, g, ks, exceptional))
+        direction = _direction_of(s.redex, s.result, domain, rng, R) if (noncomm and g in ("posted", "absorbed")) else ""
+        tape.receipts.append(Receipt(s.rule, content or "void", where, g, ks, exceptional, direction=direction))
         if g == "absent":
             tape.absent.append(s.rule)
         tape.worse(g)
@@ -542,13 +683,23 @@ def describe(tape: Tape, reading=None) -> str:
                 pts.append(f"k = {'?' if k is None else k} at " + ", ".join(f"{n}={R.fmt(v)}" for n, v in sorted(e.items())))
             more = "" if len(r.exceptional) <= 3 else f" / … {len(r.exceptional) - 3} more"
             exc = "; except " + " / ".join(pts) + more
+        if r.where == "cross-slice":
+            parts.append(f"absent [cross-slice] on `{r.content}` (the instance does not pay a receipt in direction {r.direction or '?'}: its content is not co-sliced — the first non-commutative wall)")
+            continue
+        if r.where == "premise":
+            parts.append(f"absent [premise] on `{r.content}` (the rule's premise fails at the use site: the entries do not commute)")
+            continue
+        if r.where == "seam":
+            parts.append(f"absorbed [seam] on `{r.content}` (the instance pays a seam displacement — the contents differ by no period, e^{{πu}} = e^{{πi}} — and agrees by value)")
+            continue
         if r.grade == "absent" and not r.k and R is not READING:
             # at a place: the step's content has no value on any sample (the base e, a root the place refuses) — the
             # step is formless, not false; a receipt set {?} is the other thing, a difference that is no lattice
             # element at every sample, and that step is false
             parts.append(f"formless [{where}] on `{r.content}` (no value at {R.name} on any sample)")
             continue
-        parts.append(f"{r.grade} [{where}] on `{r.content}` (k = {ks}{exc})")
+        dirn = f", about {r.direction}" if r.direction else ""
+        parts.append(f"{r.grade} [{where}] on `{r.content}` (k = {ks}{exc}{dirn})")
     if tape.absent:
         parts.append("absent: " + ", ".join(sorted(set(tape.absent))))
     head = "≡" if tape.grade == "strict" else tape.cell

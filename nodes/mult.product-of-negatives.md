@@ -15,7 +15,7 @@ gloss_check: "A*B"
 holds:
   classical: holds
   J1: holds
-  JH: holds
+  JH: replaced
   JO: holds
   JP: holds
 readings:
@@ -67,7 +67,8 @@ The sign rule for integer multiplication, *derived*: the two mirrors are promote
 
 | setting | holds | why |
 |---|---|---|
-| all | holds | Inversion cluster |
+| classical, J1, JO, JP | holds | Inversion cluster |
+| JH | replaced | log(−A) and log(−B) carry half-turns in the directions of A and B, which do not add to a whole turn off a slice ([[H.polar-form]], interference): fails on generic quaternions (census/h-ledger.md); in rung `H` the central sign twice, `([<A> ; <B>]) ≐ ([A ; B])` ([[H.central-sign]]) |
 
 | reading | cell | why |
 |---|---|---|

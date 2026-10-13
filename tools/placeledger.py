@@ -181,8 +181,8 @@ def compute(nodes, rep, rng, lic_steps: dict, schema_instances_fn, places=PL.PLA
     mismatches = 0
     order = sorted(nodes.values(), key=lambda n: n.get("order", 0) if isinstance(n.get("order"), int) else 0)
     for node in order:
-        if node.get("level") != "object" or node.get("setting") == "JP":
-            continue
+        if node.get("level") != "object" or node.get("setting") in ("JP", "JH"):
+            continue   # the place rung is graded at its own place as it is checked; rung H is read at the places by tools/hledger.py
         forms = _law_forms(node)
         has_tape = node.get("type") in ("theorem", "schema")
         if forms is None and not has_tape:

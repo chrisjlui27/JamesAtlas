@@ -16,7 +16,7 @@ witness: tools/models/place_no_inverse.py
 holds:
   classical: replaced
   J1: replaced
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -70,7 +70,8 @@ On a clock with p^n hours you cannot divide by p: p times something is never 1 o
 |---|---|---|
 | classical | replaced | at ∞ every nonzero number has a reciprocal ([[Q.reciprocal-law]]) |
 | J1 | replaced | as classical |
-| JH, JO | untested | owed |
+| JO | untested | owed |
+| JH | holds | π has no reciprocal on the quaternion page at 2, nor p at an odd place ([[H.ramified-place]], [[H.split-place]]) |
 | JP | holds | witness: the reciprocal of the prime is not a form at any tested place |
 
 | reading | cell | why |

@@ -29,6 +29,112 @@ NONEMPTY = {}  # Distribution with a void part is valid (zero annihilates, void 
 # A node that states one half of an equation that the chart uses in both halves.
 EXTRA_RULES = {
     "mult.involution": ["[(A)] ≐ A"],  # James's Involution is ([A]) ≐ A ≐ [(A)]; the law field carries the counit
+    # the norm is two-sided: H.norm's second table derives q̄·q ≃ N, and the left inverse (H.inverse, table 2) cites it
+    "H.norm": ["([A <([B ; i])> <([C ; j])> <([D ; k])> ; A ([B ; i]) ([C ; j]) ([D ; k])]) ≃ ([A] [A]) ([B] [B]) ([C] [C]) ([D] [D])"],
+}
+
+
+# ----------------------------------------------------------------------------- rung H: families over the entries
+# A law of the ordered bracket written with vector entries (x⃗ ; … ; z⃗ in the JH report) is a FAMILY of rules, one
+# per shape of the list; the engine instantiates each family for lists of up to five entries (SPEC §4.5). The node's
+# derivation proves the shape its `law:` states; the other shapes are the same law read at another position, and
+# the prose says so.
+
+_X = ["A", "B", "C", "D", "E"]
+_Y = ["P", "Q", "R"]
+
+
+def _lst(entries):
+    return "[" + " ; ".join(entries) + "]"
+
+
+def _family_splice():
+    out = []
+    for n in range(1, 4):            # entries around the spliced one (at least one: a one-entry splice is the unit)
+        for m in (2, 3):             # entries of the spliced list
+            inner = _Y[:m]
+            for pos in range(n + 1):
+                outer = _X[:n]
+                lhs = _lst(outer[:pos] + ["(" + _lst(inner) + ")"] + outer[pos:])
+                rhs = _lst(outer[:pos] + inner + outer[pos:])
+                out.append((lhs, rhs))
+    return out
+
+
+def _family_unit_entry():
+    out = []
+    for n in range(2, 6):            # the list with the unit entry, 2 … 5 entries
+        xs = _X[:n - 1]
+        for pos in range(n):
+            lhs = _lst(xs[:pos] + ["o"] + xs[pos:])
+            rhs = _lst(xs)
+            out.append((lhs, rhs))
+    return out
+
+
+def _family_zero_entry():
+    out = []
+    for n in range(2, 4):
+        xs = _X[:n - 1]
+        for pos in range(n):
+            lhs = _lst(xs[:pos] + ["void"] + xs[pos:])
+            out.append((lhs, "□"))
+    return out
+
+
+def _family_list_distribution():
+    out = []
+    for n in (2, 3):                 # the list, 2 or 3 entries, one of them a sum of two
+        xs = _X[:n - 1]
+        for pos in range(n):
+            lhs = "(" + _lst(xs[:pos] + ["P Q"] + xs[pos:]) + ")"
+            rhs = "(" + _lst(xs[:pos] + ["P"] + xs[pos:]) + ") (" + _lst(xs[:pos] + ["Q"] + xs[pos:]) + ")"
+            out.append((lhs, rhs))
+    return out
+
+
+def _family_central_sign():
+    out = []
+    for n in (2, 3):
+        xs = _X[:n - 1]
+        for pos in range(n):
+            lhs = "(" + _lst(xs[:pos] + ["<P>"] + xs[pos:]) + ")"
+            rhs = "<(" + _lst(xs[:pos] + ["P"] + xs[pos:]) + ")>"
+            out.append((lhs, rhs))
+    return out
+
+
+def _family_commutation():
+    out = []
+    for n in range(2, 6):            # adjacent entries P, Q exchanged in a list of 2 … 5 entries
+        xs = _X[:n - 2]
+        for pos in range(n - 1):
+            lhs = _lst(xs[:pos] + ["P", "Q"] + xs[pos:])
+            rhs = _lst(xs[:pos] + ["Q", "P"] + xs[pos:])
+            out.append((lhs, rhs))
+    return out
+
+
+def _family_ordered_cancellation():
+    out = []
+    for n in range(2, 6):            # the list with the cancelling pair, 2 … 5 entries
+        xs = _X[:n - 2]
+        for pos in range(n - 1):
+            for pair in (["P", "(<[P]>)"], ["(<[P]>)", "P"]):
+                lhs = _lst(xs[:pos] + pair + xs[pos:])
+                rhs = _lst(xs[:pos] + ["o"] + xs[pos:])
+                out.append((lhs, rhs))
+    return out
+
+
+FAMILIES = {
+    "H.commutation": _family_commutation,
+    "H.splice": _family_splice,
+    "H.unit-entry": _family_unit_entry,
+    "H.zero-entry": _family_zero_entry,
+    "H.list-distribution": _family_list_distribution,
+    "H.central-sign": _family_central_sign,
+    "H.ordered-cancellation": _family_ordered_cancellation,
 }
 
 IDENTITY_RULES = {"medium", "definition", "name", "substitution", "congruence", "given"}
@@ -64,6 +170,13 @@ def rules_for(nid: str, nodes, cache: dict, at: dict | None = None) -> list:
             r = P.rule_from_law(nid, extra, NONEMPTY.get(nid, ()))
             if r is not None:
                 out.append(r)
+        if nid in FAMILIES:
+            seen = {(x.lhs, x.rhs) for x in out}
+            for lhs, rhs in FAMILIES[nid]():
+                r = P.Rule(nid, F.parse(lhs), F.parse(rhs), frozenset(), f"{lhs} ≐ {rhs}")
+                if (r.lhs, r.rhs) not in seen:
+                    out.append(r)
+                    seen.add((r.lhs, r.rhs))
     cache[key] = out
     return out
 

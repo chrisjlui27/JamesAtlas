@@ -17,7 +17,7 @@ schema_draw: "p=2; k=1; j=3"
 holds:
   classical: holds
   J1: holds
-  JH: untested
+  JH: holds
   JO: untested
   JP: holds
 readings:
@@ -71,7 +71,8 @@ Base-p positional notation, James's own number formats (the thesis's Appendix A.
 |---|---|---|
 | classical | holds | arithmetic: k + pm is k + pm at every place |
 | J1 | holds | as classical; the cardinality step's receipts are absorbed |
-| JH, JO | untested | — |
+| JO | untested | — |
+| JH | holds | exact on the quaternion page, centre and generic; at 2 the doll has digits in 𝔽₄ and one shell is `k ≐ o ([π ; ζ])` ([[H.ramified-place]]) (census/h-place-ledger.md) |
 | JP | holds | the cardinality step's receipts are absorbed, as at ∞ (the tape inherits [[schema.cardinality]]'s); at p this is the normal form |
 
 | reading | cell | why |

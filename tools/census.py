@@ -87,9 +87,9 @@ def classify(form, values_smaller):
 
 def node_assignments(nodes):
     """Map canonical form string -> node id. Ownership, in order of precedence: a node's explicit `forms:` list or a
-    definition's/primitive's law sides (the node that *reads* the form), earliest `order` first; then the numeral
-    patterns; and only then the left-hand side of a theorem — never a theorem's right-hand side, so that `(J J) ≐ o`
-    does not claim `o`."""
+    definition's/primitive's law sides (the node that *reads* the form) and an axiom's or decree's left-hand side,
+    earliest `order` first; then the numeral patterns; and only then the left-hand side of a theorem — never a
+    theorem's, axiom's or decree's right-hand side, so that `(J J) ≐ o` does not claim `o`."""
     strong, weak = {}, {}
     def _key(n):
         o = n.get("order", 0)
@@ -98,8 +98,13 @@ def node_assignments(nodes):
         nid = node.id
         law = str(node.get("law", ""))
         explicit = list(node.get("forms", []) or [])
-        if node.get("type") in ("primitive", "definition", "axiom", "decree"):
+        if node.get("type") in ("primitive", "definition"):
             explicit += [part.strip() for part in re.split(r"≐|:=", law)]
+            theorem_lhs = []
+        elif node.get("type") in ("axiom", "decree"):
+            # an axiom or a decree reads the form on its left; its right-hand side is a form some earlier node reads
+            # (`(Jj) ≐ <o>` does not claim the numeral −1 — the rung-H referee pass, 2026-10-07)
+            explicit += [re.split(r"≐|:=", law)[0].strip()]
             theorem_lhs = []
         else:
             theorem_lhs = [F.split_law(law)[0]] if F.split_law(law)[1] is not None else []
